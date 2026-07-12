@@ -1,0 +1,74 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "opentui-ui",
+  "homepage": "https://github.com/msmps/opentui-ui",
+  "items": [
+    {
+      "name": "core/checkbox",
+      "type": "registry:item",
+      "title": "Checkbox (Core)",
+      "description": "Editable imperative Checkbox recipe built on the OpenTUI UI primitive tracer.",
+      "dependencies": ["@opentui-ui/core@^0.0.2", "@opentui/core@^0.4.3"],
+      "files": [
+        {
+          "path": "registry/checkbox/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/checkbox.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "tracer"
+      }
+    },
+    {
+      "name": "react/checkbox",
+      "type": "registry:item",
+      "title": "Checkbox (React)",
+      "description": "Editable React Checkbox recipe built on the OpenTUI UI primitive tracer.",
+      "dependencies": [
+        "@opentui-ui/react@^0.0.2",
+        "@opentui-ui/core@^0.0.2",
+        "@opentui/core@^0.4.3",
+        "@opentui/react@^0.4.3",
+        "react@>=19.2.0 <20",
+        "ws@^8.21.0"
+      ],
+      "files": [
+        {
+          "path": "registry/checkbox/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/checkbox.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "tracer"
+      }
+    },
+    {
+      "name": "solid/checkbox",
+      "type": "registry:item",
+      "title": "Checkbox (Solid)",
+      "description": "Editable Solid Checkbox recipe built on the OpenTUI UI primitive tracer.",
+      "dependencies": [
+        "@opentui-ui/solid@^0.0.2",
+        "@opentui-ui/core@^0.0.2",
+        "@opentui/core@^0.4.3",
+        "@opentui/solid@^0.4.3",
+        "solid-js@1.9.12"
+      ],
+      "files": [
+        {
+          "path": "registry/checkbox/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/checkbox.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "tracer"
+      }
+    }
+  ]
+}

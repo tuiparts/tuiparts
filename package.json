@@ -20,6 +20,7 @@
     "test": "pnpm -r --if-present test",
     "validate:packages": "pnpm build && node scripts/validate-packages.mjs",
     "validate:packages:built": "node scripts/validate-packages.mjs",
+    "validate:registry": "node scripts/validate-registry.mjs",
     "create": "./scripts/create-package.sh"
   },
   "devDependencies": {

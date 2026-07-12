@@ -1,8 +1,10 @@
 # Checkbox Recipe Tracer
 
-These files represent the consumer-owned layer of the Checkbox tracer. A
-future registry installer would copy the framework-appropriate recipe into an
-application while keeping `CheckboxStore`, `CheckboxRootRenderable`, and
+These files represent the consumer-owned layer of the Checkbox tracer. The
+root `registry.json` exposes separate `core/checkbox`, `react/checkbox`, and
+`solid/checkbox` items so consumers explicitly install the recipe for their
+framework. Installation copies editable source into `components/ui` while
+keeping `CheckboxStore`, `CheckboxRootRenderable`, and
 `CheckboxIndicatorRenderable` in versioned packages.
 
 - `react.tsx` is the editable React recipe.
@@ -11,7 +13,9 @@ application while keeping `CheckboxStore`, `CheckboxRootRenderable`, and
 
 Each recipe chooses layout, colors, the default mark, and the convenience
 `label` prop. The packaged primitive owns checked state, focus, activation,
-disabled behavior, and Indicator lifecycle.
+disabled behavior, and Indicator lifecycle. The current Root, Indicator,
+readonly state, refs, lifecycle, and ownership interfaces are tracer evidence,
+not the frozen foundation contract.
 
 Runnable versions with controlled, uncontrolled, custom-mark, and disabled
 examples live in the local `examples/*` workspaces and can be started with

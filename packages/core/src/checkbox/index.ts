@@ -10,6 +10,15 @@ export {
   type CheckboxMeta,
   type CheckboxStateKeys,
 } from "./meta";
+export {
+  type CheckboxIndicatorOptions,
+  CheckboxIndicatorRenderable,
+  type CheckboxPrimitiveState,
+  type CheckboxRootOptions,
+  CheckboxRootRenderable,
+  CheckboxStore,
+  type CheckboxStoreOptions,
+} from "./primitive";
 export type {
   CheckboxBaseOptions,
   CheckboxOptions,

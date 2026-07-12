@@ -1,7 +1,8 @@
 import { mergeStyledConfig } from "./merge";
-import { processStyledConfig } from "./resolve";
+import { createStyleResolver, processStyledConfig } from "./resolve";
 import {
   $$OtuiComponentMeta,
+  $$StyledBase,
   $$StyledComponent,
   $$StyledConfig,
 } from "./symbols";
@@ -11,6 +12,7 @@ import type {
   ExtractStateKeys,
   ProcessedStyledConfig,
   StyledConfig,
+  StyledSlotStyles,
   VariantProps,
   VariantsConfig,
 } from "./types";
@@ -31,7 +33,29 @@ export interface ComponentWithMeta<
 }
 
 /**
+ * Resolves the deepest underlying `ComponentWithMeta` reachable from a
+ * (possibly styled) input — mirrors the runtime behaviour of
+ * `resolveStyledBase`. Used so `createStyled`'s return type points to the
+ * underlying base, not an intermediate wrapper.
+ */
+export type ResolveStyledBase<C> = C extends { [$$StyledBase]: infer B }
+  ? B extends ComponentWithMeta<
+      readonly string[],
+      Record<string, object>,
+      readonly string[]
+    >
+    ? B
+    : C
+  : C;
+
+/**
  * A styled component with attached config and variant props.
+ *
+ * `component` and `[$$StyledBase]` both point to the **deepest** underlying
+ * `ComponentWithMeta` reachable through composition. Framework wrappers render
+ * via `component` to bypass any intermediate styled wrappers — this is what
+ * makes `styled(styled(C, A), B)` collapse to a single `C` call with the
+ * merged A+B resolver.
  */
 export interface StyledComponentDefinition<
   BaseComponent extends ComponentWithMeta<
@@ -43,7 +67,7 @@ export interface StyledComponentDefinition<
   StateKeys extends readonly string[],
   V extends VariantsConfig<SlotStyleMap, StateKeys>,
 > {
-  /** The base component being styled */
+  /** The deepest base component reachable through composition */
   component: BaseComponent;
   /** Processed styled config */
   processed: ProcessedStyledConfig<SlotStyleMap, StateKeys, V>;
@@ -53,6 +77,8 @@ export interface StyledComponentDefinition<
   [$$StyledComponent]: true;
   /** Stored config for composition */
   [$$StyledConfig]: ProcessedStyledConfig<SlotStyleMap, StateKeys, V>;
+  /** Deepest base for rendering — same value as `component` */
+  [$$StyledBase]: BaseComponent;
   /** Component metadata (forwarded from base) */
   [$$OtuiComponentMeta]: ComponentMeta<
     readonly string[],
@@ -64,6 +90,22 @@ export interface StyledComponentDefinition<
 // =============================================================================
 // Styled Factory
 // =============================================================================
+
+/**
+ * Resolve the deepest underlying `ComponentWithMeta` reachable from `value`,
+ * walking through styled wrappers via `[$$StyledBase]` (set by both
+ * `createStyled` and the framework `styled()` wrappers).
+ */
+function resolveStyledBase<C>(value: C): C {
+  if (
+    value !== null &&
+    (typeof value === "object" || typeof value === "function") &&
+    $$StyledBase in (value as object)
+  ) {
+    return (value as unknown as Record<typeof $$StyledBase, C>)[$$StyledBase];
+  }
+  return value;
+}
 
 /**
  * Creates a styled component definition.
@@ -79,23 +121,6 @@ export interface StyledComponentDefinition<
  * @param Component - Base component with OTUI metadata
  * @param config - Styled config with base, variants, etc.
  * @returns Styled component definition
- *
- * @example
- * ```ts
- * // Framework-agnostic definition
- * const definition = createStyled(Checkbox, {
- *   base: { root: { color: "white" } },
- *   variants: {
- *     intent: {
- *       warning: { root: { color: "orange" } },
- *       danger: { root: { color: "red" } }
- *     }
- *   },
- *   defaultVariants: { intent: "warning" }
- * });
- *
- * // Framework wrapper creates actual component from definition
- * ```
  */
 export function createStyled<
   BaseComponent extends ComponentWithMeta<
@@ -115,7 +140,7 @@ export function createStyled<
     V
   >,
 ): StyledComponentDefinition<
-  BaseComponent,
+  ResolveStyledBase<BaseComponent>,
   ExtractSlotStyleMap<BaseComponent>,
   ExtractStateKeys<BaseComponent>,
   V
@@ -135,11 +160,15 @@ export function createStyled<
     );
   }
 
-  // Check if base component is already styled (composition)
+  // Resolve the deepest underlying base. For raw components this is `Component`
+  // itself; for already-styled inputs it's their `[$$StyledBase]`.
+  const underlyingBase = resolveStyledBase(Component);
+
+  // If the input is itself styled, merge its previous processed config into
+  // the new one so chained `styled()` calls accumulate base/variants/etc.
   let finalConfig: StyledConfig<SlotStyleMap, StateKeys, V>;
 
   if (isStyledComponentDefinition(Component)) {
-    // Composition: merge configs
     const baseConfig = Component[$$StyledConfig] as ProcessedStyledConfig<
       SlotStyleMap,
       StateKeys,
@@ -174,17 +203,27 @@ export function createStyled<
   );
 
   return {
-    component: Component,
+    component: underlyingBase,
     processed,
     config: finalConfig,
     [$$StyledComponent]: true,
     [$$StyledConfig]: processed,
+    [$$StyledBase]: underlyingBase,
     [$$OtuiComponentMeta]: meta,
-  };
+  } as StyledComponentDefinition<
+    ResolveStyledBase<BaseComponent>,
+    SlotStyleMap,
+    StateKeys,
+    V
+  >;
 }
 
 /**
- * Type guard to check if a value is a styled component definition.
+ * Type guard to check if a value is a styled component (or styled definition).
+ *
+ * Recognises both the framework-agnostic `StyledComponentDefinition` and the
+ * framework-specific component returned by `react/solid` `styled()` — both
+ * carry `[$$StyledComponent]` and `[$$StyledConfig]`.
  */
 export function isStyledComponentDefinition(
   value: unknown,
@@ -199,10 +238,11 @@ export function isStyledComponentDefinition(
   VariantsConfig<Record<string, object>, readonly string[]>
 > {
   return (
-    typeof value === "object" &&
     value !== null &&
-    $$StyledComponent in value &&
-    $$StyledConfig in value
+    value !== undefined &&
+    (typeof value === "object" || typeof value === "function") &&
+    $$StyledComponent in (value as object) &&
+    $$StyledConfig in (value as object)
   );
 }
 
@@ -255,3 +295,91 @@ export function getVariantNames<
 >(processed: ProcessedStyledConfig<SlotStyleMap, StateKeys, V>): (keyof V)[] {
   return Array.from(processed.variantNameSet) as (keyof V)[];
 }
+
+// =============================================================================
+// Shared per-render styled() logic
+// =============================================================================
+//
+// Both the React and Solid `styled()` wrappers run the same algorithm at
+// render time:
+//   1. split variant props from forward props (key-based)
+//   2. extract `styles` (inline override) from forward props
+//   3. coerce variant values to strings (filter undefined / non-strings) so
+//      they don't override `defaultVariants`
+//   4. build a fresh `StyleResolver` from the processed config + variants +
+//      inline styles
+//
+// `processStyledProps` does (1)–(3) as a pure function. Frameworks call it
+// inside their reactivity primitive and pass the result to `createStyleResolver`.
+// `variantDeps` is provided as a deterministic-ordered list so React's
+// `useMemo` can use it as a dependency array; Solid ignores it.
+//
+// =============================================================================
+
+export interface ProcessedStyledProps<
+  SlotStyleMap extends Record<string, object>,
+  StateKeys extends readonly string[],
+  V extends VariantsConfig<SlotStyleMap, StateKeys>,
+> {
+  /** Props to forward to the underlying base, with `styles` removed. */
+  forwardProps: Record<string, unknown>;
+  /** Variant values filtered to strings (entries with non-string values dropped). */
+  variantValues: Partial<Record<keyof V, string>>;
+  /** Inline `styles` override pulled out of the input props. */
+  inlineStyles: StyledSlotStyles<SlotStyleMap, StateKeys> | undefined;
+  /**
+   * Variant values in `variantNames` order, with non-strings represented as
+   * `undefined`. Use as a dependency array for memoization.
+   */
+  variantDeps: (string | undefined)[];
+}
+
+/**
+ * Pure shared helper for the per-render work the framework `styled()`
+ * wrappers do. See the section comment above for the contract.
+ */
+export function processStyledProps<
+  SlotStyleMap extends Record<string, object>,
+  StateKeys extends readonly string[],
+  V extends VariantsConfig<SlotStyleMap, StateKeys>,
+>(
+  props: Record<string, unknown>,
+  processed: ProcessedStyledConfig<SlotStyleMap, StateKeys, V>,
+  variantNames: readonly (keyof V)[],
+): ProcessedStyledProps<SlotStyleMap, StateKeys, V> {
+  const [, forwardWithStyles] = splitVariantProps(
+    props,
+    processed.variantNameSet,
+  );
+
+  const inlineStyles = (forwardWithStyles as Record<string, unknown>).styles as
+    | StyledSlotStyles<SlotStyleMap, StateKeys>
+    | undefined;
+
+  const forwardProps: Record<string, unknown> = {};
+  for (const key in forwardWithStyles) {
+    if (key === "styles") continue;
+    if (Object.hasOwn(forwardWithStyles, key)) {
+      forwardProps[key] = (forwardWithStyles as Record<string, unknown>)[key];
+    }
+  }
+
+  // Variants are string-only at runtime. Booleans/numbers passed as variant
+  // props are dropped here so they don't override `defaultVariants` with
+  // unmatchable values. (Kept as a contract — see README's variant section.)
+  const variantValues: Partial<Record<keyof V, string>> = {};
+  const variantDeps: (string | undefined)[] = [];
+  for (const name of variantNames) {
+    const raw = props[name as string];
+    const value = typeof raw === "string" ? raw : undefined;
+    variantDeps.push(value);
+    if (value !== undefined) {
+      variantValues[name] = value;
+    }
+  }
+
+  return { forwardProps, variantValues, inlineStyles, variantDeps };
+}
+
+// Re-export so framework wrappers can import the resolver builder from one place.
+export { createStyleResolver };

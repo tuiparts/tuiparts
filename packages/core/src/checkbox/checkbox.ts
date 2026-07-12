@@ -1,10 +1,10 @@
 import {
+  BoxRenderable,
   type KeyEvent,
-  type OptimizedBuffer,
-  parseColor,
   type RenderContext,
+  TextRenderable,
 } from "@opentui/core";
-import { StyledRenderable } from "../styled-renderable";
+import { applySlotProps, withStyles } from "../styled-renderable";
 import { DEFAULT_CHECKBOX_OPTIONS } from "./constants";
 import type {
   CheckboxOptions,
@@ -14,15 +14,20 @@ import type {
 } from "./types";
 
 const DEFAULT_SLOT_STYLES: CheckboxSlotStyles = {
-  box: { backgroundColor: "transparent" },
+  box: {
+    backgroundColor: "transparent",
+    flexDirection: "row",
+    gap: 1,
+  },
   mark: { color: "#A3A3A3" },
   label: { color: "#A3A3A3" },
 };
 
-export class CheckboxRenderable extends StyledRenderable<
-  CheckboxState,
-  CheckboxSlotStyles
-> {
+const CheckboxBase = withStyles<CheckboxState, CheckboxSlotStyles>()(
+  BoxRenderable,
+);
+
+export class CheckboxRenderable extends CheckboxBase {
   protected override _focusable: boolean = true;
 
   private _isControlled: boolean;
@@ -31,104 +36,58 @@ export class CheckboxRenderable extends StyledRenderable<
   private _label: string;
   private _disabled: boolean = false;
   private _symbols: CheckboxSymbolSet;
-  private _parsedColors: {
-    boxBg: ReturnType<typeof parseColor>;
-    markFg: ReturnType<typeof parseColor>;
-    labelFg: ReturnType<typeof parseColor>;
-  } | null = null;
-  private _colorCacheKey: string = "";
-  private _maxSymbolLength: number = 0;
-  private _currentGap: number = 1;
+  private _markChild: TextRenderable;
+  private _labelChild: TextRenderable;
   private _onCheckedChange?: (checked: boolean) => void;
-
-  protected _defaultOptions = DEFAULT_CHECKBOX_OPTIONS;
-
   constructor(ctx: RenderContext, options: CheckboxOptions = {}) {
-    const symbols: CheckboxSymbolSet = {
+    super(ctx, {
+      ...options,
+      onMouseUp: (event) => {
+        options.onMouseUp?.call(this, event);
+        if (this._disabled) return;
+        this.toggle();
+        this.focus();
+      },
+    });
+
+    this._isControlled = options.checked !== undefined;
+    this._rootStyleBaseline = options;
+    this._controlledValue = options.checked ?? false;
+    this._internalChecked =
+      options.checked ??
+      options.defaultChecked ??
+      DEFAULT_CHECKBOX_OPTIONS.checked;
+    this._label = options.label ?? DEFAULT_CHECKBOX_OPTIONS.label;
+    this._disabled = options.disabled ?? false;
+    this._symbols = {
       ...DEFAULT_CHECKBOX_OPTIONS.symbols,
       ...options.symbols,
     };
-
-    const initialState: CheckboxState = {
-      checked: options?.checked ?? false,
-      disabled: options?.disabled ?? false,
-      focused: options?.focused ?? false,
-    };
-    const initialStyles =
-      options.styles ??
-      options.styleResolver?.(initialState) ??
-      DEFAULT_SLOT_STYLES;
-    const label = options.label ?? DEFAULT_CHECKBOX_OPTIONS.label;
-    const gap = initialStyles.box?.gap ?? 1;
-    const maxSymbolLength = Math.max(
-      symbols.checked.length,
-      symbols.unchecked.length,
-    );
-    const minWidth = maxSymbolLength + gap + label.length;
-
-    super(
-      ctx,
-      {
-        ...options,
-        width: options.width ?? minWidth,
-        height: options.height ?? 1,
-        onMouseUp: () => {
-          if (!this._disabled) {
-            this.toggle();
-            this.focus();
-          }
-        },
-      },
-      DEFAULT_SLOT_STYLES,
-    );
-
-    if (options.styles) {
-      this._styles = options.styles;
-    }
-
-    this._isControlled = options.checked !== undefined;
-    this._controlledValue = options.checked ?? false;
-    this._internalChecked =
-      options.checked ?? options.defaultChecked ?? this._defaultOptions.checked;
-
-    this._label = label;
-    this._symbols = symbols;
     this._onCheckedChange = options.onCheckedChange;
-    this._disabled = options.disabled ?? false;
-    this._maxSymbolLength = maxSymbolLength;
-    this._currentGap = gap;
+
+    this._markChild = new TextRenderable(ctx, {
+      content: this.currentSymbol,
+      width: this.maxSymbolLength,
+    });
+    this._labelChild = new TextRenderable(ctx, { content: this._label });
+    this.add(this._markChild);
+    this.add(this._labelChild);
+
+    this._defaultStyles = DEFAULT_SLOT_STYLES;
+    this._styles = options.styles;
+    this._styleResolver = options.styleResolver;
+    this.applyStylesToSlots();
   }
 
-  private updateParsedColors(): void {
-    const styles = this.getResolvedStyles();
-    const boxStyles = styles.box ?? {};
-    const markStyles = styles.mark ?? {};
-    const labelStyles = styles.label ?? {};
-
-    this._parsedColors = {
-      boxBg: parseColor(boxStyles.backgroundColor ?? "transparent"),
-      markFg: parseColor(markStyles.color ?? "#A3A3A3"),
-      labelFg: parseColor(labelStyles.color ?? "#A3A3A3"),
-    };
+  private get currentSymbol(): string {
+    return this.checked ? this._symbols.checked : this._symbols.unchecked;
   }
 
-  private getColorCacheKey(): string {
-    const styles = this.getResolvedStyles();
-    const boxBg = styles.box?.backgroundColor ?? "transparent";
-    const markFg = styles.mark?.color ?? "#A3A3A3";
-    const labelFg = styles.label?.color ?? "#A3A3A3";
-
-    return `${boxBg}|${markFg}|${labelFg}`;
-  }
-
-  private getParsedColors() {
-    const currentKey = this.getColorCacheKey();
-    if (!this._parsedColors || this._colorCacheKey !== currentKey) {
-      this.updateParsedColors();
-      this._colorCacheKey = currentKey;
-    }
-    // biome-ignore lint/style/noNonNullAssertion: Guarded against above
-    return this._parsedColors!;
+  private get maxSymbolLength(): number {
+    return Math.max(
+      this._symbols.checked.length,
+      this._symbols.unchecked.length,
+    );
   }
 
   public getState(): CheckboxState {
@@ -139,82 +98,63 @@ export class CheckboxRenderable extends StyledRenderable<
     };
   }
 
-  private syncWidthWithCurrentStyles(): void {
-    const gap = this.getResolvedStyles().box?.gap ?? 1;
-    if (gap !== this._currentGap) {
-      this._currentGap = gap;
-      const newWidth = this._maxSymbolLength + gap + this._label.length;
-      if (this.width !== newWidth) {
-        this.width = newWidth;
-      }
-    }
+  private applyStylesToSlots(): void {
+    const authored = this.getAuthoredStyles();
+    const styles = this.mergeStyles(this._defaultStyles, authored);
+    applySlotProps(
+      this,
+      authored.box,
+      this._rootStyleBaseline,
+      this._defaultStyles?.box,
+    );
+    applySlotProps(this._markChild, styles.mark);
+    applySlotProps(this._labelChild, styles.label);
   }
 
-  private recalculateWidth(): void {
-    const newWidth =
-      this._maxSymbolLength + this._currentGap + this._label.length;
-    if (this.width !== newWidth) {
-      this.width = newWidth;
-    }
+  private updateCheckedVisual(): void {
+    this._markChild.content = this.currentSymbol;
+    this.notifyStateChanged();
   }
 
   public toggle(): void {
-    if (this._disabled) {
-      return;
-    }
-
+    if (this._disabled) return;
     const newValue = !this.checked;
-
     if (this._isControlled) {
       this._onCheckedChange?.(newValue);
-    } else {
-      this._internalChecked = newValue;
-      this.requestRender();
-      this._onCheckedChange?.(newValue);
+      return;
     }
+    this._internalChecked = newValue;
+    this.updateCheckedVisual();
+    this._onCheckedChange?.(newValue);
   }
 
   public override handleKeyPress(key: KeyEvent): boolean {
-    if (this._disabled) {
-      return false;
-    }
-
-    if (key.name === "space") {
-      this.toggle();
-      return true;
-    }
-    if (key.name === "return" || key.name === "enter") {
+    if (this._disabled) return false;
+    if (key.name === "space" || key.name === "return" || key.name === "enter") {
       this.toggle();
       return true;
     }
     return false;
   }
 
-  protected override renderSelf(
-    buffer: OptimizedBuffer,
-    _deltaTime: number,
-  ): void {
-    this.syncWidthWithCurrentStyles();
-
-    const colors = this.getParsedColors();
-    const { boxBg, markFg, labelFg } = colors;
-
-    const symbol = this.checked
-      ? this._symbols.checked
-      : this._symbols.unchecked;
-
-    if (boxBg.a > 0) {
-      buffer.fillRect(this.x, this.y, this.width, this.height, boxBg);
+  public override focus(): void {
+    const wasFocused = this._focused;
+    super.focus();
+    if (!this._isDestroyed && !wasFocused && this._focused) {
+      this.notifyStateChanged();
     }
+  }
 
-    if (markFg.a > 0) {
-      buffer.drawText(symbol, this.x, this.y, markFg, boxBg);
+  public override blur(): void {
+    const wasFocused = this._focused;
+    super.blur();
+    if (!this._isDestroyed && wasFocused && !this._focused) {
+      this.notifyStateChanged();
     }
+  }
 
-    if (this._label && labelFg.a > 0) {
-      const labelX = this.x + this._maxSymbolLength + this._currentGap;
-      buffer.drawText(this._label, labelX, this.y, labelFg, boxBg);
-    }
+  protected override onStylesChanged(): void {
+    this.applyStylesToSlots();
   }
 
   get checked(): boolean {
@@ -222,21 +162,11 @@ export class CheckboxRenderable extends StyledRenderable<
   }
 
   set checked(value: boolean) {
-    if (typeof value !== "boolean") {
-      return;
-    }
-
-    // Setting checked prop switches to controlled mode.
-    // This is necessary because Solid spreads props after construction,
-    // so _isControlled would be false at construction time even for controlled usage.
-    if (!this._isControlled) {
-      this._isControlled = true;
-    }
-
-    if (this._controlledValue !== value) {
-      this._controlledValue = value;
-      this.requestRender();
-    }
+    if (typeof value !== "boolean") return;
+    if (!this._isControlled) this._isControlled = true;
+    if (this._controlledValue === value) return;
+    this._controlledValue = value;
+    this.updateCheckedVisual();
   }
 
   get defaultChecked(): boolean {
@@ -244,10 +174,9 @@ export class CheckboxRenderable extends StyledRenderable<
   }
 
   set defaultChecked(value: boolean) {
-    if (!this._isControlled && this._internalChecked !== value) {
-      this._internalChecked = value;
-      this.requestRender();
-    }
+    if (this._isControlled || this._internalChecked === value) return;
+    this._internalChecked = value;
+    this.updateCheckedVisual();
   }
 
   get label(): string {
@@ -255,11 +184,9 @@ export class CheckboxRenderable extends StyledRenderable<
   }
 
   set label(value: string) {
-    if (this._label !== value) {
-      this._label = value;
-      this.recalculateWidth();
-      this.requestRender();
-    }
+    if (this._label === value) return;
+    this._label = value;
+    this._labelChild.content = value;
   }
 
   get symbols(): CheckboxSymbolSet {
@@ -267,19 +194,16 @@ export class CheckboxRenderable extends StyledRenderable<
   }
 
   set symbols(value: Partial<CheckboxSymbolSet>) {
-    const newSymbols = { ...this._symbols, ...value };
+    const next = { ...this._symbols, ...value };
     if (
-      this._symbols.checked !== newSymbols.checked ||
-      this._symbols.unchecked !== newSymbols.unchecked
+      next.checked === this._symbols.checked &&
+      next.unchecked === this._symbols.unchecked
     ) {
-      this._symbols = newSymbols;
-      this._maxSymbolLength = Math.max(
-        newSymbols.checked.length,
-        newSymbols.unchecked.length,
-      );
-      this.recalculateWidth();
-      this.requestRender();
+      return;
     }
+    this._symbols = next;
+    this._markChild.width = this.maxSymbolLength;
+    this._markChild.content = this.currentSymbol;
   }
 
   get disabled(): boolean {
@@ -287,10 +211,9 @@ export class CheckboxRenderable extends StyledRenderable<
   }
 
   set disabled(value: boolean) {
-    if (this._disabled !== value) {
-      this._disabled = value;
-      this.requestRender();
-    }
+    if (this._disabled === value) return;
+    this._disabled = value;
+    this.notifyStateChanged();
   }
 
   get onCheckedChange(): ((checked: boolean) => void) | undefined {
@@ -301,21 +224,9 @@ export class CheckboxRenderable extends StyledRenderable<
     this._onCheckedChange = callback;
   }
 
-  override get styles(): CheckboxSlotStyles {
-    return this.getResolvedStyles();
-  }
-
-  override set styles(value: CheckboxSlotStyles) {
-    this._styles = value;
-    this._parsedColors = null;
-    this._colorCacheKey = "";
-    this.recalculateWidth();
-    this.requestRender();
-  }
-
   public override destroy(): void {
     this._onCheckedChange = undefined;
-    this._parsedColors = null;
+    for (const child of [...this.getChildren()]) child.destroyRecursively();
     super.destroy();
   }
 }

@@ -40,6 +40,22 @@ export const $$StyledConfig: unique symbol = Symbol.for(
 export type $$StyledConfig = typeof $$StyledConfig;
 
 /**
+ * Unique symbol used to advertise the deepest base component reachable from a
+ * styled component. Set by `createStyled` (and forwarded by framework wrappers)
+ * so chained `styled(styled(C, A), B)` calls render directly against `C` with
+ * the merged config — instead of nesting framework wrappers and losing the
+ * outer resolver.
+ */
+export const $$StyledBase: unique symbol = Symbol.for(
+  "@opentui-ui/styles/styled.base",
+);
+
+/**
+ * Type alias for the $$StyledBase symbol.
+ */
+export type $$StyledBase = typeof $$StyledBase;
+
+/**
  * Prefix used for state selector keys in style definitions.
  * State selectors like `_checked`, `_focused`, `_disabled` allow
  * conditional styling based on component state.

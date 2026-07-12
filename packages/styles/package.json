@@ -16,10 +16,10 @@
   },
   "publishConfig": {
     "main": "./dist/index.mjs",
-    "types": "./dist/index.d.ts",
+    "types": "./dist/index.d.mts",
     "exports": {
       ".": {
-        "types": "./dist/index.d.ts",
+        "types": "./dist/index.d.mts",
         "import": "./dist/index.mjs"
       }
     }
@@ -43,11 +43,14 @@
   ],
   "scripts": {
     "build": "tsdown",
+    "test": "bun test",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
   "devDependencies": {
-    "tsdown": "^0.18.2",
-    "typescript": "^5"
+    "@types/bun": "^1.3.14",
+    "@types/node": "catalog:",
+    "tsdown": "^0.22.5",
+    "typescript": "^5.9.3"
   }
 }

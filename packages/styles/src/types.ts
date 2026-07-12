@@ -1,5 +1,6 @@
 import {
   $$OtuiComponentMeta,
+  type $$StyledBase,
   $$StyledComponent,
   type $$StyledConfig,
 } from "./symbols";
@@ -15,12 +16,21 @@ import {
  * @typeParam Slots - Readonly tuple of slot names (e.g., ["root", "mark", "label"])
  * @typeParam SlotStyleMap - Record mapping slot names to their style interfaces
  * @typeParam StateKeys - Readonly tuple of state keys (e.g., ["checked", "focused"])
+ *
+ * `tag` is the reconciler intrinsic tag (e.g., `"otui-checkbox"`). Co-locating
+ * it on the meta makes the meta the single source of truth a per-adapter
+ * factory needs to register the Renderable: there is no separate magic
+ * string to keep in sync, and adapter-side typos surface at the type level
+ * (the meta's `tag` value is a literal). React and Solid read the same value
+ * — guaranteed identical tagging across adapters.
  */
 export interface ComponentMeta<
   Slots extends readonly string[],
   SlotStyleMap extends Record<Slots[number], object>,
   StateKeys extends readonly string[],
 > {
+  /** Reconciler intrinsic tag (e.g., "otui-checkbox"). */
+  readonly tag: string;
   /** Ordered tuple of slot names for this component */
   readonly slots: Slots;
   /** Type carrier for slot style shapes (runtime value is empty object) */
@@ -41,8 +51,13 @@ export function hasComponentMeta<
 ): value is {
   [$$OtuiComponentMeta]: ComponentMeta<Slots, SlotStyleMap, StateKeys>;
 } {
+  // Components are typically functions with the meta symbol attached via
+  // Object.assign, so accept both object and function forms.
   return (
-    typeof value === "object" && value !== null && $$OtuiComponentMeta in value
+    value !== null &&
+    value !== undefined &&
+    (typeof value === "object" || typeof value === "function") &&
+    $$OtuiComponentMeta in value
   );
 }
 
@@ -179,14 +194,19 @@ export type VariantsConfig<
 
 /**
  * Compound variant definition - applies when multiple variant conditions match.
+ *
+ * Note: when `Variants` is open (`VariantsConfig<...>`), the mapped type
+ * `[K in keyof Variants]?: keyof Variants[K]` widens to a string-indexed shape.
+ * Intersecting that with `{ styles: ... }` would collapse the `styles` slot
+ * into the string-indexed value type. We `Omit<..., "styles">` from the
+ * variant-discriminator side so `styles` always survives as the precise
+ * `StyledSlotStyles` shape.
  */
 export type CompoundVariant<
   Variants extends VariantsConfig<SlotStyleMap, StateKeys>,
   SlotStyleMap extends Record<string, object>,
   StateKeys extends readonly string[],
-> = {
-  [K in keyof Variants]?: keyof Variants[K];
-} & {
+> = Omit<{ [K in keyof Variants]?: keyof Variants[K] }, "styles"> & {
   /** Styles to apply when all variant conditions match */
   styles: StyledSlotStyles<SlotStyleMap, StateKeys>;
 };
@@ -238,7 +258,8 @@ export type VariantProps<V> = {
 
 /**
  * Marker interface for styled components.
- * Used to detect composition in styled(styled(Component)).
+ * Used to detect composition in `styled(styled(Component))` and to render
+ * directly against the deepest base via `[$$StyledBase]`.
  */
 export interface StyledComponentMarker<
   SlotStyleMap extends Record<string, object>,
@@ -247,6 +268,7 @@ export interface StyledComponentMarker<
 > {
   [$$StyledComponent]: true;
   [$$StyledConfig]: ProcessedStyledConfig<SlotStyleMap, StateKeys, V>;
+  [$$StyledBase]: unknown;
 }
 
 /**

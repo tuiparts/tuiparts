@@ -2,7 +2,9 @@
 
 ## OVERVIEW
 
-Stitches-inspired styling engine with type-safe variants, slot-based composition, and state-driven pseudo selectors. Framework-agnostic core used by React/Solid bindings.
+Optional recipe/design-system engine with type-safe variants, slot-based
+composition, and state-driven pseudo selectors. Primitive behavior must not
+depend on this package.
 
 ## WHERE TO LOOK
 

@@ -12,6 +12,8 @@ import type { CheckboxSlotStyleMap, CheckboxState } from "./types";
  * - State keys for pseudo selectors (`:checked`, `:focused`, `:disabled`)
  */
 export const CHECKBOX_META = {
+  /** Reconciler intrinsic tag used by every adapter to register the Renderable. */
+  tag: "otui-checkbox",
   /**
    * Ordered tuple of slot names.
    * Used for slot-based styling: `{ box: {...}, mark: {...}, label: {...} }`

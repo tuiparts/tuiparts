@@ -1,109 +1,71 @@
 import {
-  type OptimizedBuffer,
-  parseColor,
+  BoxRenderable,
   type RenderContext,
+  TextRenderable,
 } from "@opentui/core";
-import { StyledRenderable } from "../styled-renderable";
+import { applySlotProps, withStyles } from "../styled-renderable";
 import { DEFAULT_BADGE_OPTIONS } from "./constants";
 import type { BadgeOptions, BadgeSlotStyles, BadgeState } from "./types";
 
 const DEFAULT_SLOT_STYLES: BadgeSlotStyles = {
   root: {
     backgroundColor: "transparent",
+    paddingLeft: 1,
+    paddingRight: 1,
+  },
+  label: {
     color: "#E5E5E5",
-    paddingX: 1,
-    paddingY: 0,
   },
 };
 
 const EMPTY_STATE: BadgeState = Object.freeze({});
 
-export class BadgeRenderable extends StyledRenderable<
-  BadgeState,
-  BadgeSlotStyles
-> {
+const BadgeBase = withStyles<BadgeState, BadgeSlotStyles>()(BoxRenderable);
+
+/**
+ * Composition-pattern Badge. `BadgeRenderable` IS the root Box; the label
+ * is a `TextRenderable` child. Slot styles flow into Renderable setters
+ * via {@link applySlotProps}; Yoga sizes the Box from the Text child plus
+ * any padding declared on the root slot.
+ */
+export class BadgeRenderable extends BadgeBase {
   protected override _focusable: boolean = false;
 
   private _label: string;
-
+  private _labelChild: TextRenderable;
   constructor(ctx: RenderContext, options: BadgeOptions = {}) {
-    const initialStyles =
-      options.styles ?? options?.styleResolver?.({}) ?? DEFAULT_SLOT_STYLES;
-    const rootStyles = initialStyles.root ?? {};
+    super(ctx, options);
 
-    const label = options.label ?? DEFAULT_BADGE_OPTIONS.label;
-    const paddingX = rootStyles.paddingX ?? 1;
-    const paddingY = rootStyles.paddingY ?? 0;
-    const minWidth = label.length + paddingX * 2;
-    const minHeight = 1 + paddingY * 2;
+    this._label = options.label ?? DEFAULT_BADGE_OPTIONS.label;
+    this._rootStyleBaseline = options;
+    this._labelChild = new TextRenderable(ctx, { content: this._label });
+    this.add(this._labelChild);
 
-    super(
-      ctx,
-      {
-        ...options,
-        width: options.width ?? minWidth,
-        height: options.height ?? minHeight,
-      },
-      DEFAULT_SLOT_STYLES,
-    );
+    this._defaultStyles = DEFAULT_SLOT_STYLES;
+    this._styles = options.styles;
+    this._styleResolver = options.styleResolver;
 
-    if (options.styles) {
-      this._styles = options.styles;
-    }
-
-    this._label = label;
+    this.applyStylesToSlots();
   }
 
   public getState(): BadgeState {
     return EMPTY_STATE;
   }
 
-  private getParsedColors() {
-    const styles = this.getResolvedStyles();
-    const rootStyles = styles.root ?? {};
-    return {
-      rootBg: parseColor(rootStyles.backgroundColor ?? "transparent"),
-      rootFg: parseColor(rootStyles.color ?? "#E5E5E5"),
-    };
+  protected applyStylesToSlots(): void {
+    const authored = this.getAuthoredStyles();
+    const styles = this.mergeStyles(this._defaultStyles, authored);
+    applySlotProps(
+      this,
+      authored.root,
+      this._rootStyleBaseline,
+      this._defaultStyles?.root,
+    );
+    applySlotProps(this._labelChild, styles.label);
   }
 
-  private recalculateDimensions(): void {
-    const styles = this.getResolvedStyles();
-    const rootStyles = styles.root ?? {};
-    const paddingX = rootStyles.paddingX ?? 1;
-    const paddingY = rootStyles.paddingY ?? 0;
-    const newWidth = this._label.length + paddingX * 2;
-    const newHeight = 1 + paddingY * 2;
-
-    if (this.width !== newWidth) {
-      this.width = newWidth;
-    }
-    if (this.height !== newHeight) {
-      this.height = newHeight;
-    }
-  }
-
-  protected override renderSelf(
-    buffer: OptimizedBuffer,
-    _deltaTime: number,
-  ): void {
-    const colors = this.getParsedColors();
-    const { rootBg, rootFg } = colors;
-
-    const styles = this.getResolvedStyles();
-    const rootStyles = styles.root ?? {};
-    const paddingX = rootStyles.paddingX ?? 1;
-    const paddingY = rootStyles.paddingY ?? 0;
-
-    if (rootBg.a > 0) {
-      buffer.fillRect(this.x, this.y, this.width, this.height, rootBg);
-    }
-
-    if (this._label && rootFg.a > 0) {
-      const labelX = this.x + paddingX;
-      const labelY = this.y + paddingY;
-      buffer.drawText(this._label, labelX, labelY, rootFg, rootBg);
-    }
+  protected override onStylesChanged(): void {
+    this.applyStylesToSlots();
   }
 
   get label(): string {
@@ -111,20 +73,13 @@ export class BadgeRenderable extends StyledRenderable<
   }
 
   set label(value: string) {
-    if (this._label !== value) {
-      this._label = value;
-      this.recalculateDimensions();
-      this.requestRender();
-    }
+    if (this._label === value) return;
+    this._label = value;
+    this._labelChild.content = value;
   }
 
-  override get styles(): BadgeSlotStyles {
-    return this.getResolvedStyles();
-  }
-
-  override set styles(value: BadgeSlotStyles) {
-    this._styles = value;
-    this.recalculateDimensions();
-    this.requestRender();
+  public override destroy(): void {
+    for (const child of [...this.getChildren()]) child.destroyRecursively();
+    super.destroy();
   }
 }

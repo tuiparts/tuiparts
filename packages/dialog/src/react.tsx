@@ -373,8 +373,8 @@ export function DialogProvider(props: DialogProviderProps) {
     renderer.root.add(container);
 
     return () => {
+      renderer.root.remove(container);
       container.destroyRecursively();
-      renderer.root.remove(container.id);
       manager.destroy();
     };
   }, [container, manager, renderer]);

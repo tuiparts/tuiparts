@@ -1,5 +1,8 @@
 import {
   $$OtuiComponentMeta,
+  $$StyledBase,
+  $$StyledComponent,
+  $$StyledConfig,
   type ComponentMeta,
   type ComponentWithMeta,
   createStyled,
@@ -7,9 +10,10 @@ import {
   type ExtractSlotStyleMap,
   type ExtractStateKeys,
   getVariantNames,
+  processStyledProps,
+  type ResolveStyledBase,
   type StyledConfig,
   type StyledSlotStyles,
-  splitVariantProps,
   type VariantProps,
   type VariantsConfig,
 } from "@opentui-ui/styles";
@@ -19,17 +23,10 @@ import { type ReactElement, useMemo } from "react";
 // Types
 // =============================================================================
 
-/**
- * Extracts the props type from a component.
- */
 type ComponentPropsOf<C> = C extends (props: infer P) => ReactElement
   ? P
   : never;
 
-/**
- * Props for a styled component.
- * Combines base component props with variant props and style overrides.
- */
 type StyledComponentProps<
   BaseComponent extends ComponentWithMeta<
     readonly string[],
@@ -48,7 +45,7 @@ type StyledComponentProps<
      *
      * Note: For optimal performance, memoize this prop if passing dynamic objects:
      * ```tsx
-     * const styles = useMemo(() => ({ root: { color: "red" } }), []);
+     * const styles = useMemo(() => ({ label: { color: "red" } }), []);
      * <MyCheckbox styles={styles} />
      * ```
      */
@@ -60,6 +57,10 @@ type StyledComponentProps<
 
 /**
  * A styled React component with variant props.
+ *
+ * Carries the same composition markers as the framework-agnostic
+ * `StyledComponentDefinition` so `styled(styled(C, A), B)` correctly merges
+ * configs and renders directly against the deepest `C`.
  */
 interface StyledReactComponent<
   BaseComponent extends ComponentWithMeta<
@@ -73,17 +74,16 @@ interface StyledReactComponent<
   >,
 > {
   (props: StyledComponentProps<BaseComponent, V>): ReactElement;
-  /**
-   * Component metadata for composition.
-   */
   [$$OtuiComponentMeta]: ComponentMeta<
     readonly string[],
     ExtractSlotStyleMap<BaseComponent>,
     ExtractStateKeys<BaseComponent>
   >;
-  /**
-   * Display name for React DevTools.
-   */
+  [$$StyledComponent]: true;
+  [$$StyledConfig]: ReturnType<
+    typeof createStyled<BaseComponent, V>
+  >["processed"];
+  [$$StyledBase]: ResolveStyledBase<BaseComponent>;
   displayName?: string;
 }
 
@@ -105,13 +105,14 @@ interface StyledReactComponent<
  *
  * const MyCheckbox = styled(Checkbox, {
  *   base: {
- *     root: { color: "white" },
+ *     box: { backgroundColor: "transparent" },
  *     mark: { color: "blue" },
+ *     label: { color: "white" },
  *   },
  *   variants: {
  *     intent: {
- *       warning: { root: { color: "orange" } },
- *       danger: { root: { color: "red" } },
+ *       warning: { mark: { color: "orange" } },
+ *       danger: { mark: { color: "red" } },
  *     },
  *   },
  *   defaultVariants: { intent: "warning" },
@@ -139,91 +140,47 @@ export function styled<
     V
   >,
 ): StyledReactComponent<BaseComponent, V> {
-  type SlotStyleMap = ExtractSlotStyleMap<BaseComponent>;
-  type StateKeys = ExtractStateKeys<BaseComponent>;
-
-  // Create the styled definition (framework-agnostic)
   const styledDef = createStyled(Component, config);
   const variantNames = getVariantNames(styledDef.processed);
 
-  // Create the React component
+  // Render via the deepest base resolved by `createStyled` — bypasses any
+  // intermediate styled wrappers under composition so they don't rebuild a
+  // stale resolver from the inner config.
+  const BaseComp = styledDef.component as unknown as (
+    props: Record<string, unknown>,
+  ) => ReactElement;
+
   function StyledComponent(
     props: StyledComponentProps<BaseComponent, V>,
   ): ReactElement {
-    // Split variant props from forward props using pre-computed Set for O(1) lookup
-    const [variantProps, forwardProps] = splitVariantProps(
-      props as Record<string, unknown>,
-      styledDef.processed.variantNameSet,
+    const { forwardProps, variantValues, inlineStyles, variantDeps } =
+      processStyledProps(
+        props as Record<string, unknown>,
+        styledDef.processed,
+        variantNames,
+      );
+
+    // Memoize the resolver. `variantDeps` is a stable-ordered array of the
+    // string-coerced variant values; `inlineStyles` participates by reference.
+    // biome-ignore lint/correctness/useExhaustiveDependencies: variantDeps is the actual dependency surface
+    const styleResolver = useMemo(
+      () =>
+        createStyleResolver(styledDef.processed, variantValues, inlineStyles),
+      [...variantDeps, inlineStyles],
     );
 
-    // Extract inline styles from forward props
-    // Cast needed because splitVariantProps returns Omit<Props, keyof V> which doesn't include styles
-    const inlineStyles = (forwardProps as Record<string, unknown>).styles as
-      | StyledSlotStyles<SlotStyleMap, StateKeys>
-      | undefined;
-
-    // Extract variant values as primitives for memoization dependencies.
-    // We iterate over variantNames (consistent with Solid) for predictable ordering.
-    // Only string values are valid variants; non-strings become undefined.
-    const variantDeps = variantNames.map((name) => {
-      const value = variantProps[name as string];
-      return typeof value === "string" ? value : undefined;
-    });
-
-    // Memoize both filtering and resolver creation.
-    // The filtering runs only when variant values actually change.
-    //
-    // Note: `inlineStyles` uses reference equality. If passing dynamic style objects,
-    // users should memoize them: `const styles = useMemo(() => ({...}), [deps])`
-    //
-    // Note: The closure captures `variantProps` which is a new object each render.
-    // This is safe because: (1) the memo recomputes whenever variantDeps changes,
-    // (2) variantDeps contains the same values we read inside the memo, so when
-    // the memo body executes, variantProps matches the deps that triggered it.
-    // We use variantDeps by index to avoid re-filtering (variantDeps already filtered).
-    // biome-ignore lint/correctness/useExhaustiveDependencies: variantDeps contains primitive values extracted from variantProps
-    const styleResolver = useMemo(() => {
-      // Build filteredVariantProps from variantDeps by index.
-      // This avoids re-reading variantProps since variantDeps already has filtered values.
-      const filteredVariantProps: Partial<Record<keyof V, string>> = {};
-      for (let i = 0; i < variantNames.length; i++) {
-        const value = variantDeps[i];
-        if (value !== undefined) {
-          filteredVariantProps[variantNames[i] as keyof V] = value;
-        }
-      }
-
-      return createStyleResolver(
-        styledDef.processed,
-        filteredVariantProps,
-        inlineStyles,
-      );
-    }, [...variantDeps, inlineStyles]);
-
-    // Remove inline styles from forward props since they're handled by styleResolver
-    const { styles: _, ...restForwardProps } = forwardProps as Record<
-      string,
-      unknown
-    >;
-
-    // Call the underlying component
-    const BaseComp = Component as unknown as (
-      props: Record<string, unknown>,
-    ) => ReactElement;
-
-    return BaseComp({
-      ...restForwardProps,
-      styleResolver,
-    });
+    return BaseComp({ ...forwardProps, styleResolver });
   }
 
-  // Attach metadata for composition
-  StyledComponent[$$OtuiComponentMeta] = styledDef[$$OtuiComponentMeta];
+  const Result = StyledComponent as StyledReactComponent<BaseComponent, V>;
+  Result[$$OtuiComponentMeta] = styledDef[$$OtuiComponentMeta];
+  Result[$$StyledComponent] = true;
+  Result[$$StyledConfig] = styledDef.processed;
+  Result[$$StyledBase] =
+    styledDef.component as unknown as ResolveStyledBase<BaseComponent>;
 
-  // Set display name for DevTools
-  const BaseCompWithName = Component as { name?: string };
-  const baseName = BaseCompWithName.name || "Component";
-  StyledComponent.displayName = `Styled(${baseName})`;
+  const baseName = (Component as { name?: string }).name || "Component";
+  Result.displayName = `Styled(${baseName})`;
 
-  return StyledComponent as StyledReactComponent<BaseComponent, V>;
+  return Result;
 }

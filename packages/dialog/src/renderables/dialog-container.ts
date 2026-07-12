@@ -153,7 +153,7 @@ export class DialogContainerRenderable extends BoxRenderable {
     const renderable = this._dialogRenderables.get(id);
     if (renderable) {
       this._dialogRenderables.delete(id);
-      this.remove(renderable.id);
+      this.remove(renderable);
       renderable.destroyRecursively();
 
       this.updateBackdropVisibility();

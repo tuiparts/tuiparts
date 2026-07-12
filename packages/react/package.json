@@ -6,7 +6,11 @@
   "license": "MIT",
   "sideEffects": [
     "./dist/badge/**",
-    "./dist/checkbox/**"
+    "./dist/button/**",
+    "./dist/checkbox/**",
+    "./dist/input/**",
+    "./dist/radio/**",
+    "./dist/switch/**"
   ],
   "repository": {
     "type": "git",
@@ -17,7 +21,11 @@
   "exports": {
     ".": "./src/index.ts",
     "./badge": "./src/badge/index.tsx",
+    "./button": "./src/button/index.tsx",
     "./checkbox": "./src/checkbox/index.tsx",
+    "./input": "./src/input/index.tsx",
+    "./radio": "./src/radio/index.tsx",
+    "./switch": "./src/switch/index.tsx",
     "./styled": "./src/styled.ts"
   },
   "publishConfig": {
@@ -32,9 +40,25 @@
         "types": "./dist/badge/index.d.mts",
         "import": "./dist/badge/index.mjs"
       },
+      "./button": {
+        "types": "./dist/button/index.d.mts",
+        "import": "./dist/button/index.mjs"
+      },
       "./checkbox": {
         "types": "./dist/checkbox/index.d.mts",
         "import": "./dist/checkbox/index.mjs"
+      },
+      "./input": {
+        "types": "./dist/input/index.d.mts",
+        "import": "./dist/input/index.mjs"
+      },
+      "./radio": {
+        "types": "./dist/radio/index.d.mts",
+        "import": "./dist/radio/index.mjs"
+      },
+      "./switch": {
+        "types": "./dist/switch/index.d.mts",
+        "import": "./dist/switch/index.mjs"
       },
       "./styled": {
         "types": "./dist/styled.d.mts",
@@ -60,6 +84,7 @@
   ],
   "scripts": {
     "build": "tsdown",
+    "test": "bun test",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
@@ -70,15 +95,18 @@
   "devDependencies": {
     "@opentui/core": "catalog:",
     "@opentui/react": "catalog:",
-    "@types/bun": "^1",
-    "@types/react": "^19",
-    "react": "^19.2.3",
-    "tsdown": "^0.18.2",
-    "typescript": "^5"
+    "@types/bun": "^1.3.14",
+    "@types/node": "catalog:",
+    "@types/react": "^19.2.17",
+    "react": "^19.2.7",
+    "tsdown": "^0.22.5",
+    "typescript": "^5.9.3",
+    "ws": "catalog:"
   },
   "peerDependencies": {
     "@opentui/core": "catalog:",
     "@opentui/react": "catalog:",
-    "react": "^18.0.0 || ^19.0.0"
+    "react": ">=19.2.0 <20",
+    "ws": "catalog:"
   }
 }

@@ -1,5 +1,9 @@
-import type { Color } from "@opentui/core";
-import type { StyledRenderableOptions } from "../styled-renderable";
+import type { BoxOptions, BoxRenderable, TextOptions } from "@opentui/core";
+import type {
+  StyleableSubset,
+  StyledOptions,
+  TextStyleableSubset,
+} from "../styled-renderable";
 import type { CHECKBOX_SLOTS } from "./constants";
 
 export type CheckboxSlots = typeof CHECKBOX_SLOTS;
@@ -11,17 +15,9 @@ export interface CheckboxState {
 }
 
 export type CheckboxSlotStyleMap = {
-  box: {
-    color?: Color;
-    backgroundColor?: Color;
-    gap?: number;
-  };
-  mark: {
-    color?: Color;
-  };
-  label: {
-    color?: Color;
-  };
+  box: StyleableSubset<BoxOptions>;
+  mark: TextStyleableSubset<TextOptions>;
+  label: TextStyleableSubset<TextOptions>;
 };
 
 export type CheckboxSlotStyles = CheckboxSlotStyleMap;
@@ -36,12 +32,11 @@ export interface CheckboxSymbolSet {
 }
 
 export interface CheckboxBaseOptions
-  extends StyledRenderableOptions<CheckboxState, CheckboxSlotStyles> {
+  extends StyledOptions<CheckboxState, CheckboxSlotStyles, BoxRenderable> {
   label?: string;
   symbols?: Partial<CheckboxSymbolSet>;
   styles?: CheckboxSlotStyles;
   disabled?: boolean;
-  focused?: boolean;
 }
 
 export interface ControlledCheckboxOptions extends CheckboxBaseOptions {

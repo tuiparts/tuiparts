@@ -3,6 +3,16 @@ packages:
   - "examples/*"
 
 catalog:
-  "@opentui/core": "^0.1.69"
-  "@opentui/react": "^0.1.69"
-  "@opentui/solid": "^0.1.69"
+  "@opentui/core": "^0.4.3"
+  "@opentui/react": "^0.4.3"
+  "@opentui/solid": "^0.4.3"
+  "@types/node": "^24.13.3"
+  "ws": "^8.21.0"
+
+overrides:
+  "@babel/core@<=7.29.0": "7.29.7"
+
+peerDependencyRules:
+  ignoreMissing:
+    - "@emnapi/core"
+    - "@emnapi/runtime"

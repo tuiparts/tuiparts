@@ -12,6 +12,8 @@ import type { BadgeSlotStyleMap } from "./types";
  * - State keys for pseudo selectors (none for Badge)
  */
 export const BADGE_META = {
+  /** Reconciler intrinsic tag used by every adapter to register the Renderable. */
+  tag: "otui-badge",
   /**
    * Ordered tuple of slot names.
    * Used for slot-based styling: `{ root: {...} }`

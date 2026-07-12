@@ -15,6 +15,8 @@
 export {
   $$OtuiComponentMeta,
   type $$OtuiComponentMeta as $$OtuiComponentMetaType,
+  $$StyledBase,
+  type $$StyledBase as $$StyledBaseType,
   $$StyledComponent,
   type $$StyledComponent as $$StyledComponentType,
   $$StyledConfig,
@@ -87,6 +89,9 @@ export {
   createStyled,
   getVariantNames,
   isStyledComponentDefinition,
+  type ProcessedStyledProps,
+  processStyledProps,
+  type ResolveStyledBase,
   type StyledComponentDefinition,
   splitVariantProps,
 } from "./styled";

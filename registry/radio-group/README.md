@@ -49,7 +49,7 @@ Root, Item, Indicator, state, event details, refs, lifecycle, and ownership
 behavior in this Radio Group tracer are evaluation evidence. **The tracer
 contract is not frozen.**
 
-From the workspace root, `pnpm validate:registry` builds all six Checkbox and
-Radio Group registry items, installs each into a clean isolated consumer,
+From the workspace root, `pnpm validate:registry` builds all 12 Checkbox,
+Radio Group, Input, and Dialog registry items, installs each into a clean isolated consumer,
 compares installed source and dependencies, compiles it, and runs its runtime
 smoke.

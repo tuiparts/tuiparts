@@ -33,7 +33,7 @@ The installed recipe owns colors and other opinionated presentation.
 The Input primitive and adapter API remains tracer evidence. **The tracer
 contract is not frozen.**
 
-From the workspace root, `pnpm validate:registry` builds all nine Checkbox,
-Radio Group, and Input registry items, installs each into a clean isolated
+From the workspace root, `pnpm validate:registry` builds all 12 Checkbox,
+Radio Group, Input, and Dialog registry items, installs each into a clean isolated
 consumer, compares installed source and dependencies, compiles it, and runs
 its runtime smoke.

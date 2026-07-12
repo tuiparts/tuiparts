@@ -49,6 +49,7 @@
   "scripts": {
     "build": "tsdown",
     "typecheck": "tsc --noEmit",
+    "test": "bun test --preload @opentui/solid/preload",
     "clean": "rm -rf dist"
   },
   "devDependencies": {

@@ -203,6 +203,71 @@
         "framework": "solid",
         "primitiveStatus": "tracer"
       }
+    },
+    {
+      "name": "core/dialog",
+      "type": "registry:item",
+      "title": "Dialog (Core)",
+      "description": "Editable imperative Dialog recipe built on the OpenTUI UI overlay primitive tracer.",
+      "dependencies": ["@opentui-ui/dialog@^0.1.2", "@opentui/core@^0.4.3"],
+      "files": [
+        {
+          "path": "registry/dialog/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/dialog.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "tracer"
+      }
+    },
+    {
+      "name": "react/dialog",
+      "type": "registry:item",
+      "title": "Dialog (React)",
+      "description": "Editable React Dialog recipe built on the OpenTUI UI overlay primitive tracer.",
+      "dependencies": [
+        "@opentui-ui/dialog@^0.1.2",
+        "@opentui/core@^0.4.3",
+        "@opentui/react@^0.4.3",
+        "react@^19.2.0",
+        "ws@^8.21.0"
+      ],
+      "files": [
+        {
+          "path": "registry/dialog/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/dialog.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "tracer"
+      }
+    },
+    {
+      "name": "solid/dialog",
+      "type": "registry:item",
+      "title": "Dialog (Solid)",
+      "description": "Editable Solid Dialog recipe built on the OpenTUI UI overlay primitive tracer.",
+      "dependencies": [
+        "@opentui-ui/dialog@^0.1.2",
+        "@opentui/core@^0.4.3",
+        "@opentui/solid@^0.4.3",
+        "solid-js@1.9.12"
+      ],
+      "files": [
+        {
+          "path": "registry/dialog/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/dialog.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "tracer"
+      }
     }
   ]
 }

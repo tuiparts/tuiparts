@@ -1,0 +1,12 @@
+{
+  "extends": "../../examples/react/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "../../examples/react",
+    "paths": {
+      "@opentui-ui/dialog/react": ["../../packages/dialog/dist/react.d.mts"],
+      "react": ["node_modules/@types/react/index.d.ts"],
+      "*": ["node_modules/*"]
+    }
+  },
+  "include": ["react.tsx"]
+}

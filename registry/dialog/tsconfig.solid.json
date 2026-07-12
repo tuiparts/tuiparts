@@ -1,0 +1,11 @@
+{
+  "extends": "../../examples/solid/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "../../examples/solid",
+    "paths": {
+      "@opentui-ui/dialog/solid": ["../../packages/dialog/dist/solid.d.mts"],
+      "*": ["node_modules/*"]
+    }
+  },
+  "include": ["solid.tsx"]
+}

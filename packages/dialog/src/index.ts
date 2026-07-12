@@ -8,6 +8,31 @@ export type {
   PromptOptions,
 } from "./manager";
 export { DialogManager } from "./manager";
+export type {
+  DialogBackdropOptions,
+  DialogCloseOptions,
+  DialogDescriptionOptions,
+  DialogOpenChangeDetails,
+  DialogOpenChangeReason,
+  DialogPopupOptions,
+  DialogPortalOptions,
+  DialogPrimitiveState,
+  DialogRootOptions,
+  DialogStoreOptions,
+  DialogTitleOptions,
+  DialogTriggerOptions,
+} from "./primitive";
+export {
+  DialogBackdropRenderable,
+  DialogCloseRenderable,
+  DialogDescriptionRenderable,
+  DialogPopupRenderable,
+  DialogPortalRenderable,
+  DialogRootRenderable,
+  DialogStore,
+  DialogTitleRenderable,
+  DialogTriggerRenderable,
+} from "./primitive";
 // Context Types (for content functions)
 export type {
   AlertContext,

@@ -22,6 +22,7 @@ const packageDirectories = {
   "@opentui-ui/react": "react",
   "@opentui-ui/solid": "solid",
   "@opentui-ui/styles": "styles",
+  "@opentui-ui/dialog": "dialog",
 };
 const frameworks = {
   core: {
@@ -61,10 +62,17 @@ const frameworks = {
     smokePreload: "@opentui/solid/preload",
   },
 };
-const recipes = ["checkbox", "radio-group", "input"];
+const recipes = ["checkbox", "radio-group", "input", "dialog"];
+const recipeLocalPackages = {
+  dialog: ["@opentui-ui/dialog"],
+};
 const consumers = recipes.flatMap((recipe) =>
   Object.entries(frameworks).map(([framework, config]) => ({
     ...config,
+    localPackages: [
+      ...config.localPackages,
+      ...(recipeLocalPackages[recipe] ?? []),
+    ],
     framework,
     recipe,
     source: `registry/${recipe}/${framework}.${config.extension}`,

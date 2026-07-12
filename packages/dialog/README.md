@@ -47,6 +47,55 @@
 - [TypeScript](#typescript)
 - [License](#license)
 
+## Primitive Tracer Recipes (Additive)
+
+The existing manager, container, provider, and async prompt APIs documented
+below remain the production API. Separately, the current **tracer** exports
+unstyled Dialog parts for consumer-owned recipes. This tracer contract is not
+frozen; it is evidence for the primitive/recipe split rather than a replacement
+for the released APIs.
+
+Install one editable recipe with the registry (`core/dialog`, `react/dialog`,
+or `solid/dialog`). The copied source owns its backdrop, centered popup,
+spacing, colors, title/description treatment, and close glyph. The package
+owns state, layers, focus, dismissal, and nesting.
+
+```ts
+// Core: the copied recipe creates and assembles packaged parts.
+import { addDialogClose, addDialogTitle, createDialog } from "./components/ui/dialog";
+
+const dialog = createDialog(renderer);
+addDialogTitle(renderer, dialog, "Delete file?");
+addDialogClose(renderer, dialog);
+renderer.root.add(dialog.root);
+renderer.root.add(dialog.portal);
+```
+
+```tsx
+// React: the copied recipe composes DialogPrimitive parts.
+import { Dialog } from "./components/ui/dialog";
+
+<Dialog defaultOpen title="Delete file?" trigger={<text content="Open" />}>
+  <text content="This cannot be undone." />
+</Dialog>
+```
+
+```tsx
+// Solid: use the same editable recipe shape.
+import { Dialog } from "./components/ui/dialog";
+
+<Dialog defaultOpen title="Delete file?" trigger={<text content="Open" />}>
+  <text content="This cannot be undone." />
+</Dialog>
+```
+
+`defaultOpen` lets the primitive own state; `open` makes it controlled and
+requires the owner to update it from the single `onOpenChange` intent. Escape
+and a backdrop interaction dismiss only the topmost eligible layer, while
+popup interactions do not dismiss it. The primitive contains focus while open,
+restores it on final close, and coordinates nested Dialogs. Do not duplicate
+that behavior in a copied recipe.
+
 ## Installation
 
 ```bash

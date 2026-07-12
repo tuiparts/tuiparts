@@ -16,6 +16,7 @@
     "./badge": "./src/badge/index.ts",
     "./button": "./src/button/index.ts",
     "./checkbox": "./src/checkbox/index.ts",
+    "./dialog": "./src/dialog/index.ts",
     "./input": "./src/input/index.ts",
     "./radio": "./src/radio/index.ts",
     "./switch": "./src/switch/index.ts"
@@ -39,6 +40,10 @@
       "./checkbox": {
         "types": "./dist/checkbox/index.d.mts",
         "import": "./dist/checkbox/index.mjs"
+      },
+      "./dialog": {
+        "types": "./dist/dialog/index.d.mts",
+        "import": "./dist/dialog/index.mjs"
       },
       "./input": {
         "types": "./dist/input/index.d.mts",

@@ -109,3 +109,16 @@ framework, compatible primitive versions, themes, and documentation.
 The project will first adopt the official shadcn registry schema and CLI. A
 proprietary installer is out of scope until an evidenced incompatibility
 requires one.
+
+## Companion Package Boundary
+
+Foundation primitive behavior belongs in `@opentui-ui/core`, with matching
+compound adapters in `@opentui-ui/react` and `@opentui-ui/solid`. Dialog is the
+overlay evidence for that boundary: its store and coordinator live at the
+foundation Dialog subpaths, while `@opentui-ui/dialog` remains a temporary
+compatibility/convenience package for its production manager, providers, and
+async APIs until it can be rebuilt on or explicitly shim the primitive.
+
+Toast has not moved. `@opentui-ui/toast` is likewise a temporary
+compatibility/convenience package candidate, but its foundation destination
+requires separate evidence and must not be inferred from the Dialog move.

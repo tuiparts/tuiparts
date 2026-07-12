@@ -8,6 +8,7 @@
     "./dist/badge/**",
     "./dist/button/**",
     "./dist/checkbox/**",
+    "./dist/dialog/**",
     "./dist/input/**",
     "./dist/radio/**",
     "./dist/switch/**"
@@ -23,6 +24,7 @@
     "./badge": "./src/badge/index.tsx",
     "./button": "./src/button/index.tsx",
     "./checkbox": "./src/checkbox/index.tsx",
+    "./dialog": "./src/dialog/index.ts",
     "./input": "./src/input/index.tsx",
     "./radio": "./src/radio/index.tsx",
     "./switch": "./src/switch/index.tsx",
@@ -47,6 +49,10 @@
       "./checkbox": {
         "types": "./dist/checkbox/index.d.mts",
         "import": "./dist/checkbox/index.mjs"
+      },
+      "./dialog": {
+        "types": "./dist/dialog/index.d.mts",
+        "import": "./dist/dialog/index.mjs"
       },
       "./input": {
         "types": "./dist/input/index.d.mts",

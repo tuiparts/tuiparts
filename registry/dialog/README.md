@@ -2,7 +2,8 @@
 
 The root registry exposes `core/dialog`, `react/dialog`, and `solid/dialog`.
 Each item copies an editable composition into `components/ui/dialog.*`; it does
-not replace the independently versioned `@opentui-ui/dialog` primitive.
+not replace the foundation Dialog primitive exported by `@opentui-ui/core`,
+`@opentui-ui/react`, and `@opentui-ui/solid`.
 
 The recipe owns the terminal-wide black backdrop, centered popup, border,
 padding, colors, title and description treatment, and the `× Close` affordance.
@@ -24,8 +25,8 @@ does not dismiss it. Nested dialogs receive a higher layer and closing one
 restores focus to its parent or original trigger.
 
 These parts and their ownership contracts are **tracer evidence, not a frozen
-foundation API**. The legacy production manager, provider, and async APIs stay
-separate and unchanged.
+foundation API**. The legacy production `@opentui-ui/dialog` manager, provider,
+and async APIs stay separate and unchanged.
 
 The `tsconfig.*.json` fixtures compile copied recipes against each supported
 surface. `pnpm validate:registry` builds and installs all 12 registry items in

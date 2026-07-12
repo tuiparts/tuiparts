@@ -1,5 +1,8 @@
 ---
-"@opentui-ui/dialog": patch
+"@opentui-ui/core": patch
+"@opentui-ui/react": patch
+"@opentui-ui/solid": patch
 ---
 
-Add an unstyled Dialog primitive tracer, React and Solid compound adapters, and editable Core, React, and Solid registry recipes.
+Add the Dialog primitive tracer to the foundation packages, including Core
+behavior, React and Solid compound adapters, and editable registry recipes.

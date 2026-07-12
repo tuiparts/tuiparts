@@ -4,7 +4,7 @@ import {
   DialogPrimitive,
   type DialogRootProps,
   type DialogTriggerProps,
-} from "@opentui-ui/dialog/react";
+} from "@opentui-ui/react/dialog";
 import type { ReactNode } from "react";
 
 export interface DialogProps extends Omit<DialogRootProps, "children"> {

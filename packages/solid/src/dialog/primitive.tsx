@@ -6,20 +6,7 @@ import {
   spread,
   useRenderer,
 } from "@opentui/solid";
-import {
-  createComponent,
-  createContext,
-  createEffect,
-  createSignal,
-  type JSX,
-  onCleanup,
-  onMount,
-  type Ref,
-  splitProps,
-  untrack,
-  useContext,
-} from "solid-js";
-import type { DialogPrimitiveState } from "./primitive/index";
+import type { DialogPrimitiveState } from "@opentui-ui/core/dialog";
 import {
   type DialogBackdropOptions,
   DialogBackdropRenderable,
@@ -38,7 +25,20 @@ import {
   DialogTitleRenderable,
   type DialogTriggerOptions,
   DialogTriggerRenderable,
-} from "./primitive/index";
+} from "@opentui-ui/core/dialog";
+import {
+  createComponent,
+  createContext,
+  createEffect,
+  createSignal,
+  type JSX,
+  onCleanup,
+  onMount,
+  type Ref,
+  splitProps,
+  untrack,
+  useContext,
+} from "solid-js";
 
 const tags = {
   root: "otui-dialog-primitive-root",

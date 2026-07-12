@@ -26,6 +26,18 @@ subpaths.
 | `RadioRenderable` | `@opentui-ui/core/radio` | `box`, `mark`, `label` | `selected`, `focused`, `disabled` |
 | `RadioGroupRenderable` | `@opentui-ui/core/radio` | `root` | none |
 
+## Dialog Primitive Tracer
+
+`@opentui-ui/core/dialog` exports unstyled Dialog behavior: `DialogStore` and
+composable Root, Trigger, Portal, Backdrop, Popup, Title, Description, and
+Close renderables. It owns controlled/uncontrolled state, topmost Escape and
+backdrop dismissal, focus containment/restoration, nesting, stacking, and
+layer cleanup. Use a copied `core/dialog` registry recipe for presentation;
+the recipe owns backdrop styling, popup layout, text treatment, and glyphs.
+
+The production `@opentui-ui/dialog` manager and async convenience APIs remain
+separate compatibility APIs and are unchanged by this tracer migration.
+
 ## Usage
 
 ```ts

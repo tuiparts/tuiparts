@@ -6,6 +6,7 @@ export default defineConfig({
     "src/badge/index.ts",
     "src/button/index.ts",
     "src/checkbox/index.ts",
+    "src/dialog/index.ts",
     "src/input/index.ts",
     "src/radio/index.ts",
     "src/switch/index.ts",

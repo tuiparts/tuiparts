@@ -3,7 +3,6 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
-import { createSignal } from "solid-js";
 import type {
   DialogBackdropRenderable,
   DialogCloseRenderable,
@@ -13,8 +12,9 @@ import type {
   DialogRootRenderable,
   DialogTitleRenderable,
   DialogTriggerRenderable,
-} from "./primitive";
-import { DialogPrimitive } from "./solid";
+} from "@opentui-ui/core/dialog";
+import { createSignal } from "solid-js";
+import { DialogPrimitive } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 

@@ -19,8 +19,8 @@ opentui-ui/
 │   ├── styles/       # Optional recipe styling (styled(), variants, slots)
 │   ├── react/        # React primitive adapters + legacy bindings
 │   ├── solid/        # Solid primitive adapters + legacy bindings
-│   ├── dialog/       # Dialog/modal system with async prompt/confirm/alert/choice
-│   ├── toast/        # Sonner-inspired toast notifications with theming
+│   ├── dialog/       # Temporary Dialog compatibility/convenience package
+│   ├── toast/        # Temporary Toast compatibility/convenience package; move unproven
 │   └── utils/        # Shared utilities (padding resolution, etc.)
 ├── examples/         # Example apps (mostly empty)
 ├── registry/         # Consumer-owned Core/React/Solid recipe source
@@ -58,7 +58,8 @@ opentui-ui/
 | `splitVariantProps` | Function | `packages/styles/src/styled.ts` | Separates variant props from rest |
 | `toast` | Object | `packages/toast/src/state.ts` | Global toast API (toast.success, toast.error, etc.) |
 | `ToasterRenderable` | Class | `packages/toast/src/renderables/toaster.ts` | Container that manages toast notifications |
-| `DialogManager` | Class | `packages/dialog/src/manager.ts` | Manages dialog state with prompt/confirm/alert/choice |
+| `DialogStore` | Class | `packages/core/src/dialog/index.ts` | Foundation Dialog state and layer coordination |
+| `DialogManager` | Class | `packages/dialog/src/manager.ts` | Production convenience state with prompt/confirm/alert/choice |
 | `DialogContainerRenderable` | Class | `packages/dialog/src/renderables/dialog-container.ts` | Container that renders dialogs with backdrop |
 
 ## CONVENTIONS
@@ -103,5 +104,8 @@ pnpm create <name>   # Scaffold new package
 ## NOTES
 
 - **Migration in progress**: Existing packaged components remain during expand-contract and are not the stable v1 interface
+- **Companion boundary**: Dialog primitive behavior is in Core/React/Solid;
+  `@opentui-ui/dialog` is a temporary compatibility/convenience package to
+  rebuild on or shim it. Toast still requires separate migration evidence.
 - **Linked versioning**: core, react, solid, styles version together
 - **OpenTUI peer deps**: Uses pnpm catalog for `@opentui/core`, `@opentui/react`, `@opentui/solid`

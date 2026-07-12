@@ -4,7 +4,7 @@ import {
   DialogPrimitive,
   type DialogRootProps,
   type DialogTriggerProps,
-} from "@opentui-ui/dialog/solid";
+} from "@opentui-ui/solid/dialog";
 import type { JSX } from "solid-js";
 import { splitProps } from "solid-js";
 

@@ -2,8 +2,12 @@
   "extends": "../../examples/solid/tsconfig.json",
   "compilerOptions": {
     "baseUrl": "../../examples/solid",
+    "types": ["bun", "node"],
+    "typeRoots": ["../../packages/solid/node_modules/@types"],
     "paths": {
-      "@opentui-ui/dialog/solid": ["../../packages/dialog/dist/solid.d.mts"],
+      "@opentui-ui/solid/dialog": [
+        "../../packages/solid/dist/dialog/index.d.mts"
+      ],
       "*": ["node_modules/*"]
     }
   },

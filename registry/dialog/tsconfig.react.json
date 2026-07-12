@@ -2,8 +2,12 @@
   "extends": "../../examples/react/tsconfig.json",
   "compilerOptions": {
     "baseUrl": "../../examples/react",
+    "types": ["bun", "node"],
+    "typeRoots": ["../../packages/react/node_modules/@types"],
     "paths": {
-      "@opentui-ui/dialog/react": ["../../packages/dialog/dist/react.d.mts"],
+      "@opentui-ui/react/dialog": [
+        "../../packages/react/dist/dialog/index.d.mts"
+      ],
       "react": ["node_modules/@types/react/index.d.ts"],
       "*": ["node_modules/*"]
     }

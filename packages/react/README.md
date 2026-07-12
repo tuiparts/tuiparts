@@ -71,7 +71,20 @@ import { Input } from "@opentui-ui/react/input";
 import { Radio, RadioGroup } from "@opentui-ui/react/radio";
 import { Switch } from "@opentui-ui/react/switch";
 import { styled } from "@opentui-ui/react/styled";
+import { DialogPrimitive } from "@opentui-ui/react/dialog";
 ```
+
+## Dialog Primitive Tracer
+
+`DialogPrimitive` is the React compound adapter for the foundation Dialog
+behavior in `@opentui-ui/core/dialog`. Compose its Root, Trigger, Portal,
+Backdrop, Popup, Title, Description, and Close parts, or install the editable
+`react/dialog` registry recipe for an opinionated visual assembly. The adapter
+preserves coordinator-owned visibility and z-index plus portal, focus, and
+controlled-state lifecycle behavior.
+
+The existing `@opentui-ui/dialog/react` provider, hooks, and async APIs remain
+the production convenience surface; they are not re-exported from this tracer.
 
 ## Input Primitive Tracer
 

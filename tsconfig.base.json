@@ -30,6 +30,7 @@
     "baseUrl": ".",
     "paths": {
       "@opentui-ui/core": ["packages/core/src"],
+      "@opentui-ui/core/*": ["packages/core/src/*"],
       "@opentui-ui/react": ["packages/react/src"],
       "@opentui-ui/react/*": ["packages/react/src/*"],
       "@opentui-ui/solid": ["packages/solid/src"],

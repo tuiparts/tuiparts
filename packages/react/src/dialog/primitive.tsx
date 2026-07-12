@@ -1,20 +1,7 @@
 /** @jsxImportSource @opentui/react */
 
 import { createPortal, extend, useRenderer } from "@opentui/react";
-import {
-  createContext,
-  createElement,
-  type ReactNode,
-  type Ref,
-  useCallback,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  useSyncExternalStore,
-} from "react";
-import type { DialogPrimitiveState } from "./primitive/index";
+import type { DialogPrimitiveState } from "@opentui-ui/core/dialog";
 import {
   DialogBackdropRenderable,
   type DialogCloseOptions,
@@ -32,7 +19,20 @@ import {
   DialogTitleRenderable,
   type DialogTriggerOptions,
   DialogTriggerRenderable,
-} from "./primitive/index";
+} from "@opentui-ui/core/dialog";
+import {
+  createContext,
+  createElement,
+  type ReactNode,
+  type Ref,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 
 const tags = {
   root: "otui-dialog-primitive-root",

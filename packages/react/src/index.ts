@@ -26,6 +26,7 @@ export {
 export * from "./badge";
 export * from "./button";
 export * from "./checkbox";
+export * from "./dialog";
 // Wrapper factory (build new components without hand-writing extend()/meta wiring).
 // Side-effect free; safe in the main entry.
 export { createOtuiComponent } from "./createOtuiComponent";

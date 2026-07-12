@@ -1,7 +1,6 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
-import { act, createElement, createRef, type ReactNode, useState } from "react";
 import type {
   DialogBackdropRenderable,
   DialogCloseRenderable,
@@ -11,8 +10,9 @@ import type {
   DialogRootRenderable,
   DialogTitleRenderable,
   DialogTriggerRenderable,
-} from "./primitive";
-import { DialogPrimitive } from "./react";
+} from "@opentui-ui/core/dialog";
+import { act, createElement, createRef, type ReactNode, useState } from "react";
+import { DialogPrimitive } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 

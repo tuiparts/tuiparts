@@ -9,7 +9,7 @@ import {
   DialogRootRenderable,
   DialogTitleRenderable,
   DialogTriggerRenderable,
-} from "@opentui-ui/dialog";
+} from "@opentui-ui/core/dialog";
 
 /** Visual defaults only; the Dialog primitive retains all layer behavior. */
 export interface DialogOptions extends DialogRootOptions {

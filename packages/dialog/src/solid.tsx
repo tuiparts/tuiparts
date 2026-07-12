@@ -49,18 +49,6 @@ import type {
   InternalDialogShowOptions,
 } from "./types";
 
-export type {
-  DialogBackdropProps,
-  DialogCloseProps,
-  DialogDescriptionProps,
-  DialogPopupProps,
-  DialogPortalProps,
-  DialogRootProps,
-  DialogTitleProps,
-  DialogTriggerProps,
-} from "./solid-primitive";
-export { DialogPrimitive } from "./solid-primitive";
-
 /** Function returning JSX. Required because Solid JSX is eagerly evaluated. */
 export type ContentAccessor = () => JSX.Element;
 

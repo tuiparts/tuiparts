@@ -63,7 +63,10 @@ Status: complete, pending product evaluation.
 - RadioGroup proves collection registration, coordinated selection, disabled
   item skipping, and roving focus.
 - Dialog proves triggers, portals, focus containment/restoration, Escape,
-  dismissal, stacking, and nesting.
+  dismissal, stacking, and nesting in foundation Core/React/Solid packages;
+  the dedicated Dialog package remains a temporary compatibility/convenience
+  package to rebuild on or shim those primitives. Toast still requires separate
+  evidence before any equivalent move.
 - Input proves strict preservation of OpenTUI-native editing and events.
 
 No broad component migration begins until these tracers validate the shared

@@ -71,9 +71,22 @@ import { Input } from "@opentui-ui/solid/input";
 import { Radio, RadioGroup } from "@opentui-ui/solid/radio";
 import { Switch } from "@opentui-ui/solid/switch";
 import { styled } from "@opentui-ui/solid/styled";
+import { DialogPrimitive } from "@opentui-ui/solid/dialog";
 ```
 
 All components are also exported from `@opentui-ui/solid`.
+
+## Dialog Primitive Tracer
+
+`DialogPrimitive` is the Solid compound adapter for the foundation Dialog
+behavior in `@opentui-ui/core/dialog`. Compose its Root, Trigger, Portal,
+Backdrop, Popup, Title, Description, and Close parts, or install the editable
+`solid/dialog` registry recipe for visual assembly. Its reactive props and
+portal lifecycle preserve coordinator-owned visibility/z-index, focus
+containment, detached restoration, and reverse Tab behavior.
+
+The existing `@opentui-ui/dialog/solid` provider, hooks, and async APIs remain
+the production convenience surface; they are not re-exported from this tracer.
 
 ## Input Primitive Tracer
 

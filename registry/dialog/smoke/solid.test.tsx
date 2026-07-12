@@ -8,7 +8,7 @@ import {
   DialogCloseRenderable,
   type DialogRootRenderable,
   type DialogTriggerRenderable,
-} from "@opentui-ui/dialog";
+} from "@opentui-ui/core/dialog";
 import { createSignal } from "solid-js";
 import { Dialog } from "./components/ui/dialog";
 

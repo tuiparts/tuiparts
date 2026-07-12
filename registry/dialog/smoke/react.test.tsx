@@ -8,7 +8,7 @@ import {
   DialogCloseRenderable,
   type DialogRootRenderable,
   type DialogTriggerRenderable,
-} from "@opentui-ui/dialog";
+} from "@opentui-ui/core/dialog";
 import { act, createRef } from "react";
 import { Dialog } from "./components/ui/dialog";
 

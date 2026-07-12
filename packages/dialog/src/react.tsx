@@ -45,18 +45,6 @@ import type {
   InternalDialogShowOptions,
 } from "./types";
 
-export type {
-  DialogBackdropProps,
-  DialogCloseProps,
-  DialogDescriptionProps,
-  DialogPopupProps,
-  DialogPortalProps,
-  DialogRootProps,
-  DialogTitleProps,
-  DialogTriggerProps,
-} from "./react-primitive";
-export { DialogPrimitive } from "./react-primitive";
-
 interface DialogWithJsx extends InternalDialog {
   [JSX_CONTENT_KEY]?: ReactNode;
 }

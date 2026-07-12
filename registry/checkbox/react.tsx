@@ -1,3 +1,5 @@
+/** @jsxImportSource @opentui/react */
+
 import {
   CheckboxPrimitive,
   type CheckboxPrimitiveRootProps,

@@ -1,3 +1,5 @@
+/** @jsxImportSource @opentui/solid */
+
 import {
   CheckboxPrimitive,
   type CheckboxPrimitiveRootProps,

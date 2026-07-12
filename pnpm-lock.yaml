@@ -44,6 +44,9 @@ importers:
       publint:
         specifier: ^0.3.21
         version: 0.3.21
+      semver:
+        specifier: ^7.7.2
+        version: 7.8.5
       typescript:
         specifier: ^5.9.3
         version: 5.9.3

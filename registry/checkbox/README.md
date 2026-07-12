@@ -23,3 +23,7 @@ examples live in the local `examples/*` workspaces and can be started with
 
 The three `tsconfig.*.json` fixtures compile each recipe against its intended
 framework contract.
+
+From the workspace root, `pnpm validate:registry` installs all three items with
+the official shadcn CLI in isolated consumers, compiles the installed source,
+and runs controlled, uncontrolled, disabled, and custom-mark runtime smokes.

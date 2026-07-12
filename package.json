@@ -29,6 +29,7 @@
     "@changesets/changelog-github": "^0.7.0",
     "@changesets/cli": "^2.31.0",
     "publint": "^0.3.21",
+    "semver": "^7.7.2",
     "typescript": "^5.9.3"
   }
 }

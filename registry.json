@@ -7,7 +7,7 @@
       "name": "core/checkbox",
       "type": "registry:item",
       "title": "Checkbox (Core)",
-      "description": "Editable imperative Checkbox recipe built on the OpenTUI UI primitive tracer.",
+      "description": "Editable imperative Checkbox recipe built on the OpenTUI UI foundation primitive.",
       "dependencies": ["@opentui-ui/core@^0.0.2", "@opentui/core@^0.4.3"],
       "files": [
         {
@@ -18,14 +18,14 @@
       ],
       "meta": {
         "framework": "core",
-        "primitiveStatus": "tracer"
+        "primitiveStatus": "foundation"
       }
     },
     {
       "name": "react/checkbox",
       "type": "registry:item",
       "title": "Checkbox (React)",
-      "description": "Editable React Checkbox recipe built on the OpenTUI UI primitive tracer.",
+      "description": "Editable React Checkbox recipe built on the OpenTUI UI foundation primitive.",
       "dependencies": [
         "@opentui-ui/react@^0.0.2",
         "@opentui-ui/core@^0.0.2",
@@ -43,14 +43,14 @@
       ],
       "meta": {
         "framework": "react",
-        "primitiveStatus": "tracer"
+        "primitiveStatus": "foundation"
       }
     },
     {
       "name": "solid/checkbox",
       "type": "registry:item",
       "title": "Checkbox (Solid)",
-      "description": "Editable Solid Checkbox recipe built on the OpenTUI UI primitive tracer.",
+      "description": "Editable Solid Checkbox recipe built on the OpenTUI UI foundation primitive.",
       "dependencies": [
         "@opentui-ui/solid@^0.0.2",
         "@opentui-ui/core@^0.0.2",
@@ -67,7 +67,7 @@
       ],
       "meta": {
         "framework": "solid",
-        "primitiveStatus": "tracer"
+        "primitiveStatus": "foundation"
       }
     },
     {

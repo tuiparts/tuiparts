@@ -1,7 +1,9 @@
+/** @jsxImportSource @opentui/solid */
+
 import { afterEach, describe, expect, it } from "bun:test";
 import type { TextRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
-import { createElement, testRender } from "@opentui/solid";
+import { testRender } from "@opentui/solid";
 import type {
   CheckboxIndicatorRenderable,
   CheckboxPrimitiveState,
@@ -25,70 +27,53 @@ afterEach(() => {
 describe("Solid CheckboxPrimitive", () => {
   it("composes public parts and arbitrary content around shared state", async () => {
     setup = await testRender(
-      () =>
-        CheckboxPrimitive.Root({
-          id: "root",
-          defaultChecked: false,
-          get children() {
-            const indicatorText = createElement("text") as TextRenderable;
-            indicatorText.content = "x";
-            const label = createElement("text") as TextRenderable;
-            label.id = "label";
-            label.content = "Editable recipe";
-            return [
-              CheckboxPrimitive.Indicator({
-                id: "indicator",
-                get children() {
-                  return indicatorText;
-                },
-              }),
-              label,
-            ];
-          },
-        }),
+      () => (
+        <CheckboxPrimitive.Root id="root">
+          <CheckboxPrimitive.Indicator id="indicator">
+            <text content="x" />
+          </CheckboxPrimitive.Indicator>
+          <text id="label" content="Editable recipe" />
+        </CheckboxPrimitive.Root>
+      ),
       { width: 30, height: 5 },
     );
     const root = setup.renderer.root.findDescendantById(
       "root",
     ) as CheckboxRootRenderable;
-    expect(root.getChildren().map((child) => child.id)).toEqual(["label"]);
-    expect(setup.renderer.root.findDescendantById("indicator")).toBeUndefined();
-
-    root.press();
-    await setup.waitFor(
-      () => setup?.renderer.root.findDescendantById("indicator") !== undefined,
-    );
-
+    expect(root.getChildren().map((child) => child.id)).toEqual([
+      "indicator",
+      "label",
+    ]);
     const indicator = setup.renderer.root.findDescendantById(
       "indicator",
     ) as CheckboxIndicatorRenderable;
+    expect(indicator.visible).toBe(false);
+
+    root.press();
+    await setup.waitFor(() => root.checked && indicator.visible);
+
     expect(root.checked).toBe(true);
     expect(indicator.visible).toBe(true);
   });
 
   it("exposes primitive state to consumer-owned rendering", async () => {
     setup = await testRender(
-      () =>
-        CheckboxPrimitive.Root({
-          id: "state-root",
-          children: (state: CheckboxPrimitiveState) => {
-            const label = createElement("text") as TextRenderable;
-            label.id = "state-label";
-            label.content = state.checked ? "on" : "off";
-            return label;
-          },
-        }),
+      () => (
+        <CheckboxPrimitive.Root id="state-root">
+          {(state: CheckboxPrimitiveState) => (
+            <text id="state-label" content={state.checked ? "on" : "off"} />
+          )}
+        </CheckboxPrimitive.Root>
+      ),
       { width: 30, height: 5 },
     );
     const root = setup.renderer.root.findDescendantById(
       "state-root",
     ) as CheckboxRootRenderable;
-
     expect(textContent("state-label")).toBe("off");
 
     root.press();
     await setup.waitFor(() => textContent("state-label") === "on");
-
     expect(textContent("state-label")).toBe("on");
   });
 
@@ -96,13 +81,13 @@ describe("Solid CheckboxPrimitive", () => {
     setup = await testRender(
       () => {
         const [checked, setChecked] = createSignal(false);
-        return CheckboxPrimitive.Root({
-          id: "controlled-root",
-          get checked() {
-            return checked();
-          },
-          onCheckedChange: setChecked,
-        });
+        return (
+          <CheckboxPrimitive.Root
+            id="controlled-root"
+            checked={checked()}
+            onCheckedChange={setChecked}
+          />
+        );
       },
       { width: 30, height: 5 },
     );
@@ -112,32 +97,110 @@ describe("Solid CheckboxPrimitive", () => {
 
     root.press();
     await setup.waitFor(() => root.checked);
-
-    expect(root.checked).toBe(true);
     expect(setup.renderer.root.findDescendantById("controlled-root")).toBe(
       root,
     );
   });
 
-  it("keeps an unchecked Indicator mounted only when requested", async () => {
+  it("retains its Root ref across prop removal and callback replacement", async () => {
+    const changes: string[] = [];
+    let setControlled: (controlled: boolean) => void = () => {};
+    let setDisabled: (disabled: boolean) => void = () => {};
+    let setVersion: (version: number) => void = () => {};
+    let rootRef: CheckboxRootRenderable | undefined;
+
     setup = await testRender(
-      () =>
-        CheckboxPrimitive.Root({
-          id: "mounted-root",
-          get children() {
-            return CheckboxPrimitive.Indicator({
-              id: "mounted-indicator",
-              keepMounted: true,
-            });
-          },
-        }),
+      () => {
+        const [controlled, updateControlled] = createSignal(true);
+        const [disabled, updateDisabled] = createSignal(false);
+        const [version, updateVersion] = createSignal(1);
+        setControlled = updateControlled;
+        setDisabled = updateDisabled;
+        setVersion = updateVersion;
+        return (
+          <CheckboxPrimitive.Root
+            id="reactive-root"
+            checked={controlled() ? false : undefined}
+            disabled={disabled() || undefined}
+            onCheckedChange={(checked) =>
+              changes.push(`${version()}:${String(checked)}`)
+            }
+            ref={(value) => {
+              rootRef = value;
+            }}
+          />
+        );
+      },
       { width: 30, height: 5 },
     );
+    const root = setup.renderer.root.findDescendantById(
+      "reactive-root",
+    ) as CheckboxRootRenderable;
+    expect(rootRef).toBe(root);
 
+    root.press();
+    expect(changes).toEqual(["1:true"]);
+    expect(root.checked).toBe(false);
+
+    setControlled(false);
+    setVersion(2);
+    root.press();
+    await setup.waitFor(() => root.checked);
+    expect(changes).toEqual(["1:true", "2:true"]);
+    expect(rootRef).toBe(root);
+
+    root.focus();
+    setDisabled(true);
+    await setup.waitFor(() => !root.focused && root.disabled);
+    root.press();
+    expect(changes).toHaveLength(2);
+
+    setDisabled(false);
+    await setup.waitFor(() => !root.disabled);
+    root.press();
+    await setup.waitFor(() => !root.checked);
+    expect(changes.at(-1)).toBe("2:false");
+    expect(rootRef).toBe(root);
+  });
+
+  it("retains Indicator identity while synchronizing visibility", async () => {
+    let rootRef: CheckboxRootRenderable | undefined;
+    let indicatorRef: CheckboxIndicatorRenderable | undefined;
+    setup = await testRender(
+      () => (
+        <CheckboxPrimitive.Root
+          id="lifecycle-root"
+          ref={(value) => {
+            rootRef = value;
+          }}
+        >
+          <CheckboxPrimitive.Indicator
+            id="lifecycle-indicator"
+            ref={(value) => {
+              indicatorRef = value;
+            }}
+          />
+        </CheckboxPrimitive.Root>
+      ),
+      { width: 30, height: 5 },
+    );
+    const root = setup.renderer.root.findDescendantById(
+      "lifecycle-root",
+    ) as CheckboxRootRenderable;
+    expect(rootRef).toBe(root);
     const indicator = setup.renderer.root.findDescendantById(
-      "mounted-indicator",
+      "lifecycle-indicator",
     ) as CheckboxIndicatorRenderable;
-    expect(indicator).toBeDefined();
+    expect(indicatorRef).toBe(indicator);
     expect(indicator.visible).toBe(false);
+
+    root.press();
+    await setup.waitFor(() => indicator.visible);
+    root.press();
+    await setup.waitFor(() => !indicator.visible);
+    expect(setup.renderer.root.findDescendantById("lifecycle-indicator")).toBe(
+      indicator,
+    );
+    expect(indicatorRef).toBe(indicator);
   });
 });

@@ -40,21 +40,20 @@ describe("React CheckboxPrimitive", () => {
     const root = setup.renderer.root.findDescendantById(
       "root",
     ) as CheckboxRootRenderable;
-    expect(root.getChildren().map((child) => child.id)).toEqual(["label"]);
-    expect(setup.renderer.root.findDescendantById("indicator")).toBeUndefined();
-
-    await act(async () => {
-      root.press();
-      await setup?.waitFor(
-        () =>
-          root.checked &&
-          setup?.renderer.root.findDescendantById("indicator") !== undefined,
-      );
-    });
-
+    expect(root.getChildren().map((child) => child.id)).toEqual([
+      "indicator",
+      "label",
+    ]);
     const indicator = setup.renderer.root.findDescendantById(
       "indicator",
     ) as CheckboxIndicatorRenderable;
+    expect(indicator.visible).toBe(false);
+
+    await act(async () => {
+      root.press();
+      await setup?.waitFor(() => root.checked && indicator.visible);
+    });
+
     expect(root.checked).toBe(true);
     expect(indicator.visible).toBe(true);
   });
@@ -111,23 +110,110 @@ describe("React CheckboxPrimitive", () => {
     );
   });
 
-  it("keeps an unchecked Indicator mounted only when requested", async () => {
-    setup = await testRender(
-      createElement(
-        CheckboxPrimitive.Root,
-        { id: "mounted-root" },
-        createElement(CheckboxPrimitive.Indicator, {
-          id: "mounted-indicator",
-          keepMounted: true,
-        }),
-      ),
-      { width: 30, height: 5 },
-    );
+  it("retains its Root ref across prop removal and callback replacement", async () => {
+    const changes: string[] = [];
+    let setControlled: (controlled: boolean) => void = () => {};
+    let setDisabled: (disabled: boolean) => void = () => {};
+    let setVersion: (version: number) => void = () => {};
+    const rootRef: { current: CheckboxRootRenderable | null } = {
+      current: null,
+    };
 
+    function App() {
+      const [controlled, updateControlled] = useState(true);
+      const [disabled, updateDisabled] = useState(false);
+      const [version, updateVersion] = useState(1);
+      setControlled = updateControlled;
+      setDisabled = updateDisabled;
+      setVersion = updateVersion;
+      return createElement(CheckboxPrimitive.Root, {
+        id: "reactive-root",
+        checked: controlled ? false : undefined,
+        disabled: disabled || undefined,
+        onCheckedChange: (checked) =>
+          changes.push(`${version}:${String(checked)}`),
+        ref: (value) => {
+          rootRef.current = value;
+        },
+      });
+    }
+
+    setup = await testRender(createElement(App), { width: 30, height: 5 });
+    const root = setup.renderer.root.findDescendantById(
+      "reactive-root",
+    ) as CheckboxRootRenderable;
+    expect(rootRef.current).toBe(root);
+
+    await act(async () => root.press());
+    expect(changes).toEqual(["1:true"]);
+    expect(root.checked).toBe(false);
+
+    await act(async () => {
+      setControlled(false);
+      setVersion(2);
+    });
+    await act(async () => root.press());
+    expect(root.checked).toBe(true);
+    expect(changes).toEqual(["1:true", "2:true"]);
+    expect(rootRef.current).toBe(root);
+
+    await act(async () => {
+      root.focus();
+      setDisabled(true);
+    });
+    expect(root.focused).toBe(false);
+    await act(async () => root.press());
+    expect(changes).toHaveLength(2);
+
+    await act(async () => setDisabled(false));
+    await act(async () => root.press());
+    expect(root.checked).toBe(false);
+    expect(changes.at(-1)).toBe("2:false");
+    expect(rootRef.current).toBe(root);
+  });
+
+  it("retains Indicator identity while synchronizing visibility", async () => {
+    const refs: CheckboxIndicatorRenderable[] = [];
+    const rootRef: { current: CheckboxRootRenderable | null } = {
+      current: null,
+    };
+
+    function App() {
+      return createElement(
+        CheckboxPrimitive.Root,
+        {
+          id: "lifecycle-root",
+          ref: (value) => {
+            rootRef.current = value;
+          },
+        },
+        createElement(CheckboxPrimitive.Indicator, {
+          id: "lifecycle-indicator",
+          ref: (value) => {
+            if (value) refs.push(value);
+          },
+        }),
+      );
+    }
+
+    setup = await testRender(createElement(App), { width: 30, height: 5 });
+    const root = setup.renderer.root.findDescendantById(
+      "lifecycle-root",
+    ) as CheckboxRootRenderable;
+    expect(rootRef.current).toBe(root);
     const indicator = setup.renderer.root.findDescendantById(
-      "mounted-indicator",
+      "lifecycle-indicator",
     ) as CheckboxIndicatorRenderable;
-    expect(indicator).toBeDefined();
+    expect(refs).toEqual([indicator]);
     expect(indicator.visible).toBe(false);
+
+    await act(async () => root.press());
+    expect(indicator.visible).toBe(true);
+    await act(async () => root.press());
+    expect(indicator.visible).toBe(false);
+    expect(refs).toEqual([indicator]);
+    expect(setup.renderer.root.findDescendantById("lifecycle-indicator")).toBe(
+      indicator,
+    );
   });
 });

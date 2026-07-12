@@ -10,6 +10,7 @@ import { splitProps } from "solid-js";
 export interface CheckboxProps
   extends Omit<CheckboxPrimitiveRootProps, "children"> {
   label: string;
+  /** One terminal-cell mark; widen the editable mark cell for wider content. */
   mark?: string;
   tone?: "accent" | "success";
 }

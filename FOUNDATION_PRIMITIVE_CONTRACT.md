@@ -330,8 +330,9 @@ and migration guidance exists for the removed interface.
 The four tracers establish these precedents:
 
 - Checkbox proves primitive-owned toggle state, Root activation, a
-  state-reflecting Indicator, and editable glyph ownership. Ticket 06 hardens
-  its event and lifecycle details against this contract.
+  retained state-reflecting Indicator, equivalent activation paths, and
+  editable glyph ownership. Its boolean change callback does not expose cause
+  details because no Checkbox behavior depends on cause.
 - RadioGroup proves dynamic collection registration, retained Item identity,
   rendered-order navigation, disabled and unavailable skipping, roving focus,
   and Item-local state. Actual focus remains owned by the Item Renderable.

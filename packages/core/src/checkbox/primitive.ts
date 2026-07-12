@@ -117,7 +117,12 @@ export class CheckboxRootRenderable extends BoxRenderable {
       ...boxOptions,
       onMouseUp: (event) => {
         boxOptions.onMouseUp?.call(this, event);
-        if (this._store.state.disabled) return;
+        if (
+          event.defaultPrevented ||
+          event.button !== 0 ||
+          this._store.state.disabled
+        )
+          return;
         this.press();
         this.focus();
       },
@@ -181,6 +186,10 @@ export class CheckboxRootRenderable extends BoxRenderable {
 
   set onCheckedChange(callback: ((checked: boolean) => void) | undefined) {
     this._store.setOnCheckedChange(callback);
+  }
+
+  get store(): CheckboxStore {
+    return this._store;
   }
 
   set store(store: CheckboxStore) {

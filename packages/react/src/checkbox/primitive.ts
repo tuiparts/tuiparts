@@ -38,7 +38,6 @@ export type CheckboxPrimitiveIndicatorProps = Omit<
   "store"
 > & {
   children?: ReactNode;
-  keepMounted?: boolean;
   ref?: Ref<CheckboxIndicatorRenderable>;
 };
 
@@ -65,22 +64,14 @@ function CheckboxRoot({
 
 function CheckboxIndicator({
   children,
-  keepMounted = false,
   ...props
-}: CheckboxPrimitiveIndicatorProps): ReactElement | null {
+}: CheckboxPrimitiveIndicatorProps): ReactElement {
   const store = useContext(CheckboxContext);
   if (!store) {
     throw new Error(
       "CheckboxPrimitive.Indicator must be rendered inside CheckboxPrimitive.Root",
     );
   }
-  const state = useSyncExternalStore(
-    (listener) => store.subscribe(listener),
-    () => store.state,
-    () => store.state,
-  );
-  if (!keepMounted && !state.checked) return null;
-
   return createElement(INDICATOR_TAG, { ...props, store }, children);
 }
 

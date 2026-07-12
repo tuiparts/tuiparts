@@ -11,6 +11,7 @@ import { Checkbox } from "./components/ui/checkbox";
 let setup: TestRendererSetup | undefined;
 
 function text(node: BaseRenderable): string[] {
+  if (!node.visible) return [];
   return [
     ...(node instanceof TextRenderable ? [node.plainText] : []),
     ...node.getChildren().flatMap(text),

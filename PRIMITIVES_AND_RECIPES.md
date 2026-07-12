@@ -77,9 +77,9 @@ For example, the Checkbox primitive is assembled explicitly:
 The primitive owns checked state and activation. The caller owns the check
 glyph, label, layout, and appearance.
 
-## Checkbox Tracer
+## Checkbox Foundation Primitive
 
-Checkbox is the first vertical proof of this architecture:
+Checkbox is the first primitive hardened against the foundation contract:
 
 - `CheckboxStore` is the framework-neutral state seam.
 - `CheckboxRootRenderable` owns focus and activation.
@@ -88,6 +88,17 @@ Checkbox is the first vertical proof of this architecture:
   `CheckboxPrimitive.Indicator` parts.
 - The example recipes choose a mark, label, spacing, and colors in editable
   source.
+- Core callers either pass one Store explicitly or compose parts from
+  `root.store`; React and Solid provide that Store through Root context.
+- An authored Indicator remains mounted and reflects checked state through
+  Renderable visibility in Core, React, and Solid. Recipes may omit the part
+  entirely when they do not need a visual indicator.
+- `press()`, Enter, Space, and an uncancelled primary-button release request the
+  same boolean change. Checkbox does not expose input-source details because no
+  Checkbox behavior currently depends on the activation source.
+- Composition uses Root children, Indicator children, readonly state callbacks,
+  and Renderable refs. It does not support arbitrary Root or Indicator
+  replacement.
 
 Reference implementations:
 
@@ -98,9 +109,10 @@ Reference implementations:
 - `registry/checkbox/react.tsx`
 - `registry/checkbox/solid.tsx`
 
-This tracer intentionally coexists with the current packaged `Checkbox` recipe.
-The remaining components should not migrate until this seam has been evaluated
-through usage, tests, and review.
+The primitive intentionally coexists with the legacy packaged `Checkbox`
+during expand-contract migration. The editable starter recipes reserve one
+terminal cell for `mark`; applications that need a wide mark own the
+corresponding recipe layout change.
 
 ## Distribution
 

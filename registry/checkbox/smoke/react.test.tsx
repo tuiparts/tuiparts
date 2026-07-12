@@ -15,6 +15,7 @@ function root(id: string): CheckboxRootRenderable {
 }
 
 function text(node: BaseRenderable): string[] {
+  if (!node.visible) return [];
   return [
     ...(node instanceof TextRenderable ? [node.plainText] : []),
     ...node.getChildren().flatMap(text),

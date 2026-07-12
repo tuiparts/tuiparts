@@ -7,7 +7,9 @@ consumer-owned presentation.
 
 This is the formal product architecture for foundation v1. `ROADMAP.md`
 defines the delivery phases, and `.scratch/opentui-primitives-v1/` contains the
-local executable migration plan.
+local executable migration plan. `FOUNDATION_PRIMITIVE_CONTRACT.md` freezes the
+public vocabulary, ownership, composition, adapter, lifecycle, and conformance
+rules that primitive implementations must follow.
 
 ```text
 @opentui/core
@@ -51,12 +53,13 @@ behavior must not depend on it.
 
 ## Parts Versus Style Slots
 
-A part is a public node that consumers can render, omit, reorder, wrap,
-reference, and compose. A style slot only changes a private node's properties.
-Primitives require parts; recipes may additionally expose style slots for
-convenient whole-component customization. This tracer does not yet provide a
-Base UI-style `render` replacement seam; that remains a follow-up design
-question rather than an implied capability.
+A part is a public node that consumers can render, omit when optional, reorder
+within its structural constraints, wrap, reference, and compose. A style slot
+only changes a private node's properties. Primitives require parts; recipes may
+additionally expose style slots for convenient whole-component customization.
+Foundation v1 deliberately supports explicit parts, children, state callbacks,
+native OpenTUI properties, and Renderable refs rather than a Base UI-style
+`render`, `asChild`, or polymorphic replacement seam.
 
 For example, the Checkbox primitive is assembled explicitly:
 

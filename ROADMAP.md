@@ -74,12 +74,16 @@ primitive contract.
 
 ### Phase 2 - Primitive Contract
 
+Status: complete.
+
 - Freeze the vocabulary for Root, parts, state, events, actions, and recipes.
 - Establish Core, React, Solid, registry, clean-consumer, and terminal
   interaction conformance seams.
 - Decide the supported part replacement/composition interface.
 - Define focus, collection, overlay, and event-detail infrastructure through
   vertical primitives rather than speculative horizontal frameworks.
+
+The frozen contract is documented in `FOUNDATION_PRIMITIVE_CONTRACT.md`.
 
 ### Phase 3 - Foundation Expansion
 

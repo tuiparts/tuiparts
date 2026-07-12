@@ -9,15 +9,17 @@ describe("RadioGroupStore", () => {
 
     expect(store.getItemState(alpha.key)).toEqual({
       value: "alpha",
+      available: true,
       disabled: false,
-      focused: false,
       selected: false,
+      tabbable: true,
     });
     expect(store.getItemState(beta.key)).toEqual({
       value: "beta",
+      available: true,
       disabled: true,
-      focused: false,
       selected: false,
+      tabbable: false,
     });
     expect(Object.isFrozen(store.getItemState(alpha.key))).toBe(true);
     expect(() => store.registerItem("alpha")).toThrow(
@@ -102,9 +104,10 @@ describe("RadioGroupStore", () => {
     alpha.setValue("renamed");
     expect(store.getItemState(alpha.key)).toEqual({
       value: "renamed",
+      available: true,
       disabled: false,
-      focused: false,
       selected: true,
+      tabbable: true,
     });
     expect(store.state.value).toBe("renamed");
   });
@@ -159,7 +162,7 @@ describe("RadioGroupStore", () => {
     expect(selectedItemState).not.toBe(initialItemState);
   });
 
-  it("tracks focused Item state and publishes frozen selection details", () => {
+  it("tracks the active tab stop and publishes frozen selection details", () => {
     const changes: Array<{
       value: string;
       reason: string;
@@ -169,9 +172,11 @@ describe("RadioGroupStore", () => {
       onValueChange: (value, details) => changes.push({ value, ...details }),
     });
     const alpha = store.registerItem("alpha");
+    const beta = store.registerItem("beta");
 
-    alpha.setFocused(true);
-    expect(store.getItemState(alpha.key)?.focused).toBe(true);
+    beta.setActive(true);
+    expect(store.getItemState(alpha.key)?.tabbable).toBe(false);
+    expect(store.getItemState(beta.key)?.tabbable).toBe(true);
 
     store.requestSelection(alpha.key, {
       reason: "activation",
@@ -181,11 +186,10 @@ describe("RadioGroupStore", () => {
       { value: "alpha", reason: "activation", source: "keyboard" },
     ]);
 
-    alpha.setFocused(false);
-    expect(store.getItemState(alpha.key)?.focused).toBe(false);
+    beta.setActive(false);
   });
 
-  it("serializes reentrant selection and owns one focused Item", () => {
+  it("serializes reentrant selection", () => {
     const changes: string[] = [];
     const observedValues: Array<string | null> = [];
     const store = new RadioGroupStore({
@@ -204,15 +208,7 @@ describe("RadioGroupStore", () => {
     expect(observedValues).toEqual(["alpha", "beta"]);
     expect(store.state.value).toBe("beta");
 
-    alpha.setFocused(true);
-    beta.setFocused(true);
-    expect(store.getItemState(alpha.key)?.focused).toBe(false);
-    expect(store.getItemState(beta.key)?.focused).toBe(true);
-
     beta.setDisabled(true);
-    expect(store.getItemState(beta.key)).toMatchObject({
-      disabled: true,
-      focused: false,
-    });
+    expect(store.getItemState(beta.key)?.disabled).toBe(true);
   });
 });

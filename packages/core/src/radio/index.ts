@@ -17,6 +17,8 @@ export {
 } from "./meta";
 export {
   type RadioGroupChangeDetails,
+  type RadioGroupCollectionItemState,
+  type RadioGroupFocusDirection,
   type RadioGroupIndicatorOptions,
   RadioGroupIndicatorRenderable,
   type RadioGroupItemKey,
@@ -25,6 +27,7 @@ export {
   type RadioGroupItemRegistrationOptions,
   RadioGroupItemRenderable,
   type RadioGroupItemState,
+  type RadioGroupNavigationTarget,
   type RadioGroupPrimitiveState,
   type RadioGroupRootOptions,
   RadioGroupRootRenderable,

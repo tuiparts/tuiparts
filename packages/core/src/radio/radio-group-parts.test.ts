@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "bun:test";
-import type { KeyEvent } from "@opentui/core";
+import { BoxRenderable, type KeyEvent } from "@opentui/core";
 import {
   createTestRenderer,
   type TestRendererSetup,
@@ -111,7 +111,7 @@ describe("RadioGroup Core parts", () => {
 
     root.disabled = true;
     expect(item.focused).toBe(false);
-    expect(focusedStates).toEqual([true, false]);
+    expect(focusedStates.slice(-2)).toEqual([true, false]);
     item.press();
     expect(root.value).toBeNull();
   });
@@ -166,5 +166,177 @@ describe("RadioGroup Core parts", () => {
 
     await setup.mockMouse.click(0, 0);
     expect(root.value).toBe("secondary");
+  });
+
+  it("moves roving focus, skips disabled Items, wraps, and handles Home/End", async () => {
+    setup = await createTestRenderer({ width: 30, height: 5 });
+    const changes: Array<{ value: string; reason: string }> = [];
+    const root = new RadioGroupRootRenderable(setup.renderer, {
+      defaultValue: "alpha",
+      flexDirection: "column",
+      onValueChange: (value, details) =>
+        changes.push({ value, reason: details.reason }),
+    });
+    const alpha = new RadioGroupItemRenderable(setup.renderer, {
+      store: root.store,
+      value: "alpha",
+      width: 5,
+      height: 1,
+    });
+    const beta = new RadioGroupItemRenderable(setup.renderer, {
+      store: root.store,
+      value: "beta",
+      disabled: true,
+      width: 5,
+      height: 1,
+    });
+    const gamma = new RadioGroupItemRenderable(setup.renderer, {
+      store: root.store,
+      value: "gamma",
+      width: 5,
+      height: 1,
+    });
+    root.add(alpha);
+    root.add(beta);
+    root.add(gamma);
+    setup.renderer.root.add(root);
+    await setup.renderOnce();
+
+    expect(alpha.focusable).toBe(true);
+    expect(beta.focusable).toBe(false);
+    expect(gamma.focusable).toBe(false);
+    alpha.focus();
+
+    await setup.mockInput.pressArrow("down");
+    expect(gamma.focused).toBe(true);
+    expect(gamma.selected).toBe(true);
+    expect(changes).toEqual([{ value: "gamma", reason: "navigation" }]);
+
+    await setup.mockInput.pressArrow("right");
+    expect(alpha.focused).toBe(true);
+    expect(alpha.selected).toBe(true);
+
+    await setup.mockInput.pressKey("END");
+    expect(gamma.focused).toBe(true);
+    await setup.mockInput.pressKey("HOME");
+    expect(alpha.focused).toBe(true);
+    expect(changes.map((change) => change.value)).toEqual([
+      "gamma",
+      "alpha",
+      "gamma",
+      "alpha",
+    ]);
+
+    alpha.disabled = true;
+    expect(gamma.focused).toBe(true);
+    expect(root.value).toBe("alpha");
+
+    alpha.disabled = false;
+    gamma.destroy();
+    expect(alpha.focused).toBe(true);
+    expect(root.value).toBe("alpha");
+  });
+
+  it("moves controlled focus while leaving selection parent-owned", async () => {
+    setup = await createTestRenderer({ width: 30, height: 5 });
+    const changes: Array<{ value: string; reason: string }> = [];
+    const root = new RadioGroupRootRenderable(setup.renderer, {
+      value: "alpha",
+      onValueChange: (value, details) =>
+        changes.push({ value, reason: details.reason }),
+    });
+    const alpha = new RadioGroupItemRenderable(setup.renderer, {
+      store: root.store,
+      value: "alpha",
+      width: 5,
+      height: 1,
+    });
+    const beta = new RadioGroupItemRenderable(setup.renderer, {
+      store: root.store,
+      value: "beta",
+      width: 5,
+      height: 1,
+    });
+    root.add(alpha);
+    root.add(beta);
+    setup.renderer.root.add(root);
+    alpha.focus();
+
+    await setup.mockInput.pressArrow("down");
+
+    expect(beta.focused).toBe(true);
+    expect(root.value).toBe("alpha");
+    expect(changes).toEqual([{ value: "beta", reason: "navigation" }]);
+    expect(beta.handleKeyPress({ name: "down", ctrl: true } as KeyEvent)).toBe(
+      false,
+    );
+  });
+
+  it("uses current nested render order and excludes hidden Items", async () => {
+    setup = await createTestRenderer({ width: 30, height: 5 });
+    const root = new RadioGroupRootRenderable(setup.renderer);
+    const wrapper = new BoxRenderable(setup.renderer, {});
+    const alpha = new RadioGroupItemRenderable(setup.renderer, {
+      store: root.store,
+      value: "alpha",
+      width: 5,
+      height: 1,
+    });
+    const beta = new RadioGroupItemRenderable(setup.renderer, {
+      store: root.store,
+      value: "beta",
+      width: 5,
+      height: 1,
+    });
+    const gamma = new RadioGroupItemRenderable(setup.renderer, {
+      store: root.store,
+      value: "gamma",
+      width: 5,
+      height: 1,
+    });
+    wrapper.add(gamma);
+    wrapper.add(beta);
+    root.add(wrapper);
+    root.add(alpha);
+    setup.renderer.root.add(root);
+    await setup.renderOnce();
+
+    expect(gamma.focusable).toBe(true);
+    expect(alpha.focusable).toBe(false);
+    alpha.focus();
+
+    await setup.mockInput.pressArrow("down");
+    expect(gamma.focused).toBe(true);
+
+    gamma.visible = false;
+    expect(gamma.focused).toBe(false);
+    expect(gamma.focusable).toBe(false);
+    expect(beta.focused).toBe(true);
+    expect(beta.focusable).toBe(true);
+
+    alpha.focus();
+    await setup.mockInput.pressArrow("down");
+    expect(beta.focused).toBe(true);
+
+    wrapper.remove(beta);
+    await setup.renderOnce();
+    expect(beta.focused).toBe(false);
+    expect(beta.focusable).toBe(false);
+    expect(alpha.focused).toBe(true);
+    expect(root.value).toBe("beta");
+
+    root.value = "alpha";
+    beta.press();
+    expect(root.value).toBe("alpha");
+
+    root.visible = false;
+    expect(alpha.focused).toBe(false);
+    expect(alpha.focusable).toBe(false);
+
+    root.visible = true;
+    await setup.renderOnce();
+    alpha.focus();
+    setup.renderer.root.remove(root);
+    expect(alpha.focused).toBe(false);
   });
 });

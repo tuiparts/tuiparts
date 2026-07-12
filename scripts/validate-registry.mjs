@@ -23,19 +23,14 @@ const packageDirectories = {
   "@opentui-ui/solid": "solid",
   "@opentui-ui/styles": "styles",
 };
-const consumers = [
-  {
-    framework: "core",
-    source: "registry/checkbox/core.ts",
-    target: "components/ui/checkbox.ts",
+const frameworks = {
+  core: {
+    extension: "ts",
     localPackages: ["@opentui-ui/core"],
-    smoke: "registry/checkbox/smoke/core.test.ts",
     smokeFile: "smoke.test.ts",
   },
-  {
-    framework: "react",
-    source: "registry/checkbox/react.tsx",
-    target: "components/ui/checkbox.tsx",
+  react: {
+    extension: "tsx",
     localPackages: [
       "@opentui-ui/core",
       "@opentui-ui/styles",
@@ -48,14 +43,11 @@ const consumers = [
       jsx: "react-jsx",
       jsxImportSource: "@opentui/react",
     },
-    smoke: "registry/checkbox/smoke/react.test.tsx",
     smokeBuild: true,
     smokeFile: "smoke.test.tsx",
   },
-  {
-    framework: "solid",
-    source: "registry/checkbox/solid.tsx",
-    target: "components/ui/checkbox.tsx",
+  solid: {
+    extension: "tsx",
     localPackages: [
       "@opentui-ui/core",
       "@opentui-ui/styles",
@@ -65,11 +57,21 @@ const consumers = [
       jsx: "preserve",
       jsxImportSource: "@opentui/solid",
     },
-    smoke: "registry/checkbox/smoke/solid.test.tsx",
     smokeFile: "smoke.test.tsx",
     smokePreload: "@opentui/solid/preload",
   },
-];
+};
+const recipes = ["checkbox", "radio-group"];
+const consumers = recipes.flatMap((recipe) =>
+  Object.entries(frameworks).map(([framework, config]) => ({
+    ...config,
+    framework,
+    recipe,
+    source: `registry/${recipe}/${framework}.${config.extension}`,
+    target: `components/ui/${recipe}.${config.extension}`,
+    smoke: `registry/${recipe}/smoke/${framework}.test.${config.extension}`,
+  })),
+);
 
 function run(command, args, cwd = root) {
   execFileSync(command, args, { cwd, stdio: "inherit" });
@@ -107,7 +109,7 @@ function snapshotFiles(directory, current = directory, files = new Map()) {
 }
 
 try {
-  for (const framework of ["core", "react", "solid"]) {
+  for (const framework of Object.keys(frameworks)) {
     mkdirSync(join(registryDir, framework), { recursive: true });
   }
   mkdirSync(tarballDir);
@@ -139,27 +141,28 @@ try {
   ]);
 
   for (const consumer of consumers) {
-    const consumerDir = join(workDir, `${consumer.framework}-consumer`);
-    const registryItem = registry.items.find(
-      (item) => item.name === `${consumer.framework}/checkbox`,
+    const itemName = `${consumer.framework}/${consumer.recipe}`;
+    const consumerDir = join(
+      workDir,
+      `${consumer.recipe}-${consumer.framework}-consumer`,
     );
-    assert(registryItem, `Missing ${consumer.framework} registry item`);
+    const registryItem = registry.items.find(
+      (item) => item.name === itemName,
+    );
+    assert(registryItem, `Missing ${itemName} registry item`);
     const builtItem = JSON.parse(
-      readFileSync(
-        join(registryDir, `${consumer.framework}/checkbox.json`),
-        "utf8",
-      ),
+      readFileSync(join(registryDir, `${itemName}.json`), "utf8"),
     );
     assert(
       JSON.stringify(builtItem.dependencies) ===
         JSON.stringify(registryItem.dependencies),
-      `${consumer.framework} build changed registry dependencies`,
+      `${itemName} build changed registry dependencies`,
     );
     const dependencyNames = registryItem.dependencies.map(packageName);
 
     mkdirSync(consumerDir);
     writeJson(join(consumerDir, "package.json"), {
-      name: `opentui-ui-registry-${consumer.framework}-consumer`,
+      name: `opentui-ui-registry-${consumer.recipe}-${consumer.framework}-consumer`,
       private: true,
       type: "module",
       packageManager: "pnpm@10.34.5",
@@ -199,7 +202,7 @@ try {
       "dlx",
       "shadcn@4.13.0",
       "add",
-      join(registryDir, `${consumer.framework}/checkbox.json`),
+      join(registryDir, `${itemName}.json`),
       "--cwd",
       consumerDir,
       "--yes",
@@ -208,7 +211,7 @@ try {
     assert(
       readFileSync(join(consumerDir, consumer.target), "utf8") ===
         readFileSync(join(root, consumer.source), "utf8"),
-      `Installed ${consumer.framework} recipe differs from its registry source`,
+      `Installed ${itemName} recipe differs from its registry source`,
     );
     const afterInstall = snapshotFiles(consumerDir);
     const allowedChanges = new Set([
@@ -220,13 +223,13 @@ try {
       if (allowedChanges.has(path)) continue;
       assert(
         beforeInstall.get(path) === content,
-        `${consumer.framework} registry installation changed ${path}`,
+        `${itemName} registry installation changed ${path}`,
       );
     }
     for (const path of beforeInstall.keys()) {
       assert(
         allowedChanges.has(path) || afterInstall.has(path),
-        `${consumer.framework} registry installation removed ${path}`,
+        `${itemName} registry installation removed ${path}`,
       );
     }
 
@@ -236,13 +239,13 @@ try {
     assert(
       JSON.stringify(Object.keys(installedPackage.dependencies).sort()) ===
         JSON.stringify([...dependencyNames].sort()),
-      `${consumer.framework} registry dependencies do not match the item`,
+      `${itemName} registry dependencies do not match the item`,
     );
     for (const dependency of registryItem.dependencies) {
       const name = packageName(dependency);
       assert(
         subset(installedPackage.dependencies[name], packageRange(dependency)),
-        `${consumer.framework} installed ${name} outside its declared range`,
+        `${itemName} installed ${name} outside its declared range`,
       );
     }
 
@@ -275,11 +278,11 @@ try {
     for (const name of consumer.localPackages) {
       assert(
         localLockfile.includes(`file:${tarballs.get(name)}`),
-        `${consumer.framework} lockfile did not resolve ${name} locally`,
+        `${itemName} lockfile did not resolve ${name} locally`,
       );
       assert(
         !localLockfile.includes(`${name}@${packageVersions.get(name)}`),
-        `${consumer.framework} lockfile retained published ${name}`,
+        `${itemName} lockfile retained published ${name}`,
       );
     }
 

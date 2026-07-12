@@ -10,11 +10,13 @@ describe("RadioGroupStore", () => {
     expect(store.getItemState(alpha.key)).toEqual({
       value: "alpha",
       disabled: false,
+      focused: false,
       selected: false,
     });
     expect(store.getItemState(beta.key)).toEqual({
       value: "beta",
       disabled: true,
+      focused: false,
       selected: false,
     });
     expect(Object.isFrozen(store.getItemState(alpha.key))).toBe(true);
@@ -101,6 +103,7 @@ describe("RadioGroupStore", () => {
     expect(store.getItemState(alpha.key)).toEqual({
       value: "renamed",
       disabled: false,
+      focused: false,
       selected: true,
     });
     expect(store.state.value).toBe("renamed");
@@ -154,5 +157,62 @@ describe("RadioGroupStore", () => {
     expect(registeredState).not.toBe(emptyState);
     expect(store.getItemState(alpha.key)).not.toBe(selectedItemState);
     expect(selectedItemState).not.toBe(initialItemState);
+  });
+
+  it("tracks focused Item state and publishes frozen selection details", () => {
+    const changes: Array<{
+      value: string;
+      reason: string;
+      source: string;
+    }> = [];
+    const store = new RadioGroupStore({
+      onValueChange: (value, details) => changes.push({ value, ...details }),
+    });
+    const alpha = store.registerItem("alpha");
+
+    alpha.setFocused(true);
+    expect(store.getItemState(alpha.key)?.focused).toBe(true);
+
+    store.requestSelection(alpha.key, {
+      reason: "activation",
+      source: "keyboard",
+    });
+    expect(changes).toEqual([
+      { value: "alpha", reason: "activation", source: "keyboard" },
+    ]);
+
+    alpha.setFocused(false);
+    expect(store.getItemState(alpha.key)?.focused).toBe(false);
+  });
+
+  it("serializes reentrant selection and owns one focused Item", () => {
+    const changes: string[] = [];
+    const observedValues: Array<string | null> = [];
+    const store = new RadioGroupStore({
+      onValueChange: (value) => changes.push(value),
+    });
+    const alpha = store.registerItem("alpha");
+    const beta = store.registerItem("beta");
+    store.subscribe((state) => {
+      if (state.value === "alpha") store.requestSelection(beta.key);
+    });
+    store.subscribe((state) => observedValues.push(state.value));
+
+    store.requestSelection(alpha.key);
+
+    expect(changes).toEqual(["alpha", "beta"]);
+    expect(observedValues).toEqual(["alpha", "beta"]);
+    expect(store.state.value).toBe("beta");
+
+    alpha.setFocused(true);
+    beta.setFocused(true);
+    expect(store.getItemState(alpha.key)?.focused).toBe(false);
+    expect(store.getItemState(beta.key)?.focused).toBe(true);
+
+    beta.setDisabled(true);
+    expect(store.getItemState(beta.key)).toMatchObject({
+      disabled: true,
+      focused: false,
+    });
   });
 });

@@ -16,13 +16,21 @@ export {
   type RadioStateKeys,
 } from "./meta";
 export {
+  type RadioGroupChangeDetails,
+  type RadioGroupIndicatorOptions,
+  RadioGroupIndicatorRenderable,
   type RadioGroupItemKey,
   type RadioGroupItemOptions,
   type RadioGroupItemRegistration,
+  type RadioGroupItemRegistrationOptions,
+  RadioGroupItemRenderable,
   type RadioGroupItemState,
   type RadioGroupPrimitiveState,
+  type RadioGroupRootOptions,
+  RadioGroupRootRenderable,
   RadioGroupStore,
   type RadioGroupStoreOptions,
+  type RadioGroupValueChangeHandler,
 } from "./primitive";
 export { RadioRenderable } from "./radio";
 export { RadioGroupRenderable } from "./radio-group";

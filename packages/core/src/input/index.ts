@@ -5,6 +5,10 @@ export {
 } from "./constants";
 export { InputRenderable } from "./input";
 export { INPUT_META, type InputMeta, type InputStateKeys } from "./meta";
+export {
+  type InputPrimitiveOptions,
+  InputPrimitiveRenderable,
+} from "./primitive";
 export type {
   InputOptions,
   InputSlotStyleMap,

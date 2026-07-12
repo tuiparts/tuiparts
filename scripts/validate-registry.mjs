@@ -61,7 +61,7 @@ const frameworks = {
     smokePreload: "@opentui/solid/preload",
   },
 };
-const recipes = ["checkbox", "radio-group"];
+const recipes = ["checkbox", "radio-group", "input"];
 const consumers = recipes.flatMap((recipe) =>
   Object.entries(frameworks).map(([framework, config]) => ({
     ...config,

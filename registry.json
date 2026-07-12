@@ -136,6 +136,73 @@
         "framework": "solid",
         "primitiveStatus": "tracer"
       }
+    },
+    {
+      "name": "core/input",
+      "type": "registry:item",
+      "title": "Input (Core)",
+      "description": "Editable imperative Input recipe preserving OpenTUI-native editing and events.",
+      "dependencies": ["@opentui-ui/core@^0.0.2", "@opentui/core@^0.4.3"],
+      "files": [
+        {
+          "path": "registry/input/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/input.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "tracer"
+      }
+    },
+    {
+      "name": "react/input",
+      "type": "registry:item",
+      "title": "Input (React)",
+      "description": "Editable React Input recipe preserving OpenTUI-native editing and events.",
+      "dependencies": [
+        "@opentui-ui/react@^0.0.2",
+        "@opentui-ui/core@^0.0.2",
+        "@opentui/core@^0.4.3",
+        "@opentui/react@^0.4.3",
+        "react@^19.2.0",
+        "ws@^8.21.0"
+      ],
+      "files": [
+        {
+          "path": "registry/input/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/input.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "tracer"
+      }
+    },
+    {
+      "name": "solid/input",
+      "type": "registry:item",
+      "title": "Input (Solid)",
+      "description": "Editable Solid Input recipe preserving OpenTUI-native editing and events.",
+      "dependencies": [
+        "@opentui-ui/solid@^0.0.2",
+        "@opentui-ui/core@^0.0.2",
+        "@opentui/core@^0.4.3",
+        "@opentui/solid@^0.4.3",
+        "solid-js@1.9.12"
+      ],
+      "files": [
+        {
+          "path": "registry/input/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/input.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "tracer"
+      }
     }
   ]
 }

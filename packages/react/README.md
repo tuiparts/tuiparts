@@ -73,6 +73,27 @@ import { Switch } from "@opentui-ui/react/switch";
 import { styled } from "@opentui-ui/react/styled";
 ```
 
+## Input Primitive Tracer
+
+`InputPrimitive` is an additive, unstyled adapter that preserves OpenTUI's
+mutable value and event model. It has no `defaultValue`, controlled rollback,
+or callback aliases.
+
+```tsx
+import { InputPrimitive } from "@opentui-ui/react/input";
+
+<InputPrimitive
+  value="initial"
+  onInput={console.log}
+  onChange={commit}
+  onSubmit={submit}
+/>;
+```
+
+`onInput` reports mutations, `onChange` reports commits on blur or submit, and
+`onSubmit` reports Enter after any changed-value `onChange`. Visual defaults
+belong in editable recipes. This tracer contract is not frozen.
+
 ## Styling
 
 Use `styled()` for reusable base styles, variants, compound variants, defaults,

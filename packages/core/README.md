@@ -98,6 +98,28 @@ Add Renderables to an OpenTUI parent with `parent.add(component)`.
 - Disabled interactive components suppress keyboard, mouse, and programmatic
   activation.
 
+## Input Primitive Tracer
+
+`InputPrimitiveRenderable` is the additive, unstyled Input primitive under
+evaluation. It preserves OpenTUI's mutable `value` contract instead of adding
+browser-style controlled ownership or `defaultValue`.
+
+```ts
+import { InputPrimitiveRenderable } from "@opentui-ui/core/input";
+
+const input = new InputPrimitiveRenderable(ctx, {
+  value: "initial",
+  onInput: console.log,
+  onChange: commit,
+  onSubmit: submit,
+});
+```
+
+`onInput` reports buffer mutations, including changed programmatic `value`
+assignments. `onChange` reports a changed blur or submit commit. `onSubmit`
+reports successful Enter submission, after `onChange` when both fire. Visual
+defaults belong in editable recipes. This tracer contract is not frozen.
+
 ## Styling Surface
 
 Slots backed by Box and Text primitives accept their corresponding OpenTUI

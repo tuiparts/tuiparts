@@ -20,16 +20,6 @@ export type OtuiComponent<
  * magic string to keep in sync. Reactivity is preserved by spreading the
  * original Solid props proxy directly.
  *
- * @example
- * ```ts
- * import { createOtuiComponent } from "@opentui-ui/solid";
- * import { BADGE_META, type BadgeOptions, BadgeRenderable } from "@opentui-ui/core/badge";
- *
- * export const Badge = createOtuiComponent<BadgeOptions, ...>(
- *   BadgeRenderable,
- *   BADGE_META,
- * );
- * ```
  */
 export function createOtuiComponent<
   Props extends object,

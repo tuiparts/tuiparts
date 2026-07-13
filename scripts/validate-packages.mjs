@@ -91,7 +91,6 @@ try {
 
   const entrypoints = [
     "@opentui-ui/core",
-    "@opentui-ui/core/badge",
     "@opentui-ui/core/button",
     "@opentui-ui/core/checkbox",
     "@opentui-ui/core/input",
@@ -100,7 +99,6 @@ try {
     "@opentui-ui/core/switch",
     "@opentui-ui/styles",
     "@opentui-ui/react",
-    "@opentui-ui/react/badge",
     "@opentui-ui/react/button",
     "@opentui-ui/react/checkbox",
     "@opentui-ui/react/input",
@@ -109,7 +107,6 @@ try {
     "@opentui-ui/react/switch",
     "@opentui-ui/react/styled",
     "@opentui-ui/solid",
-    "@opentui-ui/solid/badge",
     "@opentui-ui/solid/button",
     "@opentui-ui/solid/checkbox",
     "@opentui-ui/solid/input",

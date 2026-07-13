@@ -51,7 +51,6 @@ update controlled state, labels, variants, and inline styles without remounting.
 ## Imports
 
 ```ts
-import { Badge } from "@opentui-ui/solid/badge";
 import { Button } from "@opentui-ui/solid/button";
 import { Checkbox } from "@opentui-ui/solid/checkbox";
 import { Input } from "@opentui-ui/solid/input";
@@ -97,28 +96,11 @@ import { Input } from "@opentui-ui/solid/input";
 `onSubmit` reports Enter after any changed-value `onChange`. Visual defaults
 belong in editable recipes. This is the canonical foundation contract.
 
-## Styling
+## Recipes
 
-```tsx
-const Status = styled(Badge, {
-  base: {
-    root: { backgroundColor: "#262626", paddingX: 1 },
-    label: { color: "#FAFAFA" },
-  },
-  variants: {
-    tone: {
-      neutral: { root: { backgroundColor: "#404040" } },
-      success: { root: { backgroundColor: "#166534" } },
-    },
-  },
-  defaultVariants: { tone: "neutral" },
-});
-
-<Status label="Stable" tone="success" />;
-```
-
-Nested styled components merge configuration and render the deepest base once.
-See [`@opentui-ui/styles`](../styles) for the complete styling contract.
+Behaviorless presentation such as Badge is installed from the registry rather
+than imported from this package. Consumer-owned recipes may use ordinary
+OpenTUI props or the optional [`@opentui-ui/styles`](../styles) infrastructure.
 
 ## License
 

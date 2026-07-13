@@ -1,20 +1,4 @@
 export {
-  BADGE_META,
-  BADGE_SLOT_STYLE_MAP,
-  BADGE_SLOTS,
-  type BadgeMeta,
-  type BadgeOptions,
-  BadgeRenderable,
-  type BadgeSlotStyleMap,
-  type BadgeSlotStyleResolver,
-  type BadgeSlotStyles,
-  type BadgeSlots,
-  type BadgeState,
-  type BadgeStateKeys,
-  DEFAULT_BADGE_OPTIONS,
-} from "./badge";
-
-export {
   type ButtonOptions,
   type ButtonPressDetails,
   ButtonRenderable,

@@ -65,13 +65,11 @@ const input = new InputRenderable(ctx, {
 `onInput` reports buffer mutations, `onChange` reports a changed blur or submit
 commit, and `onSubmit` reports successful Enter submission.
 
-## Remaining Migration Surface
+## Recipe Boundary
 
-Badge still exposes the earlier packaged component model while its recipe
-replacement is completed. The fixed-tree Radio and layout-only RadioGroup have
-been replaced by the foundation Radio-inside-RadioGroup model. The styling
-engine remains optional recipe infrastructure and is not imported by
-foundation behavior.
+Behaviorless presentation such as Badge is distributed as editable registry
+source rather than a Core package module. The styling engine remains optional
+recipe infrastructure and is not imported by foundation behavior.
 
 See [`FOUNDATION_PRIMITIVE_CONTRACT.md`](../../FOUNDATION_PRIMITIVE_CONTRACT.md)
 and [`PRIMITIVES_AND_RECIPES.md`](../../PRIMITIVES_AND_RECIPES.md) for the

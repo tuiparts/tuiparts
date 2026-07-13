@@ -163,6 +163,10 @@ Button needs no public parts namespace: arbitrary content inside Button is the
 composition seam, and adding a Label part would package presentation without
 adding behavior.
 
+The earlier fixed-label Core implementation and its styling metadata were
+removed without deprecated aliases; only the foundation activation primitive
+is exported and built.
+
 Reference implementations:
 
 - `packages/core/src/button/primitive.ts`
@@ -171,6 +175,27 @@ Reference implementations:
 - `registry/button/core.ts`
 - `registry/button/react.tsx`
 - `registry/button/solid.tsx`
+
+## Badge Recipe
+
+Badge has no reusable interaction, state, focus, keyboard, pointer, collection,
+overlay, or lifecycle behavior. It is therefore not a primitive and has no
+`@opentui-ui/core`, React, or Solid package export.
+
+Editable Core, React, and Solid Badge recipes are built directly from ordinary
+OpenTUI Box and Text nodes. They own label assembly, intent palettes, size,
+padding, and visual defaults while retaining native root properties and label
+overrides for local customization.
+
+The pre-release `BadgeRenderable`, `Badge`, `/badge` package subpaths, slot
+metadata, fixed child tree, and styled adapter bindings were removed without
+deprecated aliases.
+
+Reference implementations:
+
+- `registry/badge/core.ts`
+- `registry/badge/react.tsx`
+- `registry/badge/solid.tsx`
 
 ## Radio And RadioGroup
 

@@ -205,6 +205,69 @@
       }
     },
     {
+      "name": "core/badge",
+      "type": "registry:item",
+      "title": "Badge (Core)",
+      "description": "Editable imperative Badge recipe built directly from OpenTUI Renderables.",
+      "dependencies": ["@opentui/core@^0.4.3"],
+      "files": [
+        {
+          "path": "registry/badge/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/badge.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "recipe"
+      }
+    },
+    {
+      "name": "react/badge",
+      "type": "registry:item",
+      "title": "Badge (React)",
+      "description": "Editable React Badge recipe built directly from OpenTUI elements.",
+      "dependencies": [
+        "@opentui/core@^0.4.3",
+        "@opentui/react@^0.4.3",
+        "react@^19.2.0",
+        "ws@^8.21.0"
+      ],
+      "files": [
+        {
+          "path": "registry/badge/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/badge.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "recipe"
+      }
+    },
+    {
+      "name": "solid/badge",
+      "type": "registry:item",
+      "title": "Badge (Solid)",
+      "description": "Editable Solid Badge recipe built directly from OpenTUI elements.",
+      "dependencies": [
+        "@opentui/core@^0.4.3",
+        "@opentui/solid@^0.4.3",
+        "solid-js@1.9.12"
+      ],
+      "files": [
+        {
+          "path": "registry/badge/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/badge.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "recipe"
+      }
+    },
+    {
       "name": "core/radio-group",
       "type": "registry:item",
       "title": "Radio Group (Core)",

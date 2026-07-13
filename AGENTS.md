@@ -1,6 +1,6 @@
 # PROJECT KNOWLEDGE BASE
 
-**Updated:** 2026-07-12
+**Updated:** 2026-07-13
 **Branch:** feat/codebase-cleaning
 
 ## OVERVIEW
@@ -15,7 +15,7 @@ recipes. The styling engine is optional recipe infrastructure.
 ```
 opentui-ui/
 ├── packages/
-│   ├── core/         # Framework-neutral primitive behavior + legacy components
+│   ├── core/         # Framework-neutral primitive behavior + shared migration infrastructure
 │   ├── styles/       # Optional recipe styling (styled(), variants, slots)
 │   ├── react/        # React primitive adapters + legacy bindings
 │   ├── solid/        # Solid primitive adapters + legacy bindings
@@ -53,7 +53,6 @@ opentui-ui/
 | `createStyleResolver` | Function | `packages/styles/src/resolve.ts` | Resolves styles from config + state |
 | `processStyledConfig` | Function | `packages/styles/src/resolve.ts` | Pre-processes config for performance |
 | `withStyles` | Function | `packages/core/src/styled-renderable.ts` | Legacy/recipe style mixin; not the primitive base contract |
-| `BadgeRenderable` | Class | `packages/core/src/badge/badge.ts` | Badge component logic |
 | `CheckboxRenderable` | Class | `packages/core/src/checkbox/checkbox.ts` | Checkbox component logic |
 | `CheckboxRootRenderable` | Class | `packages/core/src/checkbox/primitive.ts` | Checkbox state, activation, and Indicator owner |
 | `splitVariantProps` | Function | `packages/styles/src/styled.ts` | Separates variant props from rest |
@@ -91,7 +90,7 @@ opentui-ui/
 - **Recipe styling** - Consumer-owned recipes may expose slots, variants, and state selectors
 - **State selectors** - Recipe styles target metadata states with `_checked`, `_focused`, and similar keys
 - **Component meta** - Components carry metadata via `$$OtuiComponentMeta` symbol
-- **Migration pattern** - New primitive behavior follows the active ticket contract; legacy components still use `withStyles`
+- **Migration pattern** - New primitive behavior follows the active ticket contract; recipes do not create behaviorless package components
 
 ## COMMANDS
 

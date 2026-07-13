@@ -13,7 +13,6 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./badge": "./src/badge/index.ts",
     "./button": "./src/button/index.ts",
     "./checkbox": "./src/checkbox/index.ts",
     "./dialog": "./src/dialog/index.ts",
@@ -29,10 +28,6 @@
       ".": {
         "types": "./dist/index.d.mts",
         "import": "./dist/index.mjs"
-      },
-      "./badge": {
-        "types": "./dist/badge/index.d.mts",
-        "import": "./dist/badge/index.mjs"
       },
       "./button": {
         "types": "./dist/button/index.d.mts",

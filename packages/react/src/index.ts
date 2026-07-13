@@ -1,6 +1,4 @@
-export { BADGE_SLOTS, type BadgeSlotStyleMap } from "@opentui-ui/core/badge";
 // Re-export components
-export * from "./badge";
 export * from "./button";
 export * from "./checkbox";
 // Wrapper factory (build new components without hand-writing extend()/meta wiring).

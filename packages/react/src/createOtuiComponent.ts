@@ -22,16 +22,6 @@ export type OtuiComponent<
  * per adapter, with the same `*_META` powering both the styled() inference and
  * the registration.
  *
- * @example
- * ```ts
- * import { createOtuiComponent } from "@opentui-ui/react";
- * import { BADGE_META, type BadgeOptions, BadgeRenderable } from "@opentui-ui/core/badge";
- *
- * export const Badge = createOtuiComponent<BadgeOptions, ...>(
- *   BadgeRenderable,
- *   BADGE_META,
- * );
- * ```
  */
 export function createOtuiComponent<
   Props extends object,

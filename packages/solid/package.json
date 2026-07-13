@@ -5,7 +5,6 @@
   "author": "Matt Simpson",
   "license": "MIT",
   "sideEffects": [
-    "./dist/badge/**",
     "./dist/button/**",
     "./dist/checkbox/**",
     "./dist/dialog/**",
@@ -22,7 +21,6 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./badge": "./src/badge/index.tsx",
     "./button": "./src/button/index.tsx",
     "./checkbox": "./src/checkbox/index.tsx",
     "./dialog": "./src/dialog/index.ts",
@@ -39,10 +37,6 @@
       ".": {
         "types": "./dist/index.d.mts",
         "import": "./dist/index.mjs"
-      },
-      "./badge": {
-        "types": "./dist/badge/index.d.mts",
-        "import": "./dist/badge/index.mjs"
       },
       "./button": {
         "types": "./dist/button/index.d.mts",

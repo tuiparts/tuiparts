@@ -76,7 +76,7 @@ type StyleableExclusions =
  * ```ts
  * import type { BoxOptions, TextOptions } from "@opentui/core";
  *
- * type BadgeSlotStyleMap = {
+ * type RecipeSlotStyleMap = {
  *   root: StyleableSubset<BoxOptions>;
  *   label: TextStyleableSubset<TextOptions>;
  * };

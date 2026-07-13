@@ -26,9 +26,9 @@ See [`ROADMAP.md`](./ROADMAP.md) and
 | [`registry`](./registry) | Consumer-owned Core, React, and Solid recipes |
 
 The repository is in an expand-contract migration. Button, Checkbox, Dialog,
-Input, RadioGroup, and Switch now expose foundation behavior; Badge and
-standalone Radio still retain legacy packaged-component surfaces until their
-migration tickets complete. [`@opentui-ui/dialog`](./packages/dialog) and
+Input, RadioGroup, and Switch expose foundation behavior. Badge is distributed
+only as editable registry source because it has no reusable interaction
+behavior. [`@opentui-ui/dialog`](./packages/dialog) and
 [`@opentui-ui/toast`](./packages/toast) remain independently versioned companion
 products while their primitive relationships are reconciled.
 

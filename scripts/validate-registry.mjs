@@ -65,6 +65,7 @@ const recipes = [
   "checkbox",
   "switch",
   "button",
+  "badge",
   "radio-group",
   "input",
   "dialog",
@@ -266,24 +267,26 @@ try {
         .map((name) => `  "${name}": "file:${tarballs.get(name)}"`)
         .join("\n")}\n`,
     );
-    run("pnpm", ["remove", ...publishedPackages], consumerDir);
-    run(
-      "pnpm",
-      [
-        "add",
-        ...publishedPackages.map(
-          (name) => `${name}@file:${tarballs.get(name)}`,
-        ),
-      ],
-      consumerDir,
-    );
+    if (publishedPackages.length > 0) {
+      run("pnpm", ["remove", ...publishedPackages], consumerDir);
+      run(
+        "pnpm",
+        [
+          "add",
+          ...publishedPackages.map(
+            (name) => `${name}@file:${tarballs.get(name)}`,
+          ),
+        ],
+        consumerDir,
+      );
+    }
     run("pnpm", ["install", "--strict-peer-dependencies"], consumerDir);
 
     const localLockfile = readFileSync(
       join(consumerDir, "pnpm-lock.yaml"),
       "utf8",
     );
-    for (const name of consumer.localPackages) {
+    for (const name of publishedPackages) {
       assert(
         localLockfile.includes(`file:${tarballs.get(name)}`),
         `${itemName} lockfile did not resolve ${name} locally`,

@@ -71,7 +71,7 @@ value without discarding unrelated properties in that slot.
 Selectors use an underscore followed by a component metadata state key, such
 as `_checked`, `_selected`, `_focused`, `_pressed`, or `_disabled`. They may be
 used in base, variant, compound-variant, and inline slot styles. Components
-without state keys, such as Badge and RadioGroup, do not accept selectors.
+without state keys do not accept selectors.
 
 ## Inline Overrides
 

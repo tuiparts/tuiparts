@@ -4,7 +4,6 @@ export default defineConfig({
   entry: [
     "src/index.ts",
     "src/styled.ts",
-    "src/badge/index.tsx",
     "src/button/index.tsx",
     "src/checkbox/index.tsx",
     "src/dialog/index.ts",

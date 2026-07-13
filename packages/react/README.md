@@ -51,7 +51,6 @@ All components are exported from `@opentui-ui/react`. Focused imports are also
 supported:
 
 ```ts
-import { Badge } from "@opentui-ui/react/badge";
 import { Button } from "@opentui-ui/react/button";
 import { Checkbox } from "@opentui-ui/react/checkbox";
 import { Input } from "@opentui-ui/react/input";
@@ -95,31 +94,11 @@ import { Input } from "@opentui-ui/react/input";
 `onSubmit` reports Enter after any changed-value `onChange`. Visual defaults
 belong in editable recipes. This is the canonical foundation contract.
 
-## Styling
+## Recipes
 
-Use `styled()` for reusable base styles, variants, compound variants, defaults,
-state selectors, and per-instance overrides:
-
-```tsx
-const Status = styled(Badge, {
-  base: {
-    root: { backgroundColor: "#262626" },
-    label: { color: "#FAFAFA" },
-  },
-  variants: {
-    tone: {
-      neutral: { root: { backgroundColor: "#404040" } },
-      success: { root: { backgroundColor: "#166534" } },
-    },
-  },
-  defaultVariants: { tone: "neutral" },
-});
-
-<Status label="Stable" tone="success" />;
-```
-
-Nested styled components merge configuration and render the deepest base once.
-See [`@opentui-ui/styles`](../styles) for resolution order and selector details.
+Behaviorless presentation such as Badge is installed from the registry rather
+than imported from this package. Consumer-owned recipes may use ordinary
+OpenTUI props or the optional [`@opentui-ui/styles`](../styles) infrastructure.
 
 ## License
 

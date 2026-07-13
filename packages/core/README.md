@@ -17,15 +17,15 @@ colors, spacing, glyphs, labels, or fixed visual trees.
 
 | Module | Core interface | Public parts |
 | --- | --- | --- |
-| Button | — | `ButtonRenderable` |
-| Checkbox | Root-owned state | `CheckboxRootRenderable`, `CheckboxIndicatorRenderable` |
+| Button | `ButtonStore` | `ButtonRenderable` |
+| Checkbox | `CheckboxStore` | `CheckboxRootRenderable`, `CheckboxIndicatorRenderable` |
 | Dialog | `DialogStore` | Root, Trigger, Portal, Backdrop, Popup, Title, Description, Close Renderables |
 | Input | OpenTUI-native state | `InputRenderable` |
 | RadioGroup | `RadioGroupStore` | Root, Item, Indicator Renderables |
-| Switch | Root-owned state | `SwitchRootRenderable`, `SwitchThumbRenderable` |
+| Switch | `SwitchStore` | `SwitchRootRenderable`, `SwitchThumbRenderable` |
 
-Core callers pass an owning Root or justified Store between compound parts.
-React and Solid hide the same wiring behind compound-component context.
+Core callers pass the owning Store between compound parts. React and Solid hide
+the same wiring behind compound-component context.
 
 ```ts
 import {
@@ -37,7 +37,7 @@ const root = new CheckboxRootRenderable(ctx, {
   defaultChecked: true,
   onCheckedChange: console.log,
 });
-const indicator = new CheckboxIndicatorRenderable(ctx, { root });
+const indicator = new CheckboxIndicatorRenderable(ctx, { store: root.store });
 
 root.add(indicator);
 parent.add(root);

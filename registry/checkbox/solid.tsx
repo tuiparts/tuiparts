@@ -1,14 +1,10 @@
 /** @jsxImportSource @opentui/solid */
 
-import {
-  Checkbox as CheckboxPrimitive,
-  type CheckboxProps as CheckboxPrimitiveProps,
-  type CheckboxState,
-} from "@opentui-ui/solid/checkbox";
+import { Checkbox as CheckboxPrimitive } from "@opentui-ui/solid/checkbox";
 import { splitProps } from "solid-js";
 
 export interface CheckboxProps
-  extends Omit<CheckboxPrimitiveProps, "children"> {
+  extends Omit<CheckboxPrimitive.Root.Props, "children"> {
   label: string;
   /** One terminal-cell mark; widen the editable mark cell for wider content. */
   mark?: string;
@@ -33,7 +29,7 @@ export function Checkbox(props: CheckboxProps) {
       disabled={recipe.disabled}
       {...root}
     >
-      {(state: CheckboxState) => (
+      {(state: CheckboxPrimitive.Root.State) => (
         <>
           <box width={1}>
             <CheckboxPrimitive.Indicator>

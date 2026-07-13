@@ -11,7 +11,7 @@ export interface SwitchState {
   readonly focused: boolean;
 }
 
-interface SwitchControllerOptions {
+export interface SwitchStoreOptions {
   checked?: boolean;
   defaultChecked?: boolean;
   disabled?: boolean;
@@ -20,86 +20,77 @@ interface SwitchControllerOptions {
 
 type SwitchStateListener = (state: SwitchState) => void;
 
-export class SwitchStateController {
-  private _controlled: boolean;
-  private _state: SwitchState;
-  private _onCheckedChange?: (checked: boolean) => void;
-  private readonly _listeners = new Set<SwitchStateListener>();
+export class SwitchStore {
+  private controlled: boolean;
+  private snapshot: SwitchState;
+  private onCheckedChange?: (checked: boolean) => void;
+  private readonly listeners = new Set<SwitchStateListener>();
 
-  constructor(options: SwitchControllerOptions = {}) {
-    this._controlled = options.checked !== undefined;
-    this._state = Object.freeze({
+  constructor(options: SwitchStoreOptions = {}) {
+    this.controlled = options.checked !== undefined;
+    this.snapshot = Object.freeze({
       checked: options.checked ?? options.defaultChecked ?? false,
       disabled: options.disabled ?? false,
       focused: false,
     });
-    this._onCheckedChange = options.onCheckedChange;
+    this.onCheckedChange = options.onCheckedChange;
   }
 
   get state(): SwitchState {
-    return this._state;
+    return this.snapshot;
   }
-
   getState(): SwitchState {
-    return this._state;
+    return this.snapshot;
   }
-
   subscribe(listener: SwitchStateListener): () => void {
-    this._listeners.add(listener);
-    return () => this._listeners.delete(listener);
+    this.listeners.add(listener);
+    return () => this.listeners.delete(listener);
   }
-
   requestToggle(): void {
-    if (this._state.disabled) return;
-    const checked = !this._state.checked;
-    if (!this._controlled) this.update({ checked });
-    this._onCheckedChange?.(checked);
+    if (this.snapshot.disabled) return;
+    const checked = !this.snapshot.checked;
+    if (!this.controlled) this.update({ checked });
+    this.onCheckedChange?.(checked);
   }
-
   setChecked(checked: boolean | null | undefined): void {
     if (typeof checked !== "boolean") {
-      this._controlled = false;
+      this.controlled = false;
       return;
     }
-    this._controlled = true;
+    this.controlled = true;
     this.update({ checked });
   }
-
   setDisabled(disabled: boolean): void {
     this.update({ disabled, ...(disabled ? { focused: false } : {}) });
   }
-
   setFocused(focused: boolean): void {
-    if (this._state.disabled && focused) return;
+    if (this.snapshot.disabled && focused) return;
     this.update({ focused });
   }
-
   setOnCheckedChange(callback: ((checked: boolean) => void) | undefined): void {
-    this._onCheckedChange = callback;
+    this.onCheckedChange = callback;
   }
-
   private update(next: Partial<SwitchState>): void {
-    const state = { ...this._state, ...next };
+    const state = { ...this.snapshot, ...next };
     if (
-      state.checked === this._state.checked &&
-      state.disabled === this._state.disabled &&
-      state.focused === this._state.focused
-    ) {
+      state.checked === this.snapshot.checked &&
+      state.disabled === this.snapshot.disabled &&
+      state.focused === this.snapshot.focused
+    )
       return;
-    }
-    this._state = Object.freeze(state);
-    for (const listener of this._listeners) listener(state);
+    this.snapshot = Object.freeze(state);
+    for (const listener of this.listeners) listener(state);
   }
 }
 
-export interface SwitchRootOptions
-  extends BoxOptions,
-    SwitchControllerOptions {}
+export interface SwitchRootOptions extends BoxOptions, SwitchStoreOptions {
+  store?: SwitchStore;
+}
 
 export class SwitchRootRenderable extends BoxRenderable {
   protected override _focusable = true;
 
-  protected _controller: SwitchStateController;
+  protected _store: SwitchStore;
   private _unsubscribe: () => void;
 
   constructor(ctx: RenderContext, options: SwitchRootOptions = {}) {
@@ -108,6 +99,7 @@ export class SwitchRootRenderable extends BoxRenderable {
       defaultChecked,
       disabled,
       onCheckedChange,
+      store,
       ...boxOptions
     } = options;
     super(ctx, {
@@ -117,43 +109,52 @@ export class SwitchRootRenderable extends BoxRenderable {
         if (
           event.defaultPrevented ||
           event.button !== 0 ||
-          this._controller.state.disabled
+          this._store.state.disabled
         )
           return;
         this.press();
         this.focus();
       },
     });
-    this._controller = new SwitchStateController({
-      checked,
-      defaultChecked,
-      disabled,
-      onCheckedChange,
-    });
-    this._unsubscribe = this._controller.subscribe(() => this.requestRender());
+    this._store =
+      store ??
+      new SwitchStore({
+        checked,
+        defaultChecked,
+        disabled,
+        onCheckedChange,
+      });
+    if (store) {
+      if (checked !== undefined) store.setChecked(checked);
+      if (disabled !== undefined) store.setDisabled(disabled);
+      if (onCheckedChange !== undefined)
+        store.setOnCheckedChange(onCheckedChange);
+    }
+    this._unsubscribe = this._store.subscribe(() => this.requestRender());
   }
 
   getState(): SwitchState {
-    return this._controller.state;
+    return this._store.state;
   }
 
   subscribe(listener: SwitchStateListener): () => void {
-    return this._controller.subscribe(listener);
+    return this._store.subscribe(listener);
   }
 
-  protected setStateController(controller: SwitchStateController): void {
-    if (this._controller === controller) return;
-    this._unsubscribe?.();
-    this._controller = controller;
-    this._unsubscribe = controller.subscribe(() => this.requestRender());
+  get store(): SwitchStore {
+    return this._store;
+  }
+  set store(store: SwitchStore) {
+    if (store !== this._store)
+      throw new Error("Switch.Root store cannot be replaced");
   }
 
   press(): void {
-    this._controller.requestToggle();
+    this._store.requestToggle();
   }
 
   override handleKeyPress(key: KeyEvent): boolean {
-    if (this._controller.state.disabled) return false;
+    if (this._store.state.disabled) return false;
     if (key.name === "space" || key.name === "return" || key.name === "enter") {
       this.press();
       return true;
@@ -162,36 +163,36 @@ export class SwitchRootRenderable extends BoxRenderable {
   }
 
   override focus(): void {
-    if (this._controller.state.disabled) return;
+    if (this._store.state.disabled) return;
     super.focus();
-    this._controller.setFocused(this._focused);
+    this._store.setFocused(this._focused);
   }
 
   override blur(): void {
     super.blur();
-    this._controller.setFocused(false);
+    this._store.setFocused(false);
   }
 
   get checked(): boolean {
-    return this._controller.state.checked;
+    return this._store.state.checked;
   }
 
   set checked(checked: boolean | null | undefined) {
-    this._controller.setChecked(checked);
+    this._store.setChecked(checked);
   }
 
   get disabled(): boolean {
-    return this._controller.state.disabled;
+    return this._store.state.disabled;
   }
 
   set disabled(disabled: boolean | null | undefined) {
     const next = disabled ?? false;
-    this._controller.setDisabled(next);
+    this._store.setDisabled(next);
     if (next && this._focused) super.blur();
   }
 
   set onCheckedChange(callback: ((checked: boolean) => void) | undefined) {
-    this._controller.setOnCheckedChange(callback);
+    this._store.setOnCheckedChange(callback);
   }
 
   override destroy(): void {
@@ -201,34 +202,33 @@ export class SwitchRootRenderable extends BoxRenderable {
 }
 
 export interface SwitchThumbOptions extends BoxOptions {
-  root: SwitchRootRenderable;
-}
-
-interface SwitchStateOwner {
-  getState(): SwitchState;
-  subscribe(listener: SwitchStateListener): () => void;
+  store: SwitchStore;
 }
 
 export class SwitchThumbRenderable extends BoxRenderable {
-  private _owner: SwitchStateOwner;
+  private _store: SwitchStore;
   private _unsubscribe: () => void;
 
   constructor(ctx: RenderContext, options: SwitchThumbOptions) {
-    const { root, ...boxOptions } = options;
+    const { store, ...boxOptions } = options;
     super(ctx, boxOptions);
-    this._owner = root;
-    this._unsubscribe = root.subscribe(() => this.requestRender());
+    this._store = store;
+    this._unsubscribe = store.subscribe(() => this.requestRender());
   }
 
   getState(): SwitchState {
-    return this._owner.getState();
+    return this._store.state;
   }
 
-  protected setStateOwner(owner: SwitchStateOwner): void {
-    if (this._owner === owner) return;
-    this._unsubscribe?.();
-    this._owner = owner;
-    this._unsubscribe = owner.subscribe(() => this.requestRender());
+  get store(): SwitchStore {
+    return this._store;
+  }
+
+  set store(store: SwitchStore) {
+    if (this._store === store) return;
+    this._unsubscribe();
+    this._store = store;
+    this._unsubscribe = store.subscribe(() => this.requestRender());
   }
 
   override destroy(): void {

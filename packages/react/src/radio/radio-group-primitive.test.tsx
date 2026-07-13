@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
-import type {
+import {
   RadioGroupItemRenderable,
-  RadioGroupItemState,
+  type RadioGroupItemState,
   RadioGroupRootRenderable,
 } from "@opentui-ui/core/radio";
 import { act, createElement, createRef, type ReactNode, useState } from "react";
@@ -53,6 +53,9 @@ describe("React RadioGroup", () => {
     const beta = setup.renderer.root.findDescendantById(
       "beta",
     ) as RadioGroupItemRenderable;
+    expect(root.constructor).toBe(RadioGroupRootRenderable);
+    expect(alpha.constructor).toBe(RadioGroupItemRenderable);
+    expect(alpha.store).toBe(root.store);
     expect(
       setup.renderer.root.findDescendantById("beta-indicator"),
     ).toMatchObject({ visible: false });

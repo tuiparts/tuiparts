@@ -1,17 +1,12 @@
 /** @jsxImportSource @opentui/solid */
 
-import {
-  type RadioGroupItemState,
-  RadioGroup as RadioGroupPrimitive,
-  type RadioGroupItemProps as RadioGroupPrimitiveItemProps,
-  type RadioGroupProps as RadioGroupPrimitiveProps,
-} from "@opentui-ui/solid/radio";
+import { RadioGroup as RadioGroupPrimitive } from "@opentui-ui/solid/radio";
 import { splitProps } from "solid-js";
 
-export interface RadioGroupProps extends RadioGroupPrimitiveProps {}
+export interface RadioGroupProps extends RadioGroupPrimitive.Root.Props {}
 
 export interface RadioGroupItemProps
-  extends Omit<RadioGroupPrimitiveItemProps, "children"> {
+  extends Omit<RadioGroupPrimitive.Item.Props, "children"> {
   label: string;
   mark?: string;
   tone?: "accent" | "success";
@@ -48,7 +43,7 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
       disabled={recipe.disabled}
       {...item}
     >
-      {(state: RadioGroupItemState) => (
+      {(state: RadioGroupPrimitive.Item.State) => (
         <>
           <box width={1}>
             <RadioGroupPrimitive.Indicator>

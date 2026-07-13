@@ -1,14 +1,11 @@
 /** @jsxImportSource @opentui/solid */
 
-import {
-  Dialog as DialogPrimitive,
-  type DialogProps as DialogPrimitiveProps,
-  type DialogTriggerProps,
-} from "@opentui-ui/solid/dialog";
+import { Dialog as DialogPrimitive } from "@opentui-ui/solid/dialog";
 import type { JSX } from "solid-js";
 import { splitProps } from "solid-js";
 
-export interface DialogProps extends Omit<DialogPrimitiveProps, "children"> {
+export interface DialogProps
+  extends Omit<DialogPrimitive.Root.Props, "children"> {
   children?: JSX.Element;
   closeLabel?: string;
   description?: string;
@@ -74,7 +71,7 @@ export function Dialog(props: DialogProps) {
 }
 
 /** A small, editable trigger presentation for the packaged Trigger part. */
-export function DialogTrigger(props: DialogTriggerProps) {
+export function DialogTrigger(props: DialogPrimitive.Trigger.Props) {
   return (
     <DialogPrimitive.Trigger
       backgroundColor="#262626"

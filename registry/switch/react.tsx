@@ -1,11 +1,9 @@
 /** @jsxImportSource @opentui/react */
 
-import {
-  Switch as SwitchPrimitive,
-  type SwitchProps as SwitchPrimitiveProps,
-} from "@opentui-ui/react/switch";
+import { Switch as SwitchPrimitive } from "@opentui-ui/react/switch";
 
-export interface SwitchProps extends Omit<SwitchPrimitiveProps, "children"> {
+export interface SwitchProps
+  extends Omit<SwitchPrimitive.Root.Props, "children"> {
   density?: "compact" | "comfortable";
   label: string;
   symbols?: "round" | "ascii";

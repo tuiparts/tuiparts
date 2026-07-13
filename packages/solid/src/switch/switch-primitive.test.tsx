@@ -5,12 +5,12 @@ import type { TextRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
 import type {
-  SwitchState,
   SwitchRootRenderable,
+  SwitchState,
   SwitchThumbRenderable,
 } from "@opentui-ui/core/switch";
 import { createSignal } from "solid-js";
-import { Switch } from "./primitive";
+import * as Switch from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 

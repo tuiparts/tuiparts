@@ -7,6 +7,7 @@ import {
 import {
   CheckboxIndicatorRenderable,
   CheckboxRootRenderable,
+  CheckboxStore,
 } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
@@ -17,6 +18,17 @@ afterEach(() => {
 });
 
 describe("Checkbox primitive", () => {
+  it("accepts an externally owned Store without replacing it", async () => {
+    setup = await createTestRenderer({ width: 30, height: 5 });
+    const store = new CheckboxStore({ defaultChecked: true });
+    const root = new CheckboxRootRenderable(setup.renderer, { store });
+
+    expect(root.store).toBe(store);
+    expect(root.getState()).toBe(store.state);
+    root.press();
+    expect(store.state.checked).toBe(false);
+  });
+
   it("leaves visual assembly to the caller while sharing behavior with parts", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
     const root = new CheckboxRootRenderable(setup.renderer, {
@@ -25,7 +37,7 @@ describe("Checkbox primitive", () => {
     });
     const indicator = new CheckboxIndicatorRenderable(setup.renderer, {
       id: "checkbox-indicator",
-      root,
+      store: root.store,
     });
 
     expect(root.getChildren()).toEqual([]);
@@ -34,6 +46,7 @@ describe("Checkbox primitive", () => {
 
     expect(root.checked).toBe(false);
     expect(indicator.visible).toBe(false);
+    expect(indicator.store).toBe(root.store);
 
     root.press();
 

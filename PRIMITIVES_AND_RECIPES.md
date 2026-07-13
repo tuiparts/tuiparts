@@ -130,9 +130,10 @@ its Thumb like Checkbox's conditional Indicator:
 - Editable Core, React, and Solid recipes own track and thumb glyphs, track
   width, density, spacing, positioning, colors, and labels.
 
-Checkbox and Switch keep component-specific state controllers private. Their
-public Roots expose state and subscriptions directly, avoiding both a generic
-toggle base class and shallow public Store interfaces.
+Checkbox and Switch use component-specific, attachable Core Stores. React
+creates those Stores automatically, while framework consumers configure Roots
+through props and callbacks. The Stores share no generic public toggle base
+class.
 
 Reference implementations:
 

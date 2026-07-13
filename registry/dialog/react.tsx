@@ -1,13 +1,10 @@
 /** @jsxImportSource @opentui/react */
 
-import {
-  Dialog as DialogPrimitive,
-  type DialogProps as DialogPrimitiveProps,
-  type DialogTriggerProps,
-} from "@opentui-ui/react/dialog";
+import { Dialog as DialogPrimitive } from "@opentui-ui/react/dialog";
 import type { ReactNode } from "react";
 
-export interface DialogProps extends Omit<DialogPrimitiveProps, "children"> {
+export interface DialogProps
+  extends Omit<DialogPrimitive.Root.Props, "children"> {
   children?: ReactNode;
   closeLabel?: string;
   description?: string;
@@ -70,7 +67,7 @@ export function Dialog({
 }
 
 /** A small, editable trigger presentation for the packaged Trigger part. */
-export function DialogTrigger(props: DialogTriggerProps) {
+export function DialogTrigger(props: DialogPrimitive.Trigger.Props) {
   return (
     <DialogPrimitive.Trigger
       backgroundColor="#262626"

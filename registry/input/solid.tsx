@@ -1,16 +1,13 @@
 /** @jsxImportSource @opentui/solid */
 
-import {
-  Input as BaseInput,
-  type InputProps as BaseInputProps,
-} from "@opentui-ui/solid/input";
+import { Input as InputPrimitive } from "@opentui-ui/solid/input";
 
-export interface InputProps extends BaseInputProps {}
+export interface InputProps extends InputPrimitive.Props {}
 
 /** Consumer-owned Solid Input recipe with editable visual defaults. */
 export function Input(props: InputProps) {
   return (
-    <BaseInput
+    <InputPrimitive
       backgroundColor="transparent"
       cursorColor="#E5E5E5"
       focusedBackgroundColor="transparent"

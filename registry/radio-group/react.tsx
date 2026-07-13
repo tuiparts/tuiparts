@@ -1,15 +1,11 @@
 /** @jsxImportSource @opentui/react */
 
-import {
-  RadioGroup as RadioGroupPrimitive,
-  type RadioGroupItemProps as RadioGroupPrimitiveItemProps,
-  type RadioGroupProps as RadioGroupPrimitiveProps,
-} from "@opentui-ui/react/radio";
+import { RadioGroup as RadioGroupPrimitive } from "@opentui-ui/react/radio";
 
-export interface RadioGroupProps extends RadioGroupPrimitiveProps {}
+export interface RadioGroupProps extends RadioGroupPrimitive.Root.Props {}
 
 export interface RadioGroupItemProps
-  extends Omit<RadioGroupPrimitiveItemProps, "children"> {
+  extends Omit<RadioGroupPrimitive.Item.Props, "children"> {
   label: string;
   mark?: string;
   tone?: "accent" | "success";

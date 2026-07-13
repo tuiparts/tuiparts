@@ -1,10 +1,9 @@
-import type { RenderContext } from "@opentui/core";
 import { extend } from "@opentui/react";
-import { SwitchStateController } from "@opentui-ui/core/_internal/switch";
 import {
   type SwitchRootOptions,
   SwitchRootRenderable,
   type SwitchState,
+  SwitchStore,
   type SwitchThumbOptions,
   SwitchThumbRenderable,
 } from "@opentui-ui/core/switch";
@@ -22,103 +21,57 @@ import {
 const ROOT_TAG = "otui-switch-root";
 const THUMB_TAG = "otui-switch-thumb";
 
-type AdapterRootOptions = SwitchRootOptions & {
-  controller: SwitchStateController;
-};
-type AdapterThumbOptions = Omit<SwitchThumbOptions, "root"> & {
-  controller: SwitchStateController;
-};
-
-class ReactSwitchRootRenderable extends SwitchRootRenderable {
-  private _adapterController: SwitchStateController;
-
-  constructor(ctx: RenderContext, options: AdapterRootOptions) {
-    const { controller, ...rootOptions } = options;
-    super(ctx, rootOptions);
-    this._adapterController = controller;
-    this.setStateController(controller);
-  }
-
-  get controller(): SwitchStateController {
-    return this._adapterController;
-  }
-
-  set controller(controller: SwitchStateController) {
-    this._adapterController = controller;
-    this.setStateController(controller);
-  }
-}
-
-class ReactSwitchThumbRenderable extends SwitchThumbRenderable {
-  private _adapterController: SwitchStateController;
-
-  constructor(ctx: RenderContext, options: AdapterThumbOptions) {
-    const { controller, ...thumbOptions } = options;
-    super(ctx, {
-      ...thumbOptions,
-      root: controller as unknown as SwitchRootRenderable,
-    });
-    this._adapterController = controller;
-  }
-
-  get controller(): SwitchStateController {
-    return this._adapterController;
-  }
-
-  set controller(controller: SwitchStateController) {
-    this._adapterController = controller;
-    this.setStateOwner(controller);
-  }
-}
-
 extend({
-  [ROOT_TAG]: ReactSwitchRootRenderable,
-  [THUMB_TAG]: ReactSwitchThumbRenderable,
+  [ROOT_TAG]: SwitchRootRenderable,
+  [THUMB_TAG]: SwitchThumbRenderable,
 });
 
-const SwitchContext = createContext<SwitchStateController | null>(null);
+const SwitchContext = createContext<SwitchStore | null>(null);
 
-export type SwitchProps = SwitchRootOptions & {
+type RootProps = Omit<SwitchRootOptions, "store"> & {
   children?: ReactNode | ((state: SwitchState) => ReactNode);
   ref?: Ref<SwitchRootRenderable>;
 };
 
-export type SwitchThumbProps = Omit<SwitchThumbOptions, "root"> & {
+type ThumbProps = Omit<SwitchThumbOptions, "store"> & {
   children?: ReactNode;
   ref?: Ref<SwitchThumbRenderable>;
 };
 
-function SwitchRoot({ children, ...props }: SwitchProps): ReactElement {
-  const controllerRef = useRef<SwitchStateController | null>(null);
-  if (!controllerRef.current)
-    controllerRef.current = new SwitchStateController(props);
-  const controller = controllerRef.current;
+export function Root({ children, ...props }: Root.Props): ReactElement {
+  const storeRef = useRef<SwitchStore | null>(null);
+  if (!storeRef.current) storeRef.current = new SwitchStore(props);
+  const store = storeRef.current;
   const state = useSyncExternalStore(
-    (listener) => controller.subscribe(listener),
-    () => controller.state,
-    () => controller.state,
+    (listener) => store.subscribe(listener),
+    () => store.state,
+    () => store.state,
   );
   const content = typeof children === "function" ? children(state) : children;
 
   return createElement(
     SwitchContext.Provider,
-    { value: controller },
-    createElement(ROOT_TAG, { ...props, controller }, content),
+    { value: store },
+    createElement(ROOT_TAG, { ...props, store }, content),
   );
 }
 
-function SwitchThumb({ children, ...props }: SwitchThumbProps): ReactElement {
-  const controller = useContext(SwitchContext);
-  if (!controller) {
+export function Thumb({ children, ...props }: Thumb.Props): ReactElement {
+  const store = useContext(SwitchContext);
+  if (!store) {
     throw new Error("Switch.Thumb must be rendered inside Switch.Root");
   }
-  return createElement(THUMB_TAG, { ...props, controller }, children);
+  return createElement(THUMB_TAG, { ...props, store }, children);
 }
 
-SwitchRoot.displayName = "Switch.Root";
-SwitchThumb.displayName = "Switch.Thumb";
+Root.displayName = "Switch.Root";
+Thumb.displayName = "Switch.Thumb";
 
-export const Switch = {
-  Root: SwitchRoot,
-  Thumb: SwitchThumb,
-} as const;
+export namespace Root {
+  export type Props = RootProps;
+  export type State = SwitchState;
+}
+
+export namespace Thumb {
+  export type Props = ThumbProps;
+}

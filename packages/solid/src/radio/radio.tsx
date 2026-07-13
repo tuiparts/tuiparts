@@ -1,20 +1,13 @@
 import {
-  RADIO_GROUP_META,
   RADIO_META,
-  type RadioGroupOptions,
-  RadioGroupRenderable,
-  type RadioGroupSlotStyleMap,
-  type RadioGroupSlots,
   type RadioOptions,
   RadioRenderable,
   type RadioSlotStyleMap,
   type RadioSlots,
 } from "@opentui-ui/core/radio";
-import type { JSX } from "solid-js";
 import { createOtuiComponent } from "../createOtuiComponent";
 
-export type RadioProps = RadioOptions;
-export type RadioGroupProps = RadioGroupOptions & { children?: JSX.Element };
+type RadioProps = RadioOptions;
 
 export const Radio = createOtuiComponent<
   RadioProps,
@@ -23,9 +16,7 @@ export const Radio = createOtuiComponent<
   typeof RADIO_META.stateKeys
 >(RadioRenderable, RADIO_META);
 
-export const RadioGroup = createOtuiComponent<
-  RadioGroupProps,
-  RadioGroupSlots,
-  RadioGroupSlotStyleMap,
-  typeof RADIO_GROUP_META.stateKeys
->(RadioGroupRenderable, RADIO_GROUP_META);
+export namespace Radio {
+  export type Props = RadioProps;
+  export type State = import("@opentui-ui/core/radio").RadioState;
+}

@@ -5,4 +5,4 @@
 ---
 
 Add foundation Dialog behavior with canonical `Dialog.Root` compound adapters,
-clean `DialogProps` and `DialogState` types, and editable registry recipes.
+part-scoped Props and State types, and editable registry recipes.

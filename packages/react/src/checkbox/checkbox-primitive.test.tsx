@@ -1,14 +1,14 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import type { TextRenderable } from "@opentui/core";
-import type { TestRendererSetup } from "@opentui/core/testing";
+import { TestRecorder, type TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
-import type {
+import {
   CheckboxIndicatorRenderable,
-  CheckboxState,
-  CheckboxRootRenderable,
+  type CheckboxRootRenderable,
+  type CheckboxState,
 } from "@opentui-ui/core/checkbox";
-import { act, createElement, type ReactNode, useState } from "react";
-import { Checkbox } from "./primitive";
+import { act, createElement, Fragment, type ReactNode, useState } from "react";
+import * as Checkbox from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 
@@ -23,6 +23,46 @@ afterEach(async () => {
 });
 
 describe("React Checkbox", () => {
+  it("never renders a controlled frame where Root content and Indicator disagree", async () => {
+    let setChecked: (checked: boolean) => void = () => {};
+
+    function App() {
+      const [checked, updateChecked] = useState(false);
+      setChecked = updateChecked;
+      return createElement(
+        Checkbox.Root,
+        { checked, flexDirection: "row", id: "frame-root" },
+        ((state: CheckboxState) =>
+          createElement(
+            Fragment,
+            null,
+            createElement("text", { content: state.checked ? "1" : "0" }),
+            createElement(
+              Checkbox.Indicator,
+              null,
+              createElement("text", { content: "x" }),
+            ),
+          )) as unknown as ReactNode,
+      );
+    }
+
+    setup = await testRender(createElement(App), { width: 4, height: 1 });
+    await setup.renderOnce();
+    const recorder = new TestRecorder(setup.renderer);
+    const visibleState = (frame: string) => frame.split("\n")[0]?.slice(0, 2);
+    expect(visibleState(setup.captureCharFrame())).toBe("0 ");
+
+    recorder.rec();
+    await act(async () => setChecked(true));
+    await setup.waitForFrame((frame) => visibleState(frame) === "1x");
+    recorder.stop();
+
+    expect(recorder.recordedFrames.length).toBeGreaterThan(0);
+    expect(
+      recorder.recordedFrames.map(({ frame }) => visibleState(frame)),
+    ).toEqual(recorder.recordedFrames.map(() => "1x"));
+  });
+
   it("composes public parts and arbitrary content around shared state", async () => {
     setup = await testRender(
       createElement(
@@ -47,6 +87,10 @@ describe("React Checkbox", () => {
     const indicator = setup.renderer.root.findDescendantById(
       "indicator",
     ) as CheckboxIndicatorRenderable;
+    expect(root.getState()).toBe(root.store.state);
+    expect(indicator.constructor).toBe(CheckboxIndicatorRenderable);
+    expect(indicator.store).toBe(root.store);
+    expect(indicator.getState()).toBe(root.store.state);
     expect(indicator.visible).toBe(false);
 
     await act(async () => {
@@ -56,14 +100,18 @@ describe("React Checkbox", () => {
 
     expect(root.checked).toBe(true);
     expect(indicator.visible).toBe(true);
+    expect(indicator.getState()).toBe(root.store.state);
   });
 
   it("exposes primitive state to consumer-owned rendering", async () => {
-    const renderState = (state: CheckboxState) =>
-      createElement("text", {
+    let renderedState: CheckboxState | undefined;
+    const renderState = (state: CheckboxState) => {
+      renderedState = state;
+      return createElement("text", {
         id: "state-label",
         content: state.checked ? "on" : "off",
       });
+    };
     setup = await testRender(
       createElement(
         Checkbox.Root,
@@ -77,6 +125,7 @@ describe("React Checkbox", () => {
     ) as CheckboxRootRenderable;
 
     expect(textContent("state-label")).toBe("off");
+    expect(renderedState).toBe(root.store.state);
 
     await act(async () => {
       root.press();
@@ -84,6 +133,7 @@ describe("React Checkbox", () => {
     });
 
     expect(textContent("state-label")).toBe("on");
+    expect(renderedState).toBe(root.store.state);
   });
 
   it("accepts controlled updates without replacing the Root", async () => {

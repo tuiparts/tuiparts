@@ -5,6 +5,6 @@
 ---
 
 Harden the canonical `Checkbox.Root` and `Checkbox.Indicator` contract across
-Core, React, and Solid, including clean `CheckboxProps` and `CheckboxState`
-types, primary-pointer cancellation, Root-owned state, retained refs, and
-retained Indicator lifecycle.
+Core, React, and Solid with an attachable Core `CheckboxStore`, part-scoped
+framework types, direct Store ownership for Indicator, automatic React wiring,
+primary-pointer cancellation, and retained Indicator lifecycle.

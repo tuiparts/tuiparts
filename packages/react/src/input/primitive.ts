@@ -19,13 +19,17 @@ class ReactInputRenderable extends InputRenderable {
 
 extend({ [INPUT_TAG]: ReactInputRenderable });
 
-export type InputProps = InputOptions & {
+type InputProps = InputOptions & {
   ref?: Ref<InputRenderable>;
 };
 
 /** React adapter for the OpenTUI-native Input primitive. */
-export function Input(props: InputProps): ReactElement {
+export function Input(props: Input.Props): ReactElement {
   return createElement(INPUT_TAG, props);
 }
 
 Input.displayName = "Input";
+
+export namespace Input {
+  export type Props = InputProps;
+}

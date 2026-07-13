@@ -55,7 +55,7 @@ class SwitchRecipeRenderable extends SwitchRootRenderable {
       height: 1,
       left: this.getState().checked ? trackWidth - 1 : 0,
       position: "absolute",
-      root: this,
+      store: this.store,
       width: 1,
     });
     thumb.add(

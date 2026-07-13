@@ -1,13 +1,9 @@
 /** @jsxImportSource @opentui/solid */
 
-import {
-  Button as ButtonPrimitive,
-  type ButtonProps as ButtonPrimitiveProps,
-  type ButtonState,
-} from "@opentui-ui/solid/button";
+import { Button as ButtonPrimitive } from "@opentui-ui/solid/button";
 import { splitProps } from "solid-js";
 
-export interface ButtonProps extends Omit<ButtonPrimitiveProps, "children"> {
+export interface ButtonProps extends Omit<ButtonPrimitive.Props, "children"> {
   intent?: "neutral" | "primary";
   label: string;
   size?: "compact" | "comfortable";
@@ -33,7 +29,7 @@ export function Button(props: ButtonProps) {
       disabled={recipe.disabled}
       {...root}
     >
-      {(state: ButtonState) => (
+      {(state: ButtonPrimitive.State) => (
         <box
           backgroundColor={
             state.disabled

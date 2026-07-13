@@ -1,16 +1,13 @@
 /** @jsxImportSource @opentui/react */
 
-import {
-  Input as BaseInput,
-  type InputProps as BaseInputProps,
-} from "@opentui-ui/react/input";
+import { Input as InputPrimitive } from "@opentui-ui/react/input";
 
-export interface InputProps extends BaseInputProps {}
+export interface InputProps extends InputPrimitive.Props {}
 
 /** Consumer-owned React Input recipe with editable visual defaults. */
 export function Input(props: InputProps) {
   return (
-    <BaseInput
+    <InputPrimitive
       backgroundColor="transparent"
       cursorColor="#E5E5E5"
       focusedBackgroundColor="transparent"

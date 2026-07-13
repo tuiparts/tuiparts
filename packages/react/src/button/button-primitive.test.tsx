@@ -47,6 +47,7 @@ describe("React Button", () => {
     ) as ButtonRenderable;
 
     expect(buttonRef as unknown).toBe(root);
+    expect(root.getState()).toBe(root.store.state);
     expect(textContent("content")).toBe("Ready");
     await act(async () => root.focus());
     await setup.waitFor(() => textContent("content") === "Focused");

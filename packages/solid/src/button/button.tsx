@@ -2,41 +2,24 @@ import type { JSX } from "@opentui/solid";
 import { useRenderer } from "@opentui/solid";
 import {
   type ButtonOptions,
+  type ButtonPressDetails,
   ButtonRenderable,
   type ButtonState,
 } from "@opentui-ui/core/button";
-import {
-  createEffect,
-  createSignal,
-  onCleanup,
-  type Ref,
-  splitProps,
-  untrack,
-} from "solid-js";
+import { createEffect, type Ref, splitProps, untrack } from "solid-js";
 import {
   setRenderableRef,
   spreadRenderableProps,
 } from "../internal/renderable-props";
+import { createRenderableState } from "../internal/renderable-state";
 
-export type ButtonProps = ButtonOptions & {
+type ButtonProps = ButtonOptions & {
   children?: JSX.Element | ((state: ButtonState) => JSX.Element);
   ref?: Ref<ButtonRenderable>;
 };
 
-export function Button(props: ButtonProps): JSX.Element {
+export function Button(props: Button.Props): JSX.Element {
   const renderer = useRenderer();
-  const [state, setState] = createSignal<ButtonState>();
-  const publicState: ButtonState = {
-    get disabled() {
-      return state()?.disabled ?? props.disabled ?? false;
-    },
-    get focused() {
-      return state()?.focused ?? false;
-    },
-    get pressed() {
-      return state()?.pressed ?? false;
-    },
-  };
   const [local, initialProps] = splitProps(props, [
     "children",
     "disabled",
@@ -51,12 +34,22 @@ export function Button(props: ButtonProps): JSX.Element {
       onPress: local.onPress,
     })),
   );
-  setState(element.getState());
+  const state = createRenderableState(element, element.getState());
+  const publicState: ButtonState = {
+    get disabled() {
+      return state().disabled;
+    },
+    get focused() {
+      return state().focused;
+    },
+    get pressed() {
+      return state().pressed;
+    },
+  };
   createEffect(() => {
     element.disabled = local.disabled;
     element.onPress = local.onPress;
   });
-  onCleanup(element.subscribe(setState));
   setRenderableRef(local.ref, element);
   spreadRenderableProps(element, () => {
     const child = local.children;
@@ -64,4 +57,10 @@ export function Button(props: ButtonProps): JSX.Element {
     return { ...initialProps, children };
   });
   return element;
+}
+
+export namespace Button {
+  export type Props = ButtonProps;
+  export type State = ButtonState;
+  export type PressDetails = ButtonPressDetails;
 }

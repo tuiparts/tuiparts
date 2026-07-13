@@ -4,7 +4,11 @@ import {
   createTestRenderer,
   type TestRendererSetup,
 } from "@opentui/core/testing";
-import { SwitchRootRenderable, SwitchThumbRenderable } from "./primitive";
+import {
+  SwitchRootRenderable,
+  SwitchStore,
+  SwitchThumbRenderable,
+} from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 
@@ -14,6 +18,17 @@ afterEach(() => {
 });
 
 describe("Switch primitive", () => {
+  it("accepts an externally owned Store without replacing it", async () => {
+    setup = await createTestRenderer({ width: 30, height: 5 });
+    const store = new SwitchStore({ defaultChecked: true });
+    const root = new SwitchRootRenderable(setup.renderer, { store });
+
+    expect(root.store).toBe(store);
+    expect(root.getState()).toBe(store.state);
+    root.press();
+    expect(store.state.checked).toBe(false);
+  });
+
   it("leaves visual assembly to the caller while sharing readonly state with Thumb", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
     const root = new SwitchRootRenderable(setup.renderer, {
@@ -22,7 +37,7 @@ describe("Switch primitive", () => {
     });
     const thumb = new SwitchThumbRenderable(setup.renderer, {
       id: "switch-thumb",
-      root,
+      store: root.store,
     });
 
     expect(root.getChildren()).toEqual([]);
@@ -30,6 +45,7 @@ describe("Switch primitive", () => {
     setup.renderer.root.add(root);
 
     expect(root.checked).toBe(false);
+    expect(thumb.store).toBe(root.store);
     expect(thumb.getState()).toEqual({
       checked: false,
       disabled: false,

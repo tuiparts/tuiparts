@@ -1,22 +1,22 @@
 import type { JSX } from "@opentui/solid";
 import { useRenderer } from "@opentui/solid";
 import {
+  type RadioGroupChangeDetails,
   type RadioGroupIndicatorOptions,
   RadioGroupIndicatorRenderable,
   type RadioGroupItemOptions,
   RadioGroupItemRenderable,
   type RadioGroupItemState,
-  type RadioGroupState,
   type RadioGroupRootOptions,
   RadioGroupRootRenderable,
+  type RadioGroupState,
   RadioGroupStore,
+  type RadioGroupValueChangeHandler,
 } from "@opentui-ui/core/radio";
 import {
   createComponent,
   createContext,
   createEffect,
-  createSignal,
-  onCleanup,
   type Ref,
   Show,
   splitProps,
@@ -27,30 +27,28 @@ import {
   setRenderableRef,
   spreadRenderableProps,
 } from "../internal/renderable-props";
+import { createRenderableState } from "../internal/renderable-state";
 
 const RadioGroupContext = createContext<RadioGroupStore>();
 const RadioGroupItemContext = createContext<RadioGroupItemRenderable>();
 
-export type RadioGroupProps = Omit<RadioGroupRootOptions, "store"> & {
+type RootProps = Omit<RadioGroupRootOptions, "store"> & {
   children?: JSX.Element | ((state: RadioGroupState) => JSX.Element);
   ref?: Ref<RadioGroupRootRenderable>;
 };
 
-export type RadioGroupItemProps = Omit<RadioGroupItemOptions, "store"> & {
+type ItemProps = Omit<RadioGroupItemOptions, "store"> & {
   children?: JSX.Element | ((state: RadioGroupItemState) => JSX.Element);
   ref?: Ref<RadioGroupItemRenderable>;
 };
 
-export type RadioGroupIndicatorProps = Omit<
-  RadioGroupIndicatorOptions,
-  "item"
-> & {
+type IndicatorProps = Omit<RadioGroupIndicatorOptions, "item"> & {
   children?: JSX.Element;
   keepMounted?: boolean;
   ref?: Ref<RadioGroupIndicatorRenderable>;
 };
 
-function RadioGroupRoot(props: RadioGroupProps): JSX.Element {
+export function Root(props: Root.Props): JSX.Element {
   const renderer = useRenderer();
   const store = new RadioGroupStore({
     value: props.value,
@@ -58,7 +56,7 @@ function RadioGroupRoot(props: RadioGroupProps): JSX.Element {
     disabled: props.disabled,
     onValueChange: props.onValueChange,
   });
-  const [state, setState] = createSignal(store.state);
+  const state = createRenderableState(store, store.state);
   const publicState: RadioGroupState = {
     get value() {
       return state().value;
@@ -84,7 +82,6 @@ function RadioGroupRoot(props: RadioGroupProps): JSX.Element {
     element.disabled = local.disabled;
     element.onValueChange = local.onValueChange;
   });
-  onCleanup(store.subscribe(setState));
   setRenderableRef(local.ref, element);
 
   return createComponent(RadioGroupContext.Provider, {
@@ -98,7 +95,7 @@ function RadioGroupRoot(props: RadioGroupProps): JSX.Element {
   });
 }
 
-function RadioGroupItem(props: RadioGroupItemProps): JSX.Element {
+export function Item(props: Item.Props): JSX.Element {
   const renderer = useRenderer();
   const store = useContext(RadioGroupContext);
   if (!store) {
@@ -123,7 +120,7 @@ function RadioGroupItem(props: RadioGroupItemProps): JSX.Element {
     element.value = local.value;
     element.disabled = local.disabled;
   });
-  const [state, setState] = createSignal(element.getState());
+  const state = createRenderableState(element, element.getState());
   const publicState: RadioGroupItemState = {
     get value() {
       return state().value;
@@ -144,7 +141,6 @@ function RadioGroupItem(props: RadioGroupItemProps): JSX.Element {
       return state().tabbable;
     },
   };
-  onCleanup(element.subscribe(setState));
   setRenderableRef(local.ref, element);
 
   return createComponent(RadioGroupItemContext.Provider, {
@@ -158,7 +154,7 @@ function RadioGroupItem(props: RadioGroupItemProps): JSX.Element {
   });
 }
 
-function RadioGroupIndicator(props: RadioGroupIndicatorProps): JSX.Element {
+export function Indicator(props: Indicator.Props): JSX.Element {
   const renderer = useRenderer();
   const item = useContext(RadioGroupItemContext);
   if (!item) {
@@ -166,13 +162,12 @@ function RadioGroupIndicator(props: RadioGroupIndicatorProps): JSX.Element {
       "RadioGroup.Indicator must be rendered inside RadioGroup.Item",
     );
   }
-  const [state, setState] = createSignal(item.getState());
+  const state = createRenderableState(item, item.getState());
   const [local, initialProps] = splitProps(props, [
     "children",
     "keepMounted",
     "ref",
   ]);
-  onCleanup(item.subscribe(setState));
 
   return createComponent(Show, {
     keyed: true,
@@ -192,8 +187,18 @@ function RadioGroupIndicator(props: RadioGroupIndicatorProps): JSX.Element {
   });
 }
 
-export const RadioGroup = {
-  Root: RadioGroupRoot,
-  Item: RadioGroupItem,
-  Indicator: RadioGroupIndicator,
-} as const;
+export namespace Root {
+  export type Props = RootProps;
+  export type State = RadioGroupState;
+  export type ChangeDetails = RadioGroupChangeDetails;
+  export type ValueChangeHandler = RadioGroupValueChangeHandler;
+}
+
+export namespace Item {
+  export type Props = ItemProps;
+  export type State = RadioGroupItemState;
+}
+
+export namespace Indicator {
+  export type Props = IndicatorProps;
+}

@@ -2,13 +2,13 @@ import { afterEach, describe, expect, it } from "bun:test";
 import type { TextRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
-import type {
-  SwitchRootRenderable,
-  SwitchState,
+import {
+  type SwitchRootRenderable,
+  type SwitchState,
   SwitchThumbRenderable,
 } from "@opentui-ui/core/switch";
 import { act, createElement, type ReactNode, useState } from "react";
-import { Switch } from "./primitive";
+import * as Switch from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 
@@ -39,6 +39,10 @@ describe("React Switch", () => {
     const thumb = setup.renderer.root.findDescendantById(
       "thumb",
     ) as SwitchThumbRenderable;
+    expect(root.getState()).toBe(root.store.state);
+    expect(thumb.constructor).toBe(SwitchThumbRenderable);
+    expect(thumb.store).toBe(root.store);
+    expect(thumb.getState()).toBe(root.store.state);
 
     expect(root.getChildren().map((child) => child.id)).toEqual([
       "thumb",
@@ -50,6 +54,7 @@ describe("React Switch", () => {
     await setup.waitFor(() => thumb.getState().checked);
 
     expect(root.checked).toBe(true);
+    expect(thumb.getState()).toBe(root.store.state);
     expect(setup.renderer.root.findDescendantById("thumb")).toBe(thumb);
   });
 

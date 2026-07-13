@@ -35,6 +35,7 @@ opentui-ui/
 |------|----------|-------|
 | Add/migrate primitive | `.scratch/opentui-primitives-v1/issues/` | Work only the current dependency frontier |
 | Primitive architecture | `PRIMITIVES_AND_RECIPES.md` | Package behavior; copy opinionated recipes |
+| Architecture decisions | `docs/adr/` | Read accepted ADRs before changing public APIs, ownership, package boundaries, or adapter state flow |
 | Migration roadmap | `ROADMAP.md`, `.scratch/opentui-primitives-v1/` | Durable phases + local executable tickets |
 | Editable recipes | `registry/` | Framework-specific source built on packaged primitives |
 | React binding | `packages/react/src/` | Mirrors core structure |
@@ -64,6 +65,7 @@ opentui-ui/
 
 ## CONVENTIONS
 
+- **Accepted ADRs are binding context** - Read `docs/adr/*.md` before architectural work and update or supersede the relevant ADR when a decision changes
 - **pnpm workspace** - Use `pnpm -r` for recursive commands
 - **ES Modules** - All packages use `"type": "module"`
 - **Biome** - Linting/formatting (spaces, double quotes)
@@ -84,6 +86,8 @@ opentui-ui/
 ## UNIQUE STYLES
 
 - **Public parts** - Primitives expose independently composable nodes; parts are not merely style slots
+- **Passive part ownership** - State-reflecting parts consume their Core Store directly; do not fake a Root or subclass a part just to adapt Store ownership
+- **Framework adapters** - Put same-instance Store setters on Core Renderables; do not subclass solely to make reconciler prop assignment legal
 - **Recipe styling** - Consumer-owned recipes may expose slots, variants, and state selectors
 - **State selectors** - Recipe styles target metadata states with `_checked`, `_focused`, and similar keys
 - **Component meta** - Components carry metadata via `$$OtuiComponentMeta` symbol

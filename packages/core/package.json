@@ -13,9 +13,6 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./_internal/button": "./src/_internal/button.ts",
-    "./_internal/checkbox": "./src/_internal/checkbox.ts",
-    "./_internal/switch": "./src/_internal/switch.ts",
     "./badge": "./src/badge/index.ts",
     "./button": "./src/button/index.ts",
     "./checkbox": "./src/checkbox/index.ts",
@@ -31,18 +28,6 @@
       ".": {
         "types": "./dist/index.d.mts",
         "import": "./dist/index.mjs"
-      },
-      "./_internal/button": {
-        "types": "./dist/_internal/button.d.mts",
-        "import": "./dist/_internal/button.mjs"
-      },
-      "./_internal/checkbox": {
-        "types": "./dist/_internal/checkbox.d.mts",
-        "import": "./dist/_internal/checkbox.mjs"
-      },
-      "./_internal/switch": {
-        "types": "./dist/_internal/switch.d.mts",
-        "import": "./dist/_internal/switch.mjs"
       },
       "./badge": {
         "types": "./dist/badge/index.d.mts",

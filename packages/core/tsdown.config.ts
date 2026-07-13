@@ -3,9 +3,6 @@ import { defineConfig } from "tsdown";
 export default defineConfig({
   entry: [
     "src/index.ts",
-    "src/_internal/button.ts",
-    "src/_internal/checkbox.ts",
-    "src/_internal/switch.ts",
     "src/badge/index.ts",
     "src/button/index.ts",
     "src/checkbox/index.ts",

@@ -12,7 +12,7 @@ import type {
   DialogTriggerRenderable,
 } from "@opentui-ui/core/dialog";
 import { act, createElement, createRef, type ReactNode, useState } from "react";
-import { Dialog } from "./primitive";
+import * as Dialog from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 

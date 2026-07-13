@@ -6,4 +6,5 @@
 
 Add the canonical `RadioGroup.Root`, `RadioGroup.Item`, and
 `RadioGroup.Indicator` collection interfaces with keyboard navigation, dynamic
-Item lifecycle, and editable registry recipes.
+Item lifecycle, direct Core Renderable registration in React, and editable
+registry recipes.

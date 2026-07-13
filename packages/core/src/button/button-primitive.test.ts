@@ -4,7 +4,11 @@ import {
   createTestRenderer,
   type TestRendererSetup,
 } from "@opentui/core/testing";
-import { type ButtonPressDetails, ButtonRenderable } from "./index";
+import {
+  type ButtonPressDetails,
+  ButtonRenderable,
+  ButtonStore,
+} from "./index";
 
 let setup: TestRendererSetup | undefined;
 
@@ -14,6 +18,20 @@ afterEach(() => {
 });
 
 describe("Button primitive", () => {
+  it("accepts an externally owned Store without replacing it", async () => {
+    setup = await createTestRenderer({ width: 30, height: 5 });
+    const presses: ButtonPressDetails[] = [];
+    const store = new ButtonStore({
+      onPress: (details) => presses.push(details),
+    });
+    const root = new ButtonRenderable(setup.renderer, { store });
+
+    expect(root.store).toBe(store);
+    expect(root.getState()).toBe(store.state);
+    root.press();
+    expect(presses).toEqual([{ source: "imperative" }]);
+  });
+
   it("leaves visual assembly to the caller and exposes readonly state", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
     const root = new ButtonRenderable(setup.renderer, {

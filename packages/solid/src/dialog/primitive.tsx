@@ -1,7 +1,6 @@
 /** @jsxImportSource @opentui/solid */
 
 import { extend, Portal as SolidPortal, useRenderer } from "@opentui/solid";
-import type { DialogState } from "@opentui-ui/core/dialog";
 import {
   type DialogBackdropOptions,
   DialogBackdropRenderable,
@@ -9,12 +8,15 @@ import {
   DialogCloseRenderable,
   type DialogDescriptionOptions,
   DialogDescriptionRenderable,
+  type DialogOpenChangeDetails,
+  type DialogOpenChangeReason,
   type DialogPopupOptions,
   DialogPopupRenderable,
   type DialogPortalOptions,
   DialogPortalRenderable,
   type DialogRootOptions,
   DialogRootRenderable,
+  type DialogState,
   DialogStore,
   type DialogTitleOptions,
   DialogTitleRenderable,
@@ -25,7 +27,6 @@ import {
   createComponent,
   createContext,
   createEffect,
-  createSignal,
   type JSX,
   onCleanup,
   onMount,
@@ -38,6 +39,7 @@ import {
   setRenderableRef,
   spreadRenderableProps,
 } from "../internal/renderable-props";
+import { createRenderableState } from "../internal/renderable-state";
 
 const tags = {
   root: "otui-dialog-root",
@@ -58,35 +60,35 @@ extend({
   [tags.close]: DialogCloseRenderable,
 });
 const StoreContext = createContext<DialogStore>();
-export type DialogProps = Omit<DialogRootOptions, "store"> & {
+type RootProps = Omit<DialogRootOptions, "store"> & {
   children?: JSX.Element | ((state: DialogState) => JSX.Element);
   ref?: Ref<DialogRootRenderable>;
 };
-export type DialogTriggerProps = Omit<DialogTriggerOptions, "store"> & {
+type TriggerProps = Omit<DialogTriggerOptions, "store"> & {
   children?: JSX.Element;
   ref?: Ref<DialogTriggerRenderable>;
 };
-export type DialogPortalProps = Omit<DialogPortalOptions, "store"> & {
+type PortalProps = Omit<DialogPortalOptions, "store"> & {
   children?: JSX.Element;
   ref?: Ref<DialogPortalRenderable>;
 };
-export type DialogBackdropProps = Omit<DialogBackdropOptions, "store"> & {
+type BackdropProps = Omit<DialogBackdropOptions, "store"> & {
   children?: JSX.Element;
   ref?: Ref<DialogBackdropRenderable>;
 };
-export type DialogPopupProps = Omit<DialogPopupOptions, "store"> & {
+type PopupProps = Omit<DialogPopupOptions, "store"> & {
   children?: JSX.Element;
   ref?: Ref<DialogPopupRenderable>;
 };
-export type DialogTitleProps = Omit<DialogTitleOptions, "store"> & {
+type TitleProps = Omit<DialogTitleOptions, "store"> & {
   children?: JSX.Element;
   ref?: Ref<DialogTitleRenderable>;
 };
-export type DialogDescriptionProps = Omit<DialogDescriptionOptions, "store"> & {
+type DescriptionProps = Omit<DialogDescriptionOptions, "store"> & {
   children?: JSX.Element;
   ref?: Ref<DialogDescriptionRenderable>;
 };
-export type DialogCloseProps = Omit<DialogCloseOptions, "store"> & {
+type CloseProps = Omit<DialogCloseOptions, "store"> & {
   children?: JSX.Element;
   ref?: Ref<DialogCloseRenderable>;
 };
@@ -98,13 +100,13 @@ function useStore(name: string): DialogStore {
   return store;
 }
 
-function Root(props: DialogProps): JSX.Element {
+export function Root(props: Root.Props): JSX.Element {
   const renderer = useRenderer();
   const store = new DialogStore(
     renderer,
     untrack(() => props),
   );
-  const [state, setState] = createSignal(store.state);
+  const state = createRenderableState(store, store.state);
   const publicState: DialogState = {
     get open() {
       return state().open;
@@ -128,7 +130,6 @@ function Root(props: DialogProps): JSX.Element {
     store.destroy();
     if (!element.isDestroyed) element.destroy();
   });
-  onCleanup(store.subscribe(setState));
   setRenderableRef(local.ref, element);
   return createComponent(StoreContext.Provider, {
     value: store,
@@ -140,7 +141,7 @@ function Root(props: DialogProps): JSX.Element {
     },
   });
 }
-function Trigger(props: DialogTriggerProps): JSX.Element {
+export function Trigger(props: Trigger.Props): JSX.Element {
   const store = useStore("Trigger");
   const [local, initial] = splitProps(props, ["ref"]);
   const renderer = useRenderer();
@@ -152,7 +153,7 @@ function Trigger(props: DialogTriggerProps): JSX.Element {
   spreadRenderableProps(element, () => ({ ...initial }));
   return element;
 }
-function Portal(props: DialogPortalProps): JSX.Element {
+export function Portal(props: Portal.Props): JSX.Element {
   const renderer = useRenderer();
   const store = useStore("Portal");
   const [local, initial] = splitProps(props, ["children", "ref"]);
@@ -176,7 +177,7 @@ function Portal(props: DialogPortalProps): JSX.Element {
     },
   });
 }
-function Backdrop(props: DialogBackdropProps): JSX.Element {
+export function Backdrop(props: Backdrop.Props): JSX.Element {
   const store = useStore("Backdrop");
   const renderer = useRenderer();
   const [local, initial] = splitProps(props, ["ref"]);
@@ -188,7 +189,7 @@ function Backdrop(props: DialogBackdropProps): JSX.Element {
   spreadRenderableProps(element, () => ({ ...initial }));
   return element;
 }
-function Popup(props: DialogPopupProps): JSX.Element {
+export function Popup(props: Popup.Props): JSX.Element {
   const store = useStore("Popup");
   const renderer = useRenderer();
   const [local, initial] = splitProps(props, ["children", "ref"]);
@@ -204,7 +205,7 @@ function Popup(props: DialogPopupProps): JSX.Element {
   return element;
 }
 function TextPart(
-  props: (DialogTitleProps | DialogDescriptionProps) & {
+  props: (TitleProps | DescriptionProps) & {
     tag: string;
     store: DialogStore;
   },
@@ -226,17 +227,17 @@ function TextPart(
   spreadRenderableProps(element, () => ({ ...initial }));
   return element;
 }
-function Title(props: DialogTitleProps): JSX.Element {
+export function Title(props: Title.Props): JSX.Element {
   return TextPart({ ...props, tag: tags.title, store: useStore("Title") });
 }
-function Description(props: DialogDescriptionProps): JSX.Element {
+export function Description(props: Description.Props): JSX.Element {
   return TextPart({
     ...props,
     tag: tags.description,
     store: useStore("Description"),
   });
 }
-function Close(props: DialogCloseProps): JSX.Element {
+export function Close(props: Close.Props): JSX.Element {
   const store = useStore("Close");
   const renderer = useRenderer();
   const [local, initial] = splitProps(props, ["ref"]);
@@ -257,13 +258,31 @@ function Close(props: DialogCloseProps): JSX.Element {
   spreadRenderableProps(element, () => ({ ...initial }));
   return element;
 }
-export const Dialog = {
-  Root,
-  Trigger,
-  Portal,
-  Backdrop,
-  Popup,
-  Title,
-  Description,
-  Close,
-} as const;
+export namespace Root {
+  export type Props = RootProps;
+  export type State = DialogState;
+  export type OpenChangeDetails = DialogOpenChangeDetails;
+  export type OpenChangeReason = DialogOpenChangeReason;
+}
+
+export namespace Trigger {
+  export type Props = TriggerProps;
+}
+export namespace Portal {
+  export type Props = PortalProps;
+}
+export namespace Backdrop {
+  export type Props = BackdropProps;
+}
+export namespace Popup {
+  export type Props = PopupProps;
+}
+export namespace Title {
+  export type Props = TitleProps;
+}
+export namespace Description {
+  export type Props = DescriptionProps;
+}
+export namespace Close {
+  export type Props = CloseProps;
+}

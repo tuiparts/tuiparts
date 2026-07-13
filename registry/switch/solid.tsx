@@ -1,13 +1,10 @@
 /** @jsxImportSource @opentui/solid */
 
-import {
-  Switch as SwitchPrimitive,
-  type SwitchProps as SwitchPrimitiveProps,
-  type SwitchState,
-} from "@opentui-ui/solid/switch";
+import { Switch as SwitchPrimitive } from "@opentui-ui/solid/switch";
 import { splitProps } from "solid-js";
 
-export interface SwitchProps extends Omit<SwitchPrimitiveProps, "children"> {
+export interface SwitchProps
+  extends Omit<SwitchPrimitive.Root.Props, "children"> {
   density?: "compact" | "comfortable";
   label: string;
   symbols?: "round" | "ascii";
@@ -37,7 +34,7 @@ export function Switch(props: SwitchProps) {
       disabled={recipe.disabled}
       {...root}
     >
-      {(state: SwitchState) => (
+      {(state: SwitchPrimitive.Root.State) => (
         <>
           <box
             width={trackWidth()}

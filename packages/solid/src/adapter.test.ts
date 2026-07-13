@@ -7,7 +7,7 @@ import { Badge, Button } from "@opentui-ui/solid";
 import { styled } from "@opentui-ui/solid/styled";
 import { createSignal } from "solid-js";
 import { Input } from "./input/primitive";
-import { Radio, RadioGroup } from "./radio/radio";
+import { Radio } from "./radio/radio";
 
 let setup: TestRendererSetup | undefined;
 
@@ -115,30 +115,23 @@ describe("Solid adapter", () => {
     await setup.waitFor(() => dynamicBadge.width === 3);
   });
 
-  it("registers the remaining packaged components and preserves RadioGroup children", async () => {
+  it("registers the remaining packaged components and preserves children", async () => {
     setup = await testRender(
       () => {
         const root = createElement("box") as BaseRenderable;
         root.add(Badge({ id: "badge", label: "Badge" }));
         root.add(Button({ id: "button" }));
         root.add(Input({ id: "input", value: "Input" }));
-        const group = RadioGroup({ id: "radio-group" });
-        group.add(Radio({ id: "radio", label: "Radio" }));
-        root.add(group);
+        root.add(Radio({ id: "radio", label: "Radio" }));
         return root;
       },
       { width: 40, height: 12 },
     );
 
-    const ids = ["badge", "button", "input", "radio-group", "radio"];
+    const ids = ["badge", "button", "input", "radio"];
     expect(
       ids.filter((id) => !setup?.renderer.root.findDescendantById(id)),
     ).toEqual([]);
-    expect(
-      setup.renderer.root
-        .findDescendantById("radio-group")
-        ?.findDescendantById("radio"),
-    ).toBeDefined();
   });
 
   it("flattens nested styled wrappers to one deepest base", async () => {

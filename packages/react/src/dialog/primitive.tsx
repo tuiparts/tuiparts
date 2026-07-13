@@ -1,19 +1,21 @@
 /** @jsxImportSource @opentui/react */
 
 import { createPortal, extend, useRenderer } from "@opentui/react";
-import type { DialogState } from "@opentui-ui/core/dialog";
 import {
   DialogBackdropRenderable,
   type DialogCloseOptions,
   DialogCloseRenderable,
   type DialogDescriptionOptions,
   DialogDescriptionRenderable,
+  type DialogOpenChangeDetails,
+  type DialogOpenChangeReason,
   type DialogPopupOptions,
   DialogPopupRenderable,
   type DialogPortalOptions,
   DialogPortalRenderable,
   type DialogRootOptions,
   DialogRootRenderable,
+  type DialogState,
   DialogStore,
   type DialogTitleOptions,
   DialogTitleRenderable,
@@ -25,9 +27,9 @@ import {
   createElement,
   type ReactNode,
   type Ref,
-  useCallback,
   useContext,
   useEffect,
+  useImperativeHandle,
   useLayoutEffect,
   useRef,
   useState,
@@ -57,35 +59,30 @@ const StoreContext = createContext<DialogStore | null>(null);
 const PopupContext = createContext<DialogPopupRenderable | null>(null);
 // biome-ignore lint/suspicious/noExplicitAny: intrinsic refs share React's ref union
 type PartProps<T> = Omit<T, "store"> & { ref?: Ref<any>; children?: ReactNode };
-export type DialogProps = Omit<DialogRootOptions, "store"> & {
+type RootProps = Omit<DialogRootOptions, "store"> & {
   children?: ReactNode | ((state: DialogState) => ReactNode);
   ref?: Ref<DialogRootRenderable>;
 };
-export type DialogTriggerProps = PartProps<DialogTriggerOptions>;
-export type DialogPortalProps = Omit<DialogPortalOptions, "store"> & {
+type TriggerProps = PartProps<DialogTriggerOptions>;
+type PortalProps = Omit<DialogPortalOptions, "store"> & {
   children?: ReactNode;
   ref?: Ref<DialogPortalRenderable>;
 };
-export type DialogBackdropProps = PartProps<
+type BackdropProps = PartProps<
   ConstructorParameters<typeof DialogBackdropRenderable>[1]
 >;
-export type DialogPopupProps = Omit<DialogPopupOptions, "store"> & {
+type PopupProps = Omit<DialogPopupOptions, "store"> & {
   children?: ReactNode;
   ref?: Ref<DialogPopupRenderable>;
 };
-export type DialogTitleProps = PartProps<DialogTitleOptions>;
-export type DialogDescriptionProps = PartProps<DialogDescriptionOptions>;
-export type DialogCloseProps = Omit<DialogCloseOptions, "store"> & {
+type TitleProps = PartProps<DialogTitleOptions>;
+type DescriptionProps = PartProps<DialogDescriptionOptions>;
+type CloseProps = Omit<DialogCloseOptions, "store"> & {
   children?: ReactNode;
   ref?: Ref<DialogCloseRenderable>;
 };
 
-function setRef<T>(ref: Ref<T> | undefined, value: T | null): void {
-  if (typeof ref === "function") ref(value);
-  else if (ref) ref.current = value;
-}
-
-function Root({ children, ref, ...props }: DialogProps) {
+export function Root({ children, ref, ...props }: Root.Props) {
   const renderer = useRenderer();
   const storeRef = useRef<DialogStore | null>(null);
   if (!storeRef.current) storeRef.current = new DialogStore(renderer, props);
@@ -109,19 +106,20 @@ function useStore(name: string): DialogStore {
     throw new Error(`Dialog.${name} must be rendered inside Dialog.Root`);
   return store;
 }
-function Trigger({ children, ref, ...props }: DialogTriggerProps) {
+export function Trigger({ children, ref, ...props }: Trigger.Props) {
   return createElement(
     tags.trigger,
     { ...props, store: useStore("Trigger"), ref },
     children,
   );
 }
-function Portal({ children, ref, ...props }: DialogPortalProps) {
+export function Portal({ children, ref, ...props }: Portal.Props) {
   const renderer = useRenderer();
   const store = useStore("Portal");
   const [portal] = useState(
     () => new DialogPortalRenderable(renderer, { ...props, store }),
   );
+  useImperativeHandle(ref, () => portal, [portal]);
   useEffect(() => {
     renderer.root.add(portal);
     return () => {
@@ -129,10 +127,6 @@ function Portal({ children, ref, ...props }: DialogPortalProps) {
       if (!portal.isDestroyed) portal.destroyRecursively();
     };
   }, [portal, renderer]);
-  useEffect(() => {
-    setRef(ref, portal);
-    return () => setRef(ref, null);
-  }, [portal, ref]);
   useLayoutEffect(() => {
     const {
       visible: _,
@@ -146,27 +140,21 @@ function Portal({ children, ref, ...props }: DialogPortalProps) {
   });
   return createPortal(children, portal, portal);
 }
-function Backdrop({ children, ref, ...props }: DialogBackdropProps) {
+export function Backdrop({ children, ref, ...props }: Backdrop.Props) {
   return createElement(
     tags.backdrop,
     { ...props, store: useStore("Backdrop"), ref },
     children,
   );
 }
-function Popup({ children, ref, ...props }: DialogPopupProps) {
+export function Popup({ children, ref, ...props }: Popup.Props) {
   const store = useStore("Popup");
   const [popup, setPopup] = useState<DialogPopupRenderable | null>(null);
-  const popupRef = useCallback(
-    (value: DialogPopupRenderable | null) => {
-      setPopup((current) => (current === value ? current : value));
-      setRef(ref, value);
-    },
-    [ref],
-  );
+  useImperativeHandle(ref, () => popup as DialogPopupRenderable, [popup]);
   return createElement(
     PopupContext.Provider,
     { value: popup },
-    createElement(tags.popup, { ...props, store, ref: popupRef }, children),
+    createElement(tags.popup, { ...props, store, ref: setPopup }, children),
   );
 }
 function TextPart({
@@ -182,49 +170,60 @@ function TextPart({
 }) {
   return createElement(tag, { ...props, store }, children);
 }
-function Title({ children, ...props }: DialogTitleProps) {
+export function Title({ children, ...props }: Title.Props) {
   return (
     <TextPart tag={tags.title} store={useStore("Title")} {...props}>
       {children}
     </TextPart>
   );
 }
-function Description({ children, ...props }: DialogDescriptionProps) {
+export function Description({ children, ...props }: Description.Props) {
   return (
     <TextPart tag={tags.description} store={useStore("Description")} {...props}>
       {children}
     </TextPart>
   );
 }
-function Close({ children, ref, ...props }: DialogCloseProps) {
+export function Close({ children, ref, ...props }: Close.Props) {
   const store = useStore("Close");
   const popup = useContext(PopupContext);
-  const closeRef = useRef<DialogCloseRenderable | null>(null);
-  const closeElementRef = useCallback(
-    (value: DialogCloseRenderable | null) => {
-      closeRef.current = value;
-      setRef(ref, value);
-    },
-    [ref],
-  );
+  const [close, setClose] = useState<DialogCloseRenderable | null>(null);
+  useImperativeHandle(ref, () => close as DialogCloseRenderable, [close]);
   useEffect(() => {
-    const close = closeRef.current;
     if (!popup || !close) return;
     return popup.registerFocusable(close);
-  }, [popup]);
+  }, [close, popup]);
   return createElement(
     tags.close,
-    { ...props, store, ref: closeElementRef },
+    { ...props, store, ref: setClose },
     children,
   );
 }
-export const Dialog = {
-  Root,
-  Trigger,
-  Portal,
-  Backdrop,
-  Popup,
-  Title,
-  Description,
-  Close,
-} as const;
+export namespace Root {
+  export type Props = RootProps;
+  export type State = DialogState;
+  export type OpenChangeDetails = DialogOpenChangeDetails;
+  export type OpenChangeReason = DialogOpenChangeReason;
+}
+
+export namespace Trigger {
+  export type Props = TriggerProps;
+}
+export namespace Portal {
+  export type Props = PortalProps;
+}
+export namespace Backdrop {
+  export type Props = BackdropProps;
+}
+export namespace Popup {
+  export type Props = PopupProps;
+}
+export namespace Title {
+  export type Props = TitleProps;
+}
+export namespace Description {
+  export type Props = DescriptionProps;
+}
+export namespace Close {
+  export type Props = CloseProps;
+}

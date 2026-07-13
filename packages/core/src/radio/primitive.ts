@@ -570,6 +570,11 @@ export class RadioGroupRootRenderable extends BoxRenderable {
     return this._store;
   }
 
+  set store(store: RadioGroupStore) {
+    if (store !== this._store)
+      throw new Error("RadioGroup.Root store cannot be replaced");
+  }
+
   getState(): RadioGroupState {
     return this._store.state;
   }
@@ -713,6 +718,11 @@ export class RadioGroupItemRenderable extends BoxRenderable {
 
   get store(): RadioGroupStore {
     return this._store;
+  }
+
+  set store(store: RadioGroupStore) {
+    if (store !== this._store)
+      throw new Error("RadioGroup.Item store cannot be replaced");
   }
 
   getState(): RadioGroupItemState {

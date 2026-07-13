@@ -43,14 +43,13 @@ Primitive modules use component-specific package subpaths.
 
 ### Store
 
-The framework-neutral owner of coordination that exists independently of one
-Renderable, such as a dynamic collection or renderer-root overlay layer. A
-Store exposes readonly state, subscriptions, semantic requests or actions, and
-lifecycle operations needed by Core consumers. Stores do not contain visual
-defaults or framework state.
+The framework-neutral owner of primitive state or cross-Renderable
+coordination. A Store exposes readonly state, subscriptions, and semantic
+requests or actions needed by Core consumers. Stores do not contain visual
+defaults or framework state. A public Store must be attachable to its Core
+Root; framework adapters normally create it automatically and omit it from
+their consumer Props.
 
-Not every primitive needs a public Store. A single behavior-owning Renderable
-keeps its state controller private and exposes state and subscriptions itself.
 A thin wrapper around an OpenTUI-native control must not duplicate the
 control's state merely to match Store-shaped primitives.
 
@@ -231,33 +230,39 @@ Single-node OpenTUI-native controls use a named adapter such as
 `Input` rather than inventing a compound `Root` with no composition
 value.
 
-Store interfaces remain component-specific and must pass the deletion test:
-removing one must force collection, overlay, or other independent coordination
-complexity into multiple Core callers. Shared state machinery should be
-extracted through private composition only when multiple stores demonstrate the
-same lifecycle and notification semantics; foundation Stores do not inherit
-from a generic public base class.
+Store interfaces remain component-specific. Public Stores must support a
+coherent Core composition workflow rather than exist only for framework
+adapter plumbing. Shared machinery should be extracted through private
+composition only when multiple Stores demonstrate the same lifecycle and
+notification semantics; foundation Stores do not inherit from a generic
+public base class.
 
 ### Public Store Audit
 
-- Button, Checkbox, and Switch keep single-owner state behind their behavior
-  Renderable. Passive Indicator and Thumb parts receive the owning Root.
+- Button, Checkbox, and Switch expose attachable Core Stores. Their React
+  adapters create Stores automatically and omit `store` from public framework
+  Props. Passive Indicator and Thumb parts still receive the owning Root in
+  Core and use private context wiring in framework adapters.
 - Input preserves OpenTUI-owned state and has no Store.
 - RadioGroup retains a public Store for dynamic item identity, selection,
   roving focus, ordering, and registration independent of any one Renderable.
 - Dialog retains a public Store for portal, layer, dismissal, nesting, and
   focus-restoration coordination across renderer-root ownership.
 
-Framework packages may import component-specific controllers from
-`@opentui-ui/core/_internal/*` so React can establish state and context during
-its first render. Those subpaths are unsupported adapter implementation seams,
-not consumer interfaces; component subpaths do not re-export them.
+React creates a component-specific Core Store before host construction so state
+callbacks and compound context are authoritative during the first render. The
+same Store is passed to the Core Root constructor; there is no bridge or state
+handoff. Framework Props and registry recipes do not accept Stores. See
+`docs/adr/0001-react-primitive-store-adaptation.md` for the adapter call stack, consistency
+invariants, considered alternatives, and removal path.
 
 Solid adapters construct retained Renderables directly, so they preserve
-reactive props with `splitProps`, take constructor snapshots with `untrack`, and
-apply later updates through one private Renderable-prop helper. That helper also
-clears keys removed from dynamic prop objects, which the upstream spread seam
-does not currently do itself.
+reactive props with `splitProps`, take constructor snapshots with `untrack`,
+adapt Renderable and Store subscriptions through one private helper based on
+Solid's `from()`, and apply later property updates through one private
+Renderable-prop helper. The property helper also clears keys removed from
+dynamic prop objects, which the upstream spread seam does not currently do
+itself.
 
 ## Interaction Rules
 

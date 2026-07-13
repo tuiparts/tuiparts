@@ -33,7 +33,9 @@ export function createCheckbox(
     onCheckedChange: options.onCheckedChange,
   });
   const markCell = new BoxRenderable(ctx, { width: 1 });
-  const indicator = new CheckboxIndicatorRenderable(ctx, { root });
+  const indicator = new CheckboxIndicatorRenderable(ctx, {
+    store: root.store,
+  });
   indicator.add(
     new TextRenderable(ctx, {
       content: options.mark ?? "✓",

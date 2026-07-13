@@ -11,8 +11,6 @@ import {
   createComponent,
   createContext,
   createEffect,
-  createSignal,
-  onCleanup,
   type Ref,
   splitProps,
   untrack,
@@ -22,33 +20,22 @@ import {
   setRenderableRef,
   spreadRenderableProps,
 } from "../internal/renderable-props";
+import { createRenderableState } from "../internal/renderable-state";
 
 const CheckboxContext = createContext<CheckboxRootRenderable>();
 
-export type CheckboxProps = CheckboxRootOptions & {
+type RootProps = CheckboxRootOptions & {
   children?: JSX.Element | ((state: CheckboxState) => JSX.Element);
   ref?: Ref<CheckboxRootRenderable>;
 };
 
-export type CheckboxIndicatorProps = Omit<CheckboxIndicatorOptions, "root"> & {
+type IndicatorProps = Omit<CheckboxIndicatorOptions, "store"> & {
   children?: JSX.Element;
   ref?: Ref<CheckboxIndicatorRenderable>;
 };
 
-function CheckboxRoot(props: CheckboxProps): JSX.Element {
+export function Root(props: Root.Props): JSX.Element {
   const renderer = useRenderer();
-  const [state, setState] = createSignal<CheckboxState>();
-  const publicState: CheckboxState = {
-    get checked() {
-      return state()?.checked ?? props.checked ?? props.defaultChecked ?? false;
-    },
-    get disabled() {
-      return state()?.disabled ?? props.disabled ?? false;
-    },
-    get focused() {
-      return state()?.focused ?? false;
-    },
-  };
   const [local, initialProps] = splitProps(props, [
     "checked",
     "children",
@@ -67,13 +54,23 @@ function CheckboxRoot(props: CheckboxProps): JSX.Element {
       onCheckedChange: local.onCheckedChange,
     })),
   );
-  setState(element.getState());
+  const state = createRenderableState(element, element.getState());
+  const publicState: CheckboxState = {
+    get checked() {
+      return state().checked;
+    },
+    get disabled() {
+      return state().disabled;
+    },
+    get focused() {
+      return state().focused;
+    },
+  };
   createEffect(() => {
     element.checked = local.checked;
     element.disabled = local.disabled;
     element.onCheckedChange = local.onCheckedChange;
   });
-  onCleanup(element.subscribe(setState));
   setRenderableRef(local.ref, element);
 
   return createComponent(CheckboxContext.Provider, {
@@ -87,7 +84,7 @@ function CheckboxRoot(props: CheckboxProps): JSX.Element {
   });
 }
 
-function CheckboxIndicator(props: CheckboxIndicatorProps): JSX.Element {
+export function Indicator(props: Indicator.Props): JSX.Element {
   const renderer = useRenderer();
   const root = useContext(CheckboxContext);
   if (!root) {
@@ -96,7 +93,7 @@ function CheckboxIndicator(props: CheckboxIndicatorProps): JSX.Element {
   const [local, initialProps] = splitProps(props, ["children", "ref"]);
   const element = new CheckboxIndicatorRenderable(
     renderer,
-    untrack(() => ({ ...initialProps, root })),
+    untrack(() => ({ ...initialProps, store: root.store })),
   );
   setRenderableRef(local.ref, element);
   spreadRenderableProps(element, () => ({
@@ -106,7 +103,11 @@ function CheckboxIndicator(props: CheckboxIndicatorProps): JSX.Element {
   return element;
 }
 
-export const Checkbox = {
-  Root: CheckboxRoot,
-  Indicator: CheckboxIndicator,
-} as const;
+export namespace Root {
+  export type Props = RootProps;
+  export type State = CheckboxState;
+}
+
+export namespace Indicator {
+  export type Props = IndicatorProps;
+}

@@ -6,11 +6,11 @@ import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
 import type {
   CheckboxIndicatorRenderable,
-  CheckboxState,
   CheckboxRootRenderable,
+  CheckboxState,
 } from "@opentui-ui/core/checkbox";
 import { createSignal } from "solid-js";
-import { Checkbox } from "./primitive";
+import * as Checkbox from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 

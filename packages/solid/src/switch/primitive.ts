@@ -11,8 +11,6 @@ import {
   createComponent,
   createContext,
   createEffect,
-  createSignal,
-  onCleanup,
   type Ref,
   splitProps,
   untrack,
@@ -22,33 +20,22 @@ import {
   setRenderableRef,
   spreadRenderableProps,
 } from "../internal/renderable-props";
+import { createRenderableState } from "../internal/renderable-state";
 
 const SwitchContext = createContext<SwitchRootRenderable>();
 
-export type SwitchProps = SwitchRootOptions & {
+type RootProps = SwitchRootOptions & {
   children?: JSX.Element | ((state: SwitchState) => JSX.Element);
   ref?: Ref<SwitchRootRenderable>;
 };
 
-export type SwitchThumbProps = Omit<SwitchThumbOptions, "root"> & {
+type ThumbProps = Omit<SwitchThumbOptions, "store"> & {
   children?: JSX.Element;
   ref?: Ref<SwitchThumbRenderable>;
 };
 
-function SwitchRoot(props: SwitchProps): JSX.Element {
+export function Root(props: Root.Props): JSX.Element {
   const renderer = useRenderer();
-  const [state, setState] = createSignal<SwitchState>();
-  const publicState: SwitchState = {
-    get checked() {
-      return state()?.checked ?? props.checked ?? props.defaultChecked ?? false;
-    },
-    get disabled() {
-      return state()?.disabled ?? props.disabled ?? false;
-    },
-    get focused() {
-      return state()?.focused ?? false;
-    },
-  };
   const [local, initialProps] = splitProps(props, [
     "checked",
     "children",
@@ -67,13 +54,23 @@ function SwitchRoot(props: SwitchProps): JSX.Element {
       onCheckedChange: local.onCheckedChange,
     })),
   );
-  setState(element.getState());
+  const state = createRenderableState(element, element.getState());
+  const publicState: SwitchState = {
+    get checked() {
+      return state().checked;
+    },
+    get disabled() {
+      return state().disabled;
+    },
+    get focused() {
+      return state().focused;
+    },
+  };
   createEffect(() => {
     element.checked = local.checked;
     element.disabled = local.disabled;
     element.onCheckedChange = local.onCheckedChange;
   });
-  onCleanup(element.subscribe(setState));
   setRenderableRef(local.ref, element);
 
   return createComponent(SwitchContext.Provider, {
@@ -87,7 +84,7 @@ function SwitchRoot(props: SwitchProps): JSX.Element {
   });
 }
 
-function SwitchThumb(props: SwitchThumbProps): JSX.Element {
+export function Thumb(props: Thumb.Props): JSX.Element {
   const renderer = useRenderer();
   const root = useContext(SwitchContext);
   if (!root) {
@@ -96,7 +93,7 @@ function SwitchThumb(props: SwitchThumbProps): JSX.Element {
   const [local, initialProps] = splitProps(props, ["children", "ref"]);
   const element = new SwitchThumbRenderable(
     renderer,
-    untrack(() => ({ ...initialProps, root })),
+    untrack(() => ({ ...initialProps, store: root.store })),
   );
   setRenderableRef(local.ref, element);
   spreadRenderableProps(element, () => ({
@@ -106,7 +103,11 @@ function SwitchThumb(props: SwitchThumbProps): JSX.Element {
   return element;
 }
 
-export const Switch = {
-  Root: SwitchRoot,
-  Thumb: SwitchThumb,
-} as const;
+export namespace Root {
+  export type Props = RootProps;
+  export type State = SwitchState;
+}
+
+export namespace Thumb {
+  export type Props = ThumbProps;
+}

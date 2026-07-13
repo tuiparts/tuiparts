@@ -1,14 +1,16 @@
 import { extend } from "@opentui/react";
 import {
+  type RadioGroupChangeDetails,
   type RadioGroupIndicatorOptions,
   RadioGroupIndicatorRenderable,
   type RadioGroupItemOptions,
   RadioGroupItemRenderable,
   type RadioGroupItemState,
-  type RadioGroupState,
   type RadioGroupRootOptions,
   RadioGroupRootRenderable,
+  type RadioGroupState,
   RadioGroupStore,
+  type RadioGroupValueChangeHandler,
 } from "@opentui-ui/core/radio";
 import {
   createContext,
@@ -16,8 +18,8 @@ import {
   type ReactElement,
   type ReactNode,
   type Ref,
-  useCallback,
   useContext,
+  useImperativeHandle,
   useRef,
   useState,
   useSyncExternalStore,
@@ -27,29 +29,9 @@ const ROOT_TAG = "otui-radio-group-root";
 const ITEM_TAG = "otui-radio-group-item";
 const INDICATOR_TAG = "otui-radio-group-indicator";
 
-class ReactRadioGroupRootRenderable extends RadioGroupRootRenderable {
-  override get store(): RadioGroupStore {
-    return super.store;
-  }
-  override set store(store: RadioGroupStore) {
-    if (store !== super.store)
-      throw new Error("RadioGroup.Root store cannot be replaced");
-  }
-}
-
-class ReactRadioGroupItemRenderable extends RadioGroupItemRenderable {
-  override get store(): RadioGroupStore {
-    return super.store;
-  }
-  override set store(store: RadioGroupStore) {
-    if (store !== super.store)
-      throw new Error("RadioGroup.Item store cannot be replaced");
-  }
-}
-
 extend({
-  [ROOT_TAG]: ReactRadioGroupRootRenderable,
-  [ITEM_TAG]: ReactRadioGroupItemRenderable,
+  [ROOT_TAG]: RadioGroupRootRenderable,
+  [ITEM_TAG]: RadioGroupItemRenderable,
   [INDICATOR_TAG]: RadioGroupIndicatorRenderable,
 });
 
@@ -58,29 +40,21 @@ const RadioGroupItemContext = createContext<RadioGroupItemRenderable | null>(
   null,
 );
 
-export type RadioGroupProps = Omit<RadioGroupRootOptions, "store"> & {
+type RootProps = Omit<RadioGroupRootOptions, "store"> & {
   children?: ReactNode | ((state: RadioGroupState) => ReactNode);
   ref?: Ref<RadioGroupRootRenderable>;
 };
-export type RadioGroupItemProps = Omit<RadioGroupItemOptions, "store"> & {
+type ItemProps = Omit<RadioGroupItemOptions, "store"> & {
   children?: ReactNode | ((state: RadioGroupItemState) => ReactNode);
   ref?: Ref<RadioGroupItemRenderable>;
 };
-export type RadioGroupIndicatorProps = Omit<
-  RadioGroupIndicatorOptions,
-  "item"
-> & {
+type IndicatorProps = Omit<RadioGroupIndicatorOptions, "item"> & {
   children?: ReactNode;
   keepMounted?: boolean;
   ref?: Ref<RadioGroupIndicatorRenderable>;
 };
 
-function setRef<T>(ref: Ref<T> | undefined, value: T | null): void {
-  if (typeof ref === "function") ref(value);
-  else if (ref) ref.current = value;
-}
-
-function RadioGroupRoot({ children, ...props }: RadioGroupProps) {
+export function Root({ children, ...props }: Root.Props) {
   const storeRef = useRef<RadioGroupStore | null>(null);
   if (!storeRef.current) storeRef.current = new RadioGroupStore(props);
   const store = storeRef.current;
@@ -97,31 +71,25 @@ function RadioGroupRoot({ children, ...props }: RadioGroupProps) {
   );
 }
 
-function RadioGroupItem({ children, ref, ...props }: RadioGroupItemProps) {
+export function Item({ children, ref, ...props }: Item.Props) {
   const store = useContext(RadioGroupContext);
   if (!store)
     throw new Error("RadioGroup.Item must be rendered inside RadioGroup.Root");
   const [item, setItem] = useState<RadioGroupItemRenderable | null>(null);
-  const itemRef = useCallback(
-    (nextItem: RadioGroupItemRenderable | null) => {
-      setItem((current) => (current === nextItem ? current : nextItem));
-      setRef(ref, nextItem);
-    },
-    [ref],
-  );
+  useImperativeHandle(ref, () => item as RadioGroupItemRenderable, [item]);
   return createElement(
     ITEM_TAG,
-    { ...props, store, ref: itemRef },
-    item ? createElement(RadioGroupItemContent, { item, children }) : undefined,
+    { ...props, store, ref: setItem },
+    item ? createElement(ItemContent, { item, children }) : undefined,
   );
 }
 
-function RadioGroupItemContent({
+function ItemContent({
   item,
   children,
 }: {
   item: RadioGroupItemRenderable;
-  children: RadioGroupItemProps["children"];
+  children: Item.Props["children"];
 }): ReactElement {
   const state = useSyncExternalStore(
     (listener) => item.subscribe(listener),
@@ -136,11 +104,11 @@ function RadioGroupItemContent({
   );
 }
 
-function RadioGroupIndicator({
+export function Indicator({
   children,
   keepMounted = false,
   ...props
-}: RadioGroupIndicatorProps): ReactElement | null {
+}: Indicator.Props): ReactElement | null {
   const item = useContext(RadioGroupItemContext);
   if (!item)
     throw new Error(
@@ -155,12 +123,22 @@ function RadioGroupIndicator({
   return createElement(INDICATOR_TAG, { ...props, item }, children);
 }
 
-RadioGroupRoot.displayName = "RadioGroup.Root";
-RadioGroupItem.displayName = "RadioGroup.Item";
-RadioGroupIndicator.displayName = "RadioGroup.Indicator";
+Root.displayName = "RadioGroup.Root";
+Item.displayName = "RadioGroup.Item";
+Indicator.displayName = "RadioGroup.Indicator";
 
-export const RadioGroup = {
-  Root: RadioGroupRoot,
-  Item: RadioGroupItem,
-  Indicator: RadioGroupIndicator,
-} as const;
+export namespace Root {
+  export type Props = RootProps;
+  export type State = RadioGroupState;
+  export type ChangeDetails = RadioGroupChangeDetails;
+  export type ValueChangeHandler = RadioGroupValueChangeHandler;
+}
+
+export namespace Item {
+  export type Props = ItemProps;
+  export type State = RadioGroupItemState;
+}
+
+export namespace Indicator {
+  export type Props = IndicatorProps;
+}

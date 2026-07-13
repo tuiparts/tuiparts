@@ -3,4 +3,6 @@ export {
   type ButtonPressDetails,
   ButtonRenderable,
   type ButtonState,
+  ButtonStore,
+  type ButtonStoreOptions,
 } from "./primitive";

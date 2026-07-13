@@ -7,12 +7,12 @@ import {
   spreadRenderableProps,
 } from "../internal/renderable-props";
 
-export type InputProps = InputOptions & {
+type InputProps = InputOptions & {
   ref?: Ref<InputRenderable>;
 };
 
 /** Solid adapter for the OpenTUI-native Input primitive. */
-export function Input(props: InputProps): JSX.Element {
+export function Input(props: Input.Props): JSX.Element {
   const renderer = useRenderer();
   const [local, inputProps] = splitProps(props, [
     "disabled",
@@ -40,4 +40,8 @@ export function Input(props: InputProps): JSX.Element {
     value: local.value,
   }));
   return element;
+}
+
+export namespace Input {
+  export type Props = InputProps;
 }

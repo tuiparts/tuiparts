@@ -1,10 +1,10 @@
-import type { RenderContext } from "@opentui/core";
 import { extend } from "@opentui/react";
-import { ButtonStateController } from "@opentui-ui/core/_internal/button";
 import {
   type ButtonOptions,
+  type ButtonPressDetails,
   ButtonRenderable,
   type ButtonState,
+  ButtonStore,
 } from "@opentui-ui/core/button";
 import {
   createElement,
@@ -17,51 +17,32 @@ import {
 
 const BUTTON_TAG = "otui-button";
 
-type AdapterButtonOptions = ButtonOptions & {
-  controller: ButtonStateController;
-};
-
-class ReactButtonRenderable extends ButtonRenderable {
-  private _adapterController: ButtonStateController;
-
-  constructor(ctx: RenderContext, options: AdapterButtonOptions) {
-    const { controller, ...buttonOptions } = options;
-    super(ctx, buttonOptions);
-    this._adapterController = controller;
-    this.setStateController(controller);
-  }
-
-  get controller(): ButtonStateController {
-    return this._adapterController;
-  }
-
-  set controller(controller: ButtonStateController) {
-    this._adapterController = controller;
-    this.setStateController(controller);
-  }
-}
-
 extend({
-  [BUTTON_TAG]: ReactButtonRenderable,
+  [BUTTON_TAG]: ButtonRenderable,
 });
 
-export type ButtonProps = ButtonOptions & {
+type ButtonProps = Omit<ButtonOptions, "store"> & {
   children?: ReactNode | ((state: ButtonState) => ReactNode);
   ref?: Ref<ButtonRenderable>;
 };
 
-export function Button({ children, ...props }: ButtonProps): ReactElement {
-  const controllerRef = useRef<ButtonStateController | null>(null);
-  if (!controllerRef.current)
-    controllerRef.current = new ButtonStateController(props);
-  const controller = controllerRef.current;
+export function Button({ children, ...props }: Button.Props): ReactElement {
+  const storeRef = useRef<ButtonStore | null>(null);
+  if (!storeRef.current) storeRef.current = new ButtonStore(props);
+  const store = storeRef.current;
   const state = useSyncExternalStore(
-    (listener) => controller.subscribe(listener),
-    () => controller.state,
-    () => controller.state,
+    (listener) => store.subscribe(listener),
+    () => store.state,
+    () => store.state,
   );
   const content = typeof children === "function" ? children(state) : children;
-  return createElement(BUTTON_TAG, { ...props, controller }, content);
+  return createElement(BUTTON_TAG, { ...props, store }, content);
 }
 
 Button.displayName = "Button";
+
+export namespace Button {
+  export type Props = ButtonProps;
+  export type State = ButtonState;
+  export type PressDetails = ButtonPressDetails;
+}

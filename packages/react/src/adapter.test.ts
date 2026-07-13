@@ -7,7 +7,7 @@ import { Badge, Button } from "@opentui-ui/react";
 import { styled } from "@opentui-ui/react/styled";
 import { act, createElement, Fragment, useState } from "react";
 import { Input } from "./input/primitive";
-import { Radio, RadioGroup } from "./radio/radio";
+import { Radio } from "./radio/radio";
 
 let setup: TestRendererSetup | undefined;
 
@@ -118,7 +118,7 @@ describe("React adapter", () => {
         ),
         createElement(Input, { id: "input", value: "Input" }),
         createElement(
-          RadioGroup,
+          "box",
           { id: "radio-group" },
           createElement(Radio, { id: "radio", label: "Radio" }),
         ),

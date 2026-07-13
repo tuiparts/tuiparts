@@ -4,6 +4,6 @@
 "@opentui-ui/solid": patch
 ---
 
-Add the unstyled single-part `Button` foundation interface with activation,
-readonly pressed and focus state, source-specific press details, Renderable
-refs, and editable Core, React, and Solid registry recipes.
+Add the unstyled single-part `Button` foundation interface with an attachable
+Core `ButtonStore`, module-scoped `Button.Props`, `Button.State`, and
+`Button.PressDetails` framework types, Renderable refs, and editable recipes.

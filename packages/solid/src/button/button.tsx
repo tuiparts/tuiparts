@@ -1,10 +1,9 @@
 import type { JSX } from "@opentui/solid";
 import { useRenderer } from "@opentui/solid";
 import {
-  type ButtonRootOptions,
-  ButtonRootRenderable,
+  type ButtonOptions,
+  ButtonRenderable,
   type ButtonState,
-  ButtonStore,
 } from "@opentui-ui/core/button";
 import {
   createEffect,
@@ -19,27 +18,23 @@ import {
   spreadRenderableProps,
 } from "../internal/renderable-props";
 
-export type ButtonProps = Omit<ButtonRootOptions, "store"> & {
+export type ButtonProps = ButtonOptions & {
   children?: JSX.Element | ((state: ButtonState) => JSX.Element);
-  ref?: Ref<ButtonRootRenderable>;
+  ref?: Ref<ButtonRenderable>;
 };
 
-function ButtonRoot(props: ButtonProps): JSX.Element {
+export function Button(props: ButtonProps): JSX.Element {
   const renderer = useRenderer();
-  const store = new ButtonStore({
-    disabled: props.disabled,
-    onPress: props.onPress,
-  });
-  const [state, setState] = createSignal(store.state);
+  const [state, setState] = createSignal<ButtonState>();
   const publicState: ButtonState = {
     get disabled() {
-      return state().disabled;
+      return state()?.disabled ?? props.disabled ?? false;
     },
     get focused() {
-      return state().focused;
+      return state()?.focused ?? false;
     },
     get pressed() {
-      return state().pressed;
+      return state()?.pressed ?? false;
     },
   };
   const [local, initialProps] = splitProps(props, [
@@ -48,15 +43,20 @@ function ButtonRoot(props: ButtonProps): JSX.Element {
     "onPress",
     "ref",
   ]);
-  const element = new ButtonRootRenderable(
+  const element = new ButtonRenderable(
     renderer,
-    untrack(() => ({ ...initialProps, store })),
+    untrack(() => ({
+      ...initialProps,
+      disabled: local.disabled,
+      onPress: local.onPress,
+    })),
   );
+  setState(element.getState());
   createEffect(() => {
     element.disabled = local.disabled;
     element.onPress = local.onPress;
   });
-  onCleanup(store.subscribe(setState));
+  onCleanup(element.subscribe(setState));
   setRenderableRef(local.ref, element);
   spreadRenderableProps(element, () => {
     const child = local.children;
@@ -65,7 +65,3 @@ function ButtonRoot(props: ButtonProps): JSX.Element {
   });
   return element;
 }
-
-export const Button = {
-  Root: ButtonRoot,
-} as const;

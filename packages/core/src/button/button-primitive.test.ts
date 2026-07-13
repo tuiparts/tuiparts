@@ -4,11 +4,7 @@ import {
   createTestRenderer,
   type TestRendererSetup,
 } from "@opentui/core/testing";
-import {
-  type ButtonPressDetails,
-  ButtonRootRenderable,
-  ButtonStore,
-} from "./index";
+import { type ButtonPressDetails, ButtonRenderable } from "./index";
 
 let setup: TestRendererSetup | undefined;
 
@@ -20,7 +16,7 @@ afterEach(() => {
 describe("Button primitive", () => {
   it("leaves visual assembly to the caller and exposes readonly state", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
-    const root = new ButtonRootRenderable(setup.renderer, {
+    const root = new ButtonRenderable(setup.renderer, {
       id: "button-root",
     });
     const content = new TextRenderable(setup.renderer, {
@@ -44,7 +40,7 @@ describe("Button primitive", () => {
   it("reports one immutable press detail for imperative and keyboard activation", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
     const presses: ButtonPressDetails[] = [];
-    const root = new ButtonRootRenderable(setup.renderer, {
+    const root = new ButtonRenderable(setup.renderer, {
       onPress: (details) => presses.push(details),
     });
     setup.renderer.root.add(root);
@@ -67,12 +63,12 @@ describe("Button primitive", () => {
   it("tracks primary-pointer press state and activates only on an uncancelled release", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
     const presses: ButtonPressDetails[] = [];
-    const active = new ButtonRootRenderable(setup.renderer, {
+    const active = new ButtonRenderable(setup.renderer, {
       height: 1,
       onPress: (details) => presses.push(details),
       width: 5,
     });
-    const cancelled = new ButtonRootRenderable(setup.renderer, {
+    const cancelled = new ButtonRenderable(setup.renderer, {
       height: 1,
       onMouseUp: (event) => event.preventDefault(),
       onPress: (details) => presses.push(details),
@@ -112,12 +108,9 @@ describe("Button primitive", () => {
   it("resets pressed state on disablement, blur, and teardown while disabled gates every activation seam", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
     const presses: ButtonPressDetails[] = [];
-    const store = new ButtonStore({
-      onPress: (details) => presses.push(details),
-    });
-    const root = new ButtonRootRenderable(setup.renderer, {
+    const root = new ButtonRenderable(setup.renderer, {
       height: 1,
-      store,
+      onPress: (details) => presses.push(details),
       width: 5,
     });
     setup.renderer.root.add(root);
@@ -125,14 +118,14 @@ describe("Button primitive", () => {
 
     root.focus();
     await setup.mockMouse.pressDown(0, 0);
-    expect(store.state).toEqual({
+    expect(root.getState()).toEqual({
       disabled: false,
       focused: true,
       pressed: true,
     });
 
     root.disabled = true;
-    expect(store.state).toEqual({
+    expect(root.getState()).toEqual({
       disabled: true,
       focused: false,
       pressed: false,
@@ -148,14 +141,14 @@ describe("Button primitive", () => {
     root.focus();
     await setup.mockMouse.pressDown(0, 0);
     root.blur();
-    expect(store.state.pressed).toBe(false);
+    expect(root.getState().pressed).toBe(false);
     await setup.mockMouse.release(0, 0);
     expect(presses).toEqual([]);
 
     await setup.mockMouse.pressDown(0, 0);
-    expect(store.state.pressed).toBe(true);
+    expect(root.getState().pressed).toBe(true);
     root.destroy();
-    expect(store.state).toEqual({
+    expect(root.getState()).toEqual({
       disabled: false,
       focused: false,
       pressed: false,

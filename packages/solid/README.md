@@ -22,9 +22,9 @@ export function Settings() {
   const [checked, setChecked] = createSignal(false);
   return (
     <box flexDirection="column" gap={1}>
-      <Button.Root onPress={({ source }) => console.log(source)}>
+      <Button onPress={({ source }) => console.log(source)}>
         <text content="Run" />
-      </Button.Root>
+      </Button>
       <Checkbox.Root checked={checked()} onCheckedChange={setChecked}>
         <Checkbox.Indicator>
           <text content="✓" />

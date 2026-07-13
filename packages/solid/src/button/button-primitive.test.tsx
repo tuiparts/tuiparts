@@ -6,7 +6,7 @@ import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
 import type {
   ButtonPressDetails,
-  ButtonRootRenderable,
+  ButtonRenderable,
   ButtonState,
 } from "@opentui-ui/core/button";
 import { createSignal } from "solid-js";
@@ -25,28 +25,28 @@ afterEach(() => {
 });
 
 describe("Solid Button", () => {
-  it("composes arbitrary content and exposes readonly state through the real Root ref", async () => {
-    let rootRef: ButtonRootRenderable | undefined;
+  it("composes arbitrary content and exposes readonly state through the real Button ref", async () => {
+    let buttonRef: ButtonRenderable | undefined;
     setup = await testRender(
       () => (
-        <Button.Root
+        <Button
           id="root"
           ref={(value) => {
-            rootRef = value;
+            buttonRef = value;
           }}
         >
           {(state: ButtonState) => (
             <text content={state.focused ? "Focused" : "Ready"} id="content" />
           )}
-        </Button.Root>
+        </Button>
       ),
       { width: 30, height: 5 },
     );
     const root = setup.renderer.root.findDescendantById(
       "root",
-    ) as ButtonRootRenderable;
+    ) as ButtonRenderable;
 
-    expect(rootRef).toBe(root);
+    expect(buttonRef).toBe(root);
     expect(textContent("content")).toBe("Ready");
     root.focus();
     await setup.waitFor(() => textContent("content") === "Focused");
@@ -54,11 +54,11 @@ describe("Solid Button", () => {
     expect(Object.isFrozen(root.getState())).toBe(true);
   });
 
-  it("retains Root identity across disabled removal and callback replacement", async () => {
+  it("retains Button identity across disabled removal and callback replacement", async () => {
     const presses: string[] = [];
     let setDisabled: (disabled: boolean) => void = () => {};
     let setVersion: (version: number) => void = () => {};
-    let rootRef: ButtonRootRenderable | undefined;
+    let buttonRef: ButtonRenderable | undefined;
 
     setup = await testRender(
       () => {
@@ -67,14 +67,14 @@ describe("Solid Button", () => {
         setDisabled = updateDisabled;
         setVersion = updateVersion;
         return (
-          <Button.Root
+          <Button
             disabled={disabled() || undefined}
             id="reactive-root"
             onPress={(details: ButtonPressDetails) =>
               presses.push(`${version()}:${details.source}`)
             }
             ref={(value) => {
-              rootRef = value;
+              buttonRef = value;
             }}
           />
         );
@@ -83,8 +83,8 @@ describe("Solid Button", () => {
     );
     const root = setup.renderer.root.findDescendantById(
       "reactive-root",
-    ) as ButtonRootRenderable;
-    expect(rootRef).toBe(root);
+    ) as ButtonRenderable;
+    expect(buttonRef).toBe(root);
 
     root.press();
     expect(presses).toEqual(["1:imperative"]);
@@ -101,6 +101,6 @@ describe("Solid Button", () => {
     await setup.waitFor(() => !root.disabled);
     root.press();
     expect(presses).toEqual(["1:imperative", "3:imperative"]);
-    expect(rootRef).toBe(root);
+    expect(buttonRef).toBe(root);
   });
 });

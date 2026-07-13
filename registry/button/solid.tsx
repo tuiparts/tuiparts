@@ -28,7 +28,7 @@ export function Button(props: ButtonProps) {
   ]);
 
   return (
-    <ButtonPrimitive.Root
+    <ButtonPrimitive
       backgroundColor="transparent"
       disabled={recipe.disabled}
       {...root}
@@ -52,6 +52,6 @@ export function Button(props: ButtonProps) {
           />
         </box>
       )}
-    </ButtonPrimitive.Root>
+    </ButtonPrimitive>
   );
 }

@@ -4,6 +4,6 @@
 "@opentui-ui/solid": patch
 ---
 
-Add the unstyled `Button.Root` foundation interface with shared activation,
+Add the unstyled single-part `Button` foundation interface with activation,
 readonly pressed and focus state, source-specific press details, Renderable
 refs, and editable Core, React, and Solid registry recipes.

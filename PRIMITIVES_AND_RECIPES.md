@@ -149,18 +149,18 @@ Reference implementations:
 
 Button packages activation without imposing a label or visual child tree:
 
-- `ButtonStore` owns readonly disabled, focused, and pressed state.
-- `ButtonRootRenderable` owns focus plus imperative, keyboard, and
+- `ButtonRenderable` owns readonly disabled, focused, and pressed state plus
+  imperative, keyboard, and
   primary-pointer activation.
 - `ButtonPressDetails` distinguishes imperative, keyboard, and pointer sources
   with a small immutable terminal vocabulary.
 - Pressed state is cleared by cancelled pointer release, disablement, blur, and
   teardown.
-- React and Solid expose the same `Button.Root`, state callback, native
+- React and Solid expose the same single-part `Button`, state callback, native
   properties, and Renderable ref.
 - Editable recipes choose the label, padding, colors, intent, and size.
 
-Button needs no additional public parts: arbitrary content inside Root is the
+Button needs no public parts namespace: arbitrary content inside Button is the
 composition seam, and adding a Label part would package presentation without
 adding behavior.
 

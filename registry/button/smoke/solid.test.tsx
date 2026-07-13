@@ -5,7 +5,7 @@ import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
 import type {
   ButtonPressDetails,
-  ButtonRootRenderable,
+  ButtonRenderable,
 } from "@opentui-ui/core/button";
 import { Button } from "./components/ui/button";
 
@@ -40,10 +40,10 @@ describe("installed Solid Button recipe", () => {
     );
     const active = setup.renderer.root.findDescendantById(
       "active",
-    ) as ButtonRootRenderable;
+    ) as ButtonRenderable;
     const disabled = setup.renderer.root.findDescendantById(
       "disabled",
-    ) as ButtonRootRenderable;
+    ) as ButtonRenderable;
 
     await setup.renderOnce();
     expect(setup.captureCharFrame().split("\n")[0]?.includes("Run")).toBe(true);

@@ -25,7 +25,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   return (
-    <ButtonPrimitive.Root
+    <ButtonPrimitive
       backgroundColor="transparent"
       disabled={disabled}
       {...props}
@@ -46,6 +46,6 @@ export function Button({
           <text content={label} fg={state.disabled ? "#737373" : "#F5F5F5"} />
         </box>
       )}
-    </ButtonPrimitive.Root>
+    </ButtonPrimitive>
   );
 }

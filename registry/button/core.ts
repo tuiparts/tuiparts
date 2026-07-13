@@ -1,9 +1,8 @@
 import { type RenderContext, TextRenderable } from "@opentui/core";
 import {
   type ButtonPressDetails,
-  ButtonRootRenderable,
+  ButtonRenderable,
   type ButtonState,
-  ButtonStore,
 } from "@opentui-ui/core/button";
 
 export interface ButtonOptions {
@@ -19,16 +18,16 @@ const backgrounds = {
   primary: "#2563EB",
 } as const;
 
-class ButtonRecipeRenderable extends ButtonRootRenderable {
+class ButtonRecipeRenderable extends ButtonRenderable {
   private readonly unsubscribeRecipe: () => void;
 
   constructor(ctx: RenderContext, options: ButtonOptions) {
-    const store = new ButtonStore(options);
     const intent = options.intent ?? "primary";
     super(ctx, {
       backgroundColor: backgrounds[intent],
+      disabled: options.disabled,
+      onPress: options.onPress,
       paddingX: options.size === "comfortable" ? 2 : 1,
-      store,
     });
     const label = new TextRenderable(ctx, {
       content: options.label,
@@ -46,8 +45,8 @@ class ButtonRecipeRenderable extends ButtonRootRenderable {
             : backgrounds[intent];
       label.fg = state.disabled ? "#737373" : "#F5F5F5";
     };
-    applyState(store.state);
-    this.unsubscribeRecipe = store.subscribe(applyState);
+    applyState(this.getState());
+    this.unsubscribeRecipe = this.subscribe(applyState);
   }
 
   override destroy(): void {
@@ -60,6 +59,6 @@ class ButtonRecipeRenderable extends ButtonRootRenderable {
 export function createButton(
   ctx: RenderContext,
   options: ButtonOptions,
-): ButtonRootRenderable {
+): ButtonRenderable {
   return new ButtonRecipeRenderable(ctx, options);
 }

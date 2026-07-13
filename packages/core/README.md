@@ -17,7 +17,7 @@ colors, spacing, glyphs, labels, or fixed visual trees.
 
 | Module | Core interface | Public parts |
 | --- | --- | --- |
-| Button | `ButtonStore` | `ButtonRootRenderable` |
+| Button | — | `ButtonRenderable` |
 | Checkbox | `CheckboxStore` | `CheckboxRootRenderable`, `CheckboxIndicatorRenderable` |
 | Dialog | `DialogStore` | Root, Trigger, Portal, Backdrop, Popup, Title, Description, Close Renderables |
 | Input | OpenTUI-native state | `InputRenderable` |

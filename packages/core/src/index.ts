@@ -15,12 +15,10 @@ export {
 } from "./badge";
 
 export {
+  type ButtonOptions,
   type ButtonPressDetails,
-  type ButtonRootOptions,
-  ButtonRootRenderable,
+  ButtonRenderable,
   type ButtonState,
-  ButtonStore,
-  type ButtonStoreOptions,
 } from "./button";
 export {
   type CheckboxIndicatorOptions,

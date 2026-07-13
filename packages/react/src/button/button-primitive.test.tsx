@@ -4,7 +4,7 @@ import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
 import type {
   ButtonPressDetails,
-  ButtonRootRenderable,
+  ButtonRenderable,
   ButtonState,
 } from "@opentui-ui/core/button";
 import { act, createElement, type ReactNode, useState } from "react";
@@ -23,15 +23,15 @@ afterEach(async () => {
 });
 
 describe("React Button", () => {
-  it("composes arbitrary content and exposes readonly state through the real Root ref", async () => {
-    let rootRef: ButtonRootRenderable | null = null;
+  it("composes arbitrary content and exposes readonly state through the real Button ref", async () => {
+    let buttonRef: ButtonRenderable | null = null;
     setup = await testRender(
       createElement(
-        Button.Root,
+        Button,
         {
           id: "root",
           ref: (value) => {
-            rootRef = value;
+            buttonRef = value;
           },
         },
         ((state: ButtonState) =>
@@ -44,9 +44,9 @@ describe("React Button", () => {
     );
     const root = setup.renderer.root.findDescendantById(
       "root",
-    ) as ButtonRootRenderable;
+    ) as ButtonRenderable;
 
-    expect(rootRef as unknown).toBe(root);
+    expect(buttonRef as unknown).toBe(root);
     expect(textContent("content")).toBe("Ready");
     await act(async () => root.focus());
     await setup.waitFor(() => textContent("content") === "Focused");
@@ -57,7 +57,7 @@ describe("React Button", () => {
   it("forwards source-specific press details", async () => {
     const presses: ButtonPressDetails[] = [];
     setup = await testRender(
-      createElement(Button.Root, {
+      createElement(Button, {
         id: "press-root",
         onPress: (details) => presses.push(details),
       }),
@@ -65,29 +65,29 @@ describe("React Button", () => {
     );
     const root = setup.renderer.root.findDescendantById(
       "press-root",
-    ) as ButtonRootRenderable;
+    ) as ButtonRenderable;
 
     await act(async () => root.press());
     expect(presses).toEqual([{ source: "imperative" }]);
   });
 
-  it("retains Root identity across disabled removal and callback replacement", async () => {
+  it("retains Button identity across disabled removal and callback replacement", async () => {
     const presses: string[] = [];
     let setDisabled: (disabled: boolean) => void = () => {};
     let setVersion: (version: number) => void = () => {};
-    let rootRef: ButtonRootRenderable | null = null;
+    let buttonRef: ButtonRenderable | null = null;
 
     function App() {
       const [disabled, updateDisabled] = useState(false);
       const [version, updateVersion] = useState(1);
       setDisabled = updateDisabled;
       setVersion = updateVersion;
-      return createElement(Button.Root, {
+      return createElement(Button, {
         disabled: disabled || undefined,
         id: "reactive-root",
         onPress: (details) => presses.push(`${version}:${details.source}`),
         ref: (value) => {
-          rootRef = value;
+          buttonRef = value;
         },
       });
     }
@@ -95,8 +95,8 @@ describe("React Button", () => {
     setup = await testRender(createElement(App), { width: 30, height: 5 });
     const root = setup.renderer.root.findDescendantById(
       "reactive-root",
-    ) as ButtonRootRenderable;
-    expect(rootRef as unknown).toBe(root);
+    ) as ButtonRenderable;
+    expect(buttonRef as unknown).toBe(root);
 
     await act(async () => root.press());
     expect(presses).toEqual(["1:imperative"]);
@@ -117,6 +117,6 @@ describe("React Button", () => {
     });
     await act(async () => root.press());
     expect(presses).toEqual(["1:imperative", "3:imperative"]);
-    expect(rootRef as unknown).toBe(root);
+    expect(buttonRef as unknown).toBe(root);
   });
 });

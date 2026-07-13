@@ -112,7 +112,7 @@ describe("React adapter", () => {
         null,
         createElement(Badge, { id: "badge", label: "Badge" }),
         createElement(
-          Button.Root,
+          Button,
           { id: "button" },
           createElement("text", { content: "Button" }),
         ),

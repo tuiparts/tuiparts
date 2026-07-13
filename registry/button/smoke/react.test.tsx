@@ -5,7 +5,7 @@ import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
 import type {
   ButtonPressDetails,
-  ButtonRootRenderable,
+  ButtonRenderable,
 } from "@opentui-ui/core/button";
 import { act } from "react";
 import { Button } from "./components/ui/button";
@@ -38,10 +38,10 @@ test("installed React Button recipe runtime smoke", async () => {
   );
   const active = setup.renderer.root.findDescendantById(
     "active",
-  ) as ButtonRootRenderable;
+  ) as ButtonRenderable;
   const disabled = setup.renderer.root.findDescendantById(
     "disabled",
-  ) as ButtonRootRenderable;
+  ) as ButtonRenderable;
 
   await setup.renderOnce();
   expect(setup.captureCharFrame().split("\n")[0]?.includes("Run")).toBe(true);

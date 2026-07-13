@@ -11,6 +11,15 @@ export {
   type SwitchMeta,
   type SwitchStateKeys,
 } from "./meta";
+export {
+  type SwitchPrimitiveState,
+  type SwitchRootOptions,
+  SwitchRootRenderable,
+  SwitchStore,
+  type SwitchStoreOptions,
+  type SwitchThumbOptions,
+  SwitchThumbRenderable,
+} from "./primitive";
 export { SwitchRenderable } from "./switch";
 export type {
   SwitchBaseOptions,

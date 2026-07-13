@@ -71,6 +71,73 @@
       }
     },
     {
+      "name": "core/switch",
+      "type": "registry:item",
+      "title": "Switch (Core)",
+      "description": "Editable imperative Switch recipe built on the OpenTUI UI foundation primitive.",
+      "dependencies": ["@opentui-ui/core@^0.0.2", "@opentui/core@^0.4.3"],
+      "files": [
+        {
+          "path": "registry/switch/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/switch.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "foundation"
+      }
+    },
+    {
+      "name": "react/switch",
+      "type": "registry:item",
+      "title": "Switch (React)",
+      "description": "Editable React Switch recipe built on the OpenTUI UI foundation primitive.",
+      "dependencies": [
+        "@opentui-ui/react@^0.0.2",
+        "@opentui-ui/core@^0.0.2",
+        "@opentui/core@^0.4.3",
+        "@opentui/react@^0.4.3",
+        "react@^19.2.0",
+        "ws@^8.21.0"
+      ],
+      "files": [
+        {
+          "path": "registry/switch/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/switch.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "foundation"
+      }
+    },
+    {
+      "name": "solid/switch",
+      "type": "registry:item",
+      "title": "Switch (Solid)",
+      "description": "Editable Solid Switch recipe built on the OpenTUI UI foundation primitive.",
+      "dependencies": [
+        "@opentui-ui/solid@^0.0.2",
+        "@opentui-ui/core@^0.0.2",
+        "@opentui/core@^0.4.3",
+        "@opentui/solid@^0.4.3",
+        "solid-js@1.9.12"
+      ],
+      "files": [
+        {
+          "path": "registry/switch/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/switch.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "foundation"
+      }
+    },
+    {
       "name": "core/radio-group",
       "type": "registry:item",
       "title": "Radio Group (Core)",

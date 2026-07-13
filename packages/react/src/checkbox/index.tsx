@@ -1,8 +1,6 @@
-export type { CheckboxPrimitiveState } from "@opentui-ui/core/checkbox";
-export { CHECKBOX_SYMBOLS } from "@opentui-ui/core/checkbox";
-export { Checkbox, type CheckboxProps } from "./checkbox";
+export type { CheckboxState } from "@opentui-ui/core/checkbox";
 export {
-  CheckboxPrimitive,
-  type CheckboxPrimitiveIndicatorProps,
-  type CheckboxPrimitiveRootProps,
+  Checkbox,
+  type CheckboxIndicatorProps,
+  type CheckboxProps,
 } from "./primitive";

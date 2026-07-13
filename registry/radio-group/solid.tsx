@@ -2,13 +2,13 @@
 
 import {
   type RadioGroupItemState,
-  RadioGroupPrimitive,
-  type RadioGroupPrimitiveItemProps,
-  type RadioGroupPrimitiveRootProps,
+  RadioGroup as RadioGroupPrimitive,
+  type RadioGroupItemProps as RadioGroupPrimitiveItemProps,
+  type RadioGroupProps as RadioGroupPrimitiveProps,
 } from "@opentui-ui/solid/radio";
 import { splitProps } from "solid-js";
 
-export interface RadioGroupProps extends RadioGroupPrimitiveRootProps {}
+export interface RadioGroupProps extends RadioGroupPrimitiveProps {}
 
 export interface RadioGroupItemProps
   extends Omit<RadioGroupPrimitiveItemProps, "children"> {

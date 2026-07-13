@@ -5,7 +5,7 @@ import {
   type RenderContext,
 } from "@opentui/core";
 
-export interface CheckboxPrimitiveState {
+export interface CheckboxState {
   readonly checked: boolean;
   readonly disabled: boolean;
   readonly focused: boolean;
@@ -18,11 +18,11 @@ export interface CheckboxStoreOptions {
   onCheckedChange?: (checked: boolean) => void;
 }
 
-type CheckboxStoreListener = (state: CheckboxPrimitiveState) => void;
+type CheckboxStoreListener = (state: CheckboxState) => void;
 
 export class CheckboxStore {
   private _controlled: boolean;
-  private _state: CheckboxPrimitiveState;
+  private _state: CheckboxState;
   private _onCheckedChange?: (checked: boolean) => void;
   private readonly _listeners = new Set<CheckboxStoreListener>();
 
@@ -36,7 +36,7 @@ export class CheckboxStore {
     this._onCheckedChange = options.onCheckedChange;
   }
 
-  get state(): CheckboxPrimitiveState {
+  get state(): CheckboxState {
     return this._state;
   }
 
@@ -74,7 +74,7 @@ export class CheckboxStore {
     this._onCheckedChange = callback;
   }
 
-  private update(next: Partial<CheckboxPrimitiveState>): void {
+  private update(next: Partial<CheckboxState>): void {
     const state = { ...this._state, ...next };
     if (
       state.checked === this._state.checked &&
@@ -138,7 +138,7 @@ export class CheckboxRootRenderable extends BoxRenderable {
     this._unsubscribe = this._store.subscribe(() => this.requestRender());
   }
 
-  getState(): CheckboxPrimitiveState {
+  getState(): CheckboxState {
     return this._store.state;
   }
 
@@ -226,7 +226,7 @@ export class CheckboxIndicatorRenderable extends BoxRenderable {
     });
   }
 
-  getState(): CheckboxPrimitiveState {
+  getState(): CheckboxState {
     return this._store.state;
   }
 

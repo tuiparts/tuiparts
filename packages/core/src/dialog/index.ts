@@ -24,7 +24,7 @@ export interface DialogOpenChangeDetails {
   readonly defaultPrevented: boolean;
 }
 
-export interface DialogPrimitiveState {
+export interface DialogState {
   readonly open: boolean;
 }
 
@@ -34,7 +34,7 @@ export interface DialogStoreOptions {
   onOpenChange?: (open: boolean, details: DialogOpenChangeDetails) => void;
 }
 
-type DialogListener = (state: DialogPrimitiveState) => void;
+type DialogListener = (state: DialogState) => void;
 
 class ChangeDetails implements DialogOpenChangeDetails {
   private prevented = false;
@@ -269,7 +269,7 @@ function coordinatorFor(ctx: RenderContext): DialogCoordinator {
 /** The small public state interface for one Dialog. It owns no visual tree. */
 export class DialogStore {
   private controlled: boolean;
-  private currentState: DialogPrimitiveState;
+  private currentState: DialogState;
   private onChange?: DialogStoreOptions["onOpenChange"];
   private readonly listeners = new Set<DialogListener>();
 
@@ -284,7 +284,7 @@ export class DialogStore {
     this.onChange = options.onOpenChange;
   }
 
-  get state(): DialogPrimitiveState {
+  get state(): DialogState {
     return this.currentState;
   }
 
@@ -356,7 +356,7 @@ export class DialogRootRenderable extends BoxRenderable {
     this.unsubscribe = this.store.subscribe(() => this.requestRender());
   }
 
-  get state(): DialogPrimitiveState {
+  get state(): DialogState {
     return this.store.state;
   }
 

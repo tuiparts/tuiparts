@@ -15,7 +15,7 @@ export interface RadioGroupChangeDetails {
 
 export type RadioGroupFocusDirection = "next" | "previous" | "first" | "last";
 
-export interface RadioGroupPrimitiveState {
+export interface RadioGroupState {
   readonly value: string | null;
   readonly disabled: boolean;
 }
@@ -64,7 +64,7 @@ export interface RadioGroupNavigationTarget {
   focus(): void;
 }
 
-type RadioGroupStoreListener = (state: RadioGroupPrimitiveState) => void;
+type RadioGroupStoreListener = (state: RadioGroupState) => void;
 
 interface RegisteredItem {
   value: string;
@@ -82,7 +82,7 @@ const PROGRAMMATIC_ACTIVATION_DETAILS: RadioGroupChangeDetails = Object.freeze({
 
 export class RadioGroupStore {
   private _controlled: boolean;
-  private _state: RadioGroupPrimitiveState;
+  private _state: RadioGroupState;
   private _onValueChange?: RadioGroupValueChangeHandler;
   private readonly _items = new Map<RadioGroupItemKey, RegisteredItem>();
   private _activeKey: RadioGroupItemKey | null = null;
@@ -107,7 +107,7 @@ export class RadioGroupStore {
     this._onValueChange = options.onValueChange;
   }
 
-  get state(): RadioGroupPrimitiveState {
+  get state(): RadioGroupState {
     return this._state;
   }
 
@@ -488,7 +488,7 @@ export class RadioGroupStore {
       (active ?? selected ?? retained ?? enabledItems[0])?.[0] ?? null;
   }
 
-  private update(next: Partial<RadioGroupPrimitiveState>): void {
+  private update(next: Partial<RadioGroupState>): void {
     const state = { ...this._state, ...next };
     if (
       state.value === this._state.value &&
@@ -570,7 +570,7 @@ export class RadioGroupRootRenderable extends BoxRenderable {
     return this._store;
   }
 
-  getState(): RadioGroupPrimitiveState {
+  getState(): RadioGroupState {
     return this._store.state;
   }
 

@@ -225,8 +225,19 @@ Core is the source of behavior shared by frameworks:
   adapters normally hide that wiring behind Root and part context.
 
 Single-node OpenTUI-native controls use a named adapter such as
-`InputPrimitive` rather than inventing a compound `Root` with no composition
+`Input` rather than inventing a compound `Root` with no composition
 value.
+
+Store interfaces remain component-specific. Shared state machinery should be
+extracted through private composition only when multiple stores demonstrate the
+same lifecycle and notification semantics; foundation Stores do not inherit
+from a generic public base class.
+
+Solid adapters construct retained Renderables directly, so they preserve
+reactive props with `splitProps`, take constructor snapshots with `untrack`, and
+apply later updates through one private Renderable-prop helper. That helper also
+clears keys removed from dynamic prop objects, which the upstream spread seam
+does not currently do itself.
 
 ## Interaction Rules
 

@@ -4,11 +4,11 @@ import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
 import type {
   CheckboxIndicatorRenderable,
-  CheckboxPrimitiveState,
+  CheckboxState,
   CheckboxRootRenderable,
 } from "@opentui-ui/core/checkbox";
 import { act, createElement, type ReactNode, useState } from "react";
-import { CheckboxPrimitive } from "./primitive";
+import { Checkbox } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 
@@ -22,14 +22,14 @@ afterEach(async () => {
   setup = undefined;
 });
 
-describe("React CheckboxPrimitive", () => {
+describe("React Checkbox", () => {
   it("composes public parts and arbitrary content around shared state", async () => {
     setup = await testRender(
       createElement(
-        CheckboxPrimitive.Root,
+        Checkbox.Root,
         { id: "root", defaultChecked: false },
         createElement(
-          CheckboxPrimitive.Indicator,
+          Checkbox.Indicator,
           { id: "indicator" },
           createElement("text", { content: "x" }),
         ),
@@ -59,14 +59,14 @@ describe("React CheckboxPrimitive", () => {
   });
 
   it("exposes primitive state to consumer-owned rendering", async () => {
-    const renderState = (state: CheckboxPrimitiveState) =>
+    const renderState = (state: CheckboxState) =>
       createElement("text", {
         id: "state-label",
         content: state.checked ? "on" : "off",
       });
     setup = await testRender(
       createElement(
-        CheckboxPrimitive.Root,
+        Checkbox.Root,
         { id: "state-root" },
         renderState as unknown as ReactNode,
       ),
@@ -89,7 +89,7 @@ describe("React CheckboxPrimitive", () => {
   it("accepts controlled updates without replacing the Root", async () => {
     function App() {
       const [checked, setChecked] = useState(false);
-      return createElement(CheckboxPrimitive.Root, {
+      return createElement(Checkbox.Root, {
         id: "controlled-root",
         checked,
         onCheckedChange: setChecked,
@@ -126,7 +126,7 @@ describe("React CheckboxPrimitive", () => {
       setControlled = updateControlled;
       setDisabled = updateDisabled;
       setVersion = updateVersion;
-      return createElement(CheckboxPrimitive.Root, {
+      return createElement(Checkbox.Root, {
         id: "reactive-root",
         checked: controlled ? false : undefined,
         disabled: disabled || undefined,
@@ -180,14 +180,14 @@ describe("React CheckboxPrimitive", () => {
 
     function App() {
       return createElement(
-        CheckboxPrimitive.Root,
+        Checkbox.Root,
         {
           id: "lifecycle-root",
           ref: (value) => {
             rootRef.current = value;
           },
         },
-        createElement(CheckboxPrimitive.Indicator, {
+        createElement(Checkbox.Indicator, {
           id: "lifecycle-indicator",
           ref: (value) => {
             if (value) refs.push(value);

@@ -3,7 +3,7 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
-import type { InputPrimitiveRenderable } from "@opentui-ui/core/input";
+import type { InputRenderable } from "@opentui-ui/core/input";
 import { act, createRef } from "react";
 import { Input } from "./components/ui/input";
 
@@ -17,7 +17,7 @@ afterEach(async () => {
 describe("installed React Input recipe", () => {
   it("routes native events once", async () => {
     const events: string[] = [];
-    const ref = createRef<InputPrimitiveRenderable>();
+    const ref = createRef<InputRenderable>();
     setup = await testRender(
       <Input
         ref={ref}

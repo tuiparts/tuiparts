@@ -3,9 +3,9 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
-import type { InputPrimitiveRenderable } from "@opentui-ui/core/input";
+import type { InputRenderable } from "@opentui-ui/core/input";
 import { createSignal } from "solid-js";
-import { InputPrimitive } from "./primitive";
+import { Input } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 
@@ -14,13 +14,13 @@ afterEach(() => {
   setup = undefined;
 });
 
-describe("Solid InputPrimitive", () => {
+describe("Solid Input", () => {
   it("preserves native editing and event order without duplicate routing", async () => {
     const events: string[] = [];
-    let input: InputPrimitiveRenderable | undefined;
+    let input: InputRenderable | undefined;
     setup = await testRender(
       () => (
-        <InputPrimitive
+        <Input
           ref={(value) => {
             input = value;
           }}
@@ -45,14 +45,14 @@ describe("Solid InputPrimitive", () => {
 
   it("applies programmatic values to the retained Renderable", async () => {
     const events: string[] = [];
-    let input: InputPrimitiveRenderable | undefined;
+    let input: InputRenderable | undefined;
     let update: (value: string) => void = () => {};
     setup = await testRender(
       () => {
         const [value, setValue] = createSignal("Before");
         update = setValue;
         return (
-          <InputPrimitive
+          <Input
             ref={(next) => {
               input = next;
             }}

@@ -5,12 +5,12 @@ import type { TextRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
 import type {
-  SwitchPrimitiveState,
+  SwitchState,
   SwitchRootRenderable,
   SwitchThumbRenderable,
 } from "@opentui-ui/core/switch";
 import { createSignal } from "solid-js";
-import { SwitchPrimitive } from "./primitive";
+import { Switch } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 
@@ -24,25 +24,23 @@ afterEach(() => {
   setup = undefined;
 });
 
-describe("Solid SwitchPrimitive", () => {
+describe("Solid Switch", () => {
   it("fails clearly when Thumb is rendered without Root", async () => {
     await expect(
-      testRender(() => <SwitchPrimitive.Thumb />, {
+      testRender(() => <Switch.Thumb />, {
         width: 30,
         height: 5,
       }),
-    ).rejects.toThrow(
-      "SwitchPrimitive.Thumb must be rendered inside SwitchPrimitive.Root",
-    );
+    ).rejects.toThrow("Switch.Thumb must be rendered inside Switch.Root");
   });
 
   it("composes a retained Thumb around shared state", async () => {
     setup = await testRender(
       () => (
-        <SwitchPrimitive.Root id="root">
-          <SwitchPrimitive.Thumb id="thumb" />
+        <Switch.Root id="root">
+          <Switch.Thumb id="thumb" />
           <text id="label" content="Editable recipe" />
-        </SwitchPrimitive.Root>
+        </Switch.Root>
       ),
       { width: 30, height: 5 },
     );
@@ -69,11 +67,11 @@ describe("Solid SwitchPrimitive", () => {
   it("exposes readonly state to consumer-owned rendering", async () => {
     setup = await testRender(
       () => (
-        <SwitchPrimitive.Root id="state-root">
-          {(state: SwitchPrimitiveState) => (
+        <Switch.Root id="state-root">
+          {(state: SwitchState) => (
             <text id="state-label" content={state.checked ? "on" : "off"} />
           )}
-        </SwitchPrimitive.Root>
+        </Switch.Root>
       ),
       { width: 30, height: 5 },
     );
@@ -104,7 +102,7 @@ describe("Solid SwitchPrimitive", () => {
         setDisabled = updateDisabled;
         setVersion = updateVersion;
         return (
-          <SwitchPrimitive.Root
+          <Switch.Root
             id="reactive-root"
             checked={controlled() ? false : undefined}
             disabled={disabled() || undefined}
@@ -115,13 +113,13 @@ describe("Solid SwitchPrimitive", () => {
               rootRef = value;
             }}
           >
-            <SwitchPrimitive.Thumb
+            <Switch.Thumb
               id="reactive-thumb"
               ref={(value) => {
                 thumbRef = value;
               }}
             />
-          </SwitchPrimitive.Root>
+          </Switch.Root>
         );
       },
       { width: 30, height: 5 },

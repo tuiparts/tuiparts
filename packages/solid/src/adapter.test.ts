@@ -2,22 +2,12 @@ import { afterEach, describe, expect, it } from "bun:test";
 import type { BaseRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { createElement, testRender } from "@opentui/solid";
-import type {
-  BadgeRenderable,
-  CheckboxRenderable,
-  SwitchRenderable,
-} from "@opentui-ui/core";
-import {
-  Badge,
-  Button,
-  Checkbox,
-  Input,
-  Radio,
-  RadioGroup,
-  Switch,
-} from "@opentui-ui/solid";
+import type { BadgeRenderable } from "@opentui-ui/core";
+import { Badge, Button } from "@opentui-ui/solid";
 import { styled } from "@opentui-ui/solid/styled";
 import { createSignal } from "solid-js";
+import { Input } from "./input/primitive";
+import { Radio, RadioGroup } from "./radio/radio";
 
 let setup: TestRendererSetup | undefined;
 
@@ -90,17 +80,6 @@ describe("Solid adapter", () => {
             paddingLeft: 2,
           }),
         );
-        root.add(
-          Switch({
-            alignSelf: "flex-start",
-            id: "switch-root",
-            label: "",
-            styles: { track: { size: 3 }, thumb: {}, label: {} },
-            get width() {
-              return baseline();
-            },
-          }),
-        );
         return root;
       },
       { width: 30, height: 8 },
@@ -117,9 +96,6 @@ describe("Solid adapter", () => {
     const dynamicBadge = root.findDescendantById(
       "dynamic-badge",
     ) as BadgeRenderable;
-    const switchRoot = root.findDescendantById(
-      "switch-root",
-    ) as SwitchRenderable;
     const styledRoot = root.findDescendantById(
       "styled-root",
     ) as BadgeRenderable;
@@ -128,31 +104,24 @@ describe("Solid adapter", () => {
     expect(stylesFirst.width).toBe(5);
     expect(dynamicBadge.width).toBe(5);
     expect(styledRoot.width).toBe(5);
-    expect(switchRoot.width).toBe(2);
-    expect(switchRoot.getChildren()[0]?.width).toBe(3);
 
     setBaseline(4);
-    await setup.waitFor(
-      () => dynamicBadge.width === 5 && switchRoot.width === 4,
-    );
+    await setup.waitFor(() => dynamicBadge.width === 5);
 
     setOverride(false);
     await setup.waitFor(() => dynamicBadge.width === 6);
 
     setBaseline(undefined);
     await setup.waitFor(() => dynamicBadge.width === 3);
-    expect(switchRoot.width).toBe(3);
   });
 
-  it("registers every component and preserves RadioGroup children", async () => {
+  it("registers the remaining packaged components and preserves RadioGroup children", async () => {
     setup = await testRender(
       () => {
         const root = createElement("box") as BaseRenderable;
         root.add(Badge({ id: "badge", label: "Badge" }));
         root.add(Button({ id: "button", label: "Button" }));
-        root.add(Checkbox({ id: "checkbox", label: "Checkbox" }));
-        root.add(Input({ id: "input", defaultValue: "Input" }));
-        root.add(Switch({ id: "switch", label: "Switch" }));
+        root.add(Input({ id: "input", value: "Input" }));
         const group = RadioGroup({ id: "radio-group" });
         group.add(Radio({ id: "radio", label: "Radio" }));
         root.add(group);
@@ -161,15 +130,7 @@ describe("Solid adapter", () => {
       { width: 40, height: 12 },
     );
 
-    const ids = [
-      "badge",
-      "button",
-      "checkbox",
-      "input",
-      "switch",
-      "radio-group",
-      "radio",
-    ];
+    const ids = ["badge", "button", "input", "radio-group", "radio"];
     expect(
       ids.filter((id) => !setup?.renderer.root.findDescendantById(id)),
     ).toEqual([]);
@@ -178,33 +139,6 @@ describe("Solid adapter", () => {
         .findDescendantById("radio-group")
         ?.findDescendantById("radio"),
     ).toBeDefined();
-  });
-
-  it("reactively updates the existing controlled Renderable", async () => {
-    let checkbox: CheckboxRenderable | undefined;
-    setup = await testRender(
-      () => {
-        const [checked, setChecked] = createSignal(false);
-        return Checkbox({
-          get checked() {
-            return checked();
-          },
-          id: "reactive-checkbox",
-          label: "Reactive",
-          onCheckedChange: setChecked,
-        });
-      },
-      { width: 30, height: 5 },
-    );
-    checkbox = setup.renderer.root.findDescendantById(
-      "reactive-checkbox",
-    ) as CheckboxRenderable;
-
-    checkbox.toggle();
-    await setup.waitFor(() => checkbox?.checked === true);
-    expect(setup.renderer.root.findDescendantById("reactive-checkbox")).toBe(
-      checkbox,
-    );
   });
 
   it("flattens nested styled wrappers to one deepest base", async () => {

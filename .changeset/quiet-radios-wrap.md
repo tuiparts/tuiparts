@@ -4,5 +4,6 @@
 "@opentui-ui/solid": patch
 ---
 
-Add the RadioGroup collection primitive tracer with framework adapters,
-keyboard navigation, dynamic Item lifecycle, and editable registry recipes.
+Add the canonical `RadioGroup.Root`, `RadioGroup.Item`, and
+`RadioGroup.Indicator` collection interfaces with keyboard navigation, dynamic
+Item lifecycle, and editable registry recipes.

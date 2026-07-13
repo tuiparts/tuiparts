@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
-import type { InputPrimitiveRenderable } from "@opentui-ui/core/input";
+import type { InputRenderable } from "@opentui-ui/core/input";
 import { act, createElement, createRef, useState } from "react";
-import { InputPrimitive } from "./primitive";
+import { Input } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 
@@ -12,12 +12,12 @@ afterEach(async () => {
   setup = undefined;
 });
 
-describe("React InputPrimitive", () => {
+describe("React Input", () => {
   it("preserves native editing and event order without duplicate routing", async () => {
     const events: string[] = [];
-    const ref = createRef<InputPrimitiveRenderable>();
+    const ref = createRef<InputRenderable>();
     setup = await testRender(
-      createElement(InputPrimitive, {
+      createElement(Input, {
         ref,
         value: "A",
         onInput: (value) => events.push(`input:${value}`),
@@ -39,12 +39,12 @@ describe("React InputPrimitive", () => {
 
   it("applies programmatic values to the retained Renderable", async () => {
     const events: string[] = [];
-    const ref = createRef<InputPrimitiveRenderable>();
+    const ref = createRef<InputRenderable>();
     let update: ((value: string) => void) | undefined;
     function App() {
       const [value, setValue] = useState("Before");
       update = setValue;
-      return createElement(InputPrimitive, {
+      return createElement(Input, {
         ref,
         value,
         onInput: (next) => events.push(next),

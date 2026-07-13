@@ -6,8 +6,7 @@ import {
   type RenderContext,
 } from "@opentui/core";
 
-export interface InputPrimitiveOptions
-  extends Omit<InputRenderableOptions, "onSubmit"> {
+export interface InputOptions extends Omit<InputRenderableOptions, "onSubmit"> {
   disabled?: boolean;
   onInput?: (value: string) => void;
   onChange?: (value: string) => void;
@@ -15,10 +14,10 @@ export interface InputPrimitiveOptions
 }
 
 /** Thin Input primitive that preserves OpenTUI's editing and event model. */
-export class InputPrimitiveRenderable extends OpenTuiInputRenderable {
+export class InputRenderable extends OpenTuiInputRenderable {
   private _disabled: boolean;
 
-  constructor(ctx: RenderContext, options: InputPrimitiveOptions = {}) {
+  constructor(ctx: RenderContext, options: InputOptions = {}) {
     const {
       disabled = false,
       onInput,

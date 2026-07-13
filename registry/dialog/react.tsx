@@ -1,13 +1,13 @@
 /** @jsxImportSource @opentui/react */
 
 import {
-  DialogPrimitive,
-  type DialogRootProps,
+  Dialog as DialogPrimitive,
+  type DialogProps as DialogPrimitiveProps,
   type DialogTriggerProps,
 } from "@opentui-ui/react/dialog";
 import type { ReactNode } from "react";
 
-export interface DialogProps extends Omit<DialogRootProps, "children"> {
+export interface DialogProps extends Omit<DialogPrimitiveProps, "children"> {
   children?: ReactNode;
   closeLabel?: string;
   description?: string;

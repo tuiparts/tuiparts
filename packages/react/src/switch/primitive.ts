@@ -1,6 +1,6 @@
 import { extend } from "@opentui/react";
 import {
-  type SwitchPrimitiveState,
+  type SwitchState,
   type SwitchRootOptions,
   SwitchRootRenderable,
   SwitchStore,
@@ -18,8 +18,8 @@ import {
   useSyncExternalStore,
 } from "react";
 
-const ROOT_TAG = "otui-switch-primitive-root";
-const THUMB_TAG = "otui-switch-primitive-thumb";
+const ROOT_TAG = "otui-switch-root";
+const THUMB_TAG = "otui-switch-thumb";
 
 extend({
   [ROOT_TAG]: SwitchRootRenderable,
@@ -28,20 +28,17 @@ extend({
 
 const SwitchContext = createContext<SwitchStore | null>(null);
 
-export type SwitchPrimitiveRootProps = Omit<SwitchRootOptions, "store"> & {
-  children?: ReactNode | ((state: SwitchPrimitiveState) => ReactNode);
+export type SwitchProps = Omit<SwitchRootOptions, "store"> & {
+  children?: ReactNode | ((state: SwitchState) => ReactNode);
   ref?: Ref<SwitchRootRenderable>;
 };
 
-export type SwitchPrimitiveThumbProps = Omit<SwitchThumbOptions, "store"> & {
+export type SwitchThumbProps = Omit<SwitchThumbOptions, "store"> & {
   children?: ReactNode;
   ref?: Ref<SwitchThumbRenderable>;
 };
 
-function SwitchRoot({
-  children,
-  ...props
-}: SwitchPrimitiveRootProps): ReactElement {
+function SwitchRoot({ children, ...props }: SwitchProps): ReactElement {
   const storeRef = useRef<SwitchStore | null>(null);
   if (!storeRef.current) storeRef.current = new SwitchStore(props);
   const store = storeRef.current;
@@ -59,23 +56,18 @@ function SwitchRoot({
   );
 }
 
-function SwitchThumb({
-  children,
-  ...props
-}: SwitchPrimitiveThumbProps): ReactElement {
+function SwitchThumb({ children, ...props }: SwitchThumbProps): ReactElement {
   const store = useContext(SwitchContext);
   if (!store) {
-    throw new Error(
-      "SwitchPrimitive.Thumb must be rendered inside SwitchPrimitive.Root",
-    );
+    throw new Error("Switch.Thumb must be rendered inside Switch.Root");
   }
   return createElement(THUMB_TAG, { ...props, store }, children);
 }
 
-SwitchRoot.displayName = "SwitchPrimitive.Root";
-SwitchThumb.displayName = "SwitchPrimitive.Thumb";
+SwitchRoot.displayName = "Switch.Root";
+SwitchThumb.displayName = "Switch.Thumb";
 
-export const SwitchPrimitive = {
+export const Switch = {
   Root: SwitchRoot,
   Thumb: SwitchThumb,
 } as const;

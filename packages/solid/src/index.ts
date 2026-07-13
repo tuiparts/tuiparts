@@ -5,23 +5,11 @@ export {
   type ButtonSlotStyleMap,
 } from "@opentui-ui/core/button";
 export {
-  CHECKBOX_SLOTS,
-  type CheckboxSlotStyleMap,
-} from "@opentui-ui/core/checkbox";
-export {
-  INPUT_SLOTS,
-  type InputSlotStyleMap,
-} from "@opentui-ui/core/input";
-export {
   RADIO_GROUP_SLOTS,
   RADIO_SLOTS,
   type RadioGroupSlotStyleMap,
   type RadioSlotStyleMap,
 } from "@opentui-ui/core/radio";
-export {
-  SWITCH_SLOTS,
-  type SwitchSlotStyleMap,
-} from "@opentui-ui/core/switch";
 // Re-export components
 export * from "./badge";
 export * from "./button";

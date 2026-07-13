@@ -92,8 +92,9 @@ The frozen contract is documented in `FOUNDATION_PRIMITIVE_CONTRACT.md`.
 - Provide Button activation behavior without fixed label or appearance.
 - Decide the standalone Radio surface relative to RadioGroup Item parts.
 - Treat Badge as a recipe rather than an interaction primitive.
-- Add primitives alongside legacy packaged components, migrate recipes and
-  consumers in green batches, then remove the legacy forms.
+- Migrate recipes and consumers in independently green vertical batches. Since
+  the foundation is unreleased, a proven replacement becomes canonical without
+  retaining deprecated aliases.
 
 ### Phase 4 - Registry Product
 
@@ -105,11 +106,10 @@ The frozen contract is documented in `FOUNDATION_PRIMITIVE_CONTRACT.md`.
 - Define recipe revision discovery, compatibility, diff, and update guidance
   without overwriting consumer modifications.
 
-### Phase 5 - Compatibility And Contraction
+### Phase 5 - Contraction
 
-- Publish a compatibility/deprecation release with both legacy and primitive
-  interfaces before removing published legacy exports.
-- Contract legacy interfaces in independently green component batches.
+- Contract legacy interfaces in independently green component batches as soon
+  as their foundation and recipe replacements are proven.
 - Remove shared hybrid infrastructure only after all component batches pass.
 
 ### Phase 6 - Ecosystem Release

@@ -4,4 +4,6 @@
 "@opentui-ui/solid": patch
 ---
 
-Add an Input primitive tracer and framework adapters that preserve OpenTUI-native value, input, change, and submit behavior.
+Add the canonical unstyled `Input`, `InputProps`, and `InputRenderable`
+interfaces while preserving OpenTUI-native value, input, change, and submit
+behavior.

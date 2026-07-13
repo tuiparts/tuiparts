@@ -1,14 +1,14 @@
 /** @jsxImportSource @opentui/solid */
 
 import {
-  DialogPrimitive,
-  type DialogRootProps,
+  Dialog as DialogPrimitive,
+  type DialogProps as DialogPrimitiveProps,
   type DialogTriggerProps,
 } from "@opentui-ui/solid/dialog";
 import type { JSX } from "solid-js";
 import { splitProps } from "solid-js";
 
-export interface DialogProps extends Omit<DialogRootProps, "children"> {
+export interface DialogProps extends Omit<DialogPrimitiveProps, "children"> {
   children?: JSX.Element;
   closeLabel?: string;
   description?: string;

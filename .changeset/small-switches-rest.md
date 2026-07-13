@@ -4,5 +4,5 @@
 "@opentui-ui/solid": patch
 ---
 
-Add the unstyled Switch Root and Thumb foundation primitive, matching React and
-Solid compound adapters, and editable registry recipes.
+Add the unstyled `Switch.Root` and `Switch.Thumb` foundation interfaces with
+clean `SwitchProps` and `SwitchState` types and editable registry recipes.

@@ -12,7 +12,7 @@ import type {
   DialogTriggerRenderable,
 } from "@opentui-ui/core/dialog";
 import { act, createElement, createRef, type ReactNode, useState } from "react";
-import { DialogPrimitive } from "./primitive";
+import { Dialog } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 
@@ -21,7 +21,7 @@ afterEach(async () => {
   setup = undefined;
 });
 
-describe("React DialogPrimitive", () => {
+describe("React Dialog", () => {
   it("retains every part through open, close, focus containment, and reopen", async () => {
     const changes: string[] = [];
     const rootRef = createRef<DialogRootRenderable>();
@@ -40,14 +40,14 @@ describe("React DialogPrimitive", () => {
           id: "react-open-state",
           content: state.open ? "open" : "closed",
         }),
-        createElement(DialogPrimitive.Trigger, {
+        createElement(Dialog.Trigger, {
           id: "react-trigger",
           ref: triggerRef,
         }),
         createElement(
-          DialogPrimitive.Portal,
+          Dialog.Portal,
           { id: "react-portal", ref: portalRef },
-          createElement(DialogPrimitive.Backdrop, {
+          createElement(Dialog.Backdrop, {
             id: "react-backdrop",
             ref: backdropRef,
             position: "absolute",
@@ -55,19 +55,19 @@ describe("React DialogPrimitive", () => {
             height: 10,
           }),
           createElement(
-            DialogPrimitive.Popup,
+            Dialog.Popup,
             { id: "react-popup", ref: popupRef },
-            createElement(DialogPrimitive.Title, {
+            createElement(Dialog.Title, {
               id: "react-title",
               ref: titleRef,
               content: "Title",
             }),
-            createElement(DialogPrimitive.Description, {
+            createElement(Dialog.Description, {
               id: "react-description",
               ref: descriptionRef,
               content: "Description",
             }),
-            createElement(DialogPrimitive.Close, {
+            createElement(Dialog.Close, {
               id: "react-close",
               ref: closeRef,
             }),
@@ -76,7 +76,7 @@ describe("React DialogPrimitive", () => {
       );
     setup = await testRender(
       createElement(
-        DialogPrimitive.Root,
+        Dialog.Root,
         {
           id: "react-root",
           ref: rootRef,
@@ -140,7 +140,7 @@ describe("React DialogPrimitive", () => {
     function Controlled() {
       const [open, setOpen] = useState(false);
       return createElement(
-        DialogPrimitive.Root,
+        Dialog.Root,
         {
           open,
           ref: rootRef,
@@ -149,12 +149,12 @@ describe("React DialogPrimitive", () => {
             setOpen(next);
           },
         },
-        createElement(DialogPrimitive.Trigger, { ref: triggerRef }),
+        createElement(Dialog.Trigger, { ref: triggerRef }),
         createElement(
-          DialogPrimitive.Portal,
+          Dialog.Portal,
           { ref: portalRef },
-          createElement(DialogPrimitive.Backdrop),
-          createElement(DialogPrimitive.Popup),
+          createElement(Dialog.Backdrop),
+          createElement(Dialog.Popup),
         ),
       );
     }
@@ -181,18 +181,18 @@ describe("React DialogPrimitive", () => {
       const [id, setId] = useState("react-portal-before");
       updateId = setId;
       return createElement(
-        DialogPrimitive.Root,
+        Dialog.Root,
         null,
         createElement(
-          DialogPrimitive.Portal,
+          Dialog.Portal,
           {
             id,
             ref: (portal) => {
               portalRef = portal;
             },
           },
-          createElement(DialogPrimitive.Backdrop),
-          createElement(DialogPrimitive.Popup),
+          createElement(Dialog.Backdrop),
+          createElement(Dialog.Popup),
         ),
       );
     }

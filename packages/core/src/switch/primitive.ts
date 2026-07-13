@@ -5,7 +5,7 @@ import {
   type RenderContext,
 } from "@opentui/core";
 
-export interface SwitchPrimitiveState {
+export interface SwitchState {
   readonly checked: boolean;
   readonly disabled: boolean;
   readonly focused: boolean;
@@ -18,11 +18,11 @@ export interface SwitchStoreOptions {
   onCheckedChange?: (checked: boolean) => void;
 }
 
-type SwitchStoreListener = (state: SwitchPrimitiveState) => void;
+type SwitchStoreListener = (state: SwitchState) => void;
 
 export class SwitchStore {
   private _controlled: boolean;
-  private _state: SwitchPrimitiveState;
+  private _state: SwitchState;
   private _onCheckedChange?: (checked: boolean) => void;
   private readonly _listeners = new Set<SwitchStoreListener>();
 
@@ -36,7 +36,7 @@ export class SwitchStore {
     this._onCheckedChange = options.onCheckedChange;
   }
 
-  get state(): SwitchPrimitiveState {
+  get state(): SwitchState {
     return this._state;
   }
 
@@ -74,7 +74,7 @@ export class SwitchStore {
     this._onCheckedChange = callback;
   }
 
-  private update(next: Partial<SwitchPrimitiveState>): void {
+  private update(next: Partial<SwitchState>): void {
     const state = { ...this._state, ...next };
     if (
       state.checked === this._state.checked &&
@@ -138,7 +138,7 @@ export class SwitchRootRenderable extends BoxRenderable {
     this._unsubscribe = this._store.subscribe(() => this.requestRender());
   }
 
-  getState(): SwitchPrimitiveState {
+  getState(): SwitchState {
     return this._store.state;
   }
 
@@ -219,7 +219,7 @@ export class SwitchThumbRenderable extends BoxRenderable {
     this._unsubscribe = store.subscribe(() => this.requestRender());
   }
 
-  getState(): SwitchPrimitiveState {
+  getState(): SwitchState {
     return this._store.state;
   }
 

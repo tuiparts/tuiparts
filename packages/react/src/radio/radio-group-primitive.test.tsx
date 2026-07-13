@@ -7,7 +7,7 @@ import type {
   RadioGroupRootRenderable,
 } from "@opentui-ui/core/radio";
 import { act, createElement, createRef, type ReactNode, useState } from "react";
-import { RadioGroupPrimitive } from "./index";
+import { RadioGroup } from "./index";
 
 let setup: TestRendererSetup | undefined;
 
@@ -16,7 +16,7 @@ afterEach(async () => {
   setup = undefined;
 });
 
-describe("React RadioGroupPrimitive", () => {
+describe("React RadioGroup", () => {
   it("composes parts and publishes Item-owned focus while navigating", async () => {
     const renderState = (state: RadioGroupItemState) =>
       createElement("text", {
@@ -25,18 +25,18 @@ describe("React RadioGroupPrimitive", () => {
       });
     setup = await testRender(
       createElement(
-        RadioGroupPrimitive.Root,
+        RadioGroup.Root,
         { id: "root", defaultValue: "alpha", flexDirection: "column" },
         createElement(
-          RadioGroupPrimitive.Item,
+          RadioGroup.Item,
           { id: "alpha", value: "alpha", height: 1 },
           renderState as unknown as ReactNode,
         ),
         createElement(
-          RadioGroupPrimitive.Item,
+          RadioGroup.Item,
           { id: "beta", value: "beta", height: 1 },
           createElement(
-            RadioGroupPrimitive.Indicator,
+            RadioGroup.Indicator,
             { id: "beta-indicator", keepMounted: true },
             createElement("text", { content: "x" }),
           ),
@@ -77,14 +77,14 @@ describe("React RadioGroupPrimitive", () => {
       const [itemValue, setItemValue] = useState("alpha");
       rename = () => setItemValue("renamed");
       return createElement(
-        RadioGroupPrimitive.Root,
+        RadioGroup.Root,
         { value, onValueChange: setValue, ref: rootRef },
-        createElement(RadioGroupPrimitive.Item, {
+        createElement(RadioGroup.Item, {
           id: "retained",
           value: itemValue,
           ref: itemRef,
         }),
-        createElement(RadioGroupPrimitive.Item, { id: "beta", value: "beta" }),
+        createElement(RadioGroup.Item, { id: "beta", value: "beta" }),
       );
     }
     setup = await testRender(createElement(App), { width: 30, height: 5 });
@@ -112,14 +112,14 @@ describe("React RadioGroupPrimitive", () => {
       const [visible, setVisible] = useState(true);
       show = setVisible;
       return createElement(
-        RadioGroupPrimitive.Root,
+        RadioGroup.Root,
         { ref: rootRef },
-        createElement(RadioGroupPrimitive.Item, {
+        createElement(RadioGroup.Item, {
           value: "fallback",
           ref: fallbackRef,
         }),
         visible
-          ? createElement(RadioGroupPrimitive.Item, {
+          ? createElement(RadioGroup.Item, {
               value: "dynamic",
               ref: dynamicRef,
             })

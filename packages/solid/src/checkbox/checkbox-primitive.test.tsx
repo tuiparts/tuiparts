@@ -6,11 +6,11 @@ import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
 import type {
   CheckboxIndicatorRenderable,
-  CheckboxPrimitiveState,
+  CheckboxState,
   CheckboxRootRenderable,
 } from "@opentui-ui/core/checkbox";
 import { createSignal } from "solid-js";
-import { CheckboxPrimitive } from "./primitive";
+import { Checkbox } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 
@@ -24,16 +24,16 @@ afterEach(() => {
   setup = undefined;
 });
 
-describe("Solid CheckboxPrimitive", () => {
+describe("Solid Checkbox", () => {
   it("composes public parts and arbitrary content around shared state", async () => {
     setup = await testRender(
       () => (
-        <CheckboxPrimitive.Root id="root">
-          <CheckboxPrimitive.Indicator id="indicator">
+        <Checkbox.Root id="root">
+          <Checkbox.Indicator id="indicator">
             <text content="x" />
-          </CheckboxPrimitive.Indicator>
+          </Checkbox.Indicator>
           <text id="label" content="Editable recipe" />
-        </CheckboxPrimitive.Root>
+        </Checkbox.Root>
       ),
       { width: 30, height: 5 },
     );
@@ -59,11 +59,11 @@ describe("Solid CheckboxPrimitive", () => {
   it("exposes primitive state to consumer-owned rendering", async () => {
     setup = await testRender(
       () => (
-        <CheckboxPrimitive.Root id="state-root">
-          {(state: CheckboxPrimitiveState) => (
+        <Checkbox.Root id="state-root">
+          {(state: CheckboxState) => (
             <text id="state-label" content={state.checked ? "on" : "off"} />
           )}
-        </CheckboxPrimitive.Root>
+        </Checkbox.Root>
       ),
       { width: 30, height: 5 },
     );
@@ -82,7 +82,7 @@ describe("Solid CheckboxPrimitive", () => {
       () => {
         const [checked, setChecked] = createSignal(false);
         return (
-          <CheckboxPrimitive.Root
+          <Checkbox.Root
             id="controlled-root"
             checked={checked()}
             onCheckedChange={setChecked}
@@ -118,7 +118,7 @@ describe("Solid CheckboxPrimitive", () => {
         setDisabled = updateDisabled;
         setVersion = updateVersion;
         return (
-          <CheckboxPrimitive.Root
+          <Checkbox.Root
             id="reactive-root"
             checked={controlled() ? false : undefined}
             disabled={disabled() || undefined}
@@ -168,19 +168,19 @@ describe("Solid CheckboxPrimitive", () => {
     let indicatorRef: CheckboxIndicatorRenderable | undefined;
     setup = await testRender(
       () => (
-        <CheckboxPrimitive.Root
+        <Checkbox.Root
           id="lifecycle-root"
           ref={(value) => {
             rootRef = value;
           }}
         >
-          <CheckboxPrimitive.Indicator
+          <Checkbox.Indicator
             id="lifecycle-indicator"
             ref={(value) => {
               indicatorRef = value;
             }}
           />
-        </CheckboxPrimitive.Root>
+        </Checkbox.Root>
       ),
       { width: 30, height: 5 },
     );

@@ -1,15 +1,12 @@
 import type { RenderContext } from "@opentui/core";
 import { extend } from "@opentui/react";
-import {
-  type InputPrimitiveOptions,
-  InputPrimitiveRenderable,
-} from "@opentui-ui/core/input";
+import { type InputOptions, InputRenderable } from "@opentui-ui/core/input";
 import { createElement, type ReactElement, type Ref } from "react";
 
-const INPUT_TAG = "otui-input-primitive";
+const INPUT_TAG = "otui-input";
 
-class ReactInputPrimitiveRenderable extends InputPrimitiveRenderable {
-  constructor(ctx: RenderContext, options: InputPrimitiveOptions = {}) {
+class ReactInputRenderable extends InputRenderable {
+  constructor(ctx: RenderContext, options: InputOptions = {}) {
     const {
       onChange: _,
       onInput: __,
@@ -20,15 +17,15 @@ class ReactInputPrimitiveRenderable extends InputPrimitiveRenderable {
   }
 }
 
-extend({ [INPUT_TAG]: ReactInputPrimitiveRenderable });
+extend({ [INPUT_TAG]: ReactInputRenderable });
 
-export type InputPrimitiveProps = InputPrimitiveOptions & {
-  ref?: Ref<InputPrimitiveRenderable>;
+export type InputProps = InputOptions & {
+  ref?: Ref<InputRenderable>;
 };
 
 /** React adapter for the OpenTUI-native Input primitive. */
-export function InputPrimitive(props: InputPrimitiveProps): ReactElement {
+export function Input(props: InputProps): ReactElement {
   return createElement(INPUT_TAG, props);
 }
 
-InputPrimitive.displayName = "InputPrimitive";
+Input.displayName = "Input";

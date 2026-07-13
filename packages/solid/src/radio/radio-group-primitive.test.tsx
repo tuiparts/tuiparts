@@ -8,11 +8,11 @@ import type {
   RadioGroupIndicatorRenderable,
   RadioGroupItemRenderable,
   RadioGroupItemState,
-  RadioGroupPrimitiveState,
+  RadioGroupState,
   RadioGroupRootRenderable,
 } from "@opentui-ui/core/radio";
 import { createSignal } from "solid-js";
-import { RadioGroupPrimitive } from "./index";
+import { RadioGroup } from "./index";
 
 let setup: TestRendererSetup | undefined;
 
@@ -26,17 +26,17 @@ afterEach(() => {
   setup = undefined;
 });
 
-describe("Solid RadioGroupPrimitive", () => {
+describe("Solid RadioGroup", () => {
   it("composes parts with public state and keyboard navigation", async () => {
     let indicatorRef: RadioGroupIndicatorRenderable | undefined;
     let alphaRef: RadioGroupItemRenderable | undefined;
     setup = await testRender(
       () => (
-        <RadioGroupPrimitive.Root id="root" defaultValue="alpha">
-          {(group: RadioGroupPrimitiveState) => (
+        <RadioGroup.Root id="root" defaultValue="alpha">
+          {(group: RadioGroupState) => (
             <>
               <text id="group-state" content={group.value ?? "none"} />
-              <RadioGroupPrimitive.Item
+              <RadioGroup.Item
                 id="alpha"
                 value="alpha"
                 ref={(value) => {
@@ -45,25 +45,25 @@ describe("Solid RadioGroupPrimitive", () => {
               >
                 {(item: RadioGroupItemState) => (
                   <>
-                    <RadioGroupPrimitive.Indicator
+                    <RadioGroup.Indicator
                       id="alpha-indicator"
                       ref={(value) => {
                         indicatorRef = value;
                       }}
                     >
                       <text content="x" />
-                    </RadioGroupPrimitive.Indicator>
+                    </RadioGroup.Indicator>
                     <text
                       id="alpha-state"
                       content={`${item.selected ? "on" : "off"}:${item.focused ? "focused" : "blurred"}:${item.available ? "available" : "unavailable"}:${item.tabbable ? "tabbable" : "untabbable"}`}
                     />
                   </>
                 )}
-              </RadioGroupPrimitive.Item>
-              <RadioGroupPrimitive.Item id="beta" value="beta" />
+              </RadioGroup.Item>
+              <RadioGroup.Item id="beta" value="beta" />
             </>
           )}
-        </RadioGroupPrimitive.Root>
+        </RadioGroup.Root>
       ),
       { width: 30, height: 6 },
     );
@@ -114,18 +114,18 @@ describe("Solid RadioGroupPrimitive", () => {
         setGroupDisabled = updateGroupDisabled;
         setItemDisabled = updateItemDisabled;
         return (
-          <RadioGroupPrimitive.Root
+          <RadioGroup.Root
             id="uncontrolled-root"
             defaultValue="alpha"
             disabled={groupDisabled()}
           >
-            <RadioGroupPrimitive.Item id="alpha" value="alpha" />
-            <RadioGroupPrimitive.Item
+            <RadioGroup.Item id="alpha" value="alpha" />
+            <RadioGroup.Item
               id="uncontrolled-beta"
               value="beta"
               disabled={itemDisabled()}
             />
-          </RadioGroupPrimitive.Root>
+          </RadioGroup.Root>
         );
       },
       { width: 30, height: 5 },
@@ -162,7 +162,7 @@ describe("Solid RadioGroupPrimitive", () => {
         const [itemValue, updateItemValue] = createSignal("alpha");
         setItemValue = updateItemValue;
         return (
-          <RadioGroupPrimitive.Root
+          <RadioGroup.Root
             id="controlled-root"
             value={value()}
             onValueChange={setValue}
@@ -170,15 +170,15 @@ describe("Solid RadioGroupPrimitive", () => {
               rootRef = next;
             }}
           >
-            <RadioGroupPrimitive.Item
+            <RadioGroup.Item
               id="controlled-item"
               value={itemValue()}
               ref={(next) => {
                 itemRef = next;
               }}
             />
-            <RadioGroupPrimitive.Item id="beta" value="beta" />
-          </RadioGroupPrimitive.Root>
+            <RadioGroup.Item id="beta" value="beta" />
+          </RadioGroup.Root>
         );
       },
       { width: 30, height: 5 },
@@ -219,14 +219,10 @@ describe("Solid RadioGroupPrimitive", () => {
             : {};
         const itemProps = () => (withProps() ? { disabled: true } : {});
         return (
-          <RadioGroupPrimitive.Root id="removal-root" {...rootProps()}>
-            <RadioGroupPrimitive.Item id="alpha" value="alpha" />
-            <RadioGroupPrimitive.Item
-              id="removal-beta"
-              value="beta"
-              {...itemProps()}
-            />
-          </RadioGroupPrimitive.Root>
+          <RadioGroup.Root id="removal-root" {...rootProps()}>
+            <RadioGroup.Item id="alpha" value="alpha" />
+            <RadioGroup.Item id="removal-beta" value="beta" {...itemProps()} />
+          </RadioGroup.Root>
         );
       },
       { width: 30, height: 5 },
@@ -253,17 +249,14 @@ describe("Solid RadioGroupPrimitive", () => {
         const [visible, updateVisible] = createSignal(true);
         setVisible = updateVisible;
         return (
-          <RadioGroupPrimitive.Root id="dynamic-root">
-            <RadioGroupPrimitive.Item id="fallback-item" value="fallback" />
+          <RadioGroup.Root id="dynamic-root">
+            <RadioGroup.Item id="fallback-item" value="fallback" />
             {visible() ? (
-              <RadioGroupPrimitive.Item id="dynamic-item" value="dynamic">
-                <RadioGroupPrimitive.Indicator
-                  id="dynamic-indicator"
-                  keepMounted
-                />
-              </RadioGroupPrimitive.Item>
+              <RadioGroup.Item id="dynamic-item" value="dynamic">
+                <RadioGroup.Indicator id="dynamic-indicator" keepMounted />
+              </RadioGroup.Item>
             ) : null}
-          </RadioGroupPrimitive.Root>
+          </RadioGroup.Root>
         );
       },
       { width: 30, height: 5 },

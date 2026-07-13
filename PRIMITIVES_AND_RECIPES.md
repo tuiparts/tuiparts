@@ -64,14 +64,14 @@ native OpenTUI properties, and Renderable refs rather than a Base UI-style
 For example, the Checkbox primitive is assembled explicitly:
 
 ```tsx
-<CheckboxPrimitive.Root defaultChecked>
+<Checkbox.Root defaultChecked>
   <box width={1}>
-    <CheckboxPrimitive.Indicator>
+    <Checkbox.Indicator>
       <text content="✓" />
-    </CheckboxPrimitive.Indicator>
+    </Checkbox.Indicator>
   </box>
   <text content="Enable notifications" />
-</CheckboxPrimitive.Root>
+</Checkbox.Root>
 ```
 
 The primitive owns checked state and activation. The caller owns the check
@@ -84,8 +84,8 @@ Checkbox is the first primitive hardened against the foundation contract:
 - `CheckboxStore` is the framework-neutral state seam.
 - `CheckboxRootRenderable` owns focus and activation.
 - `CheckboxIndicatorRenderable` reflects shared state without choosing content.
-- React and Solid expose matching `CheckboxPrimitive.Root` and
-  `CheckboxPrimitive.Indicator` parts.
+- React and Solid expose matching `Checkbox.Root` and
+  `Checkbox.Indicator` parts.
 - The example recipes choose a mark, label, spacing, and colors in editable
   source.
 - Core callers either pass one Store explicitly or compose parts from
@@ -109,10 +109,12 @@ Reference implementations:
 - `registry/checkbox/react.tsx`
 - `registry/checkbox/solid.tsx`
 
-The primitive intentionally coexists with the legacy packaged `Checkbox`
-during expand-contract migration. The editable starter recipes reserve one
-terminal cell for `mark`; applications that need a wide mark own the
-corresponding recipe layout change.
+`Checkbox` is now the canonical React and Solid foundation export. The old
+packaged fixed-tree Checkbox is no longer exported; its shared styled
+infrastructure remains private until the remaining component migrations allow
+the final contraction. Editable starter recipes reserve one terminal cell for
+`mark`; applications that need a wide mark own the corresponding recipe layout
+change.
 
 ## Switch Foundation Primitive
 
@@ -124,8 +126,8 @@ its Thumb like Checkbox's conditional Indicator:
   uncancelled primary-button release request.
 - `SwitchThumbRenderable` is an always-mounted public part that exposes the
   shared readonly state while recipes choose its position and appearance.
-- React and Solid expose matching `SwitchPrimitive.Root` and
-  `SwitchPrimitive.Thumb` parts, readonly state callbacks, and Renderable refs.
+- React and Solid expose matching `Switch.Root` and
+  `Switch.Thumb` parts, readonly state callbacks, and Renderable refs.
 - Editable Core, React, and Solid recipes own track and thumb glyphs, track
   width, density, spacing, positioning, colors, and labels.
 

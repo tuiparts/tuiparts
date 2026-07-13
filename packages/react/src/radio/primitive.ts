@@ -5,7 +5,7 @@ import {
   type RadioGroupItemOptions,
   RadioGroupItemRenderable,
   type RadioGroupItemState,
-  type RadioGroupPrimitiveState,
+  type RadioGroupState,
   type RadioGroupRootOptions,
   RadioGroupRootRenderable,
   RadioGroupStore,
@@ -23,9 +23,9 @@ import {
   useSyncExternalStore,
 } from "react";
 
-const ROOT_TAG = "otui-radio-group-primitive-root";
-const ITEM_TAG = "otui-radio-group-primitive-item";
-const INDICATOR_TAG = "otui-radio-group-primitive-indicator";
+const ROOT_TAG = "otui-radio-group-root";
+const ITEM_TAG = "otui-radio-group-item";
+const INDICATOR_TAG = "otui-radio-group-indicator";
 
 class ReactRadioGroupRootRenderable extends RadioGroupRootRenderable {
   override get store(): RadioGroupStore {
@@ -33,7 +33,7 @@ class ReactRadioGroupRootRenderable extends RadioGroupRootRenderable {
   }
   override set store(store: RadioGroupStore) {
     if (store !== super.store)
-      throw new Error("RadioGroupPrimitive.Root store cannot be replaced");
+      throw new Error("RadioGroup.Root store cannot be replaced");
   }
 }
 
@@ -43,7 +43,7 @@ class ReactRadioGroupItemRenderable extends RadioGroupItemRenderable {
   }
   override set store(store: RadioGroupStore) {
     if (store !== super.store)
-      throw new Error("RadioGroupPrimitive.Item store cannot be replaced");
+      throw new Error("RadioGroup.Item store cannot be replaced");
   }
 }
 
@@ -58,21 +58,15 @@ const RadioGroupItemContext = createContext<RadioGroupItemRenderable | null>(
   null,
 );
 
-export type RadioGroupPrimitiveRootProps = Omit<
-  RadioGroupRootOptions,
-  "store"
-> & {
-  children?: ReactNode | ((state: RadioGroupPrimitiveState) => ReactNode);
+export type RadioGroupProps = Omit<RadioGroupRootOptions, "store"> & {
+  children?: ReactNode | ((state: RadioGroupState) => ReactNode);
   ref?: Ref<RadioGroupRootRenderable>;
 };
-export type RadioGroupPrimitiveItemProps = Omit<
-  RadioGroupItemOptions,
-  "store"
-> & {
+export type RadioGroupItemProps = Omit<RadioGroupItemOptions, "store"> & {
   children?: ReactNode | ((state: RadioGroupItemState) => ReactNode);
   ref?: Ref<RadioGroupItemRenderable>;
 };
-export type RadioGroupPrimitiveIndicatorProps = Omit<
+export type RadioGroupIndicatorProps = Omit<
   RadioGroupIndicatorOptions,
   "item"
 > & {
@@ -86,7 +80,7 @@ function setRef<T>(ref: Ref<T> | undefined, value: T | null): void {
   else if (ref) ref.current = value;
 }
 
-function RadioGroupRoot({ children, ...props }: RadioGroupPrimitiveRootProps) {
+function RadioGroupRoot({ children, ...props }: RadioGroupProps) {
   const storeRef = useRef<RadioGroupStore | null>(null);
   if (!storeRef.current) storeRef.current = new RadioGroupStore(props);
   const store = storeRef.current;
@@ -103,16 +97,10 @@ function RadioGroupRoot({ children, ...props }: RadioGroupPrimitiveRootProps) {
   );
 }
 
-function RadioGroupItem({
-  children,
-  ref,
-  ...props
-}: RadioGroupPrimitiveItemProps) {
+function RadioGroupItem({ children, ref, ...props }: RadioGroupItemProps) {
   const store = useContext(RadioGroupContext);
   if (!store)
-    throw new Error(
-      "RadioGroupPrimitive.Item must be rendered inside RadioGroupPrimitive.Root",
-    );
+    throw new Error("RadioGroup.Item must be rendered inside RadioGroup.Root");
   const [item, setItem] = useState<RadioGroupItemRenderable | null>(null);
   const itemRef = useCallback(
     (nextItem: RadioGroupItemRenderable | null) => {
@@ -133,7 +121,7 @@ function RadioGroupItemContent({
   children,
 }: {
   item: RadioGroupItemRenderable;
-  children: RadioGroupPrimitiveItemProps["children"];
+  children: RadioGroupItemProps["children"];
 }): ReactElement {
   const state = useSyncExternalStore(
     (listener) => item.subscribe(listener),
@@ -152,11 +140,11 @@ function RadioGroupIndicator({
   children,
   keepMounted = false,
   ...props
-}: RadioGroupPrimitiveIndicatorProps): ReactElement | null {
+}: RadioGroupIndicatorProps): ReactElement | null {
   const item = useContext(RadioGroupItemContext);
   if (!item)
     throw new Error(
-      "RadioGroupPrimitive.Indicator must be rendered inside RadioGroupPrimitive.Item",
+      "RadioGroup.Indicator must be rendered inside RadioGroup.Item",
     );
   const state = useSyncExternalStore(
     (listener) => item.subscribe(listener),
@@ -167,11 +155,11 @@ function RadioGroupIndicator({
   return createElement(INDICATOR_TAG, { ...props, item }, children);
 }
 
-RadioGroupRoot.displayName = "RadioGroupPrimitive.Root";
-RadioGroupItem.displayName = "RadioGroupPrimitive.Item";
-RadioGroupIndicator.displayName = "RadioGroupPrimitive.Indicator";
+RadioGroupRoot.displayName = "RadioGroup.Root";
+RadioGroupItem.displayName = "RadioGroup.Item";
+RadioGroupIndicator.displayName = "RadioGroup.Indicator";
 
-export const RadioGroupPrimitive = {
+export const RadioGroup = {
   Root: RadioGroupRoot,
   Item: RadioGroupItem,
   Indicator: RadioGroupIndicator,

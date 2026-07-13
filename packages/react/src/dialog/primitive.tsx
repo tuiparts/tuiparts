@@ -1,7 +1,7 @@
 /** @jsxImportSource @opentui/react */
 
 import { createPortal, extend, useRenderer } from "@opentui/react";
-import type { DialogPrimitiveState } from "@opentui-ui/core/dialog";
+import type { DialogState } from "@opentui-ui/core/dialog";
 import {
   DialogBackdropRenderable,
   type DialogCloseOptions,
@@ -35,13 +35,13 @@ import {
 } from "react";
 
 const tags = {
-  root: "otui-dialog-primitive-root",
-  trigger: "otui-dialog-primitive-trigger",
-  backdrop: "otui-dialog-primitive-backdrop",
-  popup: "otui-dialog-primitive-popup",
-  title: "otui-dialog-primitive-title",
-  description: "otui-dialog-primitive-description",
-  close: "otui-dialog-primitive-close",
+  root: "otui-dialog-root",
+  trigger: "otui-dialog-trigger",
+  backdrop: "otui-dialog-backdrop",
+  popup: "otui-dialog-popup",
+  title: "otui-dialog-title",
+  description: "otui-dialog-description",
+  close: "otui-dialog-close",
 };
 extend({
   [tags.root]: DialogRootRenderable,
@@ -57,8 +57,8 @@ const StoreContext = createContext<DialogStore | null>(null);
 const PopupContext = createContext<DialogPopupRenderable | null>(null);
 // biome-ignore lint/suspicious/noExplicitAny: intrinsic refs share React's ref union
 type PartProps<T> = Omit<T, "store"> & { ref?: Ref<any>; children?: ReactNode };
-export type DialogRootProps = Omit<DialogRootOptions, "store"> & {
-  children?: ReactNode | ((state: DialogPrimitiveState) => ReactNode);
+export type DialogProps = Omit<DialogRootOptions, "store"> & {
+  children?: ReactNode | ((state: DialogState) => ReactNode);
   ref?: Ref<DialogRootRenderable>;
 };
 export type DialogTriggerProps = PartProps<DialogTriggerOptions>;
@@ -85,7 +85,7 @@ function setRef<T>(ref: Ref<T> | undefined, value: T | null): void {
   else if (ref) ref.current = value;
 }
 
-function Root({ children, ref, ...props }: DialogRootProps) {
+function Root({ children, ref, ...props }: DialogProps) {
   const renderer = useRenderer();
   const storeRef = useRef<DialogStore | null>(null);
   if (!storeRef.current) storeRef.current = new DialogStore(renderer, props);
@@ -106,9 +106,7 @@ function Root({ children, ref, ...props }: DialogRootProps) {
 function useStore(name: string): DialogStore {
   const store = useContext(StoreContext);
   if (!store)
-    throw new Error(
-      `DialogPrimitive.${name} must be rendered inside DialogPrimitive.Root`,
-    );
+    throw new Error(`Dialog.${name} must be rendered inside Dialog.Root`);
   return store;
 }
 function Trigger({ children, ref, ...props }: DialogTriggerProps) {
@@ -220,7 +218,7 @@ function Close({ children, ref, ...props }: DialogCloseProps) {
     children,
   );
 }
-export const DialogPrimitive = {
+export const Dialog = {
   Root,
   Trigger,
   Portal,

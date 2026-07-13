@@ -2,22 +2,12 @@ import { afterEach, describe, expect, it } from "bun:test";
 import type { BaseRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
-import type {
-  BadgeRenderable,
-  CheckboxRenderable,
-  SwitchRenderable,
-} from "@opentui-ui/core";
-import {
-  Badge,
-  Button,
-  Checkbox,
-  Input,
-  Radio,
-  RadioGroup,
-  Switch,
-} from "@opentui-ui/react";
+import type { BadgeRenderable } from "@opentui-ui/core";
+import { Badge, Button } from "@opentui-ui/react";
 import { styled } from "@opentui-ui/react/styled";
 import { act, createElement, Fragment, useState } from "react";
+import { Input } from "./input/primitive";
+import { Radio, RadioGroup } from "./radio/radio";
 
 let setup: TestRendererSetup | undefined;
 
@@ -81,13 +71,6 @@ describe("React adapter", () => {
           label: "X",
           paddingLeft: 2,
         }),
-        createElement(Switch, {
-          alignSelf: "flex-start",
-          id: "switch-root",
-          label: "",
-          styles: { track: { size: 3 }, thumb: {}, label: {} },
-          width: baseline,
-        }),
       );
     }
 
@@ -103,9 +86,6 @@ describe("React adapter", () => {
     const dynamicBadge = root.findDescendantById(
       "dynamic-badge",
     ) as BadgeRenderable;
-    const switchRoot = root.findDescendantById(
-      "switch-root",
-    ) as SwitchRenderable;
     const styledRoot = root.findDescendantById(
       "styled-root",
     ) as BadgeRenderable;
@@ -114,38 +94,25 @@ describe("React adapter", () => {
     expect(stylesFirst.width).toBe(5);
     expect(dynamicBadge.width).toBe(5);
     expect(styledRoot.width).toBe(5);
-    expect(switchRoot.width).toBe(2);
-    expect(switchRoot.getChildren()[0]?.width).toBe(3);
 
     await act(async () => setBaseline(4));
-    await setup.waitFor(
-      () => dynamicBadge.width === 5 && switchRoot.width === 4,
-    );
+    await setup.waitFor(() => dynamicBadge.width === 5);
 
     await act(async () => setOverride(false));
     await setup.waitFor(() => dynamicBadge.width === 6);
 
     await act(async () => setBaseline(undefined));
     await setup.waitFor(() => dynamicBadge.width === 3);
-    expect(switchRoot.width).toBe(3);
   });
 
-  it("registers every component and routes children and controlled callbacks", async () => {
+  it("registers the remaining packaged components and routes children", async () => {
     function App() {
-      const [checked, setChecked] = useState(false);
       return createElement(
         Fragment,
         null,
         createElement(Badge, { id: "badge", label: "Badge" }),
         createElement(Button, { id: "button", label: "Button" }),
-        createElement(Checkbox, {
-          checked,
-          id: "checkbox",
-          label: "Checkbox",
-          onCheckedChange: setChecked,
-        }),
-        createElement(Input, { id: "input", defaultValue: "Input" }),
-        createElement(Switch, { id: "switch", label: "Switch" }),
+        createElement(Input, { id: "input", value: "Input" }),
         createElement(
           RadioGroup,
           { id: "radio-group" },
@@ -155,25 +122,11 @@ describe("React adapter", () => {
     }
 
     setup = await testRender(createElement(App), { width: 40, height: 12 });
-    const ids = [
-      "badge",
-      "button",
-      "checkbox",
-      "input",
-      "switch",
-      "radio-group",
-      "radio",
-    ];
+    const ids = ["badge", "button", "input", "radio-group", "radio"];
     expect(
       ids.filter((id) => !setup?.renderer.root.findDescendantById(id)),
     ).toEqual([]);
 
-    const checkbox = setup.renderer.root.findDescendantById(
-      "checkbox",
-    ) as CheckboxRenderable;
-    await act(async () => checkbox.toggle());
-    await setup.waitFor(() => checkbox.checked);
-    expect(setup.renderer.root.findDescendantById("checkbox")).toBe(checkbox);
     expect(
       setup.renderer.root
         .findDescendantById("radio-group")

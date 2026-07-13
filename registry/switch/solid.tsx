@@ -1,14 +1,13 @@
 /** @jsxImportSource @opentui/solid */
 
 import {
-  SwitchPrimitive,
-  type SwitchPrimitiveRootProps,
-  type SwitchPrimitiveState,
+  Switch as SwitchPrimitive,
+  type SwitchProps as SwitchPrimitiveProps,
+  type SwitchState,
 } from "@opentui-ui/solid/switch";
 import { splitProps } from "solid-js";
 
-export interface SwitchProps
-  extends Omit<SwitchPrimitiveRootProps, "children"> {
+export interface SwitchProps extends Omit<SwitchPrimitiveProps, "children"> {
   density?: "compact" | "comfortable";
   label: string;
   symbols?: "round" | "ascii";
@@ -38,7 +37,7 @@ export function Switch(props: SwitchProps) {
       disabled={recipe.disabled}
       {...root}
     >
-      {(state: SwitchPrimitiveState) => (
+      {(state: SwitchState) => (
         <>
           <box
             width={trackWidth()}
@@ -46,10 +45,7 @@ export function Switch(props: SwitchProps) {
             position="relative"
             backgroundColor="transparent"
           >
-            <text
-              content={glyphs().track.repeat(trackWidth())}
-              fg="#525252"
-            />
+            <text content={glyphs().track.repeat(trackWidth())} fg="#525252" />
             <SwitchPrimitive.Thumb
               width={1}
               height={1}

@@ -14,7 +14,7 @@ import type {
   DialogTriggerRenderable,
 } from "@opentui-ui/core/dialog";
 import { createSignal } from "solid-js";
-import { DialogPrimitive } from "./primitive";
+import { Dialog } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 
@@ -23,7 +23,7 @@ afterEach(() => {
   setup = undefined;
 });
 
-describe("Solid DialogPrimitive", () => {
+describe("Solid Dialog", () => {
   it("retains every part through open, close, focus containment, and reopen", async () => {
     const changes: string[] = [];
     let root: DialogRootRenderable | undefined;
@@ -36,7 +36,7 @@ describe("Solid DialogPrimitive", () => {
     let close: DialogCloseRenderable | undefined;
     setup = await testRender(
       () => (
-        <DialogPrimitive.Root
+        <Dialog.Root
           id="solid-root"
           ref={(value) => {
             root = value;
@@ -51,19 +51,19 @@ describe("Solid DialogPrimitive", () => {
                 id="solid-open-state"
                 content={state.open ? "open" : "closed"}
               />
-              <DialogPrimitive.Trigger
+              <Dialog.Trigger
                 id="solid-trigger"
                 ref={(value) => {
                   trigger = value;
                 }}
               />
-              <DialogPrimitive.Portal
+              <Dialog.Portal
                 id="solid-portal"
                 ref={(value) => {
                   portal = value;
                 }}
               >
-                <DialogPrimitive.Backdrop
+                <Dialog.Backdrop
                   id="solid-backdrop"
                   position="absolute"
                   width={40}
@@ -72,37 +72,37 @@ describe("Solid DialogPrimitive", () => {
                     backdrop = value;
                   }}
                 />
-                <DialogPrimitive.Popup
+                <Dialog.Popup
                   id="solid-popup"
                   ref={(value) => {
                     popup = value;
                   }}
                 >
-                  <DialogPrimitive.Title
+                  <Dialog.Title
                     id="solid-title"
                     content="Title"
                     ref={(value) => {
                       title = value;
                     }}
                   />
-                  <DialogPrimitive.Description
+                  <Dialog.Description
                     id="solid-description"
                     content="Description"
                     ref={(value) => {
                       description = value;
                     }}
                   />
-                  <DialogPrimitive.Close
+                  <Dialog.Close
                     id="solid-close"
                     ref={(value) => {
                       close = value;
                     }}
                   />
-                </DialogPrimitive.Popup>
-              </DialogPrimitive.Portal>
+                </Dialog.Popup>
+              </Dialog.Portal>
             </box>
           )}
-        </DialogPrimitive.Root>
+        </Dialog.Root>
       ),
       { width: 40, height: 10 },
     );
@@ -169,7 +169,7 @@ describe("Solid DialogPrimitive", () => {
       () => {
         const [open, setOpen] = createSignal(false);
         return (
-          <DialogPrimitive.Root
+          <Dialog.Root
             open={open()}
             ref={(value) => {
               root = value;
@@ -179,20 +179,20 @@ describe("Solid DialogPrimitive", () => {
               setOpen(next);
             }}
           >
-            <DialogPrimitive.Trigger
+            <Dialog.Trigger
               ref={(value) => {
                 trigger = value;
               }}
             />
-            <DialogPrimitive.Portal
+            <Dialog.Portal
               ref={(value) => {
                 portal = value;
               }}
             >
-              <DialogPrimitive.Backdrop />
-              <DialogPrimitive.Popup />
-            </DialogPrimitive.Portal>
-          </DialogPrimitive.Root>
+              <Dialog.Backdrop />
+              <Dialog.Popup />
+            </Dialog.Portal>
+          </Dialog.Root>
         );
       },
       { width: 40, height: 10 },

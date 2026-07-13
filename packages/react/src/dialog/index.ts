@@ -4,8 +4,8 @@ export {
   type DialogDescriptionProps,
   type DialogPopupProps,
   type DialogPortalProps,
-  DialogPrimitive,
-  type DialogRootProps,
+  Dialog,
+  type DialogProps,
   type DialogTitleProps,
   type DialogTriggerProps,
 } from "./primitive";

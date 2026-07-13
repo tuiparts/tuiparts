@@ -1,7 +1,7 @@
 import type { JSX } from "@opentui/solid";
-import { spread, useRenderer } from "@opentui/solid";
+import { useRenderer } from "@opentui/solid";
 import {
-  type SwitchPrimitiveState,
+  type SwitchState,
   type SwitchRootOptions,
   SwitchRootRenderable,
   SwitchStore,
@@ -19,41 +19,24 @@ import {
   untrack,
   useContext,
 } from "solid-js";
+import {
+  setRenderableRef,
+  spreadRenderableProps,
+} from "../internal/renderable-props";
 
 const SwitchContext = createContext<SwitchStore>();
 
-export type SwitchPrimitiveRootProps = Omit<SwitchRootOptions, "store"> & {
-  children?: JSX.Element | ((state: SwitchPrimitiveState) => JSX.Element);
+export type SwitchProps = Omit<SwitchRootOptions, "store"> & {
+  children?: JSX.Element | ((state: SwitchState) => JSX.Element);
   ref?: Ref<SwitchRootRenderable>;
 };
 
-export type SwitchPrimitiveThumbProps = Omit<SwitchThumbOptions, "store"> & {
+export type SwitchThumbProps = Omit<SwitchThumbOptions, "store"> & {
   children?: JSX.Element;
   ref?: Ref<SwitchThumbRenderable>;
 };
 
-function setRef<T>(ref: Ref<T> | undefined, value: T): void {
-  if (typeof ref === "function") (ref as (value: T) => void)(value);
-}
-
-function spreadProps<T extends object>(
-  element: Parameters<typeof spread>[0],
-  getProps: () => T,
-): void {
-  let previousKeys: string[] = [];
-  spread(element, () => {
-    const next = getProps() as Record<string, unknown>;
-    const removed = Object.fromEntries(
-      previousKeys
-        .filter((key) => !Object.hasOwn(next, key))
-        .map((key) => [key, undefined]),
-    );
-    previousKeys = Object.keys(next);
-    return { ...removed, ...next };
-  });
-}
-
-function SwitchRoot(props: SwitchPrimitiveRootProps): JSX.Element {
+function SwitchRoot(props: SwitchProps): JSX.Element {
   const renderer = useRenderer();
   const store = new SwitchStore({
     checked: props.checked,
@@ -62,7 +45,7 @@ function SwitchRoot(props: SwitchPrimitiveRootProps): JSX.Element {
     onCheckedChange: props.onCheckedChange,
   });
   const [state, setState] = createSignal(store.state);
-  const publicState: SwitchPrimitiveState = {
+  const publicState: SwitchState = {
     get checked() {
       return state().checked;
     },
@@ -91,41 +74,39 @@ function SwitchRoot(props: SwitchPrimitiveRootProps): JSX.Element {
     element.onCheckedChange = local.onCheckedChange;
   });
   onCleanup(store.subscribe(setState));
-  setRef(local.ref, element);
+  setRenderableRef(local.ref, element);
 
   return createComponent(SwitchContext.Provider, {
     value: store,
     get children() {
       const child = local.children;
       const children = typeof child === "function" ? child(publicState) : child;
-      spreadProps(element, () => ({ ...initialProps, children }));
+      spreadRenderableProps(element, () => ({ ...initialProps, children }));
       return element;
     },
   });
 }
 
-function SwitchThumb(props: SwitchPrimitiveThumbProps): JSX.Element {
+function SwitchThumb(props: SwitchThumbProps): JSX.Element {
   const renderer = useRenderer();
   const store = useContext(SwitchContext);
   if (!store) {
-    throw new Error(
-      "SwitchPrimitive.Thumb must be rendered inside SwitchPrimitive.Root",
-    );
+    throw new Error("Switch.Thumb must be rendered inside Switch.Root");
   }
   const [local, initialProps] = splitProps(props, ["children", "ref"]);
   const element = new SwitchThumbRenderable(
     renderer,
     untrack(() => ({ ...initialProps, store })),
   );
-  setRef(local.ref, element);
-  spreadProps(element, () => ({
+  setRenderableRef(local.ref, element);
+  spreadRenderableProps(element, () => ({
     ...initialProps,
     children: local.children,
   }));
   return element;
 }
 
-export const SwitchPrimitive = {
+export const Switch = {
   Root: SwitchRoot,
   Thumb: SwitchThumb,
 } as const;

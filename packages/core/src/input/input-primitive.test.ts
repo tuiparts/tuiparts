@@ -3,7 +3,7 @@ import {
   createTestRenderer,
   type TestRendererSetup,
 } from "@opentui/core/testing";
-import { InputPrimitiveRenderable } from "./primitive";
+import { InputRenderable } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 
@@ -13,15 +13,15 @@ afterEach(() => {
 });
 
 async function createInput(
-  options: ConstructorParameters<typeof InputPrimitiveRenderable>[1] = {},
-): Promise<InputPrimitiveRenderable> {
+  options: ConstructorParameters<typeof InputRenderable>[1] = {},
+): Promise<InputRenderable> {
   setup = await createTestRenderer({ width: 30, height: 5 });
-  const input = new InputPrimitiveRenderable(setup.renderer, options);
+  const input = new InputRenderable(setup.renderer, options);
   setup.renderer.root.add(input);
   return input;
 }
 
-describe("InputPrimitiveRenderable", () => {
+describe("InputRenderable", () => {
   it("uses value for initialization without emitting callbacks", async () => {
     const events: string[] = [];
     const input = await createInput({

@@ -1,12 +1,7 @@
 /** @jsxImportSource @opentui/solid */
 
-import {
-  extend,
-  Portal as SolidPortal,
-  spread,
-  useRenderer,
-} from "@opentui/solid";
-import type { DialogPrimitiveState } from "@opentui-ui/core/dialog";
+import { extend, Portal as SolidPortal, useRenderer } from "@opentui/solid";
+import type { DialogState } from "@opentui-ui/core/dialog";
 import {
   type DialogBackdropOptions,
   DialogBackdropRenderable,
@@ -39,15 +34,19 @@ import {
   untrack,
   useContext,
 } from "solid-js";
+import {
+  setRenderableRef,
+  spreadRenderableProps,
+} from "../internal/renderable-props";
 
 const tags = {
-  root: "otui-dialog-primitive-root",
-  trigger: "otui-dialog-primitive-trigger",
-  backdrop: "otui-dialog-primitive-backdrop",
-  popup: "otui-dialog-primitive-popup",
-  title: "otui-dialog-primitive-title",
-  description: "otui-dialog-primitive-description",
-  close: "otui-dialog-primitive-close",
+  root: "otui-dialog-root",
+  trigger: "otui-dialog-trigger",
+  backdrop: "otui-dialog-backdrop",
+  popup: "otui-dialog-popup",
+  title: "otui-dialog-title",
+  description: "otui-dialog-description",
+  close: "otui-dialog-close",
 } as const;
 extend({
   [tags.root]: DialogRootRenderable,
@@ -59,8 +58,8 @@ extend({
   [tags.close]: DialogCloseRenderable,
 });
 const StoreContext = createContext<DialogStore>();
-export type DialogRootProps = Omit<DialogRootOptions, "store"> & {
-  children?: JSX.Element | ((state: DialogPrimitiveState) => JSX.Element);
+export type DialogProps = Omit<DialogRootOptions, "store"> & {
+  children?: JSX.Element | ((state: DialogState) => JSX.Element);
   ref?: Ref<DialogRootRenderable>;
 };
 export type DialogTriggerProps = Omit<DialogTriggerOptions, "store"> & {
@@ -92,42 +91,21 @@ export type DialogCloseProps = Omit<DialogCloseOptions, "store"> & {
   ref?: Ref<DialogCloseRenderable>;
 };
 
-function setRef<T>(ref: Ref<T> | undefined, value: T): void {
-  if (typeof ref === "function") (ref as (value: T) => void)(value);
-}
-function spreadProps<T extends object>(
-  element: Parameters<typeof spread>[0],
-  getProps: () => T,
-): void {
-  let previous: string[] = [];
-  spread(element, () => {
-    const next = getProps() as Record<string, unknown>;
-    const removed = Object.fromEntries(
-      previous
-        .filter((key) => !Object.hasOwn(next, key))
-        .map((key) => [key, undefined]),
-    );
-    previous = Object.keys(next);
-    return { ...removed, ...next };
-  });
-}
 function useStore(name: string): DialogStore {
   const store = useContext(StoreContext);
   if (!store)
-    throw new Error(
-      `DialogPrimitive.${name} must be rendered inside DialogPrimitive.Root`,
-    );
+    throw new Error(`Dialog.${name} must be rendered inside Dialog.Root`);
   return store;
 }
 
-function Root(props: DialogRootProps): JSX.Element {
+function Root(props: DialogProps): JSX.Element {
   const renderer = useRenderer();
   const store = new DialogStore(
     renderer,
     untrack(() => props),
   );
   const [state, setState] = createSignal(store.state);
-  const publicState: DialogPrimitiveState = {
+  const publicState: DialogState = {
     get open() {
       return state().open;
     },
@@ -151,13 +129,13 @@ function Root(props: DialogRootProps): JSX.Element {
     if (!element.isDestroyed) element.destroy();
   });
   onCleanup(store.subscribe(setState));
-  setRef(local.ref, element);
+  setRenderableRef(local.ref, element);
   return createComponent(StoreContext.Provider, {
     value: store,
     get children() {
       const child = local.children;
       const content = typeof child === "function" ? child(publicState) : child;
-      spreadProps(element, () => ({ ...initial, children: content }));
+      spreadRenderableProps(element, () => ({ ...initial, children: content }));
       return element;
     },
   });
@@ -170,8 +148,8 @@ function Trigger(props: DialogTriggerProps): JSX.Element {
     renderer,
     untrack(() => ({ ...initial, store })),
   );
-  setRef(local.ref, element);
-  spreadProps(element, () => ({ ...initial }));
+  setRenderableRef(local.ref, element);
+  spreadRenderableProps(element, () => ({ ...initial }));
   return element;
 }
 function Portal(props: DialogPortalProps): JSX.Element {
@@ -183,8 +161,8 @@ function Portal(props: DialogPortalProps): JSX.Element {
     untrack(() => ({ ...initial, store })),
   );
   renderer.root.add(portal);
-  setRef(local.ref, portal);
-  spreadProps(portal, () => ({ ...initial }));
+  setRenderableRef(local.ref, portal);
+  spreadRenderableProps(portal, () => ({ ...initial }));
   onCleanup(() => {
     if (!portal.isDestroyed) {
       renderer.root.remove(portal);
@@ -206,8 +184,8 @@ function Backdrop(props: DialogBackdropProps): JSX.Element {
     renderer,
     untrack(() => ({ ...initial, store })),
   );
-  setRef(local.ref, element);
-  spreadProps(element, () => ({ ...initial }));
+  setRenderableRef(local.ref, element);
+  spreadRenderableProps(element, () => ({ ...initial }));
   return element;
 }
 function Popup(props: DialogPopupProps): JSX.Element {
@@ -218,8 +196,11 @@ function Popup(props: DialogPopupProps): JSX.Element {
     renderer,
     untrack(() => ({ ...initial, store })),
   );
-  setRef(local.ref, element);
-  spreadProps(element, () => ({ ...initial, children: local.children }));
+  setRenderableRef(local.ref, element);
+  spreadRenderableProps(element, () => ({
+    ...initial,
+    children: local.children,
+  }));
   return element;
 }
 function TextPart(
@@ -241,8 +222,8 @@ function TextPart(
           renderer,
           untrack(() => ({ ...initial, store })),
         );
-  setRef(local.ref, element);
-  spreadProps(element, () => ({ ...initial }));
+  setRenderableRef(local.ref, element);
+  spreadRenderableProps(element, () => ({ ...initial }));
   return element;
 }
 function Title(props: DialogTitleProps): JSX.Element {
@@ -263,7 +244,7 @@ function Close(props: DialogCloseProps): JSX.Element {
     renderer,
     untrack(() => ({ ...initial, store })),
   );
-  setRef(local.ref, element);
+  setRenderableRef(local.ref, element);
   let unregister: (() => void) | undefined;
   onMount(() => {
     let parent = element.parent;
@@ -273,10 +254,10 @@ function Close(props: DialogCloseProps): JSX.Element {
     if (parent) unregister = parent.registerFocusable(element);
   });
   onCleanup(() => unregister?.());
-  spreadProps(element, () => ({ ...initial }));
+  spreadRenderableProps(element, () => ({ ...initial }));
   return element;
 }
-export const DialogPrimitive = {
+export const Dialog = {
   Root,
   Trigger,
   Portal,

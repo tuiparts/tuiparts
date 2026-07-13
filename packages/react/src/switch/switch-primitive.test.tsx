@@ -4,10 +4,11 @@ import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
 import type {
   SwitchRootRenderable,
+  SwitchState,
   SwitchThumbRenderable,
 } from "@opentui-ui/core/switch";
 import { act, createElement, type ReactNode, useState } from "react";
-import { SwitchPrimitive } from "./primitive";
+import { Switch } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 
@@ -21,13 +22,13 @@ afterEach(async () => {
   setup = undefined;
 });
 
-describe("React SwitchPrimitive", () => {
+describe("React Switch", () => {
   it("composes a retained Thumb around shared state", async () => {
     setup = await testRender(
       createElement(
-        SwitchPrimitive.Root,
+        Switch.Root,
         { id: "root" },
-        createElement(SwitchPrimitive.Thumb, { id: "thumb" }),
+        createElement(Switch.Thumb, { id: "thumb" }),
         createElement("text", { id: "label", content: "Editable recipe" }),
       ),
       { width: 30, height: 5 },
@@ -54,15 +55,11 @@ describe("React SwitchPrimitive", () => {
 
   it("exposes readonly state to consumer-owned rendering", async () => {
     setup = await testRender(
-      createElement(
-        SwitchPrimitive.Root,
-        { id: "state-root" },
-        ((state) =>
-          createElement("text", {
-            id: "state-label",
-            content: state.checked ? "on" : "off",
-          })) as unknown as ReactNode,
-      ),
+      createElement(Switch.Root, { id: "state-root" }, ((state: SwitchState) =>
+        createElement("text", {
+          id: "state-label",
+          content: state.checked ? "on" : "off",
+        })) as unknown as ReactNode),
       { width: 30, height: 5 },
     );
     const root = setup.renderer.root.findDescendantById(
@@ -91,7 +88,7 @@ describe("React SwitchPrimitive", () => {
       setDisabled = updateDisabled;
       setVersion = updateVersion;
       return createElement(
-        SwitchPrimitive.Root,
+        Switch.Root,
         {
           id: "reactive-root",
           checked: controlled ? false : undefined,
@@ -102,7 +99,7 @@ describe("React SwitchPrimitive", () => {
             rootRef = value;
           },
         },
-        createElement(SwitchPrimitive.Thumb, {
+        createElement(Switch.Thumb, {
           id: "reactive-thumb",
           ref: (value) => {
             thumbRef = value;
@@ -118,8 +115,8 @@ describe("React SwitchPrimitive", () => {
     const thumb = setup.renderer.root.findDescendantById(
       "reactive-thumb",
     ) as SwitchThumbRenderable;
-    expect(rootRef).toBe(root);
-    expect(thumbRef).toBe(thumb);
+    expect(rootRef as unknown).toBe(root);
+    expect(thumbRef as unknown).toBe(thumb);
 
     await act(async () => root.press());
     expect(changes).toEqual(["1:true"]);
@@ -141,8 +138,8 @@ describe("React SwitchPrimitive", () => {
     await act(async () => root.press());
     expect(changes).toHaveLength(2);
 
-    expect(rootRef).toBe(root);
-    expect(thumbRef).toBe(thumb);
+    expect(rootRef as unknown).toBe(root);
+    expect(thumbRef as unknown).toBe(thumb);
     expect(setup.renderer.root.findDescendantById("reactive-thumb")).toBe(
       thumb,
     );

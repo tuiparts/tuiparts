@@ -2,7 +2,7 @@ import { extend } from "@opentui/react";
 import {
   type CheckboxIndicatorOptions,
   CheckboxIndicatorRenderable,
-  type CheckboxPrimitiveState,
+  type CheckboxState,
   type CheckboxRootOptions,
   CheckboxRootRenderable,
   CheckboxStore,
@@ -18,8 +18,8 @@ import {
   useSyncExternalStore,
 } from "react";
 
-const ROOT_TAG = "otui-checkbox-primitive-root";
-const INDICATOR_TAG = "otui-checkbox-primitive-indicator";
+const ROOT_TAG = "otui-checkbox-root";
+const INDICATOR_TAG = "otui-checkbox-indicator";
 
 extend({
   [ROOT_TAG]: CheckboxRootRenderable,
@@ -28,23 +28,17 @@ extend({
 
 const CheckboxContext = createContext<CheckboxStore | null>(null);
 
-export type CheckboxPrimitiveRootProps = Omit<CheckboxRootOptions, "store"> & {
-  children?: ReactNode | ((state: CheckboxPrimitiveState) => ReactNode);
+export type CheckboxProps = Omit<CheckboxRootOptions, "store"> & {
+  children?: ReactNode | ((state: CheckboxState) => ReactNode);
   ref?: Ref<CheckboxRootRenderable>;
 };
 
-export type CheckboxPrimitiveIndicatorProps = Omit<
-  CheckboxIndicatorOptions,
-  "store"
-> & {
+export type CheckboxIndicatorProps = Omit<CheckboxIndicatorOptions, "store"> & {
   children?: ReactNode;
   ref?: Ref<CheckboxIndicatorRenderable>;
 };
 
-function CheckboxRoot({
-  children,
-  ...props
-}: CheckboxPrimitiveRootProps): ReactElement {
+function CheckboxRoot({ children, ...props }: CheckboxProps): ReactElement {
   const storeRef = useRef<CheckboxStore | null>(null);
   if (!storeRef.current) storeRef.current = new CheckboxStore(props);
   const store = storeRef.current;
@@ -65,20 +59,18 @@ function CheckboxRoot({
 function CheckboxIndicator({
   children,
   ...props
-}: CheckboxPrimitiveIndicatorProps): ReactElement {
+}: CheckboxIndicatorProps): ReactElement {
   const store = useContext(CheckboxContext);
   if (!store) {
-    throw new Error(
-      "CheckboxPrimitive.Indicator must be rendered inside CheckboxPrimitive.Root",
-    );
+    throw new Error("Checkbox.Indicator must be rendered inside Checkbox.Root");
   }
   return createElement(INDICATOR_TAG, { ...props, store }, children);
 }
 
-CheckboxRoot.displayName = "CheckboxPrimitive.Root";
-CheckboxIndicator.displayName = "CheckboxPrimitive.Indicator";
+CheckboxRoot.displayName = "Checkbox.Root";
+CheckboxIndicator.displayName = "Checkbox.Indicator";
 
-export const CheckboxPrimitive = {
+export const Checkbox = {
   Root: CheckboxRoot,
   Indicator: CheckboxIndicator,
 } as const;

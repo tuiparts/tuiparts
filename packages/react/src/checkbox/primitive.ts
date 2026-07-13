@@ -1,11 +1,12 @@
+import type { RenderContext } from "@opentui/core";
 import { extend } from "@opentui/react";
+import { CheckboxStateController } from "@opentui-ui/core/_internal/checkbox";
 import {
   type CheckboxIndicatorOptions,
   CheckboxIndicatorRenderable,
-  type CheckboxState,
   type CheckboxRootOptions,
   CheckboxRootRenderable,
-  CheckboxStore,
+  type CheckboxState,
 } from "@opentui-ui/core/checkbox";
 import {
   createContext,
@@ -21,38 +22,88 @@ import {
 const ROOT_TAG = "otui-checkbox-root";
 const INDICATOR_TAG = "otui-checkbox-indicator";
 
+type AdapterRootOptions = CheckboxRootOptions & {
+  controller: CheckboxStateController;
+};
+type AdapterIndicatorOptions = Omit<CheckboxIndicatorOptions, "root"> & {
+  controller: CheckboxStateController;
+};
+
+class ReactCheckboxRootRenderable extends CheckboxRootRenderable {
+  private _adapterController: CheckboxStateController;
+
+  constructor(ctx: RenderContext, options: AdapterRootOptions) {
+    const { controller, ...rootOptions } = options;
+    super(ctx, rootOptions);
+    this._adapterController = controller;
+    this.setStateController(controller);
+  }
+
+  get controller(): CheckboxStateController {
+    return this._adapterController;
+  }
+
+  set controller(controller: CheckboxStateController) {
+    this._adapterController = controller;
+    this.setStateController(controller);
+  }
+}
+
+class ReactCheckboxIndicatorRenderable extends CheckboxIndicatorRenderable {
+  private _adapterController: CheckboxStateController;
+
+  constructor(ctx: RenderContext, options: AdapterIndicatorOptions) {
+    const { controller, ...indicatorOptions } = options;
+    super(ctx, {
+      ...indicatorOptions,
+      root: controller as unknown as CheckboxRootRenderable,
+    });
+    this._adapterController = controller;
+  }
+
+  get controller(): CheckboxStateController {
+    return this._adapterController;
+  }
+
+  set controller(controller: CheckboxStateController) {
+    this._adapterController = controller;
+    this.setStateOwner(controller);
+  }
+}
+
 extend({
-  [ROOT_TAG]: CheckboxRootRenderable,
-  [INDICATOR_TAG]: CheckboxIndicatorRenderable,
+  [ROOT_TAG]: ReactCheckboxRootRenderable,
+  [INDICATOR_TAG]: ReactCheckboxIndicatorRenderable,
 });
 
-const CheckboxContext = createContext<CheckboxStore | null>(null);
+const CheckboxContext = createContext<CheckboxStateController | null>(null);
 
-export type CheckboxProps = Omit<CheckboxRootOptions, "store"> & {
+export type CheckboxProps = CheckboxRootOptions & {
   children?: ReactNode | ((state: CheckboxState) => ReactNode);
   ref?: Ref<CheckboxRootRenderable>;
 };
 
-export type CheckboxIndicatorProps = Omit<CheckboxIndicatorOptions, "store"> & {
+export type CheckboxIndicatorProps = Omit<CheckboxIndicatorOptions, "root"> & {
   children?: ReactNode;
   ref?: Ref<CheckboxIndicatorRenderable>;
 };
 
 function CheckboxRoot({ children, ...props }: CheckboxProps): ReactElement {
-  const storeRef = useRef<CheckboxStore | null>(null);
-  if (!storeRef.current) storeRef.current = new CheckboxStore(props);
-  const store = storeRef.current;
+  const controllerRef = useRef<CheckboxStateController | null>(null);
+  if (!controllerRef.current)
+    controllerRef.current = new CheckboxStateController(props);
+  const controller = controllerRef.current;
   const state = useSyncExternalStore(
-    (listener) => store.subscribe(listener),
-    () => store.state,
-    () => store.state,
+    (listener) => controller.subscribe(listener),
+    () => controller.state,
+    () => controller.state,
   );
   const content = typeof children === "function" ? children(state) : children;
 
   return createElement(
     CheckboxContext.Provider,
-    { value: store },
-    createElement(ROOT_TAG, { ...props, store }, content),
+    { value: controller },
+    createElement(ROOT_TAG, { ...props, controller }, content),
   );
 }
 
@@ -60,11 +111,11 @@ function CheckboxIndicator({
   children,
   ...props
 }: CheckboxIndicatorProps): ReactElement {
-  const store = useContext(CheckboxContext);
-  if (!store) {
+  const controller = useContext(CheckboxContext);
+  if (!controller) {
     throw new Error("Checkbox.Indicator must be rendered inside Checkbox.Root");
   }
-  return createElement(INDICATOR_TAG, { ...props, store }, children);
+  return createElement(INDICATOR_TAG, { ...props, controller }, children);
 }
 
 CheckboxRoot.displayName = "Checkbox.Root";

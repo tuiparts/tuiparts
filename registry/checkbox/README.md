@@ -4,8 +4,8 @@ These files represent the consumer-owned layer of the Checkbox tracer. The
 root `registry.json` exposes separate `core/checkbox`, `react/checkbox`, and
 `solid/checkbox` items so consumers explicitly install the recipe for their
 framework. Installation copies editable source into `components/ui` while
-keeping `CheckboxStore`, `CheckboxRootRenderable`, and
-`CheckboxIndicatorRenderable` in versioned packages.
+keeping `CheckboxRootRenderable` and `CheckboxIndicatorRenderable` in
+versioned packages.
 
 - `react.tsx` is the editable React recipe.
 - `solid.tsx` is the equivalent Solid recipe.

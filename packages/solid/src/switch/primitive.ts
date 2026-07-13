@@ -1,10 +1,9 @@
 import type { JSX } from "@opentui/solid";
 import { useRenderer } from "@opentui/solid";
 import {
-  type SwitchState,
   type SwitchRootOptions,
   SwitchRootRenderable,
-  SwitchStore,
+  type SwitchState,
   type SwitchThumbOptions,
   SwitchThumbRenderable,
 } from "@opentui-ui/core/switch";
@@ -24,36 +23,30 @@ import {
   spreadRenderableProps,
 } from "../internal/renderable-props";
 
-const SwitchContext = createContext<SwitchStore>();
+const SwitchContext = createContext<SwitchRootRenderable>();
 
-export type SwitchProps = Omit<SwitchRootOptions, "store"> & {
+export type SwitchProps = SwitchRootOptions & {
   children?: JSX.Element | ((state: SwitchState) => JSX.Element);
   ref?: Ref<SwitchRootRenderable>;
 };
 
-export type SwitchThumbProps = Omit<SwitchThumbOptions, "store"> & {
+export type SwitchThumbProps = Omit<SwitchThumbOptions, "root"> & {
   children?: JSX.Element;
   ref?: Ref<SwitchThumbRenderable>;
 };
 
 function SwitchRoot(props: SwitchProps): JSX.Element {
   const renderer = useRenderer();
-  const store = new SwitchStore({
-    checked: props.checked,
-    defaultChecked: props.defaultChecked,
-    disabled: props.disabled,
-    onCheckedChange: props.onCheckedChange,
-  });
-  const [state, setState] = createSignal(store.state);
+  const [state, setState] = createSignal<SwitchState>();
   const publicState: SwitchState = {
     get checked() {
-      return state().checked;
+      return state()?.checked ?? props.checked ?? props.defaultChecked ?? false;
     },
     get disabled() {
-      return state().disabled;
+      return state()?.disabled ?? props.disabled ?? false;
     },
     get focused() {
-      return state().focused;
+      return state()?.focused ?? false;
     },
   };
   const [local, initialProps] = splitProps(props, [
@@ -66,18 +59,25 @@ function SwitchRoot(props: SwitchProps): JSX.Element {
   ]);
   const element = new SwitchRootRenderable(
     renderer,
-    untrack(() => ({ ...initialProps, store })),
+    untrack(() => ({
+      ...initialProps,
+      checked: local.checked,
+      defaultChecked: local.defaultChecked,
+      disabled: local.disabled,
+      onCheckedChange: local.onCheckedChange,
+    })),
   );
+  setState(element.getState());
   createEffect(() => {
     element.checked = local.checked;
     element.disabled = local.disabled;
     element.onCheckedChange = local.onCheckedChange;
   });
-  onCleanup(store.subscribe(setState));
+  onCleanup(element.subscribe(setState));
   setRenderableRef(local.ref, element);
 
   return createComponent(SwitchContext.Provider, {
-    value: store,
+    value: element,
     get children() {
       const child = local.children;
       const children = typeof child === "function" ? child(publicState) : child;
@@ -89,14 +89,14 @@ function SwitchRoot(props: SwitchProps): JSX.Element {
 
 function SwitchThumb(props: SwitchThumbProps): JSX.Element {
   const renderer = useRenderer();
-  const store = useContext(SwitchContext);
-  if (!store) {
+  const root = useContext(SwitchContext);
+  if (!root) {
     throw new Error("Switch.Thumb must be rendered inside Switch.Root");
   }
   const [local, initialProps] = splitProps(props, ["children", "ref"]);
   const element = new SwitchThumbRenderable(
     renderer,
-    untrack(() => ({ ...initialProps, store })),
+    untrack(() => ({ ...initialProps, root })),
   );
   setRenderableRef(local.ref, element);
   spreadRenderableProps(element, () => ({

@@ -26,8 +26,6 @@ export {
   type CheckboxRootOptions,
   CheckboxRootRenderable,
   type CheckboxState,
-  CheckboxStore,
-  type CheckboxStoreOptions,
 } from "./checkbox";
 export {
   type DialogBackdropOptions,
@@ -115,8 +113,6 @@ export {
   type SwitchRootOptions,
   SwitchRootRenderable,
   type SwitchState,
-  SwitchStore,
-  type SwitchStoreOptions,
   type SwitchThumbOptions,
   SwitchThumbRenderable,
 } from "./switch";

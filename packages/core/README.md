@@ -18,28 +18,26 @@ colors, spacing, glyphs, labels, or fixed visual trees.
 | Module | Core interface | Public parts |
 | --- | --- | --- |
 | Button | — | `ButtonRenderable` |
-| Checkbox | `CheckboxStore` | `CheckboxRootRenderable`, `CheckboxIndicatorRenderable` |
+| Checkbox | Root-owned state | `CheckboxRootRenderable`, `CheckboxIndicatorRenderable` |
 | Dialog | `DialogStore` | Root, Trigger, Portal, Backdrop, Popup, Title, Description, Close Renderables |
 | Input | OpenTUI-native state | `InputRenderable` |
 | RadioGroup | `RadioGroupStore` | Root, Item, Indicator Renderables |
-| Switch | `SwitchStore` | `SwitchRootRenderable`, `SwitchThumbRenderable` |
+| Switch | Root-owned state | `SwitchRootRenderable`, `SwitchThumbRenderable` |
 
-Core callers explicitly share a Store between compound parts. React and Solid
-hide the same wiring behind compound-component context.
+Core callers pass an owning Root or justified Store between compound parts.
+React and Solid hide the same wiring behind compound-component context.
 
 ```ts
 import {
   CheckboxIndicatorRenderable,
   CheckboxRootRenderable,
-  CheckboxStore,
 } from "@opentui-ui/core/checkbox";
 
-const store = new CheckboxStore({
+const root = new CheckboxRootRenderable(ctx, {
   defaultChecked: true,
   onCheckedChange: console.log,
 });
-const root = new CheckboxRootRenderable(ctx, { store });
-const indicator = new CheckboxIndicatorRenderable(ctx, { store });
+const indicator = new CheckboxIndicatorRenderable(ctx, { root });
 
 root.add(indicator);
 parent.add(root);

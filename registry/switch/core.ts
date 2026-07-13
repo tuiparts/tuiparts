@@ -5,7 +5,6 @@ import {
 } from "@opentui/core";
 import {
   SwitchRootRenderable,
-  SwitchStore,
   SwitchThumbRenderable,
 } from "@opentui-ui/core/switch";
 
@@ -28,14 +27,16 @@ class SwitchRecipeRenderable extends SwitchRootRenderable {
   private readonly unsubscribeRecipe: () => void;
 
   constructor(ctx: RenderContext, options: SwitchOptions) {
-    const store = new SwitchStore(options);
     const trackWidth = options.density === "comfortable" ? 5 : 3;
     const symbols = symbolSets[options.symbols ?? "round"];
     super(ctx, {
-      store,
       backgroundColor: "transparent",
+      checked: options.checked,
+      defaultChecked: options.defaultChecked,
+      disabled: options.disabled,
       flexDirection: "row",
       gap: options.density === "comfortable" ? 2 : 1,
+      onCheckedChange: options.onCheckedChange,
     });
 
     const track = new BoxRenderable(ctx, {
@@ -51,10 +52,10 @@ class SwitchRecipeRenderable extends SwitchRootRenderable {
       }),
     );
     const thumb = new SwitchThumbRenderable(ctx, {
-      store,
       height: 1,
-      left: store.state.checked ? trackWidth - 1 : 0,
+      left: this.getState().checked ? trackWidth - 1 : 0,
       position: "absolute",
+      root: this,
       width: 1,
     });
     thumb.add(
@@ -71,7 +72,7 @@ class SwitchRecipeRenderable extends SwitchRootRenderable {
         fg: options.disabled ? "#737373" : "#E5E5E5",
       }),
     );
-    this.unsubscribeRecipe = store.subscribe((state) => {
+    this.unsubscribeRecipe = this.subscribe((state) => {
       thumb.left = state.checked ? trackWidth - 1 : 0;
     });
   }

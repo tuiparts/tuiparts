@@ -43,21 +43,24 @@ Primitive modules use component-specific package subpaths.
 
 ### Store
 
-The framework-neutral owner of shared primitive state and coordination. A
+The framework-neutral owner of coordination that exists independently of one
+Renderable, such as a dynamic collection or renderer-root overlay layer. A
 Store exposes readonly state, subscriptions, semantic requests or actions, and
 lifecycle operations needed by Core consumers. Stores do not contain visual
 defaults or framework state.
 
-Not every primitive needs a new Store. A thin wrapper around an OpenTUI-native
-control must not duplicate the control's state merely to match Store-shaped
-primitives.
+Not every primitive needs a public Store. A single behavior-owning Renderable
+keeps its state controller private and exposes state and subscriptions itself.
+A thin wrapper around an OpenTUI-native control must not duplicate the
+control's state merely to match Store-shaped primitives.
 
 ### Root
 
 The ownership and composition boundary for one primitive instance. Root owns
-or receives the Store, applies Root-level behavior, and provides the Store to
-framework parts. Root is not required to be focusable; focus ownership follows
-the primitive's interaction model. A Root may coordinate focus without itself
+primitive state directly or owns/receives a Store when coordination warrants
+one, applies Root-level behavior, and provides the required owner to framework
+parts. Root is not required to be focusable; focus ownership follows the
+primitive's interaction model. A Root may coordinate focus without itself
 being a focus target.
 
 ### Part
@@ -74,9 +77,9 @@ required Store or owner explicitly.
 
 ### State
 
-A readonly public snapshot of observable primitive behavior. Store snapshots
-are referentially stable until observable state changes and are immutable at
-runtime. Part-local state may extend Root state with facts such as `focused`,
+A readonly public snapshot of observable primitive behavior. Root and Store
+snapshots are referentially stable until observable state changes and are
+immutable at runtime. Part-local state may extend Root state with facts such as `focused`,
 `selected`, `available`, or `tabbable`.
 
 Consumers read state through a documented `state` or `getState()` seam, a
@@ -156,10 +159,10 @@ Dialog open state.
 - Redundant, disabled, unavailable, or otherwise invalid requests do not emit
   a change callback.
 - Reactive updates replace callbacks and controlled values without replacing
-  retained Renderables or Stores.
+  retained Renderables or justified Stores.
 
-The Store is the behavior source in every mode. React and Solid must not add a
-second ownership state machine around it.
+The Core Root or Store is the behavior source in every mode. React and Solid
+must not add a second ownership state machine around it.
 
 ### OpenTUI-Owned State
 
@@ -213,7 +216,7 @@ must be omitted from public option types or ignored deterministically.
 
 Core is the source of behavior shared by frameworks:
 
-- Stores, Renderables, state snapshots, details, key maps, disabled behavior,
+- Justified Stores, Renderables, state snapshots, details, key maps, disabled behavior,
   collection logic, and overlay logic live in Core.
 - React and Solid adapt Core lifecycle, context, reactivity, children, events,
   and refs. They do not reimplement the behavior state machine.
@@ -228,10 +231,27 @@ Single-node OpenTUI-native controls use a named adapter such as
 `Input` rather than inventing a compound `Root` with no composition
 value.
 
-Store interfaces remain component-specific. Shared state machinery should be
+Store interfaces remain component-specific and must pass the deletion test:
+removing one must force collection, overlay, or other independent coordination
+complexity into multiple Core callers. Shared state machinery should be
 extracted through private composition only when multiple stores demonstrate the
 same lifecycle and notification semantics; foundation Stores do not inherit
 from a generic public base class.
+
+### Public Store Audit
+
+- Button, Checkbox, and Switch keep single-owner state behind their behavior
+  Renderable. Passive Indicator and Thumb parts receive the owning Root.
+- Input preserves OpenTUI-owned state and has no Store.
+- RadioGroup retains a public Store for dynamic item identity, selection,
+  roving focus, ordering, and registration independent of any one Renderable.
+- Dialog retains a public Store for portal, layer, dismissal, nesting, and
+  focus-restoration coordination across renderer-root ownership.
+
+Framework packages may import component-specific controllers from
+`@opentui-ui/core/_internal/*` so React can establish state and context during
+its first render. Those subpaths are unsupported adapter implementation seams,
+not consumer interfaces; component subpaths do not re-export them.
 
 Solid adapters construct retained Renderables directly, so they preserve
 reactive props with `splitProps`, take constructor snapshots with `untrack`, and
@@ -314,7 +334,7 @@ below. `N/A` requires a reason; it is not a silent omission.
 
 | Surface | Required evidence |
 | --- | --- |
-| Core | Public Store/Renderable tests for ownership, state snapshots, actions, key and pointer behavior, disabled behavior, dynamic lifecycle, teardown, and event details. Tests use the OpenTUI test renderer and public seams. |
+| Core | Public owner/Renderable tests for ownership, state snapshots, actions, key and pointer behavior, disabled behavior, dynamic lifecycle, teardown, and event details. Tests use the OpenTUI test renderer and public seams. |
 | React | `testRender` coverage using real Core Renderables for initial props, reactive updates, prop removal, callback replacement, actual ref targets, Renderable identity across retained updates, conditional-part ref lifecycle, context errors, and interaction parity. |
 | Solid | The React adapter matrix repeated through Solid's real rendering seam, including reactive getters, cleanup, prop removal, actual ref targets, retained Renderable identity, and interaction parity. |
 | Registry | Core, React, and Solid recipes compile under strict TypeScript in clean consumers, import only published primitive subpaths, keep visual ownership local, and pass runtime smoke coverage. Official shadcn validation and installation cover dependency metadata. |

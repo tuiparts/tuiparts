@@ -21,8 +21,8 @@ describe("Switch primitive", () => {
       id: "switch-root",
     });
     const thumb = new SwitchThumbRenderable(setup.renderer, {
-      store: root.store,
       id: "switch-thumb",
+      root,
     });
 
     expect(root.getChildren()).toEqual([]);

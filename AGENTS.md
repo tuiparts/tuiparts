@@ -54,7 +54,7 @@ opentui-ui/
 | `withStyles` | Function | `packages/core/src/styled-renderable.ts` | Legacy/recipe style mixin; not the primitive base contract |
 | `BadgeRenderable` | Class | `packages/core/src/badge/badge.ts` | Badge component logic |
 | `CheckboxRenderable` | Class | `packages/core/src/checkbox/checkbox.ts` | Checkbox component logic |
-| `CheckboxStore` | Class | `packages/core/src/checkbox/primitive.ts` | Shared Checkbox primitive state |
+| `CheckboxRootRenderable` | Class | `packages/core/src/checkbox/primitive.ts` | Checkbox state, activation, and Indicator owner |
 | `splitVariantProps` | Function | `packages/styles/src/styled.ts` | Separates variant props from rest |
 | `toast` | Object | `packages/toast/src/state.ts` | Global toast API (toast.success, toast.error, etc.) |
 | `ToasterRenderable` | Class | `packages/toast/src/renderables/toaster.ts` | Container that manages toast notifications |

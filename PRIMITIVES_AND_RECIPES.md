@@ -81,15 +81,14 @@ glyph, label, layout, and appearance.
 
 Checkbox is the first primitive hardened against the foundation contract:
 
-- `CheckboxStore` is the framework-neutral state seam.
-- `CheckboxRootRenderable` owns focus and activation.
+- `CheckboxRootRenderable` owns state, subscriptions, focus, and activation.
 - `CheckboxIndicatorRenderable` reflects shared state without choosing content.
 - React and Solid expose matching `Checkbox.Root` and
   `Checkbox.Indicator` parts.
 - The example recipes choose a mark, label, spacing, and colors in editable
   source.
-- Core callers either pass one Store explicitly or compose parts from
-  `root.store`; React and Solid provide that Store through Root context.
+- Core callers pass the owning Root to Indicator; React and Solid hide that
+  owner wiring through Root context.
 - An authored Indicator remains mounted and reflects checked state through
   Renderable visibility in Core, React, and Solid. Recipes may omit the part
   entirely when they do not need a visual indicator.
@@ -121,8 +120,8 @@ change.
 Switch follows the same frozen ownership and activation rules without treating
 its Thumb like Checkbox's conditional Indicator:
 
-- `SwitchStore` owns framework-neutral checked, disabled, and focused state.
-- `SwitchRootRenderable` owns focus and the shared `press()`, Enter, Space, and
+- `SwitchRootRenderable` owns checked, disabled, and focused state plus the
+  shared `press()`, Enter, Space, and
   uncancelled primary-button release request.
 - `SwitchThumbRenderable` is an always-mounted public part that exposes the
   shared readonly state while recipes choose its position and appearance.
@@ -131,10 +130,9 @@ its Thumb like Checkbox's conditional Indicator:
 - Editable Core, React, and Solid recipes own track and thumb glyphs, track
   width, density, spacing, positioning, colors, and labels.
 
-Checkbox and Switch retain component-specific stores. Their current behavior
-is small and equivalent in several places, but extracting a generic toggle
-module would add an abstraction without yet removing enough duplication to
-justify flattening their distinct Indicator and Thumb lifecycle semantics.
+Checkbox and Switch keep component-specific state controllers private. Their
+public Roots expose state and subscriptions directly, avoiding both a generic
+toggle base class and shallow public Store interfaces.
 
 Reference implementations:
 

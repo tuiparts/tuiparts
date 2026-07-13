@@ -24,8 +24,8 @@ describe("Checkbox primitive", () => {
       id: "checkbox-root",
     });
     const indicator = new CheckboxIndicatorRenderable(setup.renderer, {
-      store: root.store,
       id: "checkbox-indicator",
+      root,
     });
 
     expect(root.getChildren()).toEqual([]);

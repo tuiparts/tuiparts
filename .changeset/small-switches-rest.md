@@ -5,4 +5,4 @@
 ---
 
 Add the unstyled `Switch.Root` and `Switch.Thumb` foundation interfaces with
-clean `SwitchProps` and `SwitchState` types and editable registry recipes.
+clean `SwitchProps`, Root-owned `SwitchState`, and editable registry recipes.

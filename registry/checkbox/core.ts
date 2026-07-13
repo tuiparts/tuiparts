@@ -6,7 +6,6 @@ import {
 import {
   CheckboxIndicatorRenderable,
   CheckboxRootRenderable,
-  CheckboxStore,
 } from "@opentui-ui/core/checkbox";
 
 export interface CheckboxOptions {
@@ -19,20 +18,22 @@ export interface CheckboxOptions {
   onCheckedChange?: (checked: boolean) => void;
 }
 
-/** Consumer-owned imperative recipe using the same packaged primitive store. */
+/** Consumer-owned imperative recipe using packaged Checkbox behavior. */
 export function createCheckbox(
   ctx: RenderContext,
   options: CheckboxOptions,
 ): CheckboxRootRenderable {
-  const store = new CheckboxStore(options);
   const root = new CheckboxRootRenderable(ctx, {
-    store,
     backgroundColor: "transparent",
+    checked: options.checked,
+    defaultChecked: options.defaultChecked,
+    disabled: options.disabled,
     flexDirection: "row",
     gap: 1,
+    onCheckedChange: options.onCheckedChange,
   });
   const markCell = new BoxRenderable(ctx, { width: 1 });
-  const indicator = new CheckboxIndicatorRenderable(ctx, { store });
+  const indicator = new CheckboxIndicatorRenderable(ctx, { root });
   indicator.add(
     new TextRenderable(ctx, {
       content: options.mark ?? "✓",

@@ -145,6 +145,34 @@ Reference implementations:
 - `registry/switch/react.tsx`
 - `registry/switch/solid.tsx`
 
+## Button Foundation Primitive
+
+Button packages activation without imposing a label or visual child tree:
+
+- `ButtonStore` owns readonly disabled, focused, and pressed state.
+- `ButtonRootRenderable` owns focus plus imperative, keyboard, and
+  primary-pointer activation.
+- `ButtonPressDetails` distinguishes imperative, keyboard, and pointer sources
+  with a small immutable terminal vocabulary.
+- Pressed state is cleared by cancelled pointer release, disablement, blur, and
+  teardown.
+- React and Solid expose the same `Button.Root`, state callback, native
+  properties, and Renderable ref.
+- Editable recipes choose the label, padding, colors, intent, and size.
+
+Button needs no additional public parts: arbitrary content inside Root is the
+composition seam, and adding a Label part would package presentation without
+adding behavior.
+
+Reference implementations:
+
+- `packages/core/src/button/primitive.ts`
+- `packages/react/src/button/button.tsx`
+- `packages/solid/src/button/button.tsx`
+- `registry/button/core.ts`
+- `registry/button/react.tsx`
+- `registry/button/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies

@@ -15,13 +15,16 @@ Peer requirements are `@opentui/core` and `@opentui/react` `^0.4.3`, React
 ## Foundation Example
 
 ```tsx
-import { Checkbox, Input, RadioGroup, Switch } from "@opentui-ui/react";
+import { Button, Checkbox, Input, RadioGroup, Switch } from "@opentui-ui/react";
 import { useState } from "react";
 
 export function Settings() {
   const [checked, setChecked] = useState(false);
   return (
     <box flexDirection="column" gap={1}>
+      <Button.Root onPress={({ source }) => console.log(source)}>
+        <text content="Run" />
+      </Button.Root>
       <Checkbox.Root checked={checked} onCheckedChange={setChecked}>
         <Checkbox.Indicator>
           <text content="✓" />
@@ -97,25 +100,21 @@ Use `styled()` for reusable base styles, variants, compound variants, defaults,
 state selectors, and per-instance overrides:
 
 ```tsx
-const Action = styled(Button, {
+const Status = styled(Badge, {
   base: {
-    root: {
-      backgroundColor: "#262626",
-      _focused: { backgroundColor: "#1D4ED8" },
-      _disabled: { opacity: 0.5 },
-    },
+    root: { backgroundColor: "#262626" },
     label: { color: "#FAFAFA" },
   },
   variants: {
     tone: {
-      primary: { root: { backgroundColor: "#2563EB" } },
-      danger: { root: { backgroundColor: "#DC2626" } },
+      neutral: { root: { backgroundColor: "#404040" } },
+      success: { root: { backgroundColor: "#166534" } },
     },
   },
-  defaultVariants: { tone: "primary" },
+  defaultVariants: { tone: "neutral" },
 });
 
-<Action tone="danger" styles={{ root: { paddingX: 3 } }} label="Delete" />;
+<Status label="Stable" tone="success" />;
 ```
 
 Nested styled components merge configuration and render the deepest base once.

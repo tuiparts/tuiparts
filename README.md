@@ -25,12 +25,12 @@ See [`ROADMAP.md`](./ROADMAP.md) and
 | [`@opentui-ui/solid`](./packages/solid) | Solid compound-part adapters |
 | [`registry`](./registry) | Consumer-owned Core, React, and Solid recipes |
 
-The repository is in an expand-contract migration. Checkbox is the first
-primitive tracer; existing Badge, Button, Checkbox, Input, Switch, Radio, and
-RadioGroup exports still include the legacy hybrid packaged-component model
-until their migration tickets complete. [`@opentui-ui/dialog`](./packages/dialog)
-and [`@opentui-ui/toast`](./packages/toast) remain independently versioned
-companion products while their primitive relationships are reconciled.
+The repository is in an expand-contract migration. Button, Checkbox, Dialog,
+Input, RadioGroup, and Switch now expose foundation behavior; Badge and
+standalone Radio still retain legacy packaged-component surfaces until their
+migration tickets complete. [`@opentui-ui/dialog`](./packages/dialog) and
+[`@opentui-ui/toast`](./packages/toast) remain independently versioned companion
+products while their primitive relationships are reconciled.
 
 ## Installation
 

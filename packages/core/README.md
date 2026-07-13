@@ -17,6 +17,7 @@ colors, spacing, glyphs, labels, or fixed visual trees.
 
 | Module | Core interface | Public parts |
 | --- | --- | --- |
+| Button | `ButtonStore` | `ButtonRootRenderable` |
 | Checkbox | `CheckboxStore` | `CheckboxRootRenderable`, `CheckboxIndicatorRenderable` |
 | Dialog | `DialogStore` | Root, Trigger, Portal, Backdrop, Popup, Title, Description, Close Renderables |
 | Input | OpenTUI-native state | `InputRenderable` |
@@ -68,9 +69,9 @@ commit, and `onSubmit` reports successful Enter submission.
 
 ## Remaining Migration Surface
 
-Badge, Button, and standalone Radio still expose the earlier packaged component
-model while their foundation or recipe replacements are completed. The styling
-engine remains optional recipe infrastructure and is not imported by foundation
+Badge and standalone Radio still expose the earlier packaged component model
+while their recipe or foundation replacements are completed. The styling engine
+remains optional recipe infrastructure and is not imported by foundation
 behavior.
 
 See [`FOUNDATION_PRIMITIVE_CONTRACT.md`](../../FOUNDATION_PRIMITIVE_CONTRACT.md)

@@ -120,7 +120,7 @@ describe("Solid adapter", () => {
       () => {
         const root = createElement("box") as BaseRenderable;
         root.add(Badge({ id: "badge", label: "Badge" }));
-        root.add(Button({ id: "button", label: "Button" }));
+        root.add(Button.Root({ id: "button" }));
         root.add(Input({ id: "input", value: "Input" }));
         const group = RadioGroup({ id: "radio-group" });
         group.add(Radio({ id: "radio", label: "Radio" }));

@@ -111,7 +111,11 @@ describe("React adapter", () => {
         Fragment,
         null,
         createElement(Badge, { id: "badge", label: "Badge" }),
-        createElement(Button, { id: "button", label: "Button" }),
+        createElement(
+          Button.Root,
+          { id: "button" },
+          createElement("text", { content: "Button" }),
+        ),
         createElement(Input, { id: "input", value: "Input" }),
         createElement(
           RadioGroup,

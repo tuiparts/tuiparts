@@ -15,13 +15,16 @@ Peer requirements are `@opentui/core` and `@opentui/solid` `^0.4.3`, with
 ## Foundation Example
 
 ```tsx
-import { Checkbox, Input, RadioGroup, Switch } from "@opentui-ui/solid";
+import { Button, Checkbox, Input, RadioGroup, Switch } from "@opentui-ui/solid";
 import { createSignal } from "solid-js";
 
 export function Settings() {
   const [checked, setChecked] = createSignal(false);
   return (
     <box flexDirection="column" gap={1}>
+      <Button.Root onPress={({ source }) => console.log(source)}>
+        <text content="Run" />
+      </Button.Root>
       <Checkbox.Root checked={checked()} onCheckedChange={setChecked}>
         <Checkbox.Indicator>
           <text content="✓" />

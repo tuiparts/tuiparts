@@ -138,6 +138,73 @@
       }
     },
     {
+      "name": "core/button",
+      "type": "registry:item",
+      "title": "Button (Core)",
+      "description": "Editable imperative Button recipe built on the OpenTUI UI foundation primitive.",
+      "dependencies": ["@opentui-ui/core@^0.0.2", "@opentui/core@^0.4.3"],
+      "files": [
+        {
+          "path": "registry/button/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/button.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "foundation"
+      }
+    },
+    {
+      "name": "react/button",
+      "type": "registry:item",
+      "title": "Button (React)",
+      "description": "Editable React Button recipe built on the OpenTUI UI foundation primitive.",
+      "dependencies": [
+        "@opentui-ui/react@^0.0.2",
+        "@opentui-ui/core@^0.0.2",
+        "@opentui/core@^0.4.3",
+        "@opentui/react@^0.4.3",
+        "react@^19.2.0",
+        "ws@^8.21.0"
+      ],
+      "files": [
+        {
+          "path": "registry/button/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/button.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "foundation"
+      }
+    },
+    {
+      "name": "solid/button",
+      "type": "registry:item",
+      "title": "Button (Solid)",
+      "description": "Editable Solid Button recipe built on the OpenTUI UI foundation primitive.",
+      "dependencies": [
+        "@opentui-ui/solid@^0.0.2",
+        "@opentui-ui/core@^0.0.2",
+        "@opentui/core@^0.4.3",
+        "@opentui/solid@^0.4.3",
+        "solid-js@1.9.12"
+      ],
+      "files": [
+        {
+          "path": "registry/button/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/button.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "foundation"
+      }
+    },
+    {
       "name": "core/radio-group",
       "type": "registry:item",
       "title": "Radio Group (Core)",

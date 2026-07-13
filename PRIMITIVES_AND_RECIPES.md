@@ -172,6 +172,36 @@ Reference implementations:
 - `registry/button/react.tsx`
 - `registry/button/solid.tsx`
 
+## Radio And RadioGroup
+
+Radio behavior has one foundation model:
+
+- `RadioGroup` owns the collection Store and controlled/uncontrolled
+  value.
+- `Radio.Root` owns focus and activation while registering checked,
+  availability, disabled state, and roving focus with its RadioGroup.
+- `Radio.Indicator` reflects its Radio's checked state without choosing a
+  glyph.
+- Radio always requires RadioGroup; it does not create conditional hidden
+  ownership when rendered alone.
+- A one-choice UI still composes one Radio inside RadioGroup. There is no
+  standalone boolean API or hidden one-item wrapper.
+- Checkbox or Switch is the appropriate primitive for a reversible boolean
+  choice.
+
+This keeps every Radio on the same parts, readonly state, change details,
+semantic actions, and actual Renderable refs. See ADR 0002 for the ownership
+decision and legacy prop mapping.
+
+Reference implementations:
+
+- `packages/core/src/radio/primitive.ts`
+- `packages/react/src/radio/primitive.ts`
+- `packages/solid/src/radio/primitive.ts`
+- `registry/radio-group/core.ts`
+- `registry/radio-group/react.tsx`
+- `registry/radio-group/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies

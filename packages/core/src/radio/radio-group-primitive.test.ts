@@ -11,14 +11,14 @@ describe("RadioGroupStore", () => {
       value: "alpha",
       available: true,
       disabled: false,
-      selected: false,
+      checked: false,
       tabbable: true,
     });
     expect(store.getItemState(beta.key)).toEqual({
       value: "beta",
       available: true,
       disabled: true,
-      selected: false,
+      checked: false,
       tabbable: false,
     });
     expect(Object.isFrozen(store.getItemState(alpha.key))).toBe(true);
@@ -34,7 +34,7 @@ describe("RadioGroupStore", () => {
     expect(store.getItemState(beta.key)).toBeUndefined();
   });
 
-  it("owns uncontrolled selection and clears it when the selected item leaves", () => {
+  it("owns uncontrolled selection and clears it when the checked item leaves", () => {
     const changes: string[] = [];
     const store = new RadioGroupStore({
       defaultValue: "alpha",
@@ -44,12 +44,12 @@ describe("RadioGroupStore", () => {
     const beta = store.registerItem("beta");
 
     expect(store.state.value).toBe("alpha");
-    expect(store.getItemState(alpha.key)?.selected).toBe(true);
+    expect(store.getItemState(alpha.key)?.checked).toBe(true);
 
     store.requestSelection(beta.key);
     expect(store.state.value).toBe("beta");
-    expect(store.getItemState(alpha.key)?.selected).toBe(false);
-    expect(store.getItemState(beta.key)?.selected).toBe(true);
+    expect(store.getItemState(alpha.key)?.checked).toBe(false);
+    expect(store.getItemState(beta.key)?.checked).toBe(true);
     expect(changes).toEqual(["beta"]);
 
     store.requestSelection(beta.key);
@@ -81,7 +81,7 @@ describe("RadioGroupStore", () => {
     expect(store.state.value).toBeNull();
 
     store.setValue("beta");
-    expect(store.getItemState(beta.key)?.selected).toBe(true);
+    expect(store.getItemState(beta.key)?.checked).toBe(true);
 
     store.setValue(undefined);
     store.requestSelection(alpha.key);
@@ -106,7 +106,7 @@ describe("RadioGroupStore", () => {
       value: "renamed",
       available: true,
       disabled: false,
-      selected: true,
+      checked: true,
       tabbable: true,
     });
     expect(store.state.value).toBe("renamed");

@@ -5,12 +5,14 @@ import {
   TextRenderable,
 } from "@opentui/core";
 import {
-  RadioGroupIndicatorRenderable,
-  RadioGroupItemRenderable,
-  RadioGroupRootRenderable,
+  RadioIndicatorRenderable,
+  RadioRootRenderable,
+} from "@opentui-ui/core/radio";
+import {
+  RadioGroupRenderable,
   type RadioGroupStore,
   type RadioGroupStoreOptions,
-} from "@opentui-ui/core/radio";
+} from "@opentui-ui/core/radio-group";
 
 export interface RadioGroupOptions extends RadioGroupStoreOptions {
   gap?: BoxOptions["gap"];
@@ -28,9 +30,9 @@ export interface RadioGroupItemOptions {
 export function createRadioGroup(
   ctx: RenderContext,
   options: RadioGroupOptions = {},
-): RadioGroupRootRenderable {
+): RadioGroupRenderable {
   const { gap = 0, orientation = "vertical", ...storeOptions } = options;
-  return new RadioGroupRootRenderable(ctx, {
+  return new RadioGroupRenderable(ctx, {
     ...storeOptions,
     backgroundColor: "transparent",
     flexDirection: orientation === "horizontal" ? "row" : "column",
@@ -42,8 +44,8 @@ export function createRadioGroupItem(
   ctx: RenderContext,
   store: RadioGroupStore,
   options: RadioGroupItemOptions,
-): RadioGroupItemRenderable {
-  const item = new RadioGroupItemRenderable(ctx, {
+): RadioRootRenderable {
+  const item = new RadioRootRenderable(ctx, {
     store,
     value: options.value,
     disabled: options.disabled,
@@ -52,7 +54,7 @@ export function createRadioGroupItem(
     gap: 1,
   });
   const markCell = new BoxRenderable(ctx, { width: 1 });
-  const indicator = new RadioGroupIndicatorRenderable(ctx, { item });
+  const indicator = new RadioIndicatorRenderable(ctx, { radio: item });
   indicator.add(
     new TextRenderable(ctx, {
       content: options.mark ?? "o",

@@ -19,6 +19,7 @@
     "./dialog": "./src/dialog/index.ts",
     "./input": "./src/input/index.ts",
     "./radio": "./src/radio/index.ts",
+    "./radio-group": "./src/radio-group/index.ts",
     "./switch": "./src/switch/index.ts"
   },
   "publishConfig": {
@@ -52,6 +53,10 @@
       "./radio": {
         "types": "./dist/radio/index.d.mts",
         "import": "./dist/radio/index.mjs"
+      },
+      "./radio-group": {
+        "types": "./dist/radio-group/index.d.mts",
+        "import": "./dist/radio-group/index.mjs"
       },
       "./switch": {
         "types": "./dist/switch/index.d.mts",

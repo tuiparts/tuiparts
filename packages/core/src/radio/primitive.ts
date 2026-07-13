@@ -24,11 +24,11 @@ export interface RadioGroupCollectionItemState {
   readonly value: string;
   readonly available: boolean;
   readonly disabled: boolean;
-  readonly selected: boolean;
+  readonly checked: boolean;
   readonly tabbable: boolean;
 }
 
-export interface RadioGroupItemState extends RadioGroupCollectionItemState {
+export interface RadioState extends RadioGroupCollectionItemState {
   readonly focused: boolean;
 }
 
@@ -148,7 +148,7 @@ export class RadioGroupStore {
         value,
         available: options.isAvailable?.() ?? true,
         disabled: this._state.disabled || (options.disabled ?? false),
-        selected: value === this._state.value,
+        checked: value === this._state.value,
         tabbable: false,
       }),
     };
@@ -441,7 +441,7 @@ export class RadioGroupStore {
       value: item.value,
       available: this._collectionAvailable && (item.isAvailable?.() ?? true),
       disabled: this._state.disabled || item.disabled,
-      selected: item.value === this._state.value,
+      checked: item.value === this._state.value,
       tabbable: key === this._tabStopKey,
     });
   }
@@ -452,7 +452,7 @@ export class RadioGroupStore {
       state.value === item.state.value &&
       state.available === item.state.available &&
       state.disabled === item.state.disabled &&
-      state.selected === item.state.selected &&
+      state.checked === item.state.checked &&
       state.tabbable === item.state.tabbable
     ) {
       return;
@@ -480,12 +480,12 @@ export class RadioGroupStore {
       ([, item]) => !item.disabled && (item.isAvailable?.() ?? true),
     );
     const active = enabledItems.find(([key]) => key === this._activeKey);
-    const selected = enabledItems.find(
+    const checked = enabledItems.find(
       ([, item]) => item.value === this._state.value,
     );
     const retained = enabledItems.find(([key]) => key === this._tabStopKey);
     this._tabStopKey =
-      (active ?? selected ?? retained ?? enabledItems[0])?.[0] ?? null;
+      (active ?? checked ?? retained ?? enabledItems[0])?.[0] ?? null;
   }
 
   private update(next: Partial<RadioGroupState>): void {
@@ -533,20 +533,18 @@ export class RadioGroupStore {
   }
 }
 
-export interface RadioGroupRootOptions
-  extends BoxOptions,
-    RadioGroupStoreOptions {
+export interface RadioGroupOptions extends BoxOptions, RadioGroupStoreOptions {
   store?: RadioGroupStore;
 }
 
-export class RadioGroupRootRenderable extends BoxRenderable {
+export class RadioGroupRenderable extends BoxRenderable {
   protected override _focusable = false;
 
   private readonly _store: RadioGroupStore;
   private readonly _removeItemOrderResolver: () => void;
   private readonly _unsubscribe: () => void;
 
-  constructor(ctx: RenderContext, options: RadioGroupRootOptions = {}) {
+  constructor(ctx: RenderContext, options: RadioGroupOptions = {}) {
     const {
       store,
       value,
@@ -572,7 +570,7 @@ export class RadioGroupRootRenderable extends BoxRenderable {
 
   set store(store: RadioGroupStore) {
     if (store !== this._store)
-      throw new Error("RadioGroup.Root store cannot be replaced");
+      throw new Error("RadioGroup store cannot be replaced");
   }
 
   getState(): RadioGroupState {
@@ -621,7 +619,7 @@ export class RadioGroupRootRenderable extends BoxRenderable {
       for (const child of node.getChildren()) {
         if (!child.visible) continue;
         if (
-          child instanceof RadioGroupItemRenderable &&
+          child instanceof RadioRootRenderable &&
           child.store === this._store
         ) {
           keys.push(child.key);
@@ -651,25 +649,25 @@ export class RadioGroupRootRenderable extends BoxRenderable {
   }
 }
 
-export interface RadioGroupItemOptions extends BoxOptions {
+export interface RadioRootOptions extends BoxOptions {
   store: RadioGroupStore;
   value: string;
   disabled?: boolean;
 }
 
-type RadioGroupItemListener = (state: RadioGroupItemState) => void;
+type RadioGroupItemListener = (state: RadioState) => void;
 
-export class RadioGroupItemRenderable extends BoxRenderable {
+export class RadioRootRenderable extends BoxRenderable {
   protected override _focusable = true;
 
   private readonly _store: RadioGroupStore;
   private readonly _registration: RadioGroupItemRegistration;
   private _collectionState: RadioGroupCollectionItemState;
-  private _state: RadioGroupItemState;
+  private _state: RadioState;
   private readonly _listeners = new Set<RadioGroupItemListener>();
   private readonly _unsubscribe: () => void;
 
-  constructor(ctx: RenderContext, options: RadioGroupItemOptions) {
+  constructor(ctx: RenderContext, options: RadioRootOptions) {
     const { store, value, disabled, ...boxOptions } = options;
     super(ctx, {
       ...boxOptions,
@@ -692,7 +690,7 @@ export class RadioGroupItemRenderable extends BoxRenderable {
       isAvailable: () => this.isAvailable(),
     });
     const state = store.getItemState(this._registration.key);
-    if (!state) throw new Error("RadioGroup Item registration failed");
+    if (!state) throw new Error("Radio registration failed");
     this._collectionState = state;
     this._state = this.createState();
     this._focusable = state.tabbable;
@@ -722,10 +720,10 @@ export class RadioGroupItemRenderable extends BoxRenderable {
 
   set store(store: RadioGroupStore) {
     if (store !== this._store)
-      throw new Error("RadioGroup.Item store cannot be replaced");
+      throw new Error("Radio.Root store cannot be replaced");
   }
 
-  getState(): RadioGroupItemState {
+  getState(): RadioState {
     return this._state;
   }
 
@@ -779,8 +777,8 @@ export class RadioGroupItemRenderable extends BoxRenderable {
     this.publishState();
   }
 
-  get selected(): boolean {
-    return this._state.selected;
+  get checked(): boolean {
+    return this._state.checked;
   }
 
   get value(): string {
@@ -821,7 +819,7 @@ export class RadioGroupItemRenderable extends BoxRenderable {
     while (ancestor) {
       if (!ancestor.visible) return false;
       if (
-        ancestor instanceof RadioGroupRootRenderable &&
+        ancestor instanceof RadioGroupRenderable &&
         ancestor.store === this._store
       ) {
         return ancestor.parent !== null;
@@ -835,7 +833,7 @@ export class RadioGroupItemRenderable extends BoxRenderable {
     let ancestor = this.parent;
     while (ancestor) {
       if (
-        ancestor instanceof RadioGroupRootRenderable &&
+        ancestor instanceof RadioGroupRenderable &&
         ancestor.store === this._store
       ) {
         ancestor.refreshItems();
@@ -857,7 +855,7 @@ export class RadioGroupItemRenderable extends BoxRenderable {
     return true;
   }
 
-  private createState(): RadioGroupItemState {
+  private createState(): RadioState {
     return Object.freeze({
       ...this._collectionState,
       focused: this._focused,
@@ -871,7 +869,7 @@ export class RadioGroupItemRenderable extends BoxRenderable {
       state.available === this._state.available &&
       state.disabled === this._state.disabled &&
       state.focused === this._state.focused &&
-      state.selected === this._state.selected &&
+      state.checked === this._state.checked &&
       state.tabbable === this._state.tabbable
     ) {
       return;
@@ -890,32 +888,32 @@ export class RadioGroupItemRenderable extends BoxRenderable {
       available: false,
       disabled: true,
       focused: false,
-      selected: false,
+      checked: false,
     });
     for (const listener of this._listeners) listener(this._state);
     this._listeners.clear();
   }
 }
 
-export interface RadioGroupIndicatorOptions extends BoxOptions {
-  item: RadioGroupItemRenderable;
+export interface RadioIndicatorOptions extends BoxOptions {
+  radio: RadioRootRenderable;
 }
 
-export class RadioGroupIndicatorRenderable extends BoxRenderable {
-  private readonly _item: RadioGroupItemRenderable;
+export class RadioIndicatorRenderable extends BoxRenderable {
+  private readonly _radio: RadioRootRenderable;
   private readonly _unsubscribe: () => void;
 
-  constructor(ctx: RenderContext, options: RadioGroupIndicatorOptions) {
-    const { item, ...boxOptions } = options;
-    super(ctx, { ...boxOptions, visible: item.selected });
-    this._item = item;
-    this._unsubscribe = item.subscribe((state) => {
-      this.visible = state.selected;
+  constructor(ctx: RenderContext, options: RadioIndicatorOptions) {
+    const { radio, ...boxOptions } = options;
+    super(ctx, { ...boxOptions, visible: radio.checked });
+    this._radio = radio;
+    this._unsubscribe = radio.subscribe((state) => {
+      this.visible = state.checked;
     });
   }
 
-  getState(): RadioGroupItemState {
-    return this._item.getState();
+  getState(): RadioState {
+    return this._radio.getState();
   }
 
   override destroy(): void {

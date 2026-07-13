@@ -7,7 +7,6 @@ import { Badge, Button } from "@opentui-ui/solid";
 import { styled } from "@opentui-ui/solid/styled";
 import { createSignal } from "solid-js";
 import { Input } from "./input/primitive";
-import { Radio } from "./radio/radio";
 
 let setup: TestRendererSetup | undefined;
 
@@ -122,13 +121,12 @@ describe("Solid adapter", () => {
         root.add(Badge({ id: "badge", label: "Badge" }));
         root.add(Button({ id: "button" }));
         root.add(Input({ id: "input", value: "Input" }));
-        root.add(Radio({ id: "radio", label: "Radio" }));
         return root;
       },
       { width: 40, height: 12 },
     );
 
-    const ids = ["badge", "button", "input", "radio"];
+    const ids = ["badge", "button", "input"];
     expect(
       ids.filter((id) => !setup?.renderer.root.findDescendantById(id)),
     ).toEqual([]);

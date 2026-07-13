@@ -7,7 +7,6 @@ import { Badge, Button } from "@opentui-ui/react";
 import { styled } from "@opentui-ui/react/styled";
 import { act, createElement, Fragment, useState } from "react";
 import { Input } from "./input/primitive";
-import { Radio } from "./radio/radio";
 
 let setup: TestRendererSetup | undefined;
 
@@ -117,25 +116,14 @@ describe("React adapter", () => {
           createElement("text", { content: "Button" }),
         ),
         createElement(Input, { id: "input", value: "Input" }),
-        createElement(
-          "box",
-          { id: "radio-group" },
-          createElement(Radio, { id: "radio", label: "Radio" }),
-        ),
       );
     }
 
     setup = await testRender(createElement(App), { width: 40, height: 12 });
-    const ids = ["badge", "button", "input", "radio-group", "radio"];
+    const ids = ["badge", "button", "input"];
     expect(
       ids.filter((id) => !setup?.renderer.root.findDescendantById(id)),
     ).toEqual([]);
-
-    expect(
-      setup.renderer.root
-        .findDescendantById("radio-group")
-        ?.findDescendantById("radio"),
-    ).toBeDefined();
   });
 
   it("flattens nested styled wrappers to one deepest base", async () => {

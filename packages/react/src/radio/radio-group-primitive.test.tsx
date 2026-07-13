@@ -1,13 +1,11 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
-import {
-  RadioGroupItemRenderable,
-  type RadioGroupItemState,
-  RadioGroupRootRenderable,
-} from "@opentui-ui/core/radio";
+import { RadioRootRenderable, type RadioState } from "@opentui-ui/core/radio";
+import { RadioGroupRenderable } from "@opentui-ui/core/radio-group";
 import { act, createElement, createRef, type ReactNode, useState } from "react";
-import { RadioGroup } from "./index";
+import { RadioGroup } from "../radio-group";
+import { Radio } from "./index";
 
 let setup: TestRendererSetup | undefined;
 
@@ -18,25 +16,25 @@ afterEach(async () => {
 
 describe("React RadioGroup", () => {
   it("composes parts and publishes Item-owned focus while navigating", async () => {
-    const renderState = (state: RadioGroupItemState) =>
+    const renderState = (state: RadioState) =>
       createElement("text", {
         id: "alpha-state",
-        content: `${state.selected}:${state.focused}:${state.tabbable}`,
+        content: `${state.checked}:${state.focused}:${state.tabbable}`,
       });
     setup = await testRender(
       createElement(
-        RadioGroup.Root,
+        RadioGroup,
         { id: "root", defaultValue: "alpha", flexDirection: "column" },
         createElement(
-          RadioGroup.Item,
+          Radio.Root,
           { id: "alpha", value: "alpha", height: 1 },
           renderState as unknown as ReactNode,
         ),
         createElement(
-          RadioGroup.Item,
+          Radio.Root,
           { id: "beta", value: "beta", height: 1 },
           createElement(
-            RadioGroup.Indicator,
+            Radio.Indicator,
             { id: "beta-indicator", keepMounted: true },
             createElement("text", { content: "x" }),
           ),
@@ -46,15 +44,15 @@ describe("React RadioGroup", () => {
     );
     const root = setup.renderer.root.findDescendantById(
       "root",
-    ) as RadioGroupRootRenderable;
+    ) as RadioGroupRenderable;
     const alpha = setup.renderer.root.findDescendantById(
       "alpha",
-    ) as RadioGroupItemRenderable;
+    ) as RadioRootRenderable;
     const beta = setup.renderer.root.findDescendantById(
       "beta",
-    ) as RadioGroupItemRenderable;
-    expect(root.constructor).toBe(RadioGroupRootRenderable);
-    expect(alpha.constructor).toBe(RadioGroupItemRenderable);
+    ) as RadioRootRenderable;
+    expect(root.constructor).toBe(RadioGroupRenderable);
+    expect(alpha.constructor).toBe(RadioRootRenderable);
     expect(alpha.store).toBe(root.store);
     expect(
       setup.renderer.root.findDescendantById("beta-indicator"),
@@ -65,29 +63,29 @@ describe("React RadioGroup", () => {
     await setup.waitFor(() => root.value === "beta" && beta.focused);
 
     expect(alpha.store.getItemState(alpha.key)).not.toHaveProperty("focused");
-    expect(beta.getState()).toMatchObject({ focused: true, selected: true });
+    expect(beta.getState()).toMatchObject({ focused: true, checked: true });
     expect(
       setup.renderer.root.findDescendantById("beta-indicator"),
     ).toBeDefined();
   });
 
   it("updates controlled props without replacing Root or Item", async () => {
-    const rootRef = createRef<RadioGroupRootRenderable>();
-    const itemRef = createRef<RadioGroupItemRenderable>();
+    const rootRef = createRef<RadioGroupRenderable>();
+    const itemRef = createRef<RadioRootRenderable>();
     let rename: (() => void) | undefined;
     function App() {
       const [value, setValue] = useState<string | null>("alpha");
       const [itemValue, setItemValue] = useState("alpha");
       rename = () => setItemValue("renamed");
       return createElement(
-        RadioGroup.Root,
+        RadioGroup,
         { value, onValueChange: setValue, ref: rootRef },
-        createElement(RadioGroup.Item, {
+        createElement(Radio.Root, {
           id: "retained",
           value: itemValue,
           ref: itemRef,
         }),
-        createElement(RadioGroup.Item, { id: "beta", value: "beta" }),
+        createElement(Radio.Root, { id: "beta", value: "beta" }),
       );
     }
     setup = await testRender(createElement(App), { width: 30, height: 5 });
@@ -95,7 +93,7 @@ describe("React RadioGroup", () => {
     const item = itemRef.current;
     const beta = setup.renderer.root.findDescendantById(
       "beta",
-    ) as RadioGroupItemRenderable;
+    ) as RadioRootRenderable;
 
     await act(async () => beta.press());
     await setup.waitFor(() => rootRef.current?.value === "beta");
@@ -107,22 +105,22 @@ describe("React RadioGroup", () => {
   });
 
   it("removes focused dynamic Items without stale registration", async () => {
-    const rootRef = createRef<RadioGroupRootRenderable>();
-    const fallbackRef = createRef<RadioGroupItemRenderable>();
-    const dynamicRef = createRef<RadioGroupItemRenderable>();
+    const rootRef = createRef<RadioGroupRenderable>();
+    const fallbackRef = createRef<RadioRootRenderable>();
+    const dynamicRef = createRef<RadioRootRenderable>();
     let show: ((visible: boolean) => void) | undefined;
     function App() {
       const [visible, setVisible] = useState(true);
       show = setVisible;
       return createElement(
-        RadioGroup.Root,
+        RadioGroup,
         { ref: rootRef },
-        createElement(RadioGroup.Item, {
+        createElement(Radio.Root, {
           value: "fallback",
           ref: fallbackRef,
         }),
         visible
-          ? createElement(RadioGroup.Item, {
+          ? createElement(Radio.Root, {
               value: "dynamic",
               ref: dynamicRef,
             })

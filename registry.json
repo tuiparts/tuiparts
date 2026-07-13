@@ -208,7 +208,7 @@
       "name": "core/radio-group",
       "type": "registry:item",
       "title": "Radio Group (Core)",
-      "description": "Editable imperative Radio Group recipe built on the OpenTUI UI collection primitive tracer.",
+      "description": "Editable imperative Radio and Radio Group recipe built on the OpenTUI UI collection primitive.",
       "dependencies": ["@opentui-ui/core@^0.0.2", "@opentui/core@^0.4.3"],
       "files": [
         {
@@ -219,14 +219,14 @@
       ],
       "meta": {
         "framework": "core",
-        "primitiveStatus": "tracer"
+        "primitiveStatus": "foundation"
       }
     },
     {
       "name": "react/radio-group",
       "type": "registry:item",
       "title": "Radio Group (React)",
-      "description": "Editable React Radio Group recipe built on the OpenTUI UI collection primitive tracer.",
+      "description": "Editable React Radio and Radio Group recipe built on the OpenTUI UI collection primitive.",
       "dependencies": [
         "@opentui-ui/react@^0.0.2",
         "@opentui-ui/core@^0.0.2",
@@ -244,14 +244,14 @@
       ],
       "meta": {
         "framework": "react",
-        "primitiveStatus": "tracer"
+        "primitiveStatus": "foundation"
       }
     },
     {
       "name": "solid/radio-group",
       "type": "registry:item",
       "title": "Radio Group (Solid)",
-      "description": "Editable Solid Radio Group recipe built on the OpenTUI UI collection primitive tracer.",
+      "description": "Editable Solid Radio and Radio Group recipe built on the OpenTUI UI collection primitive.",
       "dependencies": [
         "@opentui-ui/solid@^0.0.2",
         "@opentui-ui/core@^0.0.2",
@@ -268,7 +268,7 @@
       ],
       "meta": {
         "framework": "solid",
-        "primitiveStatus": "tracer"
+        "primitiveStatus": "foundation"
       }
     },
     {

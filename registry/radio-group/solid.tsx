@@ -1,12 +1,13 @@
 /** @jsxImportSource @opentui/solid */
 
-import { RadioGroup as RadioGroupPrimitive } from "@opentui-ui/solid/radio";
+import { Radio as RadioPrimitive } from "@opentui-ui/solid/radio";
+import { RadioGroup as RadioGroupPrimitive } from "@opentui-ui/solid/radio-group";
 import { splitProps } from "solid-js";
 
-export interface RadioGroupProps extends RadioGroupPrimitive.Root.Props {}
+export interface RadioGroupProps extends RadioGroupPrimitive.Props {}
 
 export interface RadioGroupItemProps
-  extends Omit<RadioGroupPrimitive.Item.Props, "children"> {
+  extends Omit<RadioPrimitive.Root.Props, "children"> {
   label: string;
   mark?: string;
   tone?: "accent" | "success";
@@ -15,7 +16,7 @@ export interface RadioGroupItemProps
 /** Consumer-owned group layout on top of packaged collection behavior. */
 export function RadioGroup(props: RadioGroupProps) {
   return (
-    <RadioGroupPrimitive.Root
+    <RadioGroupPrimitive
       flexDirection="column"
       gap={0}
       backgroundColor="transparent"
@@ -35,7 +36,7 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
   const markColor = () => (recipe.tone === "success" ? "#10B981" : "#3B82F6");
 
   return (
-    <RadioGroupPrimitive.Item
+    <RadioPrimitive.Root
       flexDirection="row"
       gap={1}
       height={1}
@@ -43,12 +44,12 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
       disabled={recipe.disabled}
       {...item}
     >
-      {(state: RadioGroupPrimitive.Item.State) => (
+      {(state: RadioPrimitive.Root.State) => (
         <>
           <box width={1}>
-            <RadioGroupPrimitive.Indicator>
+            <RadioPrimitive.Indicator>
               <text content={recipe.mark ?? "o"} fg={markColor()} />
-            </RadioGroupPrimitive.Indicator>
+            </RadioPrimitive.Indicator>
           </box>
           <text
             content={recipe.label}
@@ -58,6 +59,6 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
           />
         </>
       )}
-    </RadioGroupPrimitive.Item>
+    </RadioPrimitive.Root>
   );
 }

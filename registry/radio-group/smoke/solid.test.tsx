@@ -4,19 +4,15 @@ import { afterEach, expect, test } from "bun:test";
 import { type BaseRenderable, TextRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
-import type {
-  RadioGroupItemRenderable,
-  RadioGroupRootRenderable,
-} from "@opentui-ui/core/radio";
+import type { RadioRootRenderable } from "@opentui-ui/core/radio";
+import type { RadioGroupRenderable } from "@opentui-ui/core/radio-group";
 import { createSignal } from "solid-js";
 import { RadioGroup, RadioGroupItem } from "./components/ui/radio-group";
 
 let setup: TestRendererSetup | undefined;
 
-function item(id: string): RadioGroupItemRenderable {
-  return setup?.renderer.root.findDescendantById(
-    id,
-  ) as RadioGroupItemRenderable;
+function item(id: string): RadioRootRenderable {
+  return setup?.renderer.root.findDescendantById(id) as RadioRootRenderable;
 }
 
 function text(node: BaseRenderable): string[] {
@@ -33,10 +29,10 @@ afterEach(() => {
 
 test("installed Solid RadioGroup recipe runtime smoke", async () => {
   let setDynamicVisible: (visible: boolean) => void = () => {};
-  let uncontrolledRootRef: RadioGroupRootRenderable | undefined;
-  let retainedAlphaRef: RadioGroupItemRenderable | undefined;
-  let controlledRootRef: RadioGroupRootRenderable | undefined;
-  let controlledBetaRef: RadioGroupItemRenderable | undefined;
+  let uncontrolledRootRef: RadioGroupRenderable | undefined;
+  let retainedAlphaRef: RadioRootRenderable | undefined;
+  let controlledRootRef: RadioGroupRenderable | undefined;
+  let controlledBetaRef: RadioRootRenderable | undefined;
 
   setup = await testRender(
     () => {

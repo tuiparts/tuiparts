@@ -1,11 +1,4 @@
-// Re-export slot constants for convenience
 export { BADGE_SLOTS, type BadgeSlotStyleMap } from "@opentui-ui/core/badge";
-export {
-  RADIO_GROUP_SLOTS,
-  RADIO_SLOTS,
-  type RadioGroupSlotStyleMap,
-  type RadioSlotStyleMap,
-} from "@opentui-ui/core/radio";
 // Re-export components
 export * from "./badge";
 export * from "./button";
@@ -16,4 +9,5 @@ export { createOtuiComponent } from "./createOtuiComponent";
 export * from "./dialog";
 export * from "./input";
 export * from "./radio";
+export * from "./radio-group";
 export * from "./switch";

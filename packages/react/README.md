@@ -15,7 +15,7 @@ Peer requirements are `@opentui/core` and `@opentui/react` `^0.4.3`, React
 ## Foundation Example
 
 ```tsx
-import { Button, Checkbox, Input, RadioGroup, Switch } from "@opentui-ui/react";
+import { Button, Checkbox, Input, Radio, RadioGroup, Switch } from "@opentui-ui/react";
 import { useState } from "react";
 
 export function Settings() {
@@ -35,11 +35,11 @@ export function Settings() {
       <Switch.Root checked={checked} onCheckedChange={setChecked}>
         {(state) => <text content={state.checked ? "On" : "Off"} />}
       </Switch.Root>
-      <RadioGroup.Root defaultValue="stable">
-        <RadioGroup.Item value="stable">
+      <RadioGroup defaultValue="stable">
+        <Radio.Root value="stable">
           <text content="Stable" />
-        </RadioGroup.Item>
-      </RadioGroup.Root>
+        </Radio.Root>
+      </RadioGroup>
     </box>
   );
 }
@@ -55,7 +55,8 @@ import { Badge } from "@opentui-ui/react/badge";
 import { Button } from "@opentui-ui/react/button";
 import { Checkbox } from "@opentui-ui/react/checkbox";
 import { Input } from "@opentui-ui/react/input";
-import { RadioGroup } from "@opentui-ui/react/radio";
+import { Radio } from "@opentui-ui/react/radio";
+import { RadioGroup } from "@opentui-ui/react/radio-group";
 import { Switch } from "@opentui-ui/react/switch";
 import { styled } from "@opentui-ui/react/styled";
 import { Dialog } from "@opentui-ui/react/dialog";

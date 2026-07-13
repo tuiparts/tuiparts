@@ -15,7 +15,7 @@ Peer requirements are `@opentui/core` and `@opentui/solid` `^0.4.3`, with
 ## Foundation Example
 
 ```tsx
-import { Button, Checkbox, Input, RadioGroup, Switch } from "@opentui-ui/solid";
+import { Button, Checkbox, Input, Radio, RadioGroup, Switch } from "@opentui-ui/solid";
 import { createSignal } from "solid-js";
 
 export function Settings() {
@@ -35,11 +35,11 @@ export function Settings() {
       <Switch.Root checked={checked()} onCheckedChange={setChecked}>
         {(state) => <text content={state.checked ? "On" : "Off"} />}
       </Switch.Root>
-      <RadioGroup.Root defaultValue="stable">
-        <RadioGroup.Item value="stable">
+      <RadioGroup defaultValue="stable">
+        <Radio.Root value="stable">
           <text content="Stable" />
-        </RadioGroup.Item>
-      </RadioGroup.Root>
+        </Radio.Root>
+      </RadioGroup>
     </box>
   );
 }
@@ -55,7 +55,8 @@ import { Badge } from "@opentui-ui/solid/badge";
 import { Button } from "@opentui-ui/solid/button";
 import { Checkbox } from "@opentui-ui/solid/checkbox";
 import { Input } from "@opentui-ui/solid/input";
-import { RadioGroup } from "@opentui-ui/solid/radio";
+import { Radio } from "@opentui-ui/solid/radio";
+import { RadioGroup } from "@opentui-ui/solid/radio-group";
 import { Switch } from "@opentui-ui/solid/switch";
 import { styled } from "@opentui-ui/solid/styled";
 import { Dialog } from "@opentui-ui/solid/dialog";

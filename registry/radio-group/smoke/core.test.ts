@@ -68,8 +68,8 @@ describe("installed Core RadioGroup recipe", () => {
     await setup?.renderOnce();
 
     expect(root.value).toBe("beta");
-    expect(alpha?.selected).toBe(false);
-    expect(beta?.selected).toBe(true);
+    expect(alpha?.checked).toBe(false);
+    expect(beta?.checked).toBe(true);
     expect(changes).toEqual(["beta"]);
     expect(frameLines()[0]).toContain("* Beta");
   });
@@ -90,11 +90,11 @@ describe("installed Core RadioGroup recipe", () => {
     items[1]?.press();
     expect(changes).toEqual(["beta"]);
     expect(root.value).toBe("alpha");
-    expect(items[0]?.selected).toBe(true);
+    expect(items[0]?.checked).toBe(true);
 
     root.value = "beta";
     await setup?.renderOnce();
-    expect(items[1]?.selected).toBe(true);
+    expect(items[1]?.checked).toBe(true);
     expect(frameLines()[1]).toBe("x Beta");
   });
 
@@ -112,11 +112,11 @@ describe("installed Core RadioGroup recipe", () => {
     await setup?.mockInput.pressArrow("down");
     expect(beta?.focused).toBe(false);
     expect(gamma?.focused).toBe(true);
-    expect(gamma?.selected).toBe(true);
+    expect(gamma?.checked).toBe(true);
 
     await setup?.mockInput.pressArrow("right");
     expect(alpha?.focused).toBe(true);
-    expect(alpha?.selected).toBe(true);
+    expect(alpha?.checked).toBe(true);
 
     await setup?.mockInput.pressKey("END");
     expect(gamma?.focused).toBe(true);

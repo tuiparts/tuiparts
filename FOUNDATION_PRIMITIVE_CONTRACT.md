@@ -195,8 +195,8 @@ The supported seam is:
   Solid.
 - Consumer wrappers and recipe-owned visual nodes around or within parts.
 
-Structural requirements remain explicit. For example, RadioGroup Item belongs
-to a RadioGroup Root, Indicator belongs to an Item, and Dialog Popup and
+Structural requirements remain explicit. For example, Radio.Root belongs to
+RadioGroup, Radio.Indicator belongs to Radio.Root, and Dialog Popup and
 Backdrop belong to the same Dialog Store and Portal layer. Portal is a real
 renderer-root ownership host, not an ordinary in-tree visual wrapper.
 
@@ -241,7 +241,7 @@ public base class.
 
 - Button, Checkbox, and Switch expose attachable Core Stores. Their React
   adapters create Stores automatically and omit `store` from public framework
-  Props. Passive Indicator and Thumb parts still receive the owning Root in
+  Props. Passive Indicator and Thumb parts receive the owning Store in
   Core and use private context wiring in framework adapters.
 - Input preserves OpenTUI-owned state and has no Store.
 - RadioGroup retains a public Store for dynamic item identity, selection,
@@ -369,9 +369,9 @@ The four tracers establish these precedents:
   retained state-reflecting Indicator, equivalent activation paths, and
   editable glyph ownership. Its boolean change callback does not expose cause
   details because no Checkbox behavior depends on cause.
-- RadioGroup proves dynamic collection registration, retained Item identity,
+- RadioGroup proves dynamic collection registration, retained Radio identity,
   rendered-order navigation, disabled and unavailable skipping, roving focus,
-  and Item-local state. Actual focus remains owned by the Item Renderable.
+  and Radio-local state. Actual focus remains owned by RadioRootRenderable.
 - Input proves that preserving OpenTUI-native mutable state is more important
   than forcing controlled/uncontrolled symmetry.
 - Dialog proves renderer-scoped portals, topmost layer arbitration, cancellable

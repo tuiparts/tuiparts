@@ -4,25 +4,19 @@ import { afterEach, describe, expect, it } from "bun:test";
 import { type BaseRenderable, TextRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
-import type {
-  RadioGroupItemRenderable,
-  RadioGroupRootRenderable,
-} from "@opentui-ui/core/radio";
+import type { RadioRootRenderable } from "@opentui-ui/core/radio";
+import type { RadioGroupRenderable } from "@opentui-ui/core/radio-group";
 import { act, createRef, useState } from "react";
 import { RadioGroup, RadioGroupItem } from "./components/ui/radio-group";
 
 let setup: TestRendererSetup | undefined;
 
-function root(id: string): RadioGroupRootRenderable {
-  return setup?.renderer.root.findDescendantById(
-    id,
-  ) as RadioGroupRootRenderable;
+function root(id: string): RadioGroupRenderable {
+  return setup?.renderer.root.findDescendantById(id) as RadioGroupRenderable;
 }
 
-function item(id: string): RadioGroupItemRenderable {
-  return setup?.renderer.root.findDescendantById(
-    id,
-  ) as RadioGroupItemRenderable;
+function item(id: string): RadioRootRenderable {
+  return setup?.renderer.root.findDescendantById(id) as RadioRootRenderable;
 }
 
 function text(node: BaseRenderable): string[] {
@@ -48,9 +42,9 @@ afterEach(async () => {
 
 describe("installed React RadioGroup recipe", () => {
   it("runs the collection behavior through consumer-owned presentation", async () => {
-    const rootRef = createRef<RadioGroupRootRenderable>();
-    const retainedRef = createRef<RadioGroupItemRenderable>();
-    const dynamicRef = createRef<RadioGroupItemRenderable>();
+    const rootRef = createRef<RadioGroupRenderable>();
+    const retainedRef = createRef<RadioRootRenderable>();
+    const dynamicRef = createRef<RadioRootRenderable>();
     let removeDynamic: (() => void) | undefined;
 
     function Uncontrolled() {
@@ -102,15 +96,15 @@ describe("installed React RadioGroup recipe", () => {
 
     await act(async () => alpha.focus());
     await act(async () => setup?.mockInput.pressArrow("down"));
-    await setup.waitFor(() => gamma.focused && gamma.selected);
+    await setup.waitFor(() => gamma.focused && gamma.checked);
     expect(root("uncontrolled").value).toBe("gamma");
-    expect(item("beta").selected).toBe(false);
+    expect(item("beta").checked).toBe(false);
     expect(text(gamma)).toEqual(["*", "Gamma"]);
 
     await act(async () => setup?.mockInput.pressArrow("right"));
     await setup.waitFor(() => item("dynamic").focused);
     await act(async () => setup?.mockInput.pressArrow("down"));
-    await setup.waitFor(() => alpha.focused && alpha.selected);
+    await setup.waitFor(() => alpha.focused && alpha.checked);
 
     await act(async () => setup?.mockInput.pressKey("END"));
     await setup.waitFor(() => item("dynamic").focused);
@@ -128,8 +122,8 @@ describe("installed React RadioGroup recipe", () => {
   });
 
   it("applies controlled owner updates without replacing parts", async () => {
-    const rootRef = createRef<RadioGroupRootRenderable>();
-    const itemRef = createRef<RadioGroupItemRenderable>();
+    const rootRef = createRef<RadioGroupRenderable>();
+    const itemRef = createRef<RadioRootRenderable>();
 
     function Controlled() {
       const [value, setValue] = useState<string | null>("alpha");
@@ -159,7 +153,7 @@ describe("installed React RadioGroup recipe", () => {
     await act(async () => item("controlled-beta").press());
     await setup.waitFor(() => root("controlled").value === "beta");
 
-    expect(item("controlled-beta").selected).toBe(true);
+    expect(item("controlled-beta").checked).toBe(true);
     expect(rootRef.current).toBe(retainedRoot);
     expect(itemRef.current).toBe(retainedItem);
   });

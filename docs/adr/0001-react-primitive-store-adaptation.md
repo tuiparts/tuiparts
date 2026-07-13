@@ -61,10 +61,10 @@ Checkbox.Root.Props                 Checkbox.Root.State
 Checkbox.Indicator.Props
 Switch.Root.Props                   Switch.Root.State
 Switch.Thumb.Props
-RadioGroup.Root.Props               RadioGroup.Root.State
-RadioGroup.Root.ChangeDetails       RadioGroup.Root.ValueChangeHandler
-RadioGroup.Item.Props               RadioGroup.Item.State
-RadioGroup.Indicator.Props
+RadioGroup.Props                    RadioGroup.State
+RadioGroup.ChangeDetails            RadioGroup.ValueChangeHandler
+Radio.Root.Props                     Radio.Root.State
+Radio.Indicator.Props
 Dialog.Root.Props                   Dialog.Root.State
 Dialog.Root.OpenChangeDetails       Dialog.Root.OpenChangeReason
 Dialog.Trigger.Props                Dialog.Portal.Props
@@ -78,8 +78,10 @@ Single-part primitives remain callable function namespaces:
 ```text
 Button.Props   Button.State   Button.PressDetails
 Input.Props
-Radio.Props    Radio.State
 ```
+
+Radio always receives collection ownership from RadioGroup, including a
+one-choice composition; see ADR 0002.
 
 The former flat framework type aliases are removed because the project is
 pre-release. Registry recipes alias package primitives locally as

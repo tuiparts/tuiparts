@@ -9,6 +9,7 @@ export default defineConfig({
     "src/dialog/index.ts",
     "src/input/index.ts",
     "src/radio/index.ts",
+    "src/radio-group/index.ts",
     "src/switch/index.ts",
   ],
   format: "esm",

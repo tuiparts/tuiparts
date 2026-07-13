@@ -5,14 +5,17 @@ import type { TextRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
 import type {
-  RadioGroupIndicatorRenderable,
-  RadioGroupItemRenderable,
-  RadioGroupItemState,
-  RadioGroupRootRenderable,
-  RadioGroupState,
+  RadioIndicatorRenderable,
+  RadioRootRenderable,
+  RadioState,
 } from "@opentui-ui/core/radio";
+import type {
+  RadioGroupRenderable,
+  RadioGroupState,
+} from "@opentui-ui/core/radio-group";
 import { createSignal } from "solid-js";
-import { RadioGroup } from "./index";
+import { RadioGroup } from "../radio-group";
+import { Radio } from "./index";
 
 let setup: TestRendererSetup | undefined;
 
@@ -27,53 +30,62 @@ afterEach(() => {
 });
 
 describe("Solid RadioGroup", () => {
+  it("rejects Radio.Root without RadioGroup ownership", async () => {
+    await expect(
+      testRender(() => <Radio.Root value="orphan" />, {
+        width: 30,
+        height: 5,
+      }),
+    ).rejects.toThrow("Radio.Root must be rendered inside RadioGroup");
+  });
+
   it("composes parts with public state and keyboard navigation", async () => {
-    let indicatorRef: RadioGroupIndicatorRenderable | undefined;
-    let alphaRef: RadioGroupItemRenderable | undefined;
+    let indicatorRef: RadioIndicatorRenderable | undefined;
+    let alphaRef: RadioRootRenderable | undefined;
     setup = await testRender(
       () => (
-        <RadioGroup.Root id="root" defaultValue="alpha">
+        <RadioGroup id="root" defaultValue="alpha">
           {(group: RadioGroupState) => (
             <>
               <text id="group-state" content={group.value ?? "none"} />
-              <RadioGroup.Item
+              <Radio.Root
                 id="alpha"
                 value="alpha"
                 ref={(value) => {
                   alphaRef = value;
                 }}
               >
-                {(item: RadioGroupItemState) => (
+                {(item: RadioState) => (
                   <>
-                    <RadioGroup.Indicator
+                    <Radio.Indicator
                       id="alpha-indicator"
                       ref={(value) => {
                         indicatorRef = value;
                       }}
                     >
                       <text content="x" />
-                    </RadioGroup.Indicator>
+                    </Radio.Indicator>
                     <text
                       id="alpha-state"
-                      content={`${item.selected ? "on" : "off"}:${item.focused ? "focused" : "blurred"}:${item.available ? "available" : "unavailable"}:${item.tabbable ? "tabbable" : "untabbable"}`}
+                      content={`${item.checked ? "on" : "off"}:${item.focused ? "focused" : "blurred"}:${item.available ? "available" : "unavailable"}:${item.tabbable ? "tabbable" : "untabbable"}`}
                     />
                   </>
                 )}
-              </RadioGroup.Item>
-              <RadioGroup.Item id="beta" value="beta" />
+              </Radio.Root>
+              <Radio.Root id="beta" value="beta" />
             </>
           )}
-        </RadioGroup.Root>
+        </RadioGroup>
       ),
       { width: 30, height: 6 },
     );
     const root = setup.renderer.root.findDescendantById(
       "root",
-    ) as RadioGroupRootRenderable;
+    ) as RadioGroupRenderable;
     const alpha = alphaRef;
     const beta = setup.renderer.root.findDescendantById(
       "beta",
-    ) as RadioGroupItemRenderable;
+    ) as RadioRootRenderable;
     expect(alpha).toBeDefined();
     if (!alpha) throw new Error("alpha Item ref was not assigned");
 
@@ -87,7 +99,7 @@ describe("Solid RadioGroup", () => {
       value: "alpha",
       available: true,
       disabled: false,
-      selected: true,
+      checked: true,
       tabbable: true,
     });
 
@@ -114,28 +126,28 @@ describe("Solid RadioGroup", () => {
         setGroupDisabled = updateGroupDisabled;
         setItemDisabled = updateItemDisabled;
         return (
-          <RadioGroup.Root
+          <RadioGroup
             id="uncontrolled-root"
             defaultValue="alpha"
             disabled={groupDisabled()}
           >
-            <RadioGroup.Item id="alpha" value="alpha" />
-            <RadioGroup.Item
+            <Radio.Root id="alpha" value="alpha" />
+            <Radio.Root
               id="uncontrolled-beta"
               value="beta"
               disabled={itemDisabled()}
             />
-          </RadioGroup.Root>
+          </RadioGroup>
         );
       },
       { width: 30, height: 5 },
     );
     const root = setup.renderer.root.findDescendantById(
       "uncontrolled-root",
-    ) as RadioGroupRootRenderable;
+    ) as RadioGroupRenderable;
     const beta = setup.renderer.root.findDescendantById(
       "uncontrolled-beta",
-    ) as RadioGroupItemRenderable;
+    ) as RadioRootRenderable;
 
     beta.press();
     expect(root.value).toBe("alpha");
@@ -154,15 +166,15 @@ describe("Solid RadioGroup", () => {
 
   it("reactively updates controlled props and retains identities", async () => {
     let setItemValue: (value: string) => void = () => {};
-    let rootRef: RadioGroupRootRenderable | undefined;
-    let itemRef: RadioGroupItemRenderable | undefined;
+    let rootRef: RadioGroupRenderable | undefined;
+    let itemRef: RadioRootRenderable | undefined;
     setup = await testRender(
       () => {
         const [value, setValue] = createSignal<string | null>("alpha");
         const [itemValue, updateItemValue] = createSignal("alpha");
         setItemValue = updateItemValue;
         return (
-          <RadioGroup.Root
+          <RadioGroup
             id="controlled-root"
             value={value()}
             onValueChange={setValue}
@@ -170,15 +182,15 @@ describe("Solid RadioGroup", () => {
               rootRef = next;
             }}
           >
-            <RadioGroup.Item
+            <Radio.Root
               id="controlled-item"
               value={itemValue()}
               ref={(next) => {
                 itemRef = next;
               }}
             />
-            <RadioGroup.Item id="beta" value="beta" />
-          </RadioGroup.Root>
+            <Radio.Root id="beta" value="beta" />
+          </RadioGroup>
         );
       },
       { width: 30, height: 5 },
@@ -187,7 +199,7 @@ describe("Solid RadioGroup", () => {
     const item = itemRef;
     const beta = setup.renderer.root.findDescendantById(
       "beta",
-    ) as RadioGroupItemRenderable;
+    ) as RadioRootRenderable;
     expect(root).toBeDefined();
     expect(item).toBeDefined();
 
@@ -219,20 +231,20 @@ describe("Solid RadioGroup", () => {
             : {};
         const itemProps = () => (withProps() ? { disabled: true } : {});
         return (
-          <RadioGroup.Root id="removal-root" {...rootProps()}>
-            <RadioGroup.Item id="alpha" value="alpha" />
-            <RadioGroup.Item id="removal-beta" value="beta" {...itemProps()} />
-          </RadioGroup.Root>
+          <RadioGroup id="removal-root" {...rootProps()}>
+            <Radio.Root id="alpha" value="alpha" />
+            <Radio.Root id="removal-beta" value="beta" {...itemProps()} />
+          </RadioGroup>
         );
       },
       { width: 30, height: 5 },
     );
     const root = setup.renderer.root.findDescendantById(
       "removal-root",
-    ) as RadioGroupRootRenderable;
+    ) as RadioGroupRenderable;
     const beta = setup.renderer.root.findDescendantById(
       "removal-beta",
-    ) as RadioGroupItemRenderable;
+    ) as RadioRootRenderable;
 
     removeProps();
     await setup.waitFor(() => !beta.disabled);
@@ -249,30 +261,30 @@ describe("Solid RadioGroup", () => {
         const [visible, updateVisible] = createSignal(true);
         setVisible = updateVisible;
         return (
-          <RadioGroup.Root id="dynamic-root">
-            <RadioGroup.Item id="fallback-item" value="fallback" />
+          <RadioGroup id="dynamic-root">
+            <Radio.Root id="fallback-item" value="fallback" />
             {visible() ? (
-              <RadioGroup.Item id="dynamic-item" value="dynamic">
-                <RadioGroup.Indicator id="dynamic-indicator" keepMounted />
-              </RadioGroup.Item>
+              <Radio.Root id="dynamic-item" value="dynamic">
+                <Radio.Indicator id="dynamic-indicator" keepMounted />
+              </Radio.Root>
             ) : null}
-          </RadioGroup.Root>
+          </RadioGroup>
         );
       },
       { width: 30, height: 5 },
     );
     const root = setup.renderer.root.findDescendantById(
       "dynamic-root",
-    ) as RadioGroupRootRenderable;
+    ) as RadioGroupRenderable;
     const item = setup.renderer.root.findDescendantById(
       "dynamic-item",
-    ) as RadioGroupItemRenderable;
+    ) as RadioRootRenderable;
     const fallback = setup.renderer.root.findDescendantById(
       "fallback-item",
-    ) as RadioGroupItemRenderable;
+    ) as RadioRootRenderable;
     const indicator = setup.renderer.root.findDescendantById(
       "dynamic-indicator",
-    ) as RadioGroupIndicatorRenderable;
+    ) as RadioIndicatorRenderable;
     const key = item.key;
 
     expect(root.store.getItemState(key)).toBeDefined();
@@ -285,6 +297,6 @@ describe("Solid RadioGroup", () => {
     expect(
       setup.renderer.root.findDescendantById("dynamic-item"),
     ).toBeUndefined();
-    expect(indicator.getState().selected).toBe(false);
+    expect(indicator.getState().checked).toBe(false);
   });
 });

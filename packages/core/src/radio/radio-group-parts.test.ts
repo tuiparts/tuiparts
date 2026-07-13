@@ -5,9 +5,10 @@ import {
   type TestRendererSetup,
 } from "@opentui/core/testing";
 import {
-  RadioGroupIndicatorRenderable,
-  RadioGroupItemRenderable,
-  RadioGroupRootRenderable,
+  RadioGroupRenderable,
+  RadioGroupStore,
+  RadioIndicatorRenderable,
+  RadioRootRenderable,
 } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
@@ -18,23 +19,47 @@ afterEach(() => {
 });
 
 describe("RadioGroup Core parts", () => {
+  it("keeps a Radio inert without matching RadioGroup ownership", async () => {
+    setup = await createTestRenderer({ width: 30, height: 5 });
+    const changes: string[] = [];
+    const store = new RadioGroupStore({
+      onValueChange: (value) => changes.push(value),
+    });
+    const radio = new RadioRootRenderable(setup.renderer, {
+      store,
+      value: "orphan",
+    });
+    setup.renderer.root.add(radio);
+    await setup.renderOnce();
+
+    radio.focus();
+    radio.press();
+
+    expect(radio.getState()).toMatchObject({
+      available: false,
+      checked: false,
+      focused: false,
+    });
+    expect(changes).toEqual([]);
+  });
+
   it("leaves visual assembly to the caller while coordinating Item selection", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
-    const root = new RadioGroupRootRenderable(setup.renderer, {
+    const root = new RadioGroupRenderable(setup.renderer, {
       defaultValue: "alpha",
     });
-    const alpha = new RadioGroupItemRenderable(setup.renderer, {
+    const alpha = new RadioRootRenderable(setup.renderer, {
       store: root.store,
       value: "alpha",
       id: "alpha",
     });
-    const beta = new RadioGroupItemRenderable(setup.renderer, {
+    const beta = new RadioRootRenderable(setup.renderer, {
       store: root.store,
       value: "beta",
       id: "beta",
     });
-    const betaIndicator = new RadioGroupIndicatorRenderable(setup.renderer, {
-      item: beta,
+    const betaIndicator = new RadioIndicatorRenderable(setup.renderer, {
+      radio: beta,
       id: "beta-indicator",
     });
     beta.add(betaIndicator);
@@ -43,31 +68,31 @@ describe("RadioGroup Core parts", () => {
     setup.renderer.root.add(root);
 
     expect(alpha.getChildren()).toEqual([]);
-    expect(alpha.getState().selected).toBe(true);
+    expect(alpha.getState().checked).toBe(true);
     expect(betaIndicator.visible).toBe(false);
 
     beta.press();
 
     expect(root.getState().value).toBe("beta");
-    expect(alpha.getState().selected).toBe(false);
-    expect(beta.getState().selected).toBe(true);
+    expect(alpha.getState().checked).toBe(false);
+    expect(beta.getState().checked).toBe(true);
     expect(betaIndicator.visible).toBe(true);
 
     beta.destroy();
     expect(betaIndicator.visible).toBe(false);
-    expect(betaIndicator.getState().selected).toBe(false);
+    expect(betaIndicator.getState().checked).toBe(false);
     betaIndicator.destroy();
   });
 
   it("reports controlled activation details without mutating parent state", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
     const changes: Array<{ value: string; source: string }> = [];
-    const root = new RadioGroupRootRenderable(setup.renderer, {
+    const root = new RadioGroupRenderable(setup.renderer, {
       value: "alpha",
       onValueChange: (value, details) =>
         changes.push({ value, source: details.source }),
     });
-    const beta = new RadioGroupItemRenderable(setup.renderer, {
+    const beta = new RadioRootRenderable(setup.renderer, {
       store: root.store,
       value: "beta",
     });
@@ -79,16 +104,16 @@ describe("RadioGroup Core parts", () => {
     expect(root.value).toBe("alpha");
 
     root.value = "beta";
-    expect(beta.selected).toBe(true);
+    expect(beta.checked).toBe(true);
   });
 
   it("suppresses disabled focus and activation at Item and Root levels", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
     const changes: string[] = [];
-    const root = new RadioGroupRootRenderable(setup.renderer, {
+    const root = new RadioGroupRenderable(setup.renderer, {
       onValueChange: (value) => changes.push(value),
     });
-    const item = new RadioGroupItemRenderable(setup.renderer, {
+    const item = new RadioRootRenderable(setup.renderer, {
       store: root.store,
       value: "disabled",
       disabled: true,
@@ -118,8 +143,8 @@ describe("RadioGroup Core parts", () => {
 
   it("updates retained Item props and unregisters on destruction", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
-    const root = new RadioGroupRootRenderable(setup.renderer);
-    const item = new RadioGroupItemRenderable(setup.renderer, {
+    const root = new RadioGroupRenderable(setup.renderer);
+    const item = new RadioRootRenderable(setup.renderer, {
       store: root.store,
       value: "before",
     });
@@ -137,16 +162,16 @@ describe("RadioGroup Core parts", () => {
 
   it("activates only uncancelled primary-button releases", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
-    const root = new RadioGroupRootRenderable(setup.renderer, {
+    const root = new RadioGroupRenderable(setup.renderer, {
       flexDirection: "row",
     });
-    const secondary = new RadioGroupItemRenderable(setup.renderer, {
+    const secondary = new RadioRootRenderable(setup.renderer, {
       store: root.store,
       value: "secondary",
       width: 5,
       height: 1,
     });
-    const cancelled = new RadioGroupItemRenderable(setup.renderer, {
+    const cancelled = new RadioRootRenderable(setup.renderer, {
       store: root.store,
       value: "cancelled",
       width: 5,
@@ -171,26 +196,26 @@ describe("RadioGroup Core parts", () => {
   it("moves roving focus, skips disabled Items, wraps, and handles Home/End", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
     const changes: Array<{ value: string; reason: string }> = [];
-    const root = new RadioGroupRootRenderable(setup.renderer, {
+    const root = new RadioGroupRenderable(setup.renderer, {
       defaultValue: "alpha",
       flexDirection: "column",
       onValueChange: (value, details) =>
         changes.push({ value, reason: details.reason }),
     });
-    const alpha = new RadioGroupItemRenderable(setup.renderer, {
+    const alpha = new RadioRootRenderable(setup.renderer, {
       store: root.store,
       value: "alpha",
       width: 5,
       height: 1,
     });
-    const beta = new RadioGroupItemRenderable(setup.renderer, {
+    const beta = new RadioRootRenderable(setup.renderer, {
       store: root.store,
       value: "beta",
       disabled: true,
       width: 5,
       height: 1,
     });
-    const gamma = new RadioGroupItemRenderable(setup.renderer, {
+    const gamma = new RadioRootRenderable(setup.renderer, {
       store: root.store,
       value: "gamma",
       width: 5,
@@ -209,12 +234,12 @@ describe("RadioGroup Core parts", () => {
 
     await setup.mockInput.pressArrow("down");
     expect(gamma.focused).toBe(true);
-    expect(gamma.selected).toBe(true);
+    expect(gamma.checked).toBe(true);
     expect(changes).toEqual([{ value: "gamma", reason: "navigation" }]);
 
     await setup.mockInput.pressArrow("right");
     expect(alpha.focused).toBe(true);
-    expect(alpha.selected).toBe(true);
+    expect(alpha.checked).toBe(true);
 
     await setup.mockInput.pressKey("END");
     expect(gamma.focused).toBe(true);
@@ -240,18 +265,18 @@ describe("RadioGroup Core parts", () => {
   it("moves controlled focus while leaving selection parent-owned", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
     const changes: Array<{ value: string; reason: string }> = [];
-    const root = new RadioGroupRootRenderable(setup.renderer, {
+    const root = new RadioGroupRenderable(setup.renderer, {
       value: "alpha",
       onValueChange: (value, details) =>
         changes.push({ value, reason: details.reason }),
     });
-    const alpha = new RadioGroupItemRenderable(setup.renderer, {
+    const alpha = new RadioRootRenderable(setup.renderer, {
       store: root.store,
       value: "alpha",
       width: 5,
       height: 1,
     });
-    const beta = new RadioGroupItemRenderable(setup.renderer, {
+    const beta = new RadioRootRenderable(setup.renderer, {
       store: root.store,
       value: "beta",
       width: 5,
@@ -274,21 +299,21 @@ describe("RadioGroup Core parts", () => {
 
   it("uses current nested render order and excludes hidden Items", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
-    const root = new RadioGroupRootRenderable(setup.renderer);
+    const root = new RadioGroupRenderable(setup.renderer);
     const wrapper = new BoxRenderable(setup.renderer, {});
-    const alpha = new RadioGroupItemRenderable(setup.renderer, {
+    const alpha = new RadioRootRenderable(setup.renderer, {
       store: root.store,
       value: "alpha",
       width: 5,
       height: 1,
     });
-    const beta = new RadioGroupItemRenderable(setup.renderer, {
+    const beta = new RadioRootRenderable(setup.renderer, {
       store: root.store,
       value: "beta",
       width: 5,
       height: 1,
     });
-    const gamma = new RadioGroupItemRenderable(setup.renderer, {
+    const gamma = new RadioRootRenderable(setup.renderer, {
       store: root.store,
       value: "gamma",
       width: 5,

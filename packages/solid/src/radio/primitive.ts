@@ -1,18 +1,20 @@
 import type { JSX } from "@opentui/solid";
 import { useRenderer } from "@opentui/solid";
 import {
+  type RadioIndicatorOptions,
+  RadioIndicatorRenderable,
+  type RadioRootOptions,
+  RadioRootRenderable,
+  type RadioState,
+} from "@opentui-ui/core/radio";
+import {
   type RadioGroupChangeDetails,
-  type RadioGroupIndicatorOptions,
-  RadioGroupIndicatorRenderable,
-  type RadioGroupItemOptions,
-  RadioGroupItemRenderable,
-  type RadioGroupItemState,
-  type RadioGroupRootOptions,
-  RadioGroupRootRenderable,
+  type RadioGroupOptions,
+  RadioGroupRenderable,
   type RadioGroupState,
   RadioGroupStore,
   type RadioGroupValueChangeHandler,
-} from "@opentui-ui/core/radio";
+} from "@opentui-ui/core/radio-group";
 import {
   createComponent,
   createContext,
@@ -30,25 +32,25 @@ import {
 import { createRenderableState } from "../internal/renderable-state";
 
 const RadioGroupContext = createContext<RadioGroupStore>();
-const RadioGroupItemContext = createContext<RadioGroupItemRenderable>();
+const RadioContext = createContext<RadioRootRenderable>();
 
-type RootProps = Omit<RadioGroupRootOptions, "store"> & {
+type RadioGroupProps = Omit<RadioGroupOptions, "store"> & {
   children?: JSX.Element | ((state: RadioGroupState) => JSX.Element);
-  ref?: Ref<RadioGroupRootRenderable>;
+  ref?: Ref<RadioGroupRenderable>;
 };
 
-type ItemProps = Omit<RadioGroupItemOptions, "store"> & {
-  children?: JSX.Element | ((state: RadioGroupItemState) => JSX.Element);
-  ref?: Ref<RadioGroupItemRenderable>;
+type RootProps = Omit<RadioRootOptions, "store"> & {
+  children?: JSX.Element | ((state: RadioState) => JSX.Element);
+  ref?: Ref<RadioRootRenderable>;
 };
 
-type IndicatorProps = Omit<RadioGroupIndicatorOptions, "item"> & {
+type IndicatorProps = Omit<RadioIndicatorOptions, "radio"> & {
   children?: JSX.Element;
   keepMounted?: boolean;
-  ref?: Ref<RadioGroupIndicatorRenderable>;
+  ref?: Ref<RadioIndicatorRenderable>;
 };
 
-export function Root(props: Root.Props): JSX.Element {
+export function RadioGroup(props: RadioGroup.Props): JSX.Element {
   const renderer = useRenderer();
   const store = new RadioGroupStore({
     value: props.value,
@@ -73,7 +75,7 @@ export function Root(props: Root.Props): JSX.Element {
     "ref",
     "value",
   ]);
-  const element = new RadioGroupRootRenderable(
+  const element = new RadioGroupRenderable(
     renderer,
     untrack(() => ({ ...initialProps, store })),
   );
@@ -95,11 +97,11 @@ export function Root(props: Root.Props): JSX.Element {
   });
 }
 
-export function Item(props: Item.Props): JSX.Element {
+export function Root(props: Root.Props): JSX.Element {
   const renderer = useRenderer();
   const store = useContext(RadioGroupContext);
   if (!store) {
-    throw new Error("RadioGroup.Item must be rendered inside RadioGroup.Root");
+    throw new Error("Radio.Root must be rendered inside RadioGroup");
   }
   const [local, initialProps] = splitProps(props, [
     "children",
@@ -107,7 +109,7 @@ export function Item(props: Item.Props): JSX.Element {
     "ref",
     "value",
   ]);
-  const element = new RadioGroupItemRenderable(
+  const element = new RadioRootRenderable(
     renderer,
     untrack(() => ({
       ...initialProps,
@@ -121,7 +123,7 @@ export function Item(props: Item.Props): JSX.Element {
     element.disabled = local.disabled;
   });
   const state = createRenderableState(element, element.getState());
-  const publicState: RadioGroupItemState = {
+  const publicState: RadioState = {
     get value() {
       return state().value;
     },
@@ -134,8 +136,8 @@ export function Item(props: Item.Props): JSX.Element {
     get focused() {
       return state().focused;
     },
-    get selected() {
-      return state().selected;
+    get checked() {
+      return state().checked;
     },
     get tabbable() {
       return state().tabbable;
@@ -143,7 +145,7 @@ export function Item(props: Item.Props): JSX.Element {
   };
   setRenderableRef(local.ref, element);
 
-  return createComponent(RadioGroupItemContext.Provider, {
+  return createComponent(RadioContext.Provider, {
     value: element,
     get children() {
       const child = local.children;
@@ -156,11 +158,9 @@ export function Item(props: Item.Props): JSX.Element {
 
 export function Indicator(props: Indicator.Props): JSX.Element {
   const renderer = useRenderer();
-  const item = useContext(RadioGroupItemContext);
+  const item = useContext(RadioContext);
   if (!item) {
-    throw new Error(
-      "RadioGroup.Indicator must be rendered inside RadioGroup.Item",
-    );
+    throw new Error("Radio.Indicator must be rendered inside Radio.Root");
   }
   const state = createRenderableState(item, item.getState());
   const [local, initialProps] = splitProps(props, [
@@ -172,12 +172,12 @@ export function Indicator(props: Indicator.Props): JSX.Element {
   return createComponent(Show, {
     keyed: true,
     get when() {
-      return local.keepMounted || state().selected;
+      return local.keepMounted || state().checked;
     },
     get children() {
-      const element = new RadioGroupIndicatorRenderable(
+      const element = new RadioIndicatorRenderable(
         renderer,
-        untrack(() => ({ ...initialProps, item })),
+        untrack(() => ({ ...initialProps, radio: item })),
       );
       const children = local.children;
       setRenderableRef(local.ref, element);
@@ -187,16 +187,16 @@ export function Indicator(props: Indicator.Props): JSX.Element {
   });
 }
 
-export namespace Root {
-  export type Props = RootProps;
+export namespace RadioGroup {
+  export type Props = RadioGroupProps;
   export type State = RadioGroupState;
   export type ChangeDetails = RadioGroupChangeDetails;
   export type ValueChangeHandler = RadioGroupValueChangeHandler;
 }
 
-export namespace Item {
-  export type Props = ItemProps;
-  export type State = RadioGroupItemState;
+export namespace Root {
+  export type Props = RootProps;
+  export type State = RadioState;
 }
 
 export namespace Indicator {

@@ -11,6 +11,7 @@
     "./dist/dialog/**",
     "./dist/input/**",
     "./dist/radio/**",
+    "./dist/radio-group/**",
     "./dist/switch/**"
   ],
   "repository": {
@@ -27,6 +28,7 @@
     "./dialog": "./src/dialog/index.ts",
     "./input": "./src/input/index.tsx",
     "./radio": "./src/radio/index.tsx",
+    "./radio-group": "./src/radio-group/index.tsx",
     "./switch": "./src/switch/index.tsx",
     "./styled": "./src/styled.ts"
   },
@@ -61,6 +63,10 @@
       "./radio": {
         "types": "./dist/radio/index.d.mts",
         "import": "./dist/radio/index.mjs"
+      },
+      "./radio-group": {
+        "types": "./dist/radio-group/index.d.mts",
+        "import": "./dist/radio-group/index.mjs"
       },
       "./switch": {
         "types": "./dist/switch/index.d.mts",

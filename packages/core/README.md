@@ -21,7 +21,7 @@ colors, spacing, glyphs, labels, or fixed visual trees.
 | Checkbox | `CheckboxStore` | `CheckboxRootRenderable`, `CheckboxIndicatorRenderable` |
 | Dialog | `DialogStore` | Root, Trigger, Portal, Backdrop, Popup, Title, Description, Close Renderables |
 | Input | OpenTUI-native state | `InputRenderable` |
-| RadioGroup | `RadioGroupStore` | Root, Item, Indicator Renderables |
+| Radio / RadioGroup | `RadioGroupStore` | `RadioGroupRenderable`, `RadioRootRenderable`, `RadioIndicatorRenderable` |
 | Switch | `SwitchStore` | `SwitchRootRenderable`, `SwitchThumbRenderable` |
 
 Core callers pass the owning Store between compound parts. React and Solid hide
@@ -67,10 +67,11 @@ commit, and `onSubmit` reports successful Enter submission.
 
 ## Remaining Migration Surface
 
-Badge and standalone Radio still expose the earlier packaged component model
-while their recipe or foundation replacements are completed. The styling engine
-remains optional recipe infrastructure and is not imported by foundation
-behavior.
+Badge still exposes the earlier packaged component model while its recipe
+replacement is completed. The fixed-tree Radio and layout-only RadioGroup have
+been replaced by the foundation Radio-inside-RadioGroup model. The styling
+engine remains optional recipe infrastructure and is not imported by
+foundation behavior.
 
 See [`FOUNDATION_PRIMITIVE_CONTRACT.md`](../../FOUNDATION_PRIMITIVE_CONTRACT.md)
 and [`PRIMITIVES_AND_RECIPES.md`](../../PRIMITIVES_AND_RECIPES.md) for the

@@ -1,11 +1,12 @@
 /** @jsxImportSource @opentui/react */
 
-import { RadioGroup as RadioGroupPrimitive } from "@opentui-ui/react/radio";
+import { Radio as RadioPrimitive } from "@opentui-ui/react/radio";
+import { RadioGroup as RadioGroupPrimitive } from "@opentui-ui/react/radio-group";
 
-export interface RadioGroupProps extends RadioGroupPrimitive.Root.Props {}
+export interface RadioGroupProps extends RadioGroupPrimitive.Props {}
 
 export interface RadioGroupItemProps
-  extends Omit<RadioGroupPrimitive.Item.Props, "children"> {
+  extends Omit<RadioPrimitive.Root.Props, "children"> {
   label: string;
   mark?: string;
   tone?: "accent" | "success";
@@ -14,14 +15,14 @@ export interface RadioGroupItemProps
 /** Consumer-owned recipe installed on top of packaged collection behavior. */
 export function RadioGroup({ children, ...props }: RadioGroupProps) {
   return (
-    <RadioGroupPrimitive.Root
+    <RadioGroupPrimitive
       flexDirection="column"
       gap={0}
       backgroundColor="transparent"
       {...props}
     >
       {children}
-    </RadioGroupPrimitive.Root>
+    </RadioGroupPrimitive>
   );
 }
 
@@ -36,7 +37,7 @@ export function RadioGroupItem({
   const markColor = tone === "success" ? "#10B981" : "#3B82F6";
 
   return (
-    <RadioGroupPrimitive.Item
+    <RadioPrimitive.Root
       flexDirection="row"
       gap={1}
       height={1}
@@ -47,9 +48,9 @@ export function RadioGroupItem({
       {(state) => (
         <>
           <box width={1}>
-            <RadioGroupPrimitive.Indicator>
+            <RadioPrimitive.Indicator>
               <text content={mark} fg={markColor} />
-            </RadioGroupPrimitive.Indicator>
+            </RadioPrimitive.Indicator>
           </box>
           <text
             content={label}
@@ -59,6 +60,6 @@ export function RadioGroupItem({
           />
         </>
       )}
-    </RadioGroupPrimitive.Item>
+    </RadioPrimitive.Root>
   );
 }

@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from "bun:test";
+import type { Renderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
 import type {
@@ -237,6 +238,49 @@ describe("React Dialog", () => {
     await act(async () => closeRef.current?.press());
     await setup.waitFor(() => rootRef.current?.state.open === false);
     expect(popupRef.current?.visible).toBe(false);
+  });
+
+  it("updates initial focus after a descendant ref becomes available", async () => {
+    const triggerRef = createRef<DialogTriggerRenderable>();
+    const popupRef = createRef<DialogPopupRenderable>();
+    const actionRef = createRef<Renderable>();
+
+    function InitialFocusDialog() {
+      const [initialFocus, setInitialFocus] = useState<Renderable>();
+      return createElement(
+        Dialog.Root,
+        null,
+        createElement(Dialog.Trigger, { ref: triggerRef }),
+        createElement(
+          Dialog.Portal,
+          null,
+          createElement(
+            Dialog.Popup,
+            { ref: popupRef, initialFocus },
+            createElement("box", {
+              id: "react-initial-action",
+              focusable: true,
+              ref: (value: Renderable | null) => {
+                actionRef.current = value;
+                if (value) setInitialFocus(value);
+              },
+            }),
+            createElement(Dialog.Close),
+          ),
+        ),
+      );
+    }
+
+    setup = await testRender(createElement(InitialFocusDialog), {
+      width: 40,
+      height: 10,
+    });
+    await setup.waitFor(
+      () => popupRef.current?.initialFocus === actionRef.current,
+    );
+    await act(async () => triggerRef.current?.press());
+
+    expect(setup.renderer.currentFocusedRenderable).toBe(actionRef.current);
   });
 
   it("applies one controlled request without remounting the layer", async () => {

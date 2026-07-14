@@ -491,8 +491,16 @@ export class DialogPopupRenderable extends BoxRenderable {
       visible: false,
     });
     this.store = store;
-    this.initialTarget = initialFocus;
+    this.initialFocus = initialFocus;
     coordinatorFor(ctx).setPopup(store, this);
+  }
+
+  get initialFocus(): Renderable | undefined {
+    return this.initialTarget;
+  }
+
+  set initialFocus(target: Renderable | undefined) {
+    this.initialTarget = target;
   }
 
   registerFocusable(target: Renderable, initial = false): () => void {

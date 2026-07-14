@@ -1,6 +1,7 @@
 /** @jsxImportSource @opentui/solid */
 
 import { afterEach, describe, expect, it } from "bun:test";
+import type { Renderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
 import type {
@@ -184,6 +185,46 @@ describe("Solid Dialog", () => {
     );
     await setup.mockInput.pressTab();
     expect(close?.focused).toBe(true);
+  });
+
+  it("updates initial focus after a descendant ref becomes available", async () => {
+    let trigger: DialogTriggerRenderable | undefined;
+    let popup: DialogPopupRenderable | undefined;
+    let action: Renderable | undefined;
+    let selectInitialFocus: ((target: Renderable) => void) | undefined;
+    setup = await testRender(
+      () => {
+        const [initialFocus, setInitialFocus] = createSignal<Renderable>();
+        selectInitialFocus = (target) => setInitialFocus(target);
+        return (
+          <Dialog.Root>
+            <Dialog.Trigger ref={(value) => (trigger = value)} />
+            <Dialog.Portal>
+              <Dialog.Popup
+                ref={(value) => (popup = value)}
+                initialFocus={initialFocus()}
+              >
+                <box
+                  id="solid-initial-action"
+                  focusable
+                  ref={(value: Renderable) => {
+                    action = value;
+                  }}
+                />
+                <Dialog.Close />
+              </Dialog.Popup>
+            </Dialog.Portal>
+          </Dialog.Root>
+        );
+      },
+      { width: 40, height: 10 },
+    );
+    if (!action) throw new Error("Solid Dialog action ref was not assigned");
+    selectInitialFocus?.(action);
+    await setup.waitFor(() => popup?.initialFocus === action);
+    trigger?.press();
+
+    expect(setup.renderer.currentFocusedRenderable).toBe(action);
   });
 
   it("applies one controlled request without remounting the layer", async () => {

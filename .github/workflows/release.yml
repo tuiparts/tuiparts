@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -51,6 +53,15 @@ jobs:
 
       - name: Validate packed packages
         run: pnpm validate:packages:built
+
+      - name: Validate registry consumers
+        run: pnpm validate:registry
+
+      - name: Validate Changesets status
+        run: pnpm changeset:status
+
+      - name: Validate foundation release scope
+        run: pnpm validate:release-scope
 
       - name: Create Release PR or Publish
         id: changesets

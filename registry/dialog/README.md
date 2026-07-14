@@ -1,4 +1,4 @@
-# Dialog Recipe Tracer
+# Dialog Preview Recipe
 
 The root registry exposes `core/dialog`, `react/dialog`, and `solid/dialog`.
 Each item copies an editable composition into `components/ui/dialog.*`; it does
@@ -24,8 +24,8 @@ and backdrop interaction target only the topmost eligible layer; a popup click
 does not dismiss it. Nested dialogs receive a higher layer and closing one
 restores focus to its parent or original trigger.
 
-These parts and their ownership contracts are **tracer evidence, not a frozen
-foundation API**. The legacy production `@opentui-ui/dialog` manager, provider,
+This recipe is validated preview catalog evidence rather than part of the
+six-family starter catalog. The adopted `@opentui-ui/dialog` manager, provider,
 and async APIs stay separate and unchanged.
 
 The `tsconfig.*.json` fixtures compile copied recipes against each supported

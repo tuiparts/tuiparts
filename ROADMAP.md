@@ -59,9 +59,9 @@ Status: complete, pending product evaluation.
   item skipping, and roving focus.
 - Dialog proves triggers, portals, focus containment/restoration, Escape,
   dismissal, stacking, and nesting in foundation Core/React/Solid packages;
-  the dedicated Dialog package remains a temporary compatibility/convenience
-  package to rebuild on or shim those primitives. Toast still requires separate
-  evidence before any equivalent move.
+  the adopted Dialog package remains an independently versioned companion.
+  Toast remains a companion and requires separate evidence before any
+  foundation move.
 - Input proves strict preservation of OpenTUI-native editing and events.
 
 No broad component migration begins until these tracers validate the shared
@@ -109,10 +109,16 @@ The frozen contract is documented in `FOUNDATION_PRIMITIVE_CONTRACT.md`.
 
 ### Phase 6 - Ecosystem Release
 
-- Publish stable primitive packages with packed and registry consumer evidence.
+- Publish foundation primitive packages with packed and registry consumer
+  evidence.
 - Publish a coherent starter recipe set rather than maximizing component count.
-- Document primitive authoring, recipe authoring, migration, and compatibility.
+- Document primitive and recipe authoring, ownership, and compatibility.
 - Invite downstream registries to consume the primitive packages.
+
+The foundation release scope is Core, React, Solid, and the registry catalog.
+The independently versioned Dialog and Toast companion products remain
+supported and validated on their current paths, but their internal
+reconciliation and versions do not block the foundation RC.
 
 ## Release Principle
 

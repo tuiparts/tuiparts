@@ -243,10 +243,12 @@ requires one.
 Foundation primitive behavior belongs in `@opentui-ui/core`, with matching
 compound adapters in `@opentui-ui/react` and `@opentui-ui/solid`. Dialog is the
 overlay evidence for that boundary: its store and coordinator live at the
-foundation Dialog subpaths, while `@opentui-ui/dialog` remains a temporary
-compatibility/convenience package for its production manager, providers, and
-async APIs until it can be rebuilt on or explicitly shim the primitive.
+foundation Dialog subpaths.
 
-Toast has not moved. `@opentui-ui/toast` is likewise a temporary
-compatibility/convenience package candidate, but its foundation destination
-requires separate evidence and must not be inferred from the Dialog move.
+The already-adopted `@opentui-ui/dialog` and `@opentui-ui/toast` packages are
+independently versioned companion products. Their existing manager, provider,
+async, theme, and notification APIs remain supported on their current import
+paths. Reconciling their internals with foundation behavior is separate work
+and does not block the Core, React, Solid, and registry foundation RC. A
+foundation Dialog recipe does not replace the Dialog companion, and no Toast
+foundation destination is implied.

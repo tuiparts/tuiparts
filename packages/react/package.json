@@ -100,13 +100,11 @@
     "@types/react": "^19.2.17",
     "react": "^19.2.7",
     "tsdown": "^0.22.5",
-    "typescript": "^5.9.3",
-    "ws": "catalog:"
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "@opentui/core": "catalog:",
     "@opentui/react": "catalog:",
-    "react": ">=19.2.0 <20",
-    "ws": "catalog:"
+    "react": ">=19.2.0 <20"
   }
 }

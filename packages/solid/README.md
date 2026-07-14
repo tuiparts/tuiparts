@@ -2,6 +2,9 @@
 
 Solid bindings for the OpenTUI UI foundation.
 
+New to package primitives and editable recipes? Start with the
+[foundation guide](https://github.com/msmps/opentui-ui/blob/main/docs/foundation.md).
+
 ## Installation
 
 ```bash
@@ -72,7 +75,8 @@ portal lifecycle preserve coordinator-owned visibility/z-index, focus
 containment, detached restoration, and reverse Tab behavior.
 
 The existing `@opentui-ui/dialog/solid` provider, hooks, and async APIs remain
-the production convenience surface; they are not re-exported from this tracer.
+the companion convenience surface; they are not re-exported by the foundation
+adapter.
 
 ## Input
 

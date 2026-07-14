@@ -81,9 +81,8 @@ const expectedCatalogDependencyNames = {
       "@opentui/core",
       "@opentui/react",
       "react",
-      "ws",
     ],
-    recipe: ["@opentui/core", "@opentui/react", "react", "ws"],
+    recipe: ["@opentui/core", "@opentui/react", "react"],
   },
   solid: {
     primitive: [

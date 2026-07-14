@@ -23,8 +23,8 @@ runtime semantics permit. Core recipes expose equivalent imperative factory
 functions. Core installation uses the same shadcn item lifecycle; it installs
 ordinary `.ts` source rather than framework JSX.
 
-The registry also contains the foundation Dialog tracer, but it is not part of
-this catalog release. The already-adopted `@opentui-ui/dialog` and
+The registry also contains a validated preview Dialog recipe, but it is not
+part of this starter catalog. The already-adopted `@opentui-ui/dialog` and
 `@opentui-ui/toast` packages remain the production paths until their dedicated
 reconciliation work. No legacy exports are retained for the other pre-release
 components.

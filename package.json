@@ -21,6 +21,9 @@
     "validate:packages": "pnpm build && node scripts/validate-packages.mjs",
     "validate:packages:built": "node scripts/validate-packages.mjs",
     "validate:registry": "node scripts/validate-registry.mjs",
+    "changeset:status": "changeset status",
+    "validate:release-scope": "node scripts/validate-foundation-release.mjs",
+    "validate:foundation": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm validate:packages:built && pnpm validate:registry && pnpm validate:release-scope",
     "create": "./scripts/create-package.sh"
   },
   "devDependencies": {

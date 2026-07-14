@@ -2,6 +2,9 @@
 
 Framework-neutral OpenTUI behavior for the OpenTUI UI foundation.
 
+New to the package/recipe split? Start with the
+[foundation guide](https://github.com/msmps/opentui-ui/blob/main/docs/foundation.md).
+
 ## Installation
 
 ```bash

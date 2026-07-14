@@ -357,9 +357,10 @@ The minimum behavioral dimensions are:
 - Ref targets and retained identity.
 - Recipe composition without primitive visual defaults.
 
-Legacy contraction is blocked until the replacement primitive passes every
-applicable surface, packed exports are proven, registry consumers are green,
-and migration guidance exists for the removed interface.
+Pre-release contraction is blocked until the replacement primitive passes
+every applicable surface, packed exports are proven, registry consumers are
+green, and the removal rationale is recorded. Replaced interfaces are not
+retained as deprecated compatibility surfaces.
 
 ## Tracer Decisions
 

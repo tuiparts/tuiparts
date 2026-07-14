@@ -49,7 +49,6 @@ try {
       "@opentui/solid": "0.4.3",
       react: "19.2.7",
       "solid-js": "1.9.12",
-      ws: "8.21.0",
     },
     devDependencies: {
       "@types/node": "24.13.3",

@@ -2,15 +2,18 @@
 
 React bindings for the OpenTUI UI foundation.
 
+New to package primitives and editable recipes? Start with the
+[foundation guide](https://github.com/msmps/opentui-ui/blob/main/docs/foundation.md).
+
 ## Installation
 
 ```bash
 pnpm add @opentui-ui/react @opentui-ui/core \
-  @opentui/core @opentui/react react ws
+  @opentui/core @opentui/react react
 ```
 
 Peer requirements are `@opentui/core` and `@opentui/react` `^0.4.3`, React
-`>=19.2.0 <20`, and `ws` `^8.21.0`.
+`>=19.2.0 <20`.
 
 ## Foundation Example
 
@@ -70,7 +73,8 @@ preserves coordinator-owned visibility and z-index plus portal, focus, and
 controlled-state lifecycle behavior.
 
 The existing `@opentui-ui/dialog/react` provider, hooks, and async APIs remain
-the production convenience surface; they are not re-exported from this tracer.
+the companion convenience surface; they are not re-exported by the foundation
+adapter.
 
 ## Input
 

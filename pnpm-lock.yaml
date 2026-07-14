@@ -231,9 +231,6 @@ importers:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
-      ws:
-        specifier: 'catalog:'
-        version: 8.21.0
 
   packages/solid:
     dependencies:

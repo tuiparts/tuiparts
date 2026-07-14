@@ -48,9 +48,9 @@ Recipes assemble primitives into useful defaults:
 - Higher-level compositions and application blocks.
 - Source files installed into and owned by the consumer's project.
 
-The optional `@opentui-ui/styles` package can power recipes through explicit
-recipe contracts. It is framework-neutral and is not imported by Core, React,
-or Solid primitive packages.
+Recipes express variants and state-dependent presentation with ordinary
+TypeScript and native OpenTUI properties. The project does not impose a
+styling engine on application or registry authors.
 
 ## Parts Versus Style Slots
 
@@ -196,34 +196,6 @@ Reference implementations:
 - `registry/badge/core.ts`
 - `registry/badge/react.tsx`
 - `registry/badge/solid.tsx`
-
-## Optional Recipe Styling
-
-`@opentui-ui/styles` styles consumer-owned recipes, not primitive components.
-A recipe declares its own style slots and selectable primitive state keys with
-`defineRecipeContract()`, then creates or extends a resolver with
-`createRecipe()` and `extendRecipe()`.
-
-Recipe slots describe private presentation targets such as `root`, `indicator`,
-and `label`. They do not advertise or infer primitive parts. The recipe itself
-maps resolved slot objects onto whichever public primitive parts or ordinary
-OpenTUI nodes it composes.
-
-The resolver consumes only declared variants and the final inline `styles`
-override. Component behavior, content, native properties, and events remain in
-the recipe component's own props; variant names that collide with those props
-are rejected by TypeScript. This avoids hidden framework wrappers, synthetic
-root reconciliation, and authored-slot shadow ownership.
-
-Resolution order is base, declared variants, matching compounds, then inline
-styles. Active state selectors are applied inside each layer so a later layer
-can override an earlier state result. `extendRecipe()` merges configuration and
-retains inherited variant names and values.
-
-React recipes may use `recipe.splitProps()` because React evaluates props per
-render. Solid recipes retain fine-grained reactivity by using Solid's
-`splitProps()` and passing its reactive recipe-prop proxy to `recipe.resolve()`.
-Strict examples live in `packages/styles/fixtures/`.
 
 ## Radio And RadioGroup
 

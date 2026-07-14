@@ -8,17 +8,16 @@
 Terminal primitive and editable-recipe ecosystem for OpenTUI. The monorepo is
 migrating from hybrid packaged components to framework-neutral Core behavior,
 React/Solid compound-part adapters, and shadcn-compatible consumer-owned
-recipes. The styling engine is optional recipe infrastructure.
+recipes written with plain TypeScript and native OpenTUI properties.
 
 ## STRUCTURE
 
 ```
 opentui-ui/
 ├── packages/
-│   ├── core/         # Framework-neutral primitive behavior + shared migration infrastructure
-│   ├── styles/       # Optional recipe contracts, variants, selectors, slots
-│   ├── react/        # React primitive adapters + legacy bindings
-│   ├── solid/        # Solid primitive adapters + legacy bindings
+│   ├── core/         # Framework-neutral primitive behavior
+│   ├── react/        # React primitive adapters
+│   ├── solid/        # Solid primitive adapters
 │   ├── dialog/       # Temporary Dialog compatibility/convenience package
 │   ├── toast/        # Temporary Toast compatibility/convenience package; move unproven
 │   └── utils/        # Shared utilities (padding resolution, etc.)
@@ -40,22 +39,13 @@ opentui-ui/
 | Editable recipes | `registry/` | Framework-specific source built on packaged primitives |
 | React binding | `packages/react/src/` | Mirrors core structure |
 | Solid binding | `packages/solid/src/` | Mirrors core structure |
-| Styling API | `packages/styles/src/` | `styled.ts` is the factory |
-| State resolution | `packages/styles/src/resolve.ts` | Variant + state style resolution |
-| Style merging | `packages/styles/src/merge.ts` | Slot style composition |
 | New package | `./scripts/create-package.sh` | Scaffolds package structure |
 
 ## CODE MAP
 
 | Symbol | Type | Location | Role |
 |--------|------|----------|------|
-| `createRecipe` | Function | `packages/styles/src/recipe.ts` | Creates a framework-neutral recipe style resolver |
-| `createStyleResolver` | Function | `packages/styles/src/resolve.ts` | Resolves styles from config + state |
-| `processStyledConfig` | Function | `packages/styles/src/resolve.ts` | Pre-processes config for performance |
-| `assignStyleProps` | Function | `packages/styles/src/assign.ts` | Applies a resolved recipe slot to an imperative Renderable |
-| `CheckboxRenderable` | Class | `packages/core/src/checkbox/checkbox.ts` | Checkbox component logic |
 | `CheckboxRootRenderable` | Class | `packages/core/src/checkbox/primitive.ts` | Checkbox state, activation, and Indicator owner |
-| `splitVariantProps` | Function | `packages/styles/src/styled.ts` | Separates variant props from rest |
 | `toast` | Object | `packages/toast/src/state.ts` | Global toast API (toast.success, toast.error, etc.) |
 | `ToasterRenderable` | Class | `packages/toast/src/renderables/toaster.ts` | Container that manages toast notifications |
 | `DialogStore` | Class | `packages/core/src/dialog/index.ts` | Foundation Dialog state and layer coordination |
@@ -69,7 +59,7 @@ opentui-ui/
 - **ES Modules** - All packages use `"type": "module"`
 - **Biome** - Linting/formatting (spaces, double quotes)
 - **tsdown** - Bundler for all packages
-- **Changesets** - Versioning (core/react/solid/styles linked)
+- **Changesets** - Versioning (core/react/solid linked)
 - **Catalog deps** - Peer deps use `"catalog:"` in package.json
 - **Source-first exports** - Dev uses `./src/`, publishConfig has `./dist/`
 - **verbatimModuleSyntax** - Explicit `type` imports required
@@ -87,9 +77,7 @@ opentui-ui/
 - **Public parts** - Primitives expose independently composable nodes; parts are not merely style slots
 - **Passive part ownership** - State-reflecting parts consume their Core Store directly; do not fake a Root or subclass a part just to adapt Store ownership
 - **Framework adapters** - Put same-instance Store setters on Core Renderables; do not subclass solely to make reconciler prop assignment legal
-- **Recipe styling** - Consumer-owned recipes may expose slots, variants, and state selectors
-- **State selectors** - Recipe styles target metadata states with `_checked`, `_focused`, and similar keys
-- **Recipe contracts** - Recipes declare private style slots independently of primitive parts
+- **Recipe styling** - Consumer-owned recipes use ordinary TypeScript and native OpenTUI properties
 - **Migration pattern** - New primitive behavior follows the active ticket contract; recipes do not create behaviorless package components
 
 ## COMMANDS
@@ -110,5 +98,5 @@ pnpm create <name>   # Scaffold new package
 - **Companion boundary**: Dialog primitive behavior is in Core/React/Solid;
   `@opentui-ui/dialog` is a temporary compatibility/convenience package to
   rebuild on or shim it. Toast still requires separate migration evidence.
-- **Linked versioning**: core, react, solid, styles version together
+- **Linked versioning**: core, react, and solid version together
 - **OpenTUI peer deps**: Uses pnpm catalog for `@opentui/core`, `@opentui/react`, `@opentui/solid`

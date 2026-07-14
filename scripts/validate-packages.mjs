@@ -6,7 +6,6 @@ import { join, resolve } from "node:path";
 const root = resolve(import.meta.dirname, "..");
 const packages = [
   ["core", "@opentui-ui/core"],
-  ["styles", "@opentui-ui/styles"],
   ["react", "@opentui-ui/react"],
   ["solid", "@opentui-ui/solid"],
   ["dialog", "@opentui-ui/dialog"],
@@ -66,7 +65,7 @@ try {
   );
   writeFileSync(
     join(consumerDir, "pnpm-workspace.yaml"),
-    `packages:\n  - "."\n\noverrides:\n  "@opentui-ui/core": "${tarballs.get("@opentui-ui/core")}"\n  "@opentui-ui/styles": "${tarballs.get("@opentui-ui/styles")}"\n`,
+    `packages:\n  - "."\n\noverrides:\n  "@opentui-ui/core": "${tarballs.get("@opentui-ui/core")}"\n`,
   );
   writeFileSync(
     join(consumerDir, "tsconfig.json"),
@@ -97,7 +96,6 @@ try {
     "@opentui-ui/core/radio",
     "@opentui-ui/core/radio-group",
     "@opentui-ui/core/switch",
-    "@opentui-ui/styles",
     "@opentui-ui/react",
     "@opentui-ui/react/button",
     "@opentui-ui/react/checkbox",
@@ -128,25 +126,9 @@ try {
   const references = entrypoints
     .map((_, index) => `module${index}`)
     .join(", ");
-  const stylesModule = `module${entrypoints.indexOf("@opentui-ui/styles")}`;
-  const recipeConsumer = `
-type RecipeBaseProps = { disabled?: boolean; label: string };
-const recipeContract = ${stylesModule}.defineRecipeContract<RecipeBaseProps>()({
-  slots: {} as { root: { color?: string } },
-  stateKeys: ["disabled"] as const,
-});
-const recipe = ${stylesModule}.createRecipe(recipeContract, {
-  base: { root: { color: "white", _disabled: { color: "gray" } } },
-  variants: { tone: { neutral: {}, danger: { root: { color: "red" } } } },
-  defaultVariants: { tone: "neutral" },
-});
-const resolved = recipe.resolve({ tone: "danger" }, { disabled: false });
-void resolved;
-`;
-
   writeFileSync(
     join(consumerDir, "consumer.ts"),
-    `${imports}\n${recipeConsumer}\nvoid [${references}];\n`,
+    `${imports}\n\nvoid [${references}];\n`,
   );
   writeFileSync(
     join(consumerDir, "runtime.mjs"),

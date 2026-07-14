@@ -33,11 +33,6 @@ Registry recipes assemble primitive parts and choose glyphs, layout, colors,
 themes, semantic variants, and convenience props. The installed source belongs
 to the application and can be edited without wrapping opaque package code.
 
-### Optional Styling
-
-`@opentui-ui/styles` is an optional recipe and design-system tool. Primitive
-behavior cannot depend on it.
-
 ## Ecosystem Position
 
 OpenTUI UI focuses first on a tested, framework-neutral primitive substrate

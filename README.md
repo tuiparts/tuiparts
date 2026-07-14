@@ -20,7 +20,6 @@ See [`ROADMAP.md`](./ROADMAP.md) and
 | Package | Purpose |
 | --- | --- |
 | [`@opentui-ui/core`](./packages/core) | Framework-neutral primitive state and Renderables |
-| [`@opentui-ui/styles`](./packages/styles) | Optional recipe variants, selectors, and composition |
 | [`@opentui-ui/react`](./packages/react) | React compound-part adapters |
 | [`@opentui-ui/solid`](./packages/solid) | Solid compound-part adapters |
 | [`registry`](./registry) | Consumer-owned Core, React, and Solid recipes |
@@ -46,9 +45,6 @@ pnpm add @opentui-ui/react @opentui-ui/core \
 pnpm add @opentui-ui/solid @opentui-ui/core \
   @opentui/core @opentui/solid solid-js
 ```
-
-Install `@opentui-ui/styles` separately when authoring typed recipe variants,
-selectors, or recipe composition. Primitive behavior does not require it.
 
 See the package READMEs for exact peer ranges and usage.
 

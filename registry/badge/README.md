@@ -22,7 +22,7 @@ wrapping an opaque package component.
 | root native properties | Recipe root properties |
 | `styles.root` | Root properties or edit the recipe defaults |
 | `styles.label` | `labelOptions` or edit the label node |
-| `styleResolver` | Local recipe logic or optional recipe styling |
+| `styleResolver` | Local recipe logic |
 | `BADGE_SLOTS`, `BADGE_META` | Recipe source structure; no packaged metadata |
 | `@opentui-ui/{core,react,solid}/badge` | `core/badge`, `react/badge`, or `solid/badge` registry item |
 

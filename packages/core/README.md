@@ -68,8 +68,8 @@ commit, and `onSubmit` reports successful Enter submission.
 ## Recipe Boundary
 
 Behaviorless presentation such as Badge is distributed as editable registry
-source rather than a Core package module. The styling engine remains optional
-recipe infrastructure and is not imported by foundation behavior.
+source rather than a Core package module. Recipes use ordinary TypeScript and
+native OpenTUI properties; foundation behavior owns no styling infrastructure.
 
 See [`FOUNDATION_PRIMITIVE_CONTRACT.md`](../../FOUNDATION_PRIMITIVE_CONTRACT.md)
 and [`PRIMITIVES_AND_RECIPES.md`](../../PRIMITIVES_AND_RECIPES.md) for the

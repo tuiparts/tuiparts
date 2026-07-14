@@ -24,7 +24,7 @@ A primitive must not choose:
 - Semantic visual variants such as intent, tone, or size.
 - A fixed visual child tree beyond the public behavior-bearing parts required
   by its terminal interaction model.
-- `@opentui-ui/styles` or another styling-engine dependency.
+- A styling-engine dependency.
 
 Recipes own those choices in consumer-editable source. Behaviorless visual
 components, such as Badge, are recipes rather than primitives.
@@ -308,8 +308,8 @@ private Renderable fields. A style slot is recipe convenience and is never a
 substitute for a required public primitive part.
 
 Recipes depend on foundation package subpaths, not compatibility packages that
-duplicate primitive behavior. Optional use of `@opentui-ui/styles` stays in the
-recipe layer.
+duplicate primitive behavior. They express presentation with ordinary
+TypeScript and native OpenTUI properties.
 
 ## Unsupported Base UI Capabilities
 

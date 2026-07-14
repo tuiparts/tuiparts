@@ -98,8 +98,8 @@ belong in editable recipes. This is the canonical foundation contract.
 ## Recipes
 
 Behaviorless presentation such as Badge is installed from the registry rather
-than imported from this package. Consumer-owned recipes may use ordinary
-OpenTUI props or the optional [`@opentui-ui/styles`](../styles) infrastructure.
+than imported from this package. Consumer-owned recipes use ordinary TypeScript
+and native OpenTUI properties.
 
 ## License
 

@@ -1,7 +1,0 @@
-{
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "jsxImportSource": "@opentui/react"
-  },
-  "include": ["fixtures/react-recipe.tsx"]
-}

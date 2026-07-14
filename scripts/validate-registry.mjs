@@ -21,7 +21,6 @@ const packageDirectories = {
   "@opentui-ui/core": "core",
   "@opentui-ui/react": "react",
   "@opentui-ui/solid": "solid",
-  "@opentui-ui/styles": "styles",
 };
 const frameworks = {
   core: {
@@ -31,11 +30,7 @@ const frameworks = {
   },
   react: {
     extension: "tsx",
-    localPackages: [
-      "@opentui-ui/core",
-      "@opentui-ui/styles",
-      "@opentui-ui/react",
-    ],
+    localPackages: ["@opentui-ui/core", "@opentui-ui/react"],
     devDependencies: {
       "@types/react": "19.2.17",
     },
@@ -48,11 +43,7 @@ const frameworks = {
   },
   solid: {
     extension: "tsx",
-    localPackages: [
-      "@opentui-ui/core",
-      "@opentui-ui/styles",
-      "@opentui-ui/solid",
-    ],
+    localPackages: ["@opentui-ui/core", "@opentui-ui/solid"],
     compilerOptions: {
       jsx: "preserve",
       jsxImportSource: "@opentui/solid",

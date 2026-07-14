@@ -35,8 +35,6 @@
       "@opentui-ui/react/*": ["packages/react/src/*"],
       "@opentui-ui/solid": ["packages/solid/src"],
       "@opentui-ui/solid/*": ["packages/solid/src/*"],
-      "@opentui-ui/styles": ["packages/styles/src"],
-      "@opentui-ui/styles/*": ["packages/styles/src/*"],
       "@opentui-ui/utils": ["packages/utils/src"],
       "@opentui-ui/utils/*": ["packages/utils/src/*"],
       "@opentui-ui/dialog": ["packages/dialog/src"],

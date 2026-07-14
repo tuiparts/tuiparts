@@ -9,5 +9,16 @@
     "@opentui-ui/toast": "0.0.5",
     "@opentui-ui/utils": "0.0.1"
   },
-  "changesets": []
+  "changesets": [
+    "brave-buttons-press",
+    "bright-dialogs-copy",
+    "calm-inputs-edit",
+    "clean-foundation-contracts",
+    "flat-badges-vanish",
+    "fresh-react-peers",
+    "quiet-radios-wrap",
+    "small-switches-rest",
+    "tidy-checkboxes-focus",
+    "tidy-recipes-resolve"
+  ]
 }

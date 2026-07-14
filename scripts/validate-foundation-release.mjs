@@ -19,6 +19,7 @@ const foundationPackages = [
 ];
 const companionPackages = ["@opentui-ui/dialog", "@opentui-ui/toast"];
 const versionedRelease = process.argv.includes("--versioned");
+const since = process.argv.find((argument) => argument.startsWith("--since="));
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -40,9 +41,17 @@ try {
     );
     plan = { releases: [], preState };
   } else {
+    const statusArguments = [
+      "exec",
+      "changeset",
+      "status",
+      "--output",
+      output,
+    ];
+    if (since) statusArguments.push(since);
     execFileSync(
       "pnpm",
-      ["exec", "changeset", "status", "--output", output],
+      statusArguments,
       { cwd: root, stdio: "inherit" },
     );
     plan = JSON.parse(readFileSync(output, "utf8"));

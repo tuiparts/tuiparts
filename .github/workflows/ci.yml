@@ -65,6 +65,8 @@ jobs:
         run: |
           if [[ "${{ github.head_ref }}" == "changeset-release/main" ]]; then
             pnpm validate:release-scope --versioned
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            pnpm validate:release-scope --since=origin/main
           else
             pnpm validate:release-scope
           fi

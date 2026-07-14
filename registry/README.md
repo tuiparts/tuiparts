@@ -1,8 +1,33 @@
-# Registry Lifecycle
+# Foundation Recipe Catalog
 
 The OpenTUI UI registry distributes editable recipe source through the shadcn
 CLI. Installed files belong to the consuming project. The registry does not
 maintain a second package manager, recipe lockfile, or automatic merge engine.
+
+## Catalog
+
+Each foundation recipe is available as `core/<name>`, `react/<name>`, and
+`solid/<name>`:
+
+| Recipe | Packaged behavior | Installed vocabulary |
+| --- | --- | --- |
+| Checkbox | Checkbox Root and Indicator | `Checkbox` |
+| Switch | Switch Root and Thumb | `Switch` |
+| Button | Button activation primitive | `Button` |
+| RadioGroup/Radio | Radio collection and selectable parts | `RadioGroup`, `RadioGroupItem` |
+| Input | Native OpenTUI input behavior | `Input` |
+| Badge | None; presentation-only recipe | `Badge` |
+
+React and Solid recipes expose the same installed names and props where their
+runtime semantics permit. Core recipes expose equivalent imperative factory
+functions. Core installation uses the same shadcn item lifecycle; it installs
+ordinary `.ts` source rather than framework JSX.
+
+The registry also contains the foundation Dialog tracer, but it is not part of
+this catalog release. The already-adopted `@opentui-ui/dialog` and
+`@opentui-ui/toast` packages remain the production paths until their dedicated
+reconciliation work. No legacy exports are retained for the other pre-release
+components.
 
 ## Compatibility
 
@@ -57,9 +82,18 @@ is optional source integration unless its release notes explicitly identify a
 required compatibility change. Consumers inspect and merge those changes with
 shadcn's diff workflow.
 
+## Consumer-Owned Presentation
+
+Starter palettes, density choices, labels, marks, and symbol sets live directly
+in the installed files. They are examples that consumers can edit or replace,
+not package APIs or dependencies on a hidden theme runtime.
+
 ## Verification
 
-`pnpm validate:registry` validates `registry.json` with the pinned official
-shadcn CLI. For Checkbox in Core, React, and Solid it also installs the recipe,
-applies a local edit, creates a newer upstream payload, verifies `--diff` shows
-both changes, and proves ordinary `add` does not overwrite the local source.
+`pnpm validate:registry` verifies the catalog's dependencies, lifecycle
+metadata, and matching React/Solid vocabulary. It builds every registry item
+with the pinned official shadcn CLI, installs all 21 items into isolated strict
+consumers, type-checks them, and runs their runtime smokes. For Checkbox in
+Core, React, and Solid it additionally applies a local edit, creates a newer
+upstream payload, verifies `--diff` shows both changes, and proves ordinary
+`add` does not overwrite the local source.

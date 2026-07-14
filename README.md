@@ -31,6 +31,11 @@ behavior. [`@opentui-ui/dialog`](./packages/dialog) and
 [`@opentui-ui/toast`](./packages/toast) remain independently versioned companion
 products while their primitive relationships are reconciled.
 
+The foundation registry catalog contains Checkbox, Switch, Button,
+RadioGroup/Radio, Input, and Badge recipes for Core, React, and Solid. See the
+[`registry` catalog and lifecycle](./registry/README.md) for installation and
+consumer-owned update guidance.
+
 ## Installation
 
 Published package installation remains unchanged during the expand phase.

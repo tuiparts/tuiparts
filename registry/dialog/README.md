@@ -29,6 +29,6 @@ foundation API**. The legacy production `@opentui-ui/dialog` manager, provider,
 and async APIs stay separate and unchanged.
 
 The `tsconfig.*.json` fixtures compile copied recipes against each supported
-surface. `pnpm validate:registry` builds and installs all 12 registry items in
+surface. `pnpm validate:registry` builds and installs every registry item in
 clean consumers, compares exact source and dependencies, type-checks them, and
 runs their runtime smokes.

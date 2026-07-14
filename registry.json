@@ -91,7 +91,9 @@
       ],
       "meta": {
         "framework": "core",
-        "primitiveStatus": "foundation"
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {
@@ -116,7 +118,9 @@
       ],
       "meta": {
         "framework": "react",
-        "primitiveStatus": "foundation"
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {
@@ -140,7 +144,9 @@
       ],
       "meta": {
         "framework": "solid",
-        "primitiveStatus": "foundation"
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {
@@ -158,7 +164,9 @@
       ],
       "meta": {
         "framework": "core",
-        "primitiveStatus": "foundation"
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {
@@ -183,7 +191,9 @@
       ],
       "meta": {
         "framework": "react",
-        "primitiveStatus": "foundation"
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {
@@ -207,7 +217,9 @@
       ],
       "meta": {
         "framework": "solid",
-        "primitiveStatus": "foundation"
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {
@@ -225,7 +237,9 @@
       ],
       "meta": {
         "framework": "core",
-        "primitiveStatus": "recipe"
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {
@@ -248,7 +262,9 @@
       ],
       "meta": {
         "framework": "react",
-        "primitiveStatus": "recipe"
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {
@@ -270,7 +286,9 @@
       ],
       "meta": {
         "framework": "solid",
-        "primitiveStatus": "recipe"
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {
@@ -288,7 +306,9 @@
       ],
       "meta": {
         "framework": "core",
-        "primitiveStatus": "foundation"
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {
@@ -313,7 +333,9 @@
       ],
       "meta": {
         "framework": "react",
-        "primitiveStatus": "foundation"
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {
@@ -337,7 +359,9 @@
       ],
       "meta": {
         "framework": "solid",
-        "primitiveStatus": "foundation"
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {
@@ -355,7 +379,9 @@
       ],
       "meta": {
         "framework": "core",
-        "primitiveStatus": "tracer"
+        "primitiveStatus": "tracer",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {
@@ -380,7 +406,9 @@
       ],
       "meta": {
         "framework": "react",
-        "primitiveStatus": "tracer"
+        "primitiveStatus": "tracer",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {
@@ -404,7 +432,9 @@
       ],
       "meta": {
         "framework": "solid",
-        "primitiveStatus": "tracer"
+        "primitiveStatus": "tracer",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {

@@ -61,6 +61,41 @@ const recipes = [
   "input",
   "dialog",
 ];
+const foundationCatalogRecipes = [
+  "checkbox",
+  "switch",
+  "button",
+  "badge",
+  "radio-group",
+  "input",
+];
+const expectedCatalogDependencyNames = {
+  core: {
+    primitive: ["@opentui-ui/core", "@opentui/core"],
+    recipe: ["@opentui/core"],
+  },
+  react: {
+    primitive: [
+      "@opentui-ui/react",
+      "@opentui-ui/core",
+      "@opentui/core",
+      "@opentui/react",
+      "react",
+      "ws",
+    ],
+    recipe: ["@opentui/core", "@opentui/react", "react", "ws"],
+  },
+  solid: {
+    primitive: [
+      "@opentui-ui/solid",
+      "@opentui-ui/core",
+      "@opentui/core",
+      "@opentui/solid",
+      "solid-js",
+    ],
+    recipe: ["@opentui/core", "@opentui/solid", "solid-js"],
+  },
+};
 const consumers = recipes.flatMap((recipe) =>
   Object.entries(frameworks).map(([framework, config]) => ({
     ...config,
@@ -107,6 +142,12 @@ function packageRange(specifier) {
   return separator > 0 ? specifier.slice(separator + 1) : "*";
 }
 
+function sourceExports(source) {
+  return [...source.matchAll(/^export (?:interface|type|function) (\w+)/gm)]
+    .map((match) => match[1])
+    .sort();
+}
+
 function snapshotFiles(directory, current = directory, files = new Map()) {
   for (const entry of readdirSync(current, { withFileTypes: true })) {
     if (entry.name === "node_modules") continue;
@@ -121,6 +162,45 @@ function snapshotFiles(directory, current = directory, files = new Map()) {
 }
 
 try {
+  for (const recipe of foundationCatalogRecipes) {
+    const reactSource = readFileSync(
+      join(root, `registry/${recipe}/react.tsx`),
+      "utf8",
+    );
+    const solidSource = readFileSync(
+      join(root, `registry/${recipe}/solid.tsx`),
+      "utf8",
+    );
+    assert(
+      JSON.stringify(sourceExports(reactSource)) ===
+        JSON.stringify(sourceExports(solidSource)),
+      `${recipe} React and Solid recipes must share exported vocabulary`,
+    );
+
+    for (const framework of Object.keys(frameworks)) {
+      const itemName = `${framework}/${recipe}`;
+      const item = registry.items.find((candidate) => candidate.name === itemName);
+      assert(item, `Missing foundation catalog item ${itemName}`);
+      assert(
+        item.meta?.sourceOwnership === "consumer",
+        `${itemName} must declare consumer-owned recipe source`,
+      );
+      assert(
+        item.meta?.updateStrategy === "shadcn-diff",
+        `${itemName} must declare the shadcn diff update strategy`,
+      );
+      const recipeKind = recipe === "badge" ? "recipe" : "primitive";
+      const actualDependencies = item.dependencies.map(packageName).sort();
+      const expectedDependencies = expectedCatalogDependencyNames[framework][
+        recipeKind
+      ].toSorted();
+      assert(
+        JSON.stringify(actualDependencies) === JSON.stringify(expectedDependencies),
+        `${itemName} dependencies do not match its ${recipeKind} boundary`,
+      );
+    }
+  }
+
   for (const framework of Object.keys(frameworks)) {
     mkdirSync(join(registryDir, framework), { recursive: true });
   }
@@ -162,7 +242,7 @@ try {
       (item) => item.name === itemName,
     );
     assert(registryItem, `Missing ${itemName} registry item`);
-    if (consumer.recipe === "checkbox") {
+    if (foundationCatalogRecipes.includes(consumer.recipe)) {
       assert(
         registryItem.meta?.sourceOwnership === "consumer",
         `${itemName} must declare consumer-owned recipe source`,

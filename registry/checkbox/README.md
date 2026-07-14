@@ -1,6 +1,6 @@
-# Checkbox Recipe Tracer
+# Checkbox Recipe
 
-These files represent the consumer-owned layer of the Checkbox tracer. The
+These files represent the consumer-owned layer of Checkbox. The
 root `registry.json` exposes separate `core/checkbox`, `react/checkbox`, and
 `solid/checkbox` items so consumers explicitly install the recipe for their
 framework. Installation copies editable source into `components/ui` while
@@ -13,13 +13,7 @@ versioned packages.
 
 Each recipe chooses layout, colors, the default mark, and the convenience
 `label` prop. The packaged primitive owns checked state, focus, activation,
-disabled behavior, and Indicator lifecycle. The current Root, Indicator,
-readonly state, refs, lifecycle, and ownership interfaces are tracer evidence,
-not the frozen foundation contract.
-
-Runnable versions with controlled, uncontrolled, custom-mark, and disabled
-examples live in the local `examples/*` workspaces and can be started with
-`pnpm dev:checkbox` from the relevant workspace.
+disabled behavior, and Indicator lifecycle.
 
 The three `tsconfig.*.json` fixtures compile each recipe against its intended
 framework contract.

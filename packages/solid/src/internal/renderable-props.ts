@@ -2,6 +2,10 @@ import { spread } from "@opentui/solid";
 import type { Ref } from "solid-js";
 
 export function setRenderableRef<T>(ref: Ref<T> | undefined, value: T): void {
+  // SAFETY: Primitive adapters call this helper only with non-callable Core
+  // Renderables. Solid's Ref<T> also permits callable T values, so narrowing
+  // with typeof cannot exclude that generic branch even though it is
+  // impossible at these call sites.
   if (typeof ref === "function") (ref as (value: T) => void)(value);
 }
 
@@ -15,7 +19,7 @@ export function spreadRenderableProps<T extends object>(
 ): void {
   let previousKeys: string[] = [];
   spread(element, () => {
-    const next = getProps() as Record<string, unknown>;
+    const next = getProps();
     const removed = Object.fromEntries(
       previousKeys
         .filter((key) => !Object.hasOwn(next, key))

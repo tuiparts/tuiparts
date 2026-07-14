@@ -91,6 +91,7 @@ try {
     "@opentui-ui/core",
     "@opentui-ui/core/button",
     "@opentui-ui/core/checkbox",
+    "@opentui-ui/core/dialog",
     "@opentui-ui/core/input",
     "@opentui-ui/core/radio",
     "@opentui-ui/core/radio-group",
@@ -98,6 +99,7 @@ try {
     "@opentui-ui/react",
     "@opentui-ui/react/button",
     "@opentui-ui/react/checkbox",
+    "@opentui-ui/react/dialog",
     "@opentui-ui/react/input",
     "@opentui-ui/react/radio",
     "@opentui-ui/react/radio-group",
@@ -105,6 +107,7 @@ try {
     "@opentui-ui/solid",
     "@opentui-ui/solid/button",
     "@opentui-ui/solid/checkbox",
+    "@opentui-ui/solid/dialog",
     "@opentui-ui/solid/input",
     "@opentui-ui/solid/radio",
     "@opentui-ui/solid/radio-group",
@@ -133,6 +136,22 @@ try {
     join(consumerDir, "runtime.mjs"),
     `await Promise.all(${JSON.stringify(entrypoints)}.map((entrypoint) => import(entrypoint)));\n`,
   );
+  writeFileSync(
+    join(consumerDir, "executable.ts"),
+    `import { createTestRenderer } from "@opentui/core/testing";
+import { CheckboxRootRenderable } from "@opentui-ui/core/checkbox";
+
+const setup = await createTestRenderer({ width: 20, height: 3 });
+try {
+  const checkbox = new CheckboxRootRenderable(setup.renderer);
+  setup.renderer.root.add(checkbox);
+  checkbox.press();
+  if (!checkbox.checked) throw new Error("Compiled Checkbox did not activate");
+} finally {
+  setup.renderer.destroy();
+}
+`,
+  );
 
   run(
     "pnpm",
@@ -141,6 +160,12 @@ try {
   );
   run("pnpm", ["exec", "tsc", "-p", "tsconfig.json"], consumerDir);
   run("bun", ["runtime.mjs"], consumerDir);
+  run(
+    "bun",
+    ["build", "--compile", "executable.ts", "--outfile", "executable"],
+    consumerDir,
+  );
+  run(join(consumerDir, "executable"), [], consumerDir);
 } finally {
   rmSync(workDir, { recursive: true, force: true });
 }

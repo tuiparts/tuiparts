@@ -39,6 +39,11 @@ the supported update workflow.
 Package ranges are the compatibility contract. Registry metadata describes the
 source lifecycle; it does not replace package dependency resolution.
 
+Foundation primitive items target `^0.0.3-rc.0`, so installations select the
+foundation RC rather than incompatible pre-foundation packages. Validation
+preserves those declared ranges while temporary workspace overrides resolve
+them to the local packed tarballs under test.
+
 ## Install
 
 A consumer configures shadcn with a `components.json` file, then installs the

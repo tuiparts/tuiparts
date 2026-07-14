@@ -50,7 +50,7 @@ export class ButtonStore {
   }
   requestPress(details: ButtonPressDetails): void {
     if (this.snapshot.disabled) return;
-    this.onPress?.(Object.freeze({ ...details }) as ButtonPressDetails);
+    this.onPress?.(Object.freeze({ ...details }));
   }
   setDisabled(disabled: boolean): void {
     this.update({

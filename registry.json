@@ -8,7 +8,7 @@
       "type": "registry:item",
       "title": "Checkbox (Core)",
       "description": "Editable imperative Checkbox recipe built on the OpenTUI UI foundation primitive.",
-      "dependencies": ["@opentui-ui/core@^0.0.2", "@opentui/core@^0.4.3"],
+      "dependencies": ["@opentui-ui/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
       "files": [
         {
           "path": "registry/checkbox/core.ts",
@@ -29,8 +29,8 @@
       "title": "Checkbox (React)",
       "description": "Editable React Checkbox recipe built on the OpenTUI UI foundation primitive.",
       "dependencies": [
-        "@opentui-ui/react@^0.0.2",
-        "@opentui-ui/core@^0.0.2",
+        "@opentui-ui/react@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
         "@opentui/core@^0.4.3",
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
@@ -55,8 +55,8 @@
       "title": "Checkbox (Solid)",
       "description": "Editable Solid Checkbox recipe built on the OpenTUI UI foundation primitive.",
       "dependencies": [
-        "@opentui-ui/solid@^0.0.2",
-        "@opentui-ui/core@^0.0.2",
+        "@opentui-ui/solid@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
         "@opentui/core@^0.4.3",
         "@opentui/solid@^0.4.3",
         "solid-js@1.9.12"
@@ -80,7 +80,7 @@
       "type": "registry:item",
       "title": "Switch (Core)",
       "description": "Editable imperative Switch recipe built on the OpenTUI UI foundation primitive.",
-      "dependencies": ["@opentui-ui/core@^0.0.2", "@opentui/core@^0.4.3"],
+      "dependencies": ["@opentui-ui/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
       "files": [
         {
           "path": "registry/switch/core.ts",
@@ -101,8 +101,8 @@
       "title": "Switch (React)",
       "description": "Editable React Switch recipe built on the OpenTUI UI foundation primitive.",
       "dependencies": [
-        "@opentui-ui/react@^0.0.2",
-        "@opentui-ui/core@^0.0.2",
+        "@opentui-ui/react@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
         "@opentui/core@^0.4.3",
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
@@ -127,8 +127,8 @@
       "title": "Switch (Solid)",
       "description": "Editable Solid Switch recipe built on the OpenTUI UI foundation primitive.",
       "dependencies": [
-        "@opentui-ui/solid@^0.0.2",
-        "@opentui-ui/core@^0.0.2",
+        "@opentui-ui/solid@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
         "@opentui/core@^0.4.3",
         "@opentui/solid@^0.4.3",
         "solid-js@1.9.12"
@@ -152,7 +152,7 @@
       "type": "registry:item",
       "title": "Button (Core)",
       "description": "Editable imperative Button recipe built on the OpenTUI UI foundation primitive.",
-      "dependencies": ["@opentui-ui/core@^0.0.2", "@opentui/core@^0.4.3"],
+      "dependencies": ["@opentui-ui/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
       "files": [
         {
           "path": "registry/button/core.ts",
@@ -173,8 +173,8 @@
       "title": "Button (React)",
       "description": "Editable React Button recipe built on the OpenTUI UI foundation primitive.",
       "dependencies": [
-        "@opentui-ui/react@^0.0.2",
-        "@opentui-ui/core@^0.0.2",
+        "@opentui-ui/react@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
         "@opentui/core@^0.4.3",
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
@@ -199,8 +199,8 @@
       "title": "Button (Solid)",
       "description": "Editable Solid Button recipe built on the OpenTUI UI foundation primitive.",
       "dependencies": [
-        "@opentui-ui/solid@^0.0.2",
-        "@opentui-ui/core@^0.0.2",
+        "@opentui-ui/solid@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
         "@opentui/core@^0.4.3",
         "@opentui/solid@^0.4.3",
         "solid-js@1.9.12"
@@ -292,7 +292,7 @@
       "type": "registry:item",
       "title": "Radio Group (Core)",
       "description": "Editable imperative Radio and Radio Group recipe built on the OpenTUI UI collection primitive.",
-      "dependencies": ["@opentui-ui/core@^0.0.2", "@opentui/core@^0.4.3"],
+      "dependencies": ["@opentui-ui/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
       "files": [
         {
           "path": "registry/radio-group/core.ts",
@@ -313,8 +313,8 @@
       "title": "Radio Group (React)",
       "description": "Editable React Radio and Radio Group recipe built on the OpenTUI UI collection primitive.",
       "dependencies": [
-        "@opentui-ui/react@^0.0.2",
-        "@opentui-ui/core@^0.0.2",
+        "@opentui-ui/react@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
         "@opentui/core@^0.4.3",
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
@@ -339,8 +339,8 @@
       "title": "Radio Group (Solid)",
       "description": "Editable Solid Radio and Radio Group recipe built on the OpenTUI UI collection primitive.",
       "dependencies": [
-        "@opentui-ui/solid@^0.0.2",
-        "@opentui-ui/core@^0.0.2",
+        "@opentui-ui/solid@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
         "@opentui/core@^0.4.3",
         "@opentui/solid@^0.4.3",
         "solid-js@1.9.12"
@@ -364,7 +364,7 @@
       "type": "registry:item",
       "title": "Input (Core)",
       "description": "Editable imperative Input recipe preserving OpenTUI-native editing and events.",
-      "dependencies": ["@opentui-ui/core@^0.0.2", "@opentui/core@^0.4.3"],
+      "dependencies": ["@opentui-ui/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
       "files": [
         {
           "path": "registry/input/core.ts",
@@ -385,8 +385,8 @@
       "title": "Input (React)",
       "description": "Editable React Input recipe preserving OpenTUI-native editing and events.",
       "dependencies": [
-        "@opentui-ui/react@^0.0.2",
-        "@opentui-ui/core@^0.0.2",
+        "@opentui-ui/react@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
         "@opentui/core@^0.4.3",
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
@@ -411,8 +411,8 @@
       "title": "Input (Solid)",
       "description": "Editable Solid Input recipe preserving OpenTUI-native editing and events.",
       "dependencies": [
-        "@opentui-ui/solid@^0.0.2",
-        "@opentui-ui/core@^0.0.2",
+        "@opentui-ui/solid@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
         "@opentui/core@^0.4.3",
         "@opentui/solid@^0.4.3",
         "solid-js@1.9.12"
@@ -436,7 +436,7 @@
       "type": "registry:item",
       "title": "Dialog (Core)",
       "description": "Editable imperative Dialog recipe built on the OpenTUI UI overlay primitive tracer.",
-      "dependencies": ["@opentui-ui/core@^0.0.2", "@opentui/core@^0.4.3"],
+      "dependencies": ["@opentui-ui/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
       "files": [
         {
           "path": "registry/dialog/core.ts",
@@ -455,8 +455,8 @@
       "title": "Dialog (React)",
       "description": "Editable React Dialog recipe built on the OpenTUI UI overlay primitive tracer.",
       "dependencies": [
-        "@opentui-ui/react@^0.0.2",
-        "@opentui-ui/core@^0.0.2",
+        "@opentui-ui/react@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
         "@opentui/core@^0.4.3",
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
@@ -479,8 +479,8 @@
       "title": "Dialog (Solid)",
       "description": "Editable Solid Dialog recipe built on the OpenTUI UI overlay primitive tracer.",
       "dependencies": [
-        "@opentui-ui/solid@^0.0.2",
-        "@opentui-ui/core@^0.0.2",
+        "@opentui-ui/solid@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
         "@opentui/core@^0.4.3",
         "@opentui/solid@^0.4.3",
         "solid-js@1.9.12"

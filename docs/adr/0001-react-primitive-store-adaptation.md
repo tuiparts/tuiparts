@@ -156,6 +156,12 @@ make that assignment legal. Mounted-instance context remains appropriate when
 the actual dependency is part-local identity or lifecycle state, such as a
 RadioGroup Item or Dialog Popup.
 
+Dialog Portal uses the React renderer's portal support to host a
+`DialogPortalRenderable` directly under the renderer root. Construction,
+updates, prop removal, refs, and destruction therefore follow the same commit
+lifecycle as other host Renderables. An abandoned render creates no mutable
+Renderable.
+
 ### Solid subscribes to the Root or justified Store
 
 Solid constructs the actual Core Renderable synchronously. A private

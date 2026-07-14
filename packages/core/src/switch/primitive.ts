@@ -4,6 +4,7 @@ import {
   type KeyEvent,
   type RenderContext,
 } from "@opentui/core";
+import { ToggleStoreState } from "../internal/toggle-store";
 
 export interface SwitchState {
   readonly checked: boolean;
@@ -21,65 +22,35 @@ export interface SwitchStoreOptions {
 type SwitchStateListener = (state: SwitchState) => void;
 
 export class SwitchStore {
-  private controlled: boolean;
-  private snapshot: SwitchState;
-  private onCheckedChange?: (checked: boolean) => void;
-  private readonly listeners = new Set<SwitchStateListener>();
+  private readonly toggleState: ToggleStoreState;
 
   constructor(options: SwitchStoreOptions = {}) {
-    this.controlled = options.checked !== undefined;
-    this.snapshot = Object.freeze({
-      checked: options.checked ?? options.defaultChecked ?? false,
-      disabled: options.disabled ?? false,
-      focused: false,
-    });
-    this.onCheckedChange = options.onCheckedChange;
+    this.toggleState = new ToggleStoreState(options);
   }
 
   get state(): SwitchState {
-    return this.snapshot;
+    return this.toggleState.state;
   }
   getState(): SwitchState {
-    return this.snapshot;
+    return this.toggleState.state;
   }
   subscribe(listener: SwitchStateListener): () => void {
-    this.listeners.add(listener);
-    return () => this.listeners.delete(listener);
+    return this.toggleState.subscribe(listener);
   }
   requestToggle(): void {
-    if (this.snapshot.disabled) return;
-    const checked = !this.snapshot.checked;
-    if (!this.controlled) this.update({ checked });
-    this.onCheckedChange?.(checked);
+    this.toggleState.requestToggle();
   }
   setChecked(checked: boolean | null | undefined): void {
-    if (typeof checked !== "boolean") {
-      this.controlled = false;
-      return;
-    }
-    this.controlled = true;
-    this.update({ checked });
+    this.toggleState.setChecked(checked);
   }
   setDisabled(disabled: boolean): void {
-    this.update({ disabled, ...(disabled ? { focused: false } : {}) });
+    this.toggleState.setDisabled(disabled);
   }
   setFocused(focused: boolean): void {
-    if (this.snapshot.disabled && focused) return;
-    this.update({ focused });
+    this.toggleState.setFocused(focused);
   }
   setOnCheckedChange(callback: ((checked: boolean) => void) | undefined): void {
-    this.onCheckedChange = callback;
-  }
-  private update(next: Partial<SwitchState>): void {
-    const state = { ...this.snapshot, ...next };
-    if (
-      state.checked === this.snapshot.checked &&
-      state.disabled === this.snapshot.disabled &&
-      state.focused === this.snapshot.focused
-    )
-      return;
-    this.snapshot = Object.freeze(state);
-    for (const listener of this.listeners) listener(state);
+    this.toggleState.setOnCheckedChange(callback);
   }
 }
 
@@ -150,11 +121,12 @@ export class SwitchRootRenderable extends BoxRenderable {
   }
 
   press(): void {
+    if (this._isDestroyed) return;
     this._store.requestToggle();
   }
 
   override handleKeyPress(key: KeyEvent): boolean {
-    if (this._store.state.disabled) return false;
+    if (this._isDestroyed || this._store.state.disabled) return false;
     if (key.name === "space" || key.name === "return" || key.name === "enter") {
       this.press();
       return true;

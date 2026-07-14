@@ -13,14 +13,14 @@ import {
 } from "../internal/renderable-props";
 import { createRenderableState } from "../internal/renderable-state";
 
-type ButtonProps = ButtonOptions & {
+type ButtonProps = Omit<ButtonOptions, "store"> & {
   children?: JSX.Element | ((state: ButtonState) => JSX.Element);
   ref?: Ref<ButtonRenderable>;
 };
 
 export function Button(props: Button.Props): JSX.Element {
   const renderer = useRenderer();
-  const [local, initialProps] = splitProps(props, [
+  const [local, renderableProps] = splitProps(props, [
     "children",
     "disabled",
     "onPress",
@@ -29,7 +29,7 @@ export function Button(props: Button.Props): JSX.Element {
   const element = new ButtonRenderable(
     renderer,
     untrack(() => ({
-      ...initialProps,
+      ...renderableProps,
       disabled: local.disabled,
       onPress: local.onPress,
     })),
@@ -54,7 +54,7 @@ export function Button(props: Button.Props): JSX.Element {
   spreadRenderableProps(element, () => {
     const child = local.children;
     const children = typeof child === "function" ? child(publicState) : child;
-    return { ...initialProps, children };
+    return { ...renderableProps, children };
   });
   return element;
 }

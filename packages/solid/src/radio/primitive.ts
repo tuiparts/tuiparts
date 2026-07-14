@@ -67,7 +67,7 @@ export function RadioGroup(props: RadioGroup.Props): JSX.Element {
       return state().disabled;
     },
   };
-  const [local, initialProps] = splitProps(props, [
+  const [local, renderableProps] = splitProps(props, [
     "children",
     "defaultValue",
     "disabled",
@@ -77,7 +77,7 @@ export function RadioGroup(props: RadioGroup.Props): JSX.Element {
   ]);
   const element = new RadioGroupRenderable(
     renderer,
-    untrack(() => ({ ...initialProps, store })),
+    untrack(() => ({ ...renderableProps, store })),
   );
   createEffect(() => {
     element.value = local.value;
@@ -91,7 +91,7 @@ export function RadioGroup(props: RadioGroup.Props): JSX.Element {
     get children() {
       const child = local.children;
       const children = typeof child === "function" ? child(publicState) : child;
-      spreadRenderableProps(element, () => ({ ...initialProps, children }));
+      spreadRenderableProps(element, () => ({ ...renderableProps, children }));
       return element;
     },
   });
@@ -103,7 +103,7 @@ export function Root(props: Root.Props): JSX.Element {
   if (!store) {
     throw new Error("Radio.Root must be rendered inside RadioGroup");
   }
-  const [local, initialProps] = splitProps(props, [
+  const [local, renderableProps] = splitProps(props, [
     "children",
     "disabled",
     "ref",
@@ -112,7 +112,7 @@ export function Root(props: Root.Props): JSX.Element {
   const element = new RadioRootRenderable(
     renderer,
     untrack(() => ({
-      ...initialProps,
+      ...renderableProps,
       store,
       value: local.value,
       disabled: local.disabled,
@@ -150,7 +150,7 @@ export function Root(props: Root.Props): JSX.Element {
     get children() {
       const child = local.children;
       const children = typeof child === "function" ? child(publicState) : child;
-      spreadRenderableProps(element, () => ({ ...initialProps, children }));
+      spreadRenderableProps(element, () => ({ ...renderableProps, children }));
       return element;
     },
   });
@@ -163,7 +163,7 @@ export function Indicator(props: Indicator.Props): JSX.Element {
     throw new Error("Radio.Indicator must be rendered inside Radio.Root");
   }
   const state = createRenderableState(item, item.getState());
-  const [local, initialProps] = splitProps(props, [
+  const [local, renderableProps] = splitProps(props, [
     "children",
     "keepMounted",
     "ref",
@@ -177,11 +177,11 @@ export function Indicator(props: Indicator.Props): JSX.Element {
     get children() {
       const element = new RadioIndicatorRenderable(
         renderer,
-        untrack(() => ({ ...initialProps, radio: item })),
+        untrack(() => ({ ...renderableProps, radio: item })),
       );
       const children = local.children;
       setRenderableRef(local.ref, element);
-      spreadRenderableProps(element, () => ({ ...initialProps, children }));
+      spreadRenderableProps(element, () => ({ ...renderableProps, children }));
       return element;
     },
   });

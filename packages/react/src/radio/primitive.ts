@@ -75,21 +75,23 @@ export function Root({ children, ref, ...props }: Root.Props) {
   const store = useContext(RadioGroupContext);
   if (!store) throw new Error("Radio.Root must be rendered inside RadioGroup");
   const [item, setItem] = useState<RadioRootRenderable | null>(null);
-  useImperativeHandle(ref, () => item as RadioRootRenderable, [item]);
   return createElement(
     ROOT_TAG,
     { ...props, store, ref: setItem },
-    item ? createElement(RootContent, { item, children }) : undefined,
+    item ? createElement(RootContent, { item, children, ref }) : undefined,
   );
 }
 
 function RootContent({
   item,
   children,
+  ref,
 }: {
   item: RadioRootRenderable;
   children: Root.Props["children"];
+  ref: Ref<RadioRootRenderable> | undefined;
 }): ReactElement {
+  useImperativeHandle(ref, () => item, [item]);
   const state = useSyncExternalStore(
     (listener) => item.subscribe(listener),
     () => item.getState(),

@@ -145,4 +145,20 @@ describe("Checkbox primitive", () => {
 
     expect(root.checked).toBe(true);
   });
+
+  it("stops accepting semantic actions after destruction", async () => {
+    setup = await createTestRenderer({ width: 30, height: 5 });
+    const changes: boolean[] = [];
+    const root = new CheckboxRootRenderable(setup.renderer, {
+      onCheckedChange: (checked) => changes.push(checked),
+    });
+    setup.renderer.root.add(root);
+
+    root.destroy();
+
+    root.press();
+    expect(root.handleKeyPress({ name: "space" } as KeyEvent)).toBe(false);
+    expect(root.checked).toBe(false);
+    expect(changes).toEqual([]);
+  });
 });

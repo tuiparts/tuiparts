@@ -14,9 +14,8 @@ import {
   type ReactNode,
   type Ref,
   useContext,
-  useRef,
-  useSyncExternalStore,
 } from "react";
+import { useCoreStore } from "../internal/use-core-store";
 
 const ROOT_TAG = "otui-checkbox-root";
 const INDICATOR_TAG = "otui-checkbox-indicator";
@@ -39,13 +38,8 @@ type IndicatorProps = Omit<CheckboxIndicatorOptions, "store"> & {
 };
 
 export function Root({ children, ...props }: Root.Props): ReactElement {
-  const storeRef = useRef<CheckboxStore | null>(null);
-  if (!storeRef.current) storeRef.current = new CheckboxStore(props);
-  const store = storeRef.current;
-  const state = useSyncExternalStore(
-    (listener) => store.subscribe(listener),
-    () => store.state,
-    () => store.state,
+  const [store, state] = useCoreStore<CheckboxState, CheckboxStore>(
+    () => new CheckboxStore(props),
   );
   const content = typeof children === "function" ? children(state) : children;
 

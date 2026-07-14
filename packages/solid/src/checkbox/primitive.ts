@@ -20,11 +20,14 @@ import {
   setRenderableRef,
   spreadRenderableProps,
 } from "../internal/renderable-props";
-import { createRenderableState } from "../internal/renderable-state";
+import {
+  createRenderableState,
+  createToggleStateView,
+} from "../internal/renderable-state";
 
 const CheckboxContext = createContext<CheckboxRootRenderable>();
 
-type RootProps = CheckboxRootOptions & {
+type RootProps = Omit<CheckboxRootOptions, "store"> & {
   children?: JSX.Element | ((state: CheckboxState) => JSX.Element);
   ref?: Ref<CheckboxRootRenderable>;
 };
@@ -36,7 +39,7 @@ type IndicatorProps = Omit<CheckboxIndicatorOptions, "store"> & {
 
 export function Root(props: Root.Props): JSX.Element {
   const renderer = useRenderer();
-  const [local, initialProps] = splitProps(props, [
+  const [local, renderableProps] = splitProps(props, [
     "checked",
     "children",
     "defaultChecked",
@@ -47,7 +50,7 @@ export function Root(props: Root.Props): JSX.Element {
   const element = new CheckboxRootRenderable(
     renderer,
     untrack(() => ({
-      ...initialProps,
+      ...renderableProps,
       checked: local.checked,
       defaultChecked: local.defaultChecked,
       disabled: local.disabled,
@@ -55,17 +58,7 @@ export function Root(props: Root.Props): JSX.Element {
     })),
   );
   const state = createRenderableState(element, element.getState());
-  const publicState: CheckboxState = {
-    get checked() {
-      return state().checked;
-    },
-    get disabled() {
-      return state().disabled;
-    },
-    get focused() {
-      return state().focused;
-    },
-  };
+  const publicState: CheckboxState = createToggleStateView(state);
   createEffect(() => {
     element.checked = local.checked;
     element.disabled = local.disabled;
@@ -78,7 +71,7 @@ export function Root(props: Root.Props): JSX.Element {
     get children() {
       const child = local.children;
       const children = typeof child === "function" ? child(publicState) : child;
-      spreadRenderableProps(element, () => ({ ...initialProps, children }));
+      spreadRenderableProps(element, () => ({ ...renderableProps, children }));
       return element;
     },
   });
@@ -90,14 +83,14 @@ export function Indicator(props: Indicator.Props): JSX.Element {
   if (!root) {
     throw new Error("Checkbox.Indicator must be rendered inside Checkbox.Root");
   }
-  const [local, initialProps] = splitProps(props, ["children", "ref"]);
+  const [local, renderableProps] = splitProps(props, ["children", "ref"]);
   const element = new CheckboxIndicatorRenderable(
     renderer,
-    untrack(() => ({ ...initialProps, store: root.store })),
+    untrack(() => ({ ...renderableProps, store: root.store })),
   );
   setRenderableRef(local.ref, element);
   spreadRenderableProps(element, () => ({
-    ...initialProps,
+    ...renderableProps,
     children: local.children,
   }));
   return element;

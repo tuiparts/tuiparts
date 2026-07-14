@@ -11,7 +11,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, relative, resolve } from "node:path";
-import { subset } from "semver";
+import { inc, satisfies } from "semver";
 
 const root = resolve(import.meta.dirname, "..");
 const workDir = mkdtempSync(join(tmpdir(), "opentui-ui-registry-"));
@@ -23,6 +23,13 @@ const packageDirectories = {
   "@opentui-ui/react": "react",
   "@opentui-ui/solid": "solid",
 };
+const nextFoundationVersion = inc(
+  JSON.parse(
+    readFileSync(join(root, "packages/core/package.json"), "utf8"),
+  ).version,
+  "patch",
+);
+assert(nextFoundationVersion, "Core package version cannot be incremented");
 const frameworks = {
   core: {
     extension: "ts",
@@ -298,6 +305,15 @@ try {
     assert(existsSync(join(root, consumer.source)), `Missing ${consumer.source}`);
     assert(existsSync(join(root, consumer.smoke)), `Missing ${consumer.smoke}`);
   }
+  for (const item of registry.items) {
+    for (const dependency of item.dependencies) {
+      if (!Object.hasOwn(packageDirectories, packageName(dependency))) continue;
+      assert(
+        satisfies(nextFoundationVersion, packageRange(dependency)),
+        `${item.name} does not accept foundation version ${nextFoundationVersion}`,
+      );
+    }
+  }
   for (const recipe of foundationCatalogRecipes) {
     const reactSource = readFileSync(
       join(root, `registry/${recipe}/react.tsx`),
@@ -387,7 +403,6 @@ try {
   }
 
   const tarballs = new Map();
-  const packageVersions = new Map();
   if (selectedConsumers.length > 0) {
     for (const packageName of packageNames) {
       const directory = packageDirectories[packageName];
@@ -400,12 +415,6 @@ try {
         tarball,
       ]);
       tarballs.set(packageName, tarball);
-      packageVersions.set(
-        packageName,
-        JSON.parse(
-          readFileSync(join(root, `packages/${directory}/package.json`), "utf8"),
-        ).version,
-      );
     }
   }
 
@@ -453,6 +462,17 @@ try {
       JSON.stringify(builtItem.meta) === JSON.stringify(registryItem.meta),
       `${itemName} build changed registry metadata`,
     );
+    const installItem = structuredClone(builtItem);
+    installItem.dependencies = installItem.dependencies.map((dependency) => {
+      const name = packageName(dependency);
+      const tarball = tarballs.get(name);
+      return tarball ? `${name}@file:${tarball}` : dependency;
+    });
+    const installItemPath = join(
+      workDir,
+      `${consumer.framework}-${consumer.recipe}-install.json`,
+    );
+    writeJson(installItemPath, installItem);
     const dependencyNames = registryItem.dependencies.map(packageName);
 
     mkdirSync(consumerDir);
@@ -468,9 +488,12 @@ try {
         ...consumer.devDependencies,
       },
     });
+    const overrides = [...tarballs]
+      .map(([name, tarball]) => `  "${name}": "file:${tarball}"`)
+      .join("\n");
     writeFileSync(
       join(consumerDir, "pnpm-workspace.yaml"),
-      `packages:\n  - "."\n`,
+      `packages:\n  - "."\n\noverrides:\n${overrides}\n`,
     );
     writeJson(join(consumerDir, "tsconfig.json"), {
       compilerOptions: {
@@ -518,7 +541,7 @@ try {
       "exec",
       "shadcn",
       "add",
-      join(registryDir, `${itemName}.json`),
+      installItemPath,
       "--cwd",
       consumerDir,
       "--yes",
@@ -538,7 +561,7 @@ try {
         `${readFileSync(targetPath, "utf8")}\n${localMarker}\n`,
       );
 
-      const updatedItem = structuredClone(builtItem);
+      const updatedItem = structuredClone(installItem);
       const [updatedFile] = updatedItem.files;
       assert(
         updatedItem.files.length === 1 && updatedFile,
@@ -615,55 +638,21 @@ try {
     );
     for (const dependency of registryItem.dependencies) {
       const name = packageName(dependency);
-      assert(
-        subset(installedPackage.dependencies[name], packageRange(dependency)),
-        `${itemName} installed ${name} outside its declared range`,
-      );
+      installedPackage.dependencies[name] = packageRange(dependency);
     }
+    writeJson(join(consumerDir, "package.json"), installedPackage);
 
-    const publishedPackages = consumer.localPackages.filter(
+    const installedLocalPackages = consumer.localPackages.filter(
       (name) => installedPackage.dependencies?.[name] !== undefined,
     );
-    const overrides = [...tarballs.keys()]
-      .map((name) => `  "${name}": "file:${tarballs.get(name)}"`)
-      .join("\n");
-    writeFileSync(
-      join(consumerDir, "pnpm-workspace.yaml"),
-      `packages:\n  - "."${overrides ? `\n\noverrides:\n${overrides}` : ""}\n`,
-    );
-    if (publishedPackages.length > 0) {
-      await capture("pnpm", ["remove", ...publishedPackages], consumerDir);
-      await capture(
-        "pnpm",
-        [
-          "add",
-          ...publishedPackages.map(
-            (name) => `${name}@file:${tarballs.get(name)}`,
-          ),
-        ],
-        consumerDir,
-      );
-    }
-    // The workspace overrides were just rewritten to local tarballs, so this
-    // generated consumer must refresh its lockfile even when CI defaults to frozen.
-    await capture(
-      "pnpm",
-      ["install", "--strict-peer-dependencies", "--no-frozen-lockfile"],
-      consumerDir,
-    );
-
     const localLockfile = readFileSync(
       join(consumerDir, "pnpm-lock.yaml"),
       "utf8",
     );
-    for (const name of publishedPackages) {
+    for (const name of installedLocalPackages) {
       assert(
         localLockfile.includes(`file:${tarballs.get(name)}`),
         `${itemName} lockfile did not resolve ${name} locally`,
-      );
-      assert(
-        !localLockfile.includes(`${name}@${packageVersions.get(name)}`),
-        `${itemName} lockfile retained published ${name}`,
       );
     }
 

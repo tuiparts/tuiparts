@@ -14,9 +14,8 @@ import {
   type ReactNode,
   type Ref,
   useContext,
-  useRef,
-  useSyncExternalStore,
 } from "react";
+import { useCoreStore } from "../internal/use-core-store";
 
 const ROOT_TAG = "otui-switch-root";
 const THUMB_TAG = "otui-switch-thumb";
@@ -39,13 +38,8 @@ type ThumbProps = Omit<SwitchThumbOptions, "store"> & {
 };
 
 export function Root({ children, ...props }: Root.Props): ReactElement {
-  const storeRef = useRef<SwitchStore | null>(null);
-  if (!storeRef.current) storeRef.current = new SwitchStore(props);
-  const store = storeRef.current;
-  const state = useSyncExternalStore(
-    (listener) => store.subscribe(listener),
-    () => store.state,
-    () => store.state,
+  const [store, state] = useCoreStore<SwitchState, SwitchStore>(
+    () => new SwitchStore(props),
   );
   const content = typeof children === "function" ? children(state) : children;
 

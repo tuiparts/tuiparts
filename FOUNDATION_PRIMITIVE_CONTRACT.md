@@ -2,10 +2,9 @@
 
 ## Status
 
-This document freezes the shared contract for foundation v1 primitives. It is
-based on the Checkbox, RadioGroup, Input, and Dialog tracers. New primitives
-must conform to it. Existing tracers may be hardened against it before legacy
-interfaces are removed.
+This document defines the shared contract for foundation v1 primitives. It is
+grounded in the shipped Checkbox, RadioGroup, Input, and Dialog behavior. New
+primitives and changes to existing primitives must conform to it.
 
 The contract describes public behavior, not a required internal class layout.
 Primitive-specific behavior still belongs in that primitive's public API and
@@ -357,14 +356,13 @@ The minimum behavioral dimensions are:
 - Ref targets and retained identity.
 - Recipe composition without primitive visual defaults.
 
-Pre-release contraction is blocked until the replacement primitive passes
-every applicable surface, packed exports are proven, registry consumers are
-green, and the removal rationale is recorded. Replaced interfaces are not
-retained as deprecated compatibility surfaces.
+A primitive change is not complete until it passes every applicable surface,
+packed exports are proven, registry consumers are green, and any changed
+architectural decision is recorded.
 
-## Tracer Decisions
+## Foundation Evidence
 
-The four tracers establish these precedents:
+The foundation primitives establish these precedents:
 
 - Checkbox proves primitive-owned toggle state, Root activation, a
   retained state-reflecting Indicator, equivalent activation paths, and

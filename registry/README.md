@@ -25,9 +25,8 @@ ordinary `.ts` source rather than framework JSX.
 
 The registry also contains a validated preview Dialog recipe, but it is not
 part of this starter catalog. The already-adopted `@opentui-ui/dialog` and
-`@opentui-ui/toast` packages remain the production paths until their dedicated
-reconciliation work. No legacy exports are retained for the other pre-release
-components.
+`@opentui-ui/toast` packages remain the production companion paths. The preview
+recipe does not replace either package.
 
 ## Compatibility
 

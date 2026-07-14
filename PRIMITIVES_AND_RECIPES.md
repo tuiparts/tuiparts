@@ -2,14 +2,13 @@
 
 ## Direction
 
-OpenTUI UI will separate difficult packaged behavior from opinionated,
+OpenTUI UI separates difficult packaged behavior from opinionated,
 consumer-owned presentation.
 
-This is the formal product architecture for foundation v1. `ROADMAP.md`
-defines the delivery phases, and `.scratch/opentui-primitives-v1/` contains the
-local executable migration plan. `FOUNDATION_PRIMITIVE_CONTRACT.md` freezes the
-public vocabulary, ownership, composition, adapter, lifecycle, and conformance
-rules that primitive implementations must follow.
+This is the formal product architecture for foundation v1.
+`FOUNDATION_PRIMITIVE_CONTRACT.md` defines the public vocabulary, ownership,
+composition, adapter, lifecycle, and conformance rules that primitive
+implementations must follow.
 
 ```text
 @opentui/core
@@ -80,7 +79,7 @@ glyph, label, layout, and appearance.
 
 ## Checkbox Foundation Primitive
 
-Checkbox is the first primitive hardened against the foundation contract:
+Checkbox follows the foundation contract:
 
 - `CheckboxRootRenderable` owns state, subscriptions, focus, and activation.
 - `CheckboxIndicatorRenderable` reflects shared state without choosing content.
@@ -109,11 +108,9 @@ Reference implementations:
 - `registry/checkbox/react.tsx`
 - `registry/checkbox/solid.tsx`
 
-`Checkbox` is now the canonical React and Solid foundation export. The old
-packaged fixed-tree Checkbox and its styling machinery are removed. Editable
-starter recipes reserve one terminal cell for
-`mark`; applications that need a wide mark own the corresponding recipe layout
-change.
+`Checkbox` is the canonical React and Solid foundation export. Editable starter
+recipes reserve one terminal cell for `mark`; applications that need a wide
+mark own the corresponding recipe layout change.
 
 ## Switch Foundation Primitive
 
@@ -163,10 +160,6 @@ Button needs no public parts namespace: arbitrary content inside Button is the
 composition seam, and adding a Label part would package presentation without
 adding behavior.
 
-The earlier fixed-label Core implementation and its styling metadata were
-removed without deprecated aliases; only the foundation activation primitive
-is exported and built.
-
 Reference implementations:
 
 - `packages/core/src/button/primitive.ts`
@@ -186,10 +179,6 @@ Editable Core, React, and Solid Badge recipes are built directly from ordinary
 OpenTUI Box and Text nodes. They own label assembly, intent palettes, size,
 padding, and visual defaults while retaining native root properties and label
 overrides for local customization.
-
-The pre-release `BadgeRenderable`, `Badge`, `/badge` package subpaths, slot
-metadata, fixed child tree, and styled adapter bindings were removed without
-deprecated aliases.
 
 Reference implementations:
 
@@ -216,7 +205,7 @@ Radio behavior has one foundation model:
 
 This keeps every Radio on the same parts, readonly state, change details,
 semantic actions, and actual Renderable refs. See ADR 0002 for the ownership
-decision and legacy prop mapping.
+decision and alternatives considered.
 
 Reference implementations:
 
@@ -234,9 +223,8 @@ framework-specific recipes while depending on shared primitive packages.
 Registry items describe source files, package and recipe dependencies, target
 framework, compatible primitive versions, themes, and documentation.
 
-The project will first adopt the official shadcn registry schema and CLI. A
-proprietary installer is out of scope until an evidenced incompatibility
-requires one.
+The project uses the official shadcn registry schema and CLI. A proprietary
+installer is out of scope until an evidenced incompatibility requires one.
 
 ## Companion Package Boundary
 
@@ -249,6 +237,6 @@ The already-adopted `@opentui-ui/dialog` and `@opentui-ui/toast` packages are
 independently versioned companion products. Their existing manager, provider,
 async, theme, and notification APIs remain supported on their current import
 paths. Reconciling their internals with foundation behavior is separate work
-and does not block the Core, React, Solid, and registry foundation RC. A
-foundation Dialog recipe does not replace the Dialog companion, and no Toast
-foundation destination is implied.
+and does not determine Core, React, Solid, or registry versions. A foundation
+Dialog recipe does not replace the Dialog companion, and no Toast foundation
+destination is implied.

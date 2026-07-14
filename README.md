@@ -12,8 +12,9 @@ The project uses a Base UI/shadcn-inspired architecture:
 - Registry recipes own glyphs, layout, colors, themes, semantic variants, and
   convenience assembly in source controlled by the application.
 
-See [`ROADMAP.md`](./ROADMAP.md) and
-[`PRIMITIVES_AND_RECIPES.md`](./PRIMITIVES_AND_RECIPES.md).
+See [`PRIMITIVES_AND_RECIPES.md`](./PRIMITIVES_AND_RECIPES.md) for the product
+architecture and [`FOUNDATION_PRIMITIVE_CONTRACT.md`](./FOUNDATION_PRIMITIVE_CONTRACT.md)
+for the primitive contract.
 
 Start with the [foundation guide](./docs/foundation.md) to choose package
 primitives or editable recipes and see the Core, React, Solid, Dialog, and
@@ -33,7 +34,7 @@ behavior. Badge is distributed
 only as editable registry source because it has no reusable interaction
 behavior. [`@opentui-ui/dialog`](./packages/dialog) and
 [`@opentui-ui/toast`](./packages/toast) remain independently versioned companion
-products while their primitive relationships are reconciled.
+products with higher-level APIs outside the foundation release line.
 
 The foundation registry catalog contains Checkbox, Switch, Button,
 RadioGroup/Radio, Input, and Badge recipes for Core, React, and Solid. See the
@@ -91,9 +92,6 @@ typechecks every exported subpath, and executes representative runtime imports.
 2. Merge the generated version PR after CI passes.
 3. Publish with npm provenance through the release workflow.
 4. Validate prereleases in clean consumers before promoting a stable tag.
-
-The local migration specification and ticket graph live under
-`.scratch/opentui-primitives-v1/`.
 
 ## License
 

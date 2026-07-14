@@ -65,19 +65,6 @@ and pointer activation, roving focus, disabled behavior, and lifecycle. The
 installed recipe owns labels, marks, layout, spacing, colors, and other
 presentation.
 
-## Legacy Mapping
-
-| Earlier packaged interface | Replacement |
-| --- | --- |
-| `Radio.selected` | `RadioGroup.value` equals the Radio’s `value` |
-| `Radio.onActivate` | `RadioGroup.onValueChange` |
-| `Radio.disabled` | `Radio.Root.disabled` |
-| `Radio.label` | Recipe `label` or consumer children |
-| `Radio.symbols` | Recipe mark / consumer `Radio.Indicator` content |
-| `Radio.styles`, `styleResolver` | Edit/style the public recipe parts |
-| native Box props and ref | `Radio.Root` props and actual Radio Renderable ref |
-| layout-only legacy `RadioGroup` | Direct foundation `RadioGroup` |
-
 ADR 0002 records the ownership and naming decision.
 
 From the workspace root, `pnpm validate:registry` builds every registry item,

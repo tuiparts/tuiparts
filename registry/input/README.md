@@ -1,6 +1,6 @@
-# Input Recipe Tracer
+# Input Recipe
 
-These files are the consumer-owned presentation layer of the Input tracer.
+These files are the consumer-owned presentation layer of Input.
 The root `registry.json` exposes separate `core/input`, `react/input`, and
 `solid/input` items. Installation copies the selected editable recipe to
 `components/ui/input.ts` or `components/ui/input.tsx`; editing behavior remains
@@ -29,9 +29,6 @@ OpenTUI owns the editing buffer, cursor, selection, paste, undo/redo, length
 constraints, and input/change/submit event order. The packaged primitive
 preserves that behavior and adds disabled focus, keyboard, and submit gating.
 The installed recipe owns colors and other opinionated presentation.
-
-The Input primitive and adapter API remains tracer evidence. **The tracer
-contract is not frozen.**
 
 From the workspace root, `pnpm validate:registry` builds every registry item,
 installs each into a clean isolated consumer, compares installed source and

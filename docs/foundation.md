@@ -148,16 +148,8 @@ current notification, theme, icon, React, and Solid APIs. Neither companion is
 re-exported by the foundation packages, and installing a foundation recipe
 does not replace either companion.
 
-Companion packages remain independently versioned and supported. Their future
-internal reconciliation is separate from the foundation RC.
-
-## Pre-Release Removal Policy
-
-The replaced fixed-tree component interfaces were never adopted and are not
-published as deprecated aliases. There is no legacy compatibility component
-set or intermediate compatibility release. Dialog and Toast are retained
-because their dedicated packages have actual consumers, not because they are
-aliases for removed foundation interfaces.
+Companion packages remain independently versioned and supported. Their internal
+reconciliation is separate work and does not determine foundation versions.
 
 ## Release Gates
 

@@ -7,9 +7,9 @@ wrap. This package owns interaction and lifecycle, not recipe presentation.
 
 | Task | File(s) | Notes |
 |------|---------|-------|
-| Add/migrate primitive | `../../.scratch/opentui-primitives-v1/issues/` | Work only the current frontier contract |
-| Primitive behavior | Active ticket contract | Store, public parts, state, events, refs, actions |
-| Primitive tracer | `src/checkbox/primitive.ts` | Store + public Root/Indicator behavior pattern |
+| Add/change primitive | `../../FOUNDATION_PRIMITIVE_CONTRACT.md` | Apply the public contract and conformance matrix |
+| Primitive architecture | `../../PRIMITIVES_AND_RECIPES.md` | Store, public parts, state, events, refs, actions |
+| Compound primitive pattern | `src/checkbox/primitive.ts` | Store + public Root/Indicator behavior pattern |
 | Barrel export | `src/<name>/index.ts` | Re-exports the component's public API |
 | Root exports | `src/index.ts` | Re-exports foundation components |
 

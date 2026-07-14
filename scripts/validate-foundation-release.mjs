@@ -1,5 +1,11 @@
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import {
+  existsSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
@@ -12,18 +18,35 @@ const foundationPackages = [
   "@opentui-ui/solid",
 ];
 const companionPackages = ["@opentui-ui/dialog", "@opentui-ui/toast"];
+const versionedRelease = process.argv.includes("--versioned");
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
 
 try {
-  execFileSync(
-    "pnpm",
-    ["exec", "changeset", "status", "--output", output],
-    { cwd: root, stdio: "inherit" },
+  const preState = JSON.parse(
+    readFileSync(join(root, ".changeset/pre.json"), "utf8"),
   );
-  const plan = JSON.parse(readFileSync(output, "utf8"));
+  let plan;
+  if (versionedRelease) {
+    const changesetIds = readdirSync(join(root, ".changeset"))
+      .filter((file) => file.endsWith(".md") && file !== "README.md")
+      .map((file) => file.slice(0, -3));
+    assert(
+      changesetIds.length > 0 &&
+        changesetIds.every((id) => preState.changesets.includes(id)),
+      "The version PR must record every release changeset as consumed",
+    );
+    plan = { releases: [], preState };
+  } else {
+    execFileSync(
+      "pnpm",
+      ["exec", "changeset", "status", "--output", output],
+      { cwd: root, stdio: "inherit" },
+    );
+    plan = JSON.parse(readFileSync(output, "utf8"));
+  }
   const releases = new Map(
     plan.releases.map((release) => [release.name, release]),
   );
@@ -63,10 +86,24 @@ try {
       !releases.has(packageName),
       `${packageName} is a deferred companion and must not join the foundation RC`,
     );
+    if (versionedRelease) {
+      const packagePath = packageName.split("/").at(-1);
+      const version = JSON.parse(
+        readFileSync(join(root, `packages/${packagePath}/package.json`), "utf8"),
+      ).version;
+      assert(
+        version === preState.initialVersions[packageName],
+        `${packageName} must remain at its pre-RC version`,
+      );
+    }
   }
   assert(
     !releases.has("@opentui-ui/styles"),
     "The removed styles package must not appear in the release plan",
+  );
+  assert(
+    !existsSync(join(root, "packages/styles/package.json")),
+    "The removed styles package must not be restored",
   );
   assert(
     plan.preState?.mode === "pre" && plan.preState?.tag === "rc",

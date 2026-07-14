@@ -53,11 +53,18 @@ jobs:
 
       - name: Validate Changesets status
         run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+          if [[ "${{ github.head_ref }}" == "changeset-release/main" ]]; then
+            echo "Version PR is validated by the post-version release-scope check"
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
             pnpm changeset:status --since=origin/main
           else
             pnpm changeset:status
           fi
 
       - name: Validate foundation release scope
-        run: pnpm validate:release-scope
+        run: |
+          if [[ "${{ github.head_ref }}" == "changeset-release/main" ]]; then
+            pnpm validate:release-scope --versioned
+          else
+            pnpm validate:release-scope
+          fi

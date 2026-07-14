@@ -18,7 +18,9 @@
       ],
       "meta": {
         "framework": "core",
-        "primitiveStatus": "foundation"
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {
@@ -43,7 +45,9 @@
       ],
       "meta": {
         "framework": "react",
-        "primitiveStatus": "foundation"
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {
@@ -67,7 +71,9 @@
       ],
       "meta": {
         "framework": "solid",
-        "primitiveStatus": "foundation"
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       }
     },
     {

@@ -22,7 +22,7 @@ See [`ROADMAP.md`](./ROADMAP.md) and
 | [`@opentui-ui/core`](./packages/core) | Framework-neutral primitive state and Renderables |
 | [`@opentui-ui/react`](./packages/react) | React compound-part adapters |
 | [`@opentui-ui/solid`](./packages/solid) | Solid compound-part adapters |
-| [`registry`](./registry) | Consumer-owned Core, React, and Solid recipes |
+| [`registry`](./registry) | Consumer-owned Core, React, and Solid recipes plus their install/update lifecycle |
 
 The repository is in an expand-contract migration. Button, Checkbox, Dialog,
 Input, RadioGroup, and Switch expose foundation behavior. Badge is distributed

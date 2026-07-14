@@ -1,4 +1,4 @@
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import {
   mkdirSync,
   mkdtempSync,
@@ -77,6 +77,18 @@ function run(command, args, cwd = root) {
   execFileSync(command, args, { cwd, stdio: "inherit" });
 }
 
+function capture(command, args, cwd = root) {
+  const result = spawnSync(command, args, {
+    cwd,
+    encoding: "utf8",
+  });
+  assert(
+    result.status === 0,
+    `${command} ${args.join(" ")} failed:\n${result.stdout}${result.stderr}`,
+  );
+  return `${result.stdout}${result.stderr}`;
+}
+
 function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
@@ -150,6 +162,16 @@ try {
       (item) => item.name === itemName,
     );
     assert(registryItem, `Missing ${itemName} registry item`);
+    if (consumer.recipe === "checkbox") {
+      assert(
+        registryItem.meta?.sourceOwnership === "consumer",
+        `${itemName} must declare consumer-owned recipe source`,
+      );
+      assert(
+        registryItem.meta?.updateStrategy === "shadcn-diff",
+        `${itemName} must declare the shadcn diff update strategy`,
+      );
+    }
     const builtItem = JSON.parse(
       readFileSync(join(registryDir, `${itemName}.json`), "utf8"),
     );
@@ -157,6 +179,10 @@ try {
       JSON.stringify(builtItem.dependencies) ===
         JSON.stringify(registryItem.dependencies),
       `${itemName} build changed registry dependencies`,
+    );
+    assert(
+      JSON.stringify(builtItem.meta) === JSON.stringify(registryItem.meta),
+      `${itemName} build changed registry metadata`,
     );
     const dependencyNames = registryItem.dependencies.map(packageName);
 
@@ -193,6 +219,27 @@ try {
       },
       include: [consumer.target, ...(consumer.smoke ? [consumer.smokeFile] : [])],
     });
+    writeJson(join(consumerDir, "components.json"), {
+      $schema: "https://ui.shadcn.com/schema.json",
+      style: "new-york",
+      rsc: false,
+      tsx: true,
+      tailwind: {
+        config: "",
+        css: "",
+        baseColor: "neutral",
+        cssVariables: false,
+        prefix: "",
+      },
+      iconLibrary: "lucide",
+      aliases: {
+        components: "@/components",
+        hooks: "@/hooks",
+        lib: "@/lib",
+        utils: "@/lib/utils",
+        ui: "@/components/ui",
+      },
+    });
 
     const untouched = "registry installation must not modify this file\n";
     writeFileSync(join(consumerDir, "untouched.txt"), untouched);
@@ -213,6 +260,62 @@ try {
         readFileSync(join(root, consumer.source), "utf8"),
       `Installed ${itemName} recipe differs from its registry source`,
     );
+    if (consumer.recipe === "checkbox") {
+      const targetPath = join(consumerDir, consumer.target);
+      const localMarker = `// consumer-owned edit for ${itemName}`;
+      const upstreamMarker = `// upstream recipe change for ${itemName}`;
+      writeFileSync(
+        targetPath,
+        `${readFileSync(targetPath, "utf8")}\n${localMarker}\n`,
+      );
+
+      const updatedItem = structuredClone(builtItem);
+      const [updatedFile] = updatedItem.files;
+      assert(
+        updatedItem.files.length === 1 && updatedFile,
+        `${itemName} lifecycle tracer expects one recipe file`,
+      );
+      updatedFile.content = `${updatedFile.content}\n${upstreamMarker}\n`;
+      const updatedItemPath = join(
+        workDir,
+        `${consumer.framework}-checkbox-update.json`,
+      );
+      writeJson(updatedItemPath, updatedItem);
+
+      const diff = capture("pnpm", [
+        "dlx",
+        "shadcn@4.13.0",
+        "add",
+        updatedItemPath,
+        "--cwd",
+        consumerDir,
+        "--yes",
+        "--diff",
+      ]);
+      assert(
+        diff.includes(localMarker) && diff.includes(upstreamMarker),
+        `${itemName} diff did not expose local and upstream changes:\n${diff}`,
+      );
+
+      const editedSource = readFileSync(targetPath, "utf8");
+      const updateAttempt = capture("pnpm", [
+        "dlx",
+        "shadcn@4.13.0",
+        "add",
+        updatedItemPath,
+        "--cwd",
+        consumerDir,
+        "--yes",
+      ]);
+      assert(
+        updateAttempt.includes("overwrite"),
+        `${itemName} update did not ask before replacing existing source`,
+      );
+      assert(
+        readFileSync(targetPath, "utf8") === editedSource,
+        `${itemName} update silently overwrote consumer-owned source`,
+      );
+    }
     const afterInstall = snapshotFiles(consumerDir);
     const allowedChanges = new Set([
       "package.json",

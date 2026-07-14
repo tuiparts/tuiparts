@@ -453,7 +453,13 @@ try {
         consumerDir,
       );
     }
-    run("pnpm", ["install", "--strict-peer-dependencies"], consumerDir);
+    // The workspace overrides were just rewritten to local tarballs, so this
+    // generated consumer must refresh its lockfile even when CI defaults to frozen.
+    run(
+      "pnpm",
+      ["install", "--strict-peer-dependencies", "--no-frozen-lockfile"],
+      consumerDir,
+    );
 
     const localLockfile = readFileSync(
       join(consumerDir, "pnpm-lock.yaml"),

@@ -61,14 +61,6 @@ export {
   type RadioGroupValueChangeHandler,
 } from "./radio-group";
 export {
-  applySlotProps,
-  type StyleableSubset,
-  type StyledOptions,
-  type StyleResolver,
-  type TextStyleableSubset,
-  withStyles,
-} from "./styled-renderable";
-export {
   type SwitchRootOptions,
   SwitchRootRenderable,
   type SwitchState,

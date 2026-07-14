@@ -3,7 +3,6 @@ import { defineConfig } from "tsdown";
 export default defineConfig({
   entry: [
     "src/index.ts",
-    "src/styled.ts",
     "src/button/index.tsx",
     "src/checkbox/index.tsx",
     "src/dialog/index.ts",
@@ -20,7 +19,6 @@ export default defineConfig({
       "@opentui/core",
       "@opentui/solid",
       "@opentui-ui/core",
-      "@opentui-ui/styles",
       "solid-js",
     ],
   },

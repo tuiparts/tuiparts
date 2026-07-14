@@ -5,7 +5,7 @@ React bindings for the OpenTUI UI foundation.
 ## Installation
 
 ```bash
-pnpm add @opentui-ui/react @opentui-ui/core @opentui-ui/styles \
+pnpm add @opentui-ui/react @opentui-ui/core \
   @opentui/core @opentui/react react ws
 ```
 
@@ -57,7 +57,6 @@ import { Input } from "@opentui-ui/react/input";
 import { Radio } from "@opentui-ui/react/radio";
 import { RadioGroup } from "@opentui-ui/react/radio-group";
 import { Switch } from "@opentui-ui/react/switch";
-import { styled } from "@opentui-ui/react/styled";
 import { Dialog } from "@opentui-ui/react/dialog";
 ```
 

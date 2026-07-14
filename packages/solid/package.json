@@ -27,8 +27,7 @@
     "./input": "./src/input/index.tsx",
     "./radio": "./src/radio/index.tsx",
     "./radio-group": "./src/radio-group/index.tsx",
-    "./switch": "./src/switch/index.tsx",
-    "./styled": "./src/styled.ts"
+    "./switch": "./src/switch/index.tsx"
   },
   "publishConfig": {
     "main": "./dist/index.mjs",
@@ -65,10 +64,6 @@
       "./switch": {
         "types": "./dist/switch/index.d.mts",
         "import": "./dist/switch/index.mjs"
-      },
-      "./styled": {
-        "types": "./dist/styled.d.mts",
-        "import": "./dist/styled.mjs"
       }
     }
   },
@@ -95,8 +90,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@opentui-ui/core": "workspace:^",
-    "@opentui-ui/styles": "workspace:^"
+    "@opentui-ui/core": "workspace:^"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

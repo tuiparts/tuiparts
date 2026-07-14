@@ -1,0 +1,7 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsxImportSource": "@opentui/solid"
+  },
+  "include": ["fixtures/solid-recipe.tsx"]
+}

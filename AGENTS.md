@@ -1,6 +1,6 @@
 # PROJECT KNOWLEDGE BASE
 
-**Updated:** 2026-07-13
+**Updated:** 2026-07-14
 **Branch:** feat/codebase-cleaning
 
 ## OVERVIEW
@@ -16,7 +16,7 @@ recipes. The styling engine is optional recipe infrastructure.
 opentui-ui/
 ├── packages/
 │   ├── core/         # Framework-neutral primitive behavior + shared migration infrastructure
-│   ├── styles/       # Optional recipe styling (styled(), variants, slots)
+│   ├── styles/       # Optional recipe contracts, variants, selectors, slots
 │   ├── react/        # React primitive adapters + legacy bindings
 │   ├── solid/        # Solid primitive adapters + legacy bindings
 │   ├── dialog/       # Temporary Dialog compatibility/convenience package
@@ -49,10 +49,10 @@ opentui-ui/
 
 | Symbol | Type | Location | Role |
 |--------|------|----------|------|
-| `createStyled` | Function | `packages/styles/src/styled.ts` | Factory for styled component definitions |
+| `createRecipe` | Function | `packages/styles/src/recipe.ts` | Creates a framework-neutral recipe style resolver |
 | `createStyleResolver` | Function | `packages/styles/src/resolve.ts` | Resolves styles from config + state |
 | `processStyledConfig` | Function | `packages/styles/src/resolve.ts` | Pre-processes config for performance |
-| `withStyles` | Function | `packages/core/src/styled-renderable.ts` | Legacy/recipe style mixin; not the primitive base contract |
+| `assignStyleProps` | Function | `packages/styles/src/assign.ts` | Applies a resolved recipe slot to an imperative Renderable |
 | `CheckboxRenderable` | Class | `packages/core/src/checkbox/checkbox.ts` | Checkbox component logic |
 | `CheckboxRootRenderable` | Class | `packages/core/src/checkbox/primitive.ts` | Checkbox state, activation, and Indicator owner |
 | `splitVariantProps` | Function | `packages/styles/src/styled.ts` | Separates variant props from rest |
@@ -89,7 +89,7 @@ opentui-ui/
 - **Framework adapters** - Put same-instance Store setters on Core Renderables; do not subclass solely to make reconciler prop assignment legal
 - **Recipe styling** - Consumer-owned recipes may expose slots, variants, and state selectors
 - **State selectors** - Recipe styles target metadata states with `_checked`, `_focused`, and similar keys
-- **Component meta** - Components carry metadata via `$$OtuiComponentMeta` symbol
+- **Recipe contracts** - Recipes declare private style slots independently of primitive parts
 - **Migration pattern** - New primitive behavior follows the active ticket contract; recipes do not create behaviorless package components
 
 ## COMMANDS

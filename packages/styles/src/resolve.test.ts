@@ -1,10 +1,10 @@
 import { describe, expect, it } from "bun:test";
-import {
-  createStyleResolver,
-  processStyledConfig,
-  resolveStyles,
-} from "./resolve";
-import type { StyledConfig, StyledSlotStyles, VariantsConfig } from "./types";
+import { processRecipeConfiguration, resolveRecipeStyles } from "./resolve";
+import type {
+  RecipeConfiguration,
+  RecipeVariants,
+  SlotStyleSet,
+} from "./types";
 
 // =============================================================================
 // Test Fixture
@@ -24,14 +24,14 @@ type TestStateKeys = typeof TEST_STATE_KEYS;
 
 // Generic in V so each call infers its own variant shape from the config
 // literal. (CompoundVariant's mapped-key shape collapses badly when V = any.)
-function resolve<V extends VariantsConfig<TestSlotStyleMap, TestStateKeys>>(
-  config: StyledConfig<TestSlotStyleMap, TestStateKeys, V>,
+function resolve<V extends RecipeVariants<TestSlotStyleMap, TestStateKeys>>(
+  config: RecipeConfiguration<TestSlotStyleMap, TestStateKeys, V>,
   state: Partial<Record<TestStateKeys[number], boolean>> = {},
   variantProps: Record<string, string> = {},
-  inlineStyles?: StyledSlotStyles<TestSlotStyleMap, TestStateKeys>,
+  inlineStyles?: SlotStyleSet<TestSlotStyleMap, TestStateKeys>,
 ) {
-  const processed = processStyledConfig(config, TEST_STATE_KEYS);
-  return resolveStyles(
+  const processed = processRecipeConfiguration(config, TEST_STATE_KEYS);
+  return resolveRecipeStyles(
     processed,
     state,
     variantProps as Partial<Record<keyof V, string>>,
@@ -40,12 +40,12 @@ function resolve<V extends VariantsConfig<TestSlotStyleMap, TestStateKeys>>(
 }
 
 // =============================================================================
-// processStyledConfig
+// processRecipeConfiguration
 // =============================================================================
 
-describe("processStyledConfig", () => {
+describe("processRecipeConfiguration", () => {
   it("populates defaults for missing fields", () => {
-    const processed = processStyledConfig({}, TEST_STATE_KEYS);
+    const processed = processRecipeConfiguration({}, TEST_STATE_KEYS);
     expect(processed.base).toEqual({});
     expect(processed.variants).toEqual({});
     expect(processed.compoundVariants).toEqual([]);
@@ -54,7 +54,7 @@ describe("processStyledConfig", () => {
   });
 
   it("pre-computes variantNameSet for O(1) lookup", () => {
-    const processed = processStyledConfig(
+    const processed = processRecipeConfiguration(
       {
         variants: {
           intent: { primary: { box: {} }, danger: { box: {} } },
@@ -71,10 +71,10 @@ describe("processStyledConfig", () => {
 });
 
 // =============================================================================
-// resolveStyles — base layer
+// resolveRecipeStyles — base layer
 // =============================================================================
 
-describe("resolveStyles: base layer", () => {
+describe("resolveRecipeStyles: base layer", () => {
   it("returns empty result for empty config", () => {
     expect(resolve({})).toEqual({});
   });
@@ -151,10 +151,10 @@ describe("resolveStyles: base layer", () => {
 });
 
 // =============================================================================
-// resolveStyles — variant layer
+// resolveRecipeStyles — variant layer
 // =============================================================================
 
-describe("resolveStyles: variant layer", () => {
+describe("resolveRecipeStyles: variant layer", () => {
   it("applies variant styles when prop matches", () => {
     const result = resolve(
       {
@@ -268,10 +268,10 @@ describe("resolveStyles: variant layer", () => {
 });
 
 // =============================================================================
-// resolveStyles — compound variants
+// resolveRecipeStyles — compound variants
 // =============================================================================
 
-describe("resolveStyles: compound variants", () => {
+describe("resolveRecipeStyles: compound variants", () => {
   it("applies when all conditions match", () => {
     const result = resolve(
       {
@@ -398,10 +398,10 @@ describe("resolveStyles: compound variants", () => {
 });
 
 // =============================================================================
-// resolveStyles — inline styles
+// resolveRecipeStyles — inline styles
 // =============================================================================
 
-describe("resolveStyles: inline styles", () => {
+describe("resolveRecipeStyles: inline styles", () => {
   it("inline overrides everything", () => {
     const result = resolve(
       {
@@ -449,10 +449,10 @@ describe("resolveStyles: inline styles", () => {
 });
 
 // =============================================================================
-// resolveStyles — full precedence sweep
+// resolveRecipeStyles — full precedence sweep
 // =============================================================================
 
-describe("resolveStyles: layer precedence", () => {
+describe("resolveRecipeStyles: layer precedence", () => {
   it("later layers win across base → variant → compound → inline", () => {
     const result = resolve(
       {
@@ -496,53 +496,5 @@ describe("resolveStyles: layer precedence", () => {
       box: { color: "white", backgroundColor: "red", gap: 2 },
       label: { fontWeight: "bold" },
     });
-  });
-});
-
-// =============================================================================
-// createStyleResolver
-// =============================================================================
-
-describe("createStyleResolver", () => {
-  it("returns a callable that resolves styles per state", () => {
-    const processed = processStyledConfig<
-      TestSlotStyleMap,
-      TestStateKeys,
-      VariantsConfig<TestSlotStyleMap, TestStateKeys>
-    >(
-      {
-        base: {
-          box: { color: "white", _checked: { color: "green" } },
-        },
-      },
-      TEST_STATE_KEYS,
-    );
-
-    const resolver = createStyleResolver(processed, {});
-
-    expect(resolver({ checked: false }).box).toEqual({ color: "white" });
-    expect(resolver({ checked: true }).box).toEqual({ color: "green" });
-  });
-
-  it("captures variantProps and inlineStyles", () => {
-    // biome-ignore lint/suspicious/noExplicitAny: any is fine for the variants shape in this runtime test
-    const processed = processStyledConfig<TestSlotStyleMap, TestStateKeys, any>(
-      {
-        variants: {
-          intent: { danger: { box: { color: "red" } } },
-        },
-      },
-      TEST_STATE_KEYS,
-    );
-
-    const resolver = createStyleResolver(
-      processed,
-      { intent: "danger" },
-      { label: { color: "labelColor" } },
-    );
-
-    const out = resolver({});
-    expect(out.box).toEqual({ color: "red" });
-    expect(out.label).toEqual({ color: "labelColor" });
   });
 });

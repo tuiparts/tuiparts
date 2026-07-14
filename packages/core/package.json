@@ -77,7 +77,6 @@
   ],
   "scripts": {
     "build": "tsdown",
-    "bench:slots": "bun run perf/apply-slot-props.bench.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"

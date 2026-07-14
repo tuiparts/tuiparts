@@ -2,11 +2,11 @@ import { STATE_SELECTOR_PREFIX } from "./symbols";
 import type {
   CompoundVariant,
   DefaultVariants,
-  ProcessedStyledConfig,
-  ResolvedSlotStyles,
-  StyledConfig,
-  StyledSlotStyles,
-  VariantsConfig,
+  ProcessedRecipeConfig,
+  RecipeConfiguration,
+  RecipeVariants,
+  ResolvedStyleSlots,
+  SlotStyleSet,
 } from "./types";
 
 // =============================================================================
@@ -21,17 +21,17 @@ import type {
  * @param stateKeys - Component's state keys tuple
  * @returns Processed config ready for runtime resolution
  */
-export function processStyledConfig<
+export function processRecipeConfiguration<
   SlotStyleMap extends Record<string, object>,
   StateKeys extends readonly string[],
-  V extends VariantsConfig<SlotStyleMap, StateKeys>,
+  V extends RecipeVariants<SlotStyleMap, StateKeys>,
 >(
-  config: StyledConfig<SlotStyleMap, StateKeys, V>,
+  config: RecipeConfiguration<SlotStyleMap, StateKeys, V>,
   stateKeys: StateKeys,
-): ProcessedStyledConfig<SlotStyleMap, StateKeys, V> {
+): ProcessedRecipeConfig<SlotStyleMap, StateKeys, V> {
   const variants = config.variants ?? ({} as V);
   return {
-    base: config.base ?? ({} as StyledSlotStyles<SlotStyleMap, StateKeys>),
+    base: config.base ?? ({} as SlotStyleSet<SlotStyleMap, StateKeys>),
     variants,
     compoundVariants: config.compoundVariants ?? [],
     defaultVariants: config.defaultVariants ?? ({} as DefaultVariants<V>),
@@ -58,24 +58,22 @@ export function processStyledConfig<
  * earlier state selector results. This ensures variants can override base
  * state styles without needing to re-specify every state selector.
  *
- * Note: styleResolver is applied by the framework wrapper after this.
- *
  * @param processed - Processed styled config
  * @param state - Current component state (e.g., { checked: true, focused: false })
  * @param variantProps - Variant prop values (e.g., { intent: "warning", size: "lg" })
  * @param inlineStyles - Optional inline styles override
  * @returns Resolved flat slot styles (selectors applied)
  */
-export function resolveStyles<
+export function resolveRecipeStyles<
   SlotStyleMap extends Record<string, object>,
   StateKeys extends readonly string[],
-  V extends VariantsConfig<SlotStyleMap, StateKeys>,
+  V extends RecipeVariants<SlotStyleMap, StateKeys>,
 >(
-  processed: ProcessedStyledConfig<SlotStyleMap, StateKeys, V>,
+  processed: ProcessedRecipeConfig<SlotStyleMap, StateKeys, V>,
   state: Partial<Record<StateKeys[number], boolean>>,
   variantProps: Partial<Record<keyof V, string>>,
-  inlineStyles?: StyledSlotStyles<SlotStyleMap, StateKeys>,
-): ResolvedSlotStyles<SlotStyleMap> {
+  inlineStyles?: SlotStyleSet<SlotStyleMap, StateKeys>,
+): ResolvedStyleSlots<SlotStyleMap> {
   // Accumulator for resolved styles. See "Internal: Style Layer Application" below.
   const result: Record<string, Record<string, unknown>> = {};
 
@@ -122,7 +120,7 @@ export function resolveStyles<
     applyLayerStyles(result, inlineStyles, state, processed.stateKeys);
   }
 
-  return result as ResolvedSlotStyles<SlotStyleMap>;
+  return result as ResolvedStyleSlots<SlotStyleMap>;
 }
 
 // =============================================================================
@@ -143,7 +141,7 @@ export function resolveStyles<
  * Returns false if there are no conditions (only a `styles` key).
  */
 function compoundVariantMatches<
-  V extends VariantsConfig<Record<string, object>, readonly string[]>,
+  V extends RecipeVariants<Record<string, object>, readonly string[]>,
 >(
   compoundVariant: CompoundVariant<
     V,
@@ -185,7 +183,7 @@ function applyLayerStyles<
   StateKeys extends readonly string[],
 >(
   result: Record<string, Record<string, unknown>>,
-  slotStyles: StyledSlotStyles<SlotStyleMap, StateKeys>,
+  slotStyles: SlotStyleSet<SlotStyleMap, StateKeys>,
   state: Partial<Record<StateKeys[number], boolean>>,
   stateKeys: StateKeys,
 ): void {
@@ -264,31 +262,4 @@ function flattenSlotStyle<StateKeys extends readonly string[]>(
       }
     }
   }
-}
-
-// =============================================================================
-// Utility: Create Style Resolver for Framework Wrappers
-// =============================================================================
-
-/**
- * Creates a style resolver function for use with the component's styleResolver prop.
- * This bridges the styled() API with the core renderable's styleResolver mechanism.
- *
- * @param processed - Processed styled config
- * @param variantProps - Current variant prop values
- * @param inlineStyles - Optional inline styles
- * @returns A function that takes component state and returns resolved styles
- */
-export function createStyleResolver<
-  SlotStyleMap extends Record<string, object>,
-  StateKeys extends readonly string[],
-  V extends VariantsConfig<SlotStyleMap, StateKeys>,
->(
-  processed: ProcessedStyledConfig<SlotStyleMap, StateKeys, V>,
-  variantProps: Partial<Record<keyof V, string>>,
-  inlineStyles?: StyledSlotStyles<SlotStyleMap, StateKeys>,
-): (
-  state: Partial<Record<StateKeys[number], boolean>>,
-) => ResolvedSlotStyles<SlotStyleMap> {
-  return (state) => resolveStyles(processed, state, variantProps, inlineStyles);
 }

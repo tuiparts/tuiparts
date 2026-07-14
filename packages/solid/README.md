@@ -5,7 +5,7 @@ Solid bindings for the OpenTUI UI foundation.
 ## Installation
 
 ```bash
-pnpm add @opentui-ui/solid @opentui-ui/core @opentui-ui/styles \
+pnpm add @opentui-ui/solid @opentui-ui/core \
   @opentui/core @opentui/solid solid-js
 ```
 
@@ -46,7 +46,7 @@ export function Settings() {
 ```
 
 Solid props are spread reactively onto the existing Renderable. Signal changes
-update controlled state, labels, variants, and inline styles without remounting.
+update controlled primitive state without remounting.
 
 ## Imports
 
@@ -57,7 +57,6 @@ import { Input } from "@opentui-ui/solid/input";
 import { Radio } from "@opentui-ui/solid/radio";
 import { RadioGroup } from "@opentui-ui/solid/radio-group";
 import { Switch } from "@opentui-ui/solid/switch";
-import { styled } from "@opentui-ui/solid/styled";
 import { Dialog } from "@opentui-ui/solid/dialog";
 ```
 

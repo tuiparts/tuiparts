@@ -1,103 +1,93 @@
 # @opentui-ui/styles
 
-Framework-neutral styling engine for slot-based OpenTUI UI components.
+Optional, framework-neutral styling for consumer-owned OpenTUI recipes.
 
 ## Installation
 
 ```bash
-pnpm add @opentui-ui/styles
+pnpm add @opentui-ui/styles @opentui/core
 ```
 
-Most applications use the framework-specific `styled()` export from
-`@opentui-ui/react/styled` or `@opentui-ui/solid/styled`. This package provides
-the metadata, types, merge logic, and resolver underneath both adapters.
+Core, React, and Solid primitive packages do not import this package. Recipes
+opt in when typed slots, variants, compounds, state selectors, or composition
+are useful.
 
-Component text slots consistently use `color` and `backgroundColor`; adapters
-translate those names to OpenTUI's primitive-specific `fg`, `bg`, or
-`textColor` properties.
-
-## Configuration
+## Recipe Contract
 
 ```ts
-const config = {
+import type { BoxOptions, TextOptions } from "@opentui/core";
+import {
+  createRecipe,
+  defineRecipeContract,
+  type RecipeProps,
+  type StyleProps,
+} from "@opentui-ui/styles";
+
+type BaseProps = BoxOptions & { label: string; onPress?: () => void };
+
+const contract = defineRecipeContract<BaseProps>()({
+  slots: {} as {
+    root: StyleProps<BoxOptions>;
+    label: StyleProps<TextOptions>;
+  },
+  stateKeys: ["disabled", "focused"] as const,
+});
+
+export const buttonStyles = createRecipe(contract, {
   base: {
-    box: { gap: 1, backgroundColor: "transparent" },
-    mark: {
-      color: "#737373",
-      _checked: { color: "#22C55E" },
-      _focused: { color: "#60A5FA" },
-    },
-    label: { color: "#E5E5E5" },
+    root: { paddingX: 1 },
+    label: { fg: "#E5E5E5", _disabled: { fg: "#737373" } },
   },
   variants: {
     tone: {
-      normal: { label: { color: "#E5E5E5" } },
-      danger: { label: { color: "#FCA5A5" } },
-    },
-    size: {
-      compact: { box: { gap: 0 } },
-      normal: { box: { gap: 1 } },
+      neutral: { root: { backgroundColor: "#404040" } },
+      danger: { root: { backgroundColor: "#991B1B" } },
     },
   },
-  compoundVariants: [
-    {
-      tone: "danger",
-      size: "compact",
-      styles: { mark: { color: "#EF4444" } },
-    },
-  ],
-  defaultVariants: {
-    tone: "normal",
-    size: "normal",
-  },
-};
+  defaultVariants: { tone: "neutral" },
+});
+
+export type ButtonRecipeProps = BaseProps & RecipeProps<typeof buttonStyles>;
 ```
 
-## Resolution Order
+The contract belongs to the recipe. Its `root` and `label` slots are private
+presentation targets, not claims about the public parts exported by a
+primitive. The recipe maps `buttonStyles.resolve(recipeProps, state)` onto the
+OpenTUI nodes and primitive parts it owns.
 
-Styles merge from lowest to highest precedence:
+Variant names that collide with `BaseProps` are rejected. A recipe cannot
+silently consume `disabled`, `children`, `label`, `onPress`, or any other
+behavior, content, native, or event prop declared by its component.
 
-1. `base`
-2. selected variants, in declaration order
-3. matching compound variants, in declaration order
-4. per-instance inline `styles`
-5. matching state selectors inside each resolved slot
+## Resolution
 
-Slot objects merge by property. A later slot property replaces the earlier
-value without discarding unrelated properties in that slot.
+Style layers merge from lowest to highest precedence:
 
-## State Selectors
+1. Base styles
+2. Selected variants, in declaration order
+3. Matching compound variants, in declaration order
+4. Per-instance inline `styles`
 
-Selectors use an underscore followed by a component metadata state key, such
-as `_checked`, `_selected`, `_focused`, `_pressed`, or `_disabled`. They may be
-used in base, variant, compound-variant, and inline slot styles. Components
-without state keys do not accept selectors.
-
-## Inline Overrides
-
-Framework styled components accept a final `styles` prop:
-
-```tsx
-<StyledCheckbox
-  tone="danger"
-  styles={{
-    mark: { color: "#F59E0B", _checked: { color: "#D97706" } },
-  }}
-/>
-```
-
-React callers should keep dynamic inline objects referentially stable when
-practical. Solid tracks variant and style getters reactively.
+Active underscore selectors such as `_checked`, `_focused`, and `_disabled`
+resolve inside every layer. This lets a later variant or inline selector
+override an earlier state result deterministically.
 
 ## Composition
 
-Calling `styled()` on an already styled component merges both processed
-configurations and retains the deepest unstyled base. This avoids nested
-Renderable wrappers and duplicate registration.
+`extendRecipe(base, config)` merges base styles, variant names and values,
+defaults, and compounds. Its inferred props retain all inherited variants.
 
-Low-level consumers can use `createStyled`, `createStyleResolver`,
-`processStyledConfig`, `resolveStyles`, `mergeStyledConfig`, and the exported
-metadata/type helpers directly.
+## Framework Use
+
+There is no React or Solid wrapper. React recipes may call
+`recipe.splitProps(props)` on each render. Solid recipes use Solid's
+`splitProps()` and pass the reactive recipe-prop proxy directly to
+`recipe.resolve()`. Strict examples for both frameworks live in `fixtures/`.
+
+Imperative Core recipes can apply a resolved slot to an existing Renderable
+with `assignStyleProps()`. It normalizes shorthand properties, restores native
+values when a property disappears, snapshots mutable colors, and skips safe
+redundant assignments without retaining component props or style layers.
 
 ## License
 

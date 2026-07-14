@@ -105,7 +105,6 @@ try {
     "@opentui-ui/react/radio",
     "@opentui-ui/react/radio-group",
     "@opentui-ui/react/switch",
-    "@opentui-ui/react/styled",
     "@opentui-ui/solid",
     "@opentui-ui/solid/button",
     "@opentui-ui/solid/checkbox",
@@ -113,7 +112,6 @@ try {
     "@opentui-ui/solid/radio",
     "@opentui-ui/solid/radio-group",
     "@opentui-ui/solid/switch",
-    "@opentui-ui/solid/styled",
     "@opentui-ui/dialog",
     "@opentui-ui/dialog/themes",
     "@opentui-ui/dialog/react",
@@ -130,10 +128,25 @@ try {
   const references = entrypoints
     .map((_, index) => `module${index}`)
     .join(", ");
+  const stylesModule = `module${entrypoints.indexOf("@opentui-ui/styles")}`;
+  const recipeConsumer = `
+type RecipeBaseProps = { disabled?: boolean; label: string };
+const recipeContract = ${stylesModule}.defineRecipeContract<RecipeBaseProps>()({
+  slots: {} as { root: { color?: string } },
+  stateKeys: ["disabled"] as const,
+});
+const recipe = ${stylesModule}.createRecipe(recipeContract, {
+  base: { root: { color: "white", _disabled: { color: "gray" } } },
+  variants: { tone: { neutral: {}, danger: { root: { color: "red" } } } },
+  defaultVariants: { tone: "neutral" },
+});
+const resolved = recipe.resolve({ tone: "danger" }, { disabled: false });
+void resolved;
+`;
 
   writeFileSync(
     join(consumerDir, "consumer.ts"),
-    `${imports}\n\nvoid [${references}];\n`,
+    `${imports}\n${recipeConsumer}\nvoid [${references}];\n`,
   );
   writeFileSync(
     join(consumerDir, "runtime.mjs"),

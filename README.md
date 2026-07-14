@@ -48,7 +48,7 @@ pnpm add @opentui-ui/solid @opentui-ui/core \
 ```
 
 Install `@opentui-ui/styles` separately when authoring typed recipe variants,
-selectors, or styled composition. Primitive behavior does not require it.
+selectors, or recipe composition. Primitive behavior does not require it.
 
 See the package READMEs for exact peer ranges and usage.
 

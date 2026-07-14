@@ -2,9 +2,9 @@ import { STATE_SELECTOR_PREFIX } from "./symbols";
 import type {
   CompoundVariant,
   DefaultVariants,
-  StyledConfig,
-  StyledSlotStyles,
-  VariantsConfig,
+  RecipeConfiguration,
+  RecipeVariants,
+  SlotStyleSet,
 } from "./types";
 
 // =============================================================================
@@ -84,10 +84,10 @@ export function mergeSlotStyles<
   SlotStyleMap extends Record<string, object>,
   StateKeys extends readonly string[],
 >(
-  base: StyledSlotStyles<SlotStyleMap, StateKeys>,
-  override: StyledSlotStyles<SlotStyleMap, StateKeys>,
-): StyledSlotStyles<SlotStyleMap, StateKeys> {
-  const result = { ...base } as StyledSlotStyles<SlotStyleMap, StateKeys>;
+  base: SlotStyleSet<SlotStyleMap, StateKeys>,
+  override: SlotStyleSet<SlotStyleMap, StateKeys>,
+): SlotStyleSet<SlotStyleMap, StateKeys> {
+  const result = { ...base } as SlotStyleSet<SlotStyleMap, StateKeys>;
 
   for (const slot in override) {
     if (Object.hasOwn(override, slot)) {
@@ -171,7 +171,7 @@ function mergeSlotStyleWithSelectors(
 }
 
 // =============================================================================
-// Styled Config Merging (for composition)
+// Recipe Configuration Merging (for composition)
 // =============================================================================
 
 /**
@@ -203,7 +203,7 @@ function mergeSlotStyleWithSelectors(
  *   defaultVariants: { intent: "danger" }
  * };
  *
- * mergeStyledConfig(base, override)
+ * mergeRecipeConfiguration(base, override)
  * // => {
  * //   base: { root: { color: "white", backgroundColor: "black" } },
  * //   variants: {
@@ -216,19 +216,19 @@ function mergeSlotStyleWithSelectors(
  * // }
  * ```
  */
-export function mergeStyledConfig<
+export function mergeRecipeConfiguration<
   SlotStyleMap extends Record<string, object>,
   StateKeys extends readonly string[],
-  V1 extends VariantsConfig<SlotStyleMap, StateKeys>,
-  V2 extends VariantsConfig<SlotStyleMap, StateKeys>,
+  V1 extends RecipeVariants<SlotStyleMap, StateKeys>,
+  V2 extends RecipeVariants<SlotStyleMap, StateKeys>,
 >(
-  baseConfig: StyledConfig<SlotStyleMap, StateKeys, V1>,
-  overrideConfig: StyledConfig<SlotStyleMap, StateKeys, V2>,
-): StyledConfig<SlotStyleMap, StateKeys, V1 & V2> {
+  baseConfig: RecipeConfiguration<SlotStyleMap, StateKeys, V1>,
+  overrideConfig: RecipeConfiguration<SlotStyleMap, StateKeys, V2>,
+): RecipeConfiguration<SlotStyleMap, StateKeys, V1 & V2> {
   // Merge base styles
   const mergedBase = mergeSlotStyles<SlotStyleMap, StateKeys>(
-    baseConfig.base ?? ({} as StyledSlotStyles<SlotStyleMap, StateKeys>),
-    overrideConfig.base ?? ({} as StyledSlotStyles<SlotStyleMap, StateKeys>),
+    baseConfig.base ?? ({} as SlotStyleSet<SlotStyleMap, StateKeys>),
+    overrideConfig.base ?? ({} as SlotStyleSet<SlotStyleMap, StateKeys>),
   );
 
   // Merge variants by name
@@ -264,8 +264,8 @@ export function mergeStyledConfig<
 function mergeVariants<
   SlotStyleMap extends Record<string, object>,
   StateKeys extends readonly string[],
-  V1 extends VariantsConfig<SlotStyleMap, StateKeys>,
-  V2 extends VariantsConfig<SlotStyleMap, StateKeys>,
+  V1 extends RecipeVariants<SlotStyleMap, StateKeys>,
+  V2 extends RecipeVariants<SlotStyleMap, StateKeys>,
 >(baseVariants: V1 | undefined, overrideVariants: V2 | undefined): V1 & V2 {
   if (!baseVariants && !overrideVariants) {
     return {} as V1 & V2;
@@ -290,13 +290,10 @@ function mergeVariants<
       } else {
         // Existing variant name - merge values
         result[variantName] = mergeVariantValues<SlotStyleMap, StateKeys>(
-          baseVariant as Record<
-            string,
-            StyledSlotStyles<SlotStyleMap, StateKeys>
-          >,
+          baseVariant as Record<string, SlotStyleSet<SlotStyleMap, StateKeys>>,
           overrideVariant as Record<
             string,
-            StyledSlotStyles<SlotStyleMap, StateKeys>
+            SlotStyleSet<SlotStyleMap, StateKeys>
           >,
         );
       }
@@ -314,9 +311,9 @@ function mergeVariantValues<
   SlotStyleMap extends Record<string, object>,
   StateKeys extends readonly string[],
 >(
-  baseValues: Record<string, StyledSlotStyles<SlotStyleMap, StateKeys>>,
-  overrideValues: Record<string, StyledSlotStyles<SlotStyleMap, StateKeys>>,
-): Record<string, StyledSlotStyles<SlotStyleMap, StateKeys>> {
+  baseValues: Record<string, SlotStyleSet<SlotStyleMap, StateKeys>>,
+  overrideValues: Record<string, SlotStyleSet<SlotStyleMap, StateKeys>>,
+): Record<string, SlotStyleSet<SlotStyleMap, StateKeys>> {
   const result = { ...baseValues };
 
   for (const valueName in overrideValues) {

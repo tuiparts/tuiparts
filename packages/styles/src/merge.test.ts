@@ -1,14 +1,18 @@
 import { describe, expect, it } from "bun:test";
-import { mergeSlotStyles, mergeStyle, mergeStyledConfig } from "./merge";
-import type { StyledConfig, VariantsConfig } from "./types";
+import { mergeRecipeConfiguration, mergeSlotStyles, mergeStyle } from "./merge";
+import type { RecipeConfiguration, RecipeVariants } from "./types";
 
 type TestSlotStyleMap = {
   box: { color?: string; backgroundColor?: string; gap?: number };
   label: { color?: string; fontWeight?: "normal" | "bold" };
 };
 type TestStateKeys = readonly ["checked", "focused", "disabled"];
-type TestVariants = VariantsConfig<TestSlotStyleMap, TestStateKeys>;
-type TestConfig = StyledConfig<TestSlotStyleMap, TestStateKeys, TestVariants>;
+type TestVariants = RecipeVariants<TestSlotStyleMap, TestStateKeys>;
+type TestConfig = RecipeConfiguration<
+  TestSlotStyleMap,
+  TestStateKeys,
+  TestVariants
+>;
 
 // =============================================================================
 // mergeStyle
@@ -111,10 +115,10 @@ describe("mergeSlotStyles", () => {
 });
 
 // =============================================================================
-// mergeStyledConfig
+// mergeRecipeConfiguration
 // =============================================================================
 
-describe("mergeStyledConfig", () => {
+describe("mergeRecipeConfiguration", () => {
   it("deep-merges base styles", () => {
     const base: TestConfig = {
       base: { box: { color: "white", gap: 1 } },
@@ -122,7 +126,7 @@ describe("mergeStyledConfig", () => {
     const override: TestConfig = {
       base: { box: { color: "green" } },
     };
-    const merged = mergeStyledConfig(base, override);
+    const merged = mergeRecipeConfiguration(base, override);
     expect(merged.base).toEqual({ box: { color: "green", gap: 1 } });
   });
 
@@ -137,7 +141,7 @@ describe("mergeStyledConfig", () => {
         intent: { danger: { box: { color: "red" } } },
       },
     };
-    const merged = mergeStyledConfig(base, override);
+    const merged = mergeRecipeConfiguration(base, override);
     expect(merged.variants?.intent).toEqual({
       primary: { box: { color: "blue" } },
       danger: { box: { color: "red" } },
@@ -155,7 +159,7 @@ describe("mergeStyledConfig", () => {
         intent: { primary: { box: { backgroundColor: "darkblue" } } },
       },
     };
-    const merged = mergeStyledConfig(base, override);
+    const merged = mergeRecipeConfiguration(base, override);
     expect(merged.variants?.intent?.primary?.box).toEqual({
       color: "blue",
       backgroundColor: "darkblue",
@@ -169,7 +173,7 @@ describe("mergeStyledConfig", () => {
     const override: TestConfig = {
       variants: { size: { lg: { box: { gap: 2 } } } },
     };
-    const merged = mergeStyledConfig(base, override);
+    const merged = mergeRecipeConfiguration(base, override);
     expect(merged.variants?.intent).toBeDefined();
     expect(merged.variants?.size?.lg?.box?.gap).toBe(2);
   });
@@ -194,7 +198,7 @@ describe("mergeStyledConfig", () => {
         { intent: "primary" as const, styles: { box: { color: "second" } } },
       ],
     };
-    const merged = mergeStyledConfig(base, override);
+    const merged = mergeRecipeConfiguration(base, override);
     expect(merged.compoundVariants).toHaveLength(2);
     expect(merged.compoundVariants?.[0]?.styles?.box?.color).toBe("first");
     expect(merged.compoundVariants?.[1]?.styles?.box?.color).toBe("second");
@@ -207,7 +211,7 @@ describe("mergeStyledConfig", () => {
     const override: TestConfig = {
       defaultVariants: { intent: "danger", size: "lg" },
     };
-    const merged = mergeStyledConfig(base, override);
+    const merged = mergeRecipeConfiguration(base, override);
     expect(merged.defaultVariants).toEqual({
       intent: "danger",
       size: "lg",
@@ -215,7 +219,7 @@ describe("mergeStyledConfig", () => {
   });
 
   it("handles empty configs", () => {
-    const merged = mergeStyledConfig<
+    const merged = mergeRecipeConfiguration<
       TestSlotStyleMap,
       TestStateKeys,
       TestVariants,
@@ -232,7 +236,7 @@ describe("mergeStyledConfig", () => {
       base: { box: { color: "white" } },
       defaultVariants: { intent: "primary" },
     };
-    const merged = mergeStyledConfig<
+    const merged = mergeRecipeConfiguration<
       TestSlotStyleMap,
       TestStateKeys,
       TestVariants,

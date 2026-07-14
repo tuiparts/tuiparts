@@ -1,0 +1,15 @@
+{
+  "extends": "../../examples/core/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "../../examples/core",
+    "types": ["bun", "node"],
+    "typeRoots": ["../../packages/core/node_modules/@types"],
+    "paths": {
+      "@opentui-ui/core/dialog": [
+        "../../packages/core/dist/dialog/index.d.mts"
+      ],
+      "*": ["node_modules/*"]
+    }
+  },
+  "include": ["core.ts"]
+}

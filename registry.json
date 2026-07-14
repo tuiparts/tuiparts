@@ -1,0 +1,501 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "opentui-ui",
+  "homepage": "https://github.com/msmps/opentui-ui",
+  "items": [
+    {
+      "name": "core/checkbox",
+      "type": "registry:item",
+      "title": "Checkbox (Core)",
+      "description": "Editable imperative Checkbox recipe built on the OpenTUI UI foundation primitive.",
+      "dependencies": ["@opentui-ui/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
+      "files": [
+        {
+          "path": "registry/checkbox/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/checkbox.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "react/checkbox",
+      "type": "registry:item",
+      "title": "Checkbox (React)",
+      "description": "Editable React Checkbox recipe built on the OpenTUI UI foundation primitive.",
+      "dependencies": [
+        "@opentui-ui/react@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
+        "@opentui/core@^0.4.3",
+        "@opentui/react@^0.4.3",
+        "react@^19.2.0"
+      ],
+      "files": [
+        {
+          "path": "registry/checkbox/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/checkbox.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "solid/checkbox",
+      "type": "registry:item",
+      "title": "Checkbox (Solid)",
+      "description": "Editable Solid Checkbox recipe built on the OpenTUI UI foundation primitive.",
+      "dependencies": [
+        "@opentui-ui/solid@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
+        "@opentui/core@^0.4.3",
+        "@opentui/solid@^0.4.3",
+        "solid-js@1.9.12"
+      ],
+      "files": [
+        {
+          "path": "registry/checkbox/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/checkbox.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "core/switch",
+      "type": "registry:item",
+      "title": "Switch (Core)",
+      "description": "Editable imperative Switch recipe built on the OpenTUI UI foundation primitive.",
+      "dependencies": ["@opentui-ui/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
+      "files": [
+        {
+          "path": "registry/switch/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/switch.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "react/switch",
+      "type": "registry:item",
+      "title": "Switch (React)",
+      "description": "Editable React Switch recipe built on the OpenTUI UI foundation primitive.",
+      "dependencies": [
+        "@opentui-ui/react@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
+        "@opentui/core@^0.4.3",
+        "@opentui/react@^0.4.3",
+        "react@^19.2.0"
+      ],
+      "files": [
+        {
+          "path": "registry/switch/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/switch.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "solid/switch",
+      "type": "registry:item",
+      "title": "Switch (Solid)",
+      "description": "Editable Solid Switch recipe built on the OpenTUI UI foundation primitive.",
+      "dependencies": [
+        "@opentui-ui/solid@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
+        "@opentui/core@^0.4.3",
+        "@opentui/solid@^0.4.3",
+        "solid-js@1.9.12"
+      ],
+      "files": [
+        {
+          "path": "registry/switch/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/switch.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "core/button",
+      "type": "registry:item",
+      "title": "Button (Core)",
+      "description": "Editable imperative Button recipe built on the OpenTUI UI foundation primitive.",
+      "dependencies": ["@opentui-ui/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
+      "files": [
+        {
+          "path": "registry/button/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/button.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "react/button",
+      "type": "registry:item",
+      "title": "Button (React)",
+      "description": "Editable React Button recipe built on the OpenTUI UI foundation primitive.",
+      "dependencies": [
+        "@opentui-ui/react@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
+        "@opentui/core@^0.4.3",
+        "@opentui/react@^0.4.3",
+        "react@^19.2.0"
+      ],
+      "files": [
+        {
+          "path": "registry/button/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/button.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "solid/button",
+      "type": "registry:item",
+      "title": "Button (Solid)",
+      "description": "Editable Solid Button recipe built on the OpenTUI UI foundation primitive.",
+      "dependencies": [
+        "@opentui-ui/solid@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
+        "@opentui/core@^0.4.3",
+        "@opentui/solid@^0.4.3",
+        "solid-js@1.9.12"
+      ],
+      "files": [
+        {
+          "path": "registry/button/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/button.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "core/badge",
+      "type": "registry:item",
+      "title": "Badge (Core)",
+      "description": "Editable imperative Badge recipe built directly from OpenTUI Renderables.",
+      "dependencies": ["@opentui/core@^0.4.3"],
+      "files": [
+        {
+          "path": "registry/badge/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/badge.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "react/badge",
+      "type": "registry:item",
+      "title": "Badge (React)",
+      "description": "Editable React Badge recipe built directly from OpenTUI elements.",
+      "dependencies": [
+        "@opentui/core@^0.4.3",
+        "@opentui/react@^0.4.3",
+        "react@^19.2.0"
+      ],
+      "files": [
+        {
+          "path": "registry/badge/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/badge.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "solid/badge",
+      "type": "registry:item",
+      "title": "Badge (Solid)",
+      "description": "Editable Solid Badge recipe built directly from OpenTUI elements.",
+      "dependencies": [
+        "@opentui/core@^0.4.3",
+        "@opentui/solid@^0.4.3",
+        "solid-js@1.9.12"
+      ],
+      "files": [
+        {
+          "path": "registry/badge/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/badge.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "core/radio-group",
+      "type": "registry:item",
+      "title": "Radio Group (Core)",
+      "description": "Editable imperative Radio and Radio Group recipe built on the OpenTUI UI collection primitive.",
+      "dependencies": ["@opentui-ui/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
+      "files": [
+        {
+          "path": "registry/radio-group/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/radio-group.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "react/radio-group",
+      "type": "registry:item",
+      "title": "Radio Group (React)",
+      "description": "Editable React Radio and Radio Group recipe built on the OpenTUI UI collection primitive.",
+      "dependencies": [
+        "@opentui-ui/react@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
+        "@opentui/core@^0.4.3",
+        "@opentui/react@^0.4.3",
+        "react@^19.2.0"
+      ],
+      "files": [
+        {
+          "path": "registry/radio-group/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/radio-group.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "solid/radio-group",
+      "type": "registry:item",
+      "title": "Radio Group (Solid)",
+      "description": "Editable Solid Radio and Radio Group recipe built on the OpenTUI UI collection primitive.",
+      "dependencies": [
+        "@opentui-ui/solid@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
+        "@opentui/core@^0.4.3",
+        "@opentui/solid@^0.4.3",
+        "solid-js@1.9.12"
+      ],
+      "files": [
+        {
+          "path": "registry/radio-group/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/radio-group.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "core/input",
+      "type": "registry:item",
+      "title": "Input (Core)",
+      "description": "Editable imperative Input recipe preserving OpenTUI-native editing and events.",
+      "dependencies": ["@opentui-ui/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
+      "files": [
+        {
+          "path": "registry/input/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/input.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "tracer",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "react/input",
+      "type": "registry:item",
+      "title": "Input (React)",
+      "description": "Editable React Input recipe preserving OpenTUI-native editing and events.",
+      "dependencies": [
+        "@opentui-ui/react@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
+        "@opentui/core@^0.4.3",
+        "@opentui/react@^0.4.3",
+        "react@^19.2.0"
+      ],
+      "files": [
+        {
+          "path": "registry/input/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/input.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "tracer",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "solid/input",
+      "type": "registry:item",
+      "title": "Input (Solid)",
+      "description": "Editable Solid Input recipe preserving OpenTUI-native editing and events.",
+      "dependencies": [
+        "@opentui-ui/solid@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
+        "@opentui/core@^0.4.3",
+        "@opentui/solid@^0.4.3",
+        "solid-js@1.9.12"
+      ],
+      "files": [
+        {
+          "path": "registry/input/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/input.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "tracer",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "core/dialog",
+      "type": "registry:item",
+      "title": "Dialog (Core)",
+      "description": "Editable imperative Dialog recipe built on the OpenTUI UI overlay primitive tracer.",
+      "dependencies": ["@opentui-ui/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
+      "files": [
+        {
+          "path": "registry/dialog/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/dialog.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "tracer"
+      }
+    },
+    {
+      "name": "react/dialog",
+      "type": "registry:item",
+      "title": "Dialog (React)",
+      "description": "Editable React Dialog recipe built on the OpenTUI UI overlay primitive tracer.",
+      "dependencies": [
+        "@opentui-ui/react@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
+        "@opentui/core@^0.4.3",
+        "@opentui/react@^0.4.3",
+        "react@^19.2.0"
+      ],
+      "files": [
+        {
+          "path": "registry/dialog/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/dialog.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "tracer"
+      }
+    },
+    {
+      "name": "solid/dialog",
+      "type": "registry:item",
+      "title": "Dialog (Solid)",
+      "description": "Editable Solid Dialog recipe built on the OpenTUI UI overlay primitive tracer.",
+      "dependencies": [
+        "@opentui-ui/solid@^0.0.3-rc.0",
+        "@opentui-ui/core@^0.0.3-rc.0",
+        "@opentui/core@^0.4.3",
+        "@opentui/solid@^0.4.3",
+        "solid-js@1.9.12"
+      ],
+      "files": [
+        {
+          "path": "registry/dialog/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/dialog.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "tracer"
+      }
+    }
+  ]
+}

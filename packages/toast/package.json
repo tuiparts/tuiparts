@@ -57,22 +57,24 @@
     "clean": "rm -rf dist"
   },
   "devDependencies": {
+    "@opentui-ui/utils": "workspace:^",
     "@opentui/core": "catalog:",
     "@opentui/react": "catalog:",
     "@opentui/solid": "catalog:",
-    "@opentui-ui/utils": "workspace:^",
-    "@types/bun": "^1",
-    "@types/react": "^19.2.7",
-    "react": "^19.2.3",
-    "solid-js": "^1.9.9",
-    "tsdown": "^0.18.2",
-    "typescript": "^5"
+    "@types/bun": "^1.3.14",
+    "@types/node": "catalog:",
+    "@types/react": "^19.2.17",
+    "react": "^19.2.7",
+    "solid-js": "1.9.12",
+    "tsdown": "^0.22.5",
+    "typescript": "^5.9.3",
+    "ws": "catalog:"
   },
   "peerDependencies": {
     "@opentui/core": "catalog:",
     "@opentui/react": "catalog:",
     "@opentui/solid": "catalog:",
-    "solid-js": "^1.9.9"
+    "solid-js": "1.9.12"
   },
   "peerDependenciesMeta": {
     "@opentui/react": {

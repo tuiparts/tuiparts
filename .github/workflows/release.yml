@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -29,11 +31,37 @@ jobs:
           cache: "pnpm"
           registry-url: "https://registry.npmjs.org"
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build packages
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
         run: pnpm build
+
+      - name: Validate packed packages
+        run: pnpm validate:packages:built
+
+      - name: Validate registry consumers
+        run: pnpm validate:registry:built
+
+      - name: Validate Changesets status
+        run: pnpm changeset:status
+
+      - name: Validate foundation release scope
+        run: pnpm validate:release-scope
 
       - name: Create Release PR or Publish
         id: changesets

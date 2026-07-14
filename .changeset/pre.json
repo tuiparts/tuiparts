@@ -1,0 +1,13 @@
+{
+  "mode": "pre",
+  "tag": "rc",
+  "initialVersions": {
+    "@opentui-ui/core": "0.0.2",
+    "@opentui-ui/dialog": "0.1.2",
+    "@opentui-ui/react": "0.0.2",
+    "@opentui-ui/solid": "0.0.2",
+    "@opentui-ui/toast": "0.0.5",
+    "@opentui-ui/utils": "0.0.1"
+  },
+  "changesets": []
+}

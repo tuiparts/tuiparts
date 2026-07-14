@@ -416,8 +416,8 @@ export function DialogProvider(props: ParentProps<DialogProviderProps>) {
     disposed = true;
     unsubscribe();
     portalItemCache.clear();
+    renderer.root.remove(container);
     container.destroyRecursively();
-    renderer.root.remove(container.id);
     manager.destroy();
   });
 

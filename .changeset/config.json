@@ -3,16 +3,13 @@
   "changelog": ["@changesets/changelog-github", { "repo": "msmps/opentui-ui" }],
   "commit": false,
   "fixed": [],
-  "linked": [
-    [
-      "@opentui-ui/core",
-      "@opentui-ui/react",
-      "@opentui-ui/solid",
-      "@opentui-ui/styles"
-    ]
-  ],
+  "linked": [["@opentui-ui/core", "@opentui-ui/react", "@opentui-ui/solid"]],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": []
+  "ignore": [],
+  "privatePackages": {
+    "version": false,
+    "tag": false
+  }
 }

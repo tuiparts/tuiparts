@@ -256,7 +256,7 @@ export class ToasterRenderable extends BoxRenderable {
     const renderable = this._toastRenderables.get(toast.id);
     if (renderable) {
       this._toastRenderables.delete(toast.id);
-      this.remove(renderable.id);
+      this.remove(renderable);
       renderable.destroy();
       this.requestRender();
     }

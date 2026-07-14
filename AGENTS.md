@@ -1,27 +1,25 @@
 # PROJECT KNOWLEDGE BASE
 
-**Generated:** 2026-01-28
-**Commit:** d926097
-**Branch:** main
-
+**Updated:** 2026-07-14
 ## OVERVIEW
 
-Terminal UI component library for OpenTUI. Monorepo with framework-agnostic core + React/Solid bindings. Stitches-inspired styling engine with type-safe variants.
+Terminal primitive and editable-recipe ecosystem for OpenTUI. The monorepo is
+built around framework-neutral Core behavior, React/Solid compound-part
+adapters, and shadcn-compatible consumer-owned recipes written with plain
+TypeScript and native OpenTUI properties.
 
 ## STRUCTURE
 
 ```
 opentui-ui/
 ├── packages/
-│   ├── core/         # Framework-agnostic component logic (Badge, Checkbox)
-│   ├── styles/       # Styling engine (styled(), variants, slots)
-│   ├── react/        # React bindings
-│   ├── solid/        # SolidJS bindings
-│   ├── dialog/       # Dialog/modal system with async prompt/confirm/alert/choice
-│   ├── toast/        # Sonner-inspired toast notifications with theming
+│   ├── core/         # Framework-neutral primitive behavior
+│   ├── react/        # React primitive adapters
+│   ├── solid/        # Solid primitive adapters
+│   ├── dialog/       # Independently versioned Dialog companion package
+│   ├── toast/        # Independently versioned Toast companion package
 │   └── utils/        # Shared utilities (padding resolution, etc.)
-├── examples/         # Example apps (mostly empty)
-├── benchmarks/       # Performance benchmarks
+├── registry/         # Consumer-owned Core/React/Solid recipe source
 └── scripts/          # Package scaffolding
 ```
 
@@ -29,37 +27,34 @@ opentui-ui/
 
 | Task | Location | Notes |
 |------|----------|-------|
-| Add new component | `packages/core/src/` | Create subfolder with types, constants, meta, component |
+| Add/change primitive | `FOUNDATION_PRIMITIVE_CONTRACT.md` | Start with the public contract and applicable conformance rows |
+| Primitive architecture | `PRIMITIVES_AND_RECIPES.md` | Package behavior; copy opinionated recipes |
+| Architecture decisions | `docs/adr/` | Read accepted ADRs before changing public APIs, ownership, package boundaries, or adapter state flow |
+| Foundation usage | `docs/foundation.md` | Package versus registry choice and public component matrix |
+| Editable recipes | `registry/` | Framework-specific source built on packaged primitives |
 | React binding | `packages/react/src/` | Mirrors core structure |
 | Solid binding | `packages/solid/src/` | Mirrors core structure |
-| Styling API | `packages/styles/src/` | `styled.ts` is the factory |
-| State resolution | `packages/styles/src/resolve.ts` | Variant + state style resolution |
-| Style merging | `packages/styles/src/merge.ts` | Slot style composition |
 | New package | `./scripts/create-package.sh` | Scaffolds package structure |
 
 ## CODE MAP
 
 | Symbol | Type | Location | Role |
 |--------|------|----------|------|
-| `createStyled` | Function | `packages/styles/src/styled.ts` | Factory for styled component definitions |
-| `createStyleResolver` | Function | `packages/styles/src/resolve.ts` | Resolves styles from config + state |
-| `processStyledConfig` | Function | `packages/styles/src/resolve.ts` | Pre-processes config for performance |
-| `StyledRenderable` | Class | `packages/core/src/styled-renderable.ts` | Base class for styled components |
-| `BadgeRenderable` | Class | `packages/core/src/badge/badge.ts` | Badge component logic |
-| `CheckboxRenderable` | Class | `packages/core/src/checkbox/checkbox.ts` | Checkbox component logic |
-| `splitVariantProps` | Function | `packages/styles/src/styled.ts` | Separates variant props from rest |
+| `CheckboxRootRenderable` | Class | `packages/core/src/checkbox/primitive.ts` | Checkbox state, activation, and Indicator owner |
 | `toast` | Object | `packages/toast/src/state.ts` | Global toast API (toast.success, toast.error, etc.) |
 | `ToasterRenderable` | Class | `packages/toast/src/renderables/toaster.ts` | Container that manages toast notifications |
-| `DialogManager` | Class | `packages/dialog/src/manager.ts` | Manages dialog state with prompt/confirm/alert/choice |
+| `DialogStore` | Class | `packages/core/src/dialog/index.ts` | Foundation Dialog state and layer coordination |
+| `DialogManager` | Class | `packages/dialog/src/manager.ts` | Production convenience state with prompt/confirm/alert/choice |
 | `DialogContainerRenderable` | Class | `packages/dialog/src/renderables/dialog-container.ts` | Container that renders dialogs with backdrop |
 
 ## CONVENTIONS
 
+- **Accepted ADRs are binding context** - Read `docs/adr/*.md` before architectural work and update or supersede the relevant ADR when a decision changes
 - **pnpm workspace** - Use `pnpm -r` for recursive commands
 - **ES Modules** - All packages use `"type": "module"`
 - **Biome** - Linting/formatting (spaces, double quotes)
 - **tsdown** - Bundler for all packages
-- **Changesets** - Versioning (core/react/solid/styles linked)
+- **Changesets** - Versioning (core/react/solid linked)
 - **Catalog deps** - Peer deps use `"catalog:"` in package.json
 - **Source-first exports** - Dev uses `./src/`, publishConfig has `./dist/`
 - **verbatimModuleSyntax** - Explicit `type` imports required
@@ -69,15 +64,16 @@ opentui-ui/
 
 - **DO NOT** use tabs (project uses 2-space indent)
 - **DO NOT** skip `type` keyword for type-only imports
-- **DO NOT** expect tests (no test framework configured)
+- **DO NOT** skip public-behavior tests; Core, React, and Solid use Bun tests at their supported seams
 - **DO NOT** ignore biome-ignore comments without justification
 
 ## UNIQUE STYLES
 
-- **Slot-based styling** - Components expose slots (e.g., `root`, `indicator`, `label`)
-- **State selectors** - Styles can target states like `$hover`, `$focus`, `$checked`
-- **Component meta** - Components carry metadata via `$$OtuiComponentMeta` symbol
-- **Renderable pattern** - Core components extend `StyledRenderable` base class
+- **Public parts** - Primitives expose independently composable nodes; parts are not merely style slots
+- **Passive part ownership** - State-reflecting parts consume their Core Store directly; do not fake a Root or subclass a part just to adapt Store ownership
+- **Framework adapters** - Put same-instance Store setters on Core Renderables; do not subclass solely to make reconciler prop assignment legal
+- **Recipe styling** - Consumer-owned recipes use ordinary TypeScript and native OpenTUI properties
+- **Primitive implementation** - New behavior follows the foundation contract; recipes do not create behaviorless package components
 
 ## COMMANDS
 
@@ -93,6 +89,8 @@ pnpm create <name>   # Scaffold new package
 
 ## NOTES
 
-- **No tests**: Project lacks test framework - relies on TypeScript for validation
-- **Linked versioning**: core, react, solid, styles version together
+- **Companion boundary**: Dialog primitive behavior is in Core/React/Solid;
+  `@opentui-ui/dialog` and `@opentui-ui/toast` remain adopted, independently
+  versioned companion products outside the foundation release line.
+- **Linked versioning**: core, react, and solid version together
 - **OpenTUI peer deps**: Uses pnpm catalog for `@opentui/core`, `@opentui/react`, `@opentui/solid`

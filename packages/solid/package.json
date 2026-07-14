@@ -5,8 +5,13 @@
   "author": "Matt Simpson",
   "license": "MIT",
   "sideEffects": [
-    "./dist/badge/**",
-    "./dist/checkbox/**"
+    "./dist/button/**",
+    "./dist/checkbox/**",
+    "./dist/dialog/**",
+    "./dist/input/**",
+    "./dist/radio/**",
+    "./dist/radio-group/**",
+    "./dist/switch/**"
   ],
   "repository": {
     "type": "git",
@@ -16,9 +21,13 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./badge": "./src/badge/index.tsx",
+    "./button": "./src/button/index.tsx",
     "./checkbox": "./src/checkbox/index.tsx",
-    "./styled": "./src/styled.ts"
+    "./dialog": "./src/dialog/index.ts",
+    "./input": "./src/input/index.tsx",
+    "./radio": "./src/radio/index.tsx",
+    "./radio-group": "./src/radio-group/index.tsx",
+    "./switch": "./src/switch/index.tsx"
   },
   "publishConfig": {
     "main": "./dist/index.mjs",
@@ -28,17 +37,33 @@
         "types": "./dist/index.d.mts",
         "import": "./dist/index.mjs"
       },
-      "./badge": {
-        "types": "./dist/badge/index.d.mts",
-        "import": "./dist/badge/index.mjs"
+      "./button": {
+        "types": "./dist/button/index.d.mts",
+        "import": "./dist/button/index.mjs"
       },
       "./checkbox": {
         "types": "./dist/checkbox/index.d.mts",
         "import": "./dist/checkbox/index.mjs"
       },
-      "./styled": {
-        "types": "./dist/styled.d.mts",
-        "import": "./dist/styled.mjs"
+      "./dialog": {
+        "types": "./dist/dialog/index.d.mts",
+        "import": "./dist/dialog/index.mjs"
+      },
+      "./input": {
+        "types": "./dist/input/index.d.mts",
+        "import": "./dist/input/index.mjs"
+      },
+      "./radio": {
+        "types": "./dist/radio/index.d.mts",
+        "import": "./dist/radio/index.mjs"
+      },
+      "./radio-group": {
+        "types": "./dist/radio-group/index.d.mts",
+        "import": "./dist/radio-group/index.mjs"
+      },
+      "./switch": {
+        "types": "./dist/switch/index.d.mts",
+        "import": "./dist/switch/index.mjs"
       }
     }
   },
@@ -60,27 +85,28 @@
   ],
   "scripts": {
     "build": "tsdown",
+    "test": "bun test --preload @opentui/solid/preload",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@opentui-ui/core": "workspace:^",
-    "@opentui-ui/styles": "workspace:^"
+    "@opentui-ui/core": "workspace:^"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.5",
-    "@babel/preset-typescript": "^7.28.5",
+    "@babel/core": "^7.29.7",
+    "@babel/preset-typescript": "^7.29.7",
     "@opentui/core": "catalog:",
     "@opentui/solid": "catalog:",
-    "@types/bun": "^1",
-    "babel-preset-solid": "1.9.9",
-    "solid-js": "1.9.9",
-    "tsdown": "^0.18.2",
-    "typescript": "^5"
+    "@types/bun": "^1.3.14",
+    "@types/node": "catalog:",
+    "babel-preset-solid": "1.9.12",
+    "solid-js": "1.9.12",
+    "tsdown": "^0.22.5",
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "@opentui/core": "catalog:",
     "@opentui/solid": "catalog:",
-    "solid-js": "^1.9.9"
+    "solid-js": "1.9.12"
   }
 }

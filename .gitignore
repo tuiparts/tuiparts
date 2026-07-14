@@ -25,6 +25,7 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # caches
 .eslintcache
 .cache
+.pnpm-store/
 *.tsbuildinfo
 
 # IntelliJ based IDEs
@@ -39,7 +40,7 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # Miscellaneous
 .opencode/
 .knowledge
-docs/
+planning/
 
 # examples
 examples/

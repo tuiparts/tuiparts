@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -23,11 +25,53 @@ jobs:
           node-version: 20
           cache: "pnpm"
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Lint
         run: pnpm lint
 
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
       - name: Build
         run: pnpm build
+
+      - name: Validate packed packages
+        run: pnpm validate:packages:built
+
+      - name: Validate registry consumers
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            pnpm validate:registry:built --since=origin/main
+          else
+            pnpm validate:registry:built
+          fi
+
+      - name: Validate Changesets status
+        run: |
+          if [[ "${{ github.head_ref }}" == "changeset-release/main" ]]; then
+            echo "Version PR is validated by the post-version release-scope check"
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            pnpm changeset:status --since=origin/main
+          else
+            pnpm changeset:status
+          fi
+
+      - name: Validate foundation release scope
+        run: |
+          if [[ "${{ github.head_ref }}" == "changeset-release/main" ]]; then
+            pnpm validate:release-scope --versioned
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            pnpm validate:release-scope --since=origin/main
+          else
+            pnpm validate:release-scope
+          fi

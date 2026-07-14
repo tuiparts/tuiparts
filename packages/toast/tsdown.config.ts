@@ -11,11 +11,13 @@ export default defineConfig({
   format: "esm",
   dts: true,
   clean: true,
-  external: [
-    "@opentui/core",
-    "@opentui/react",
-    "@opentui/solid",
-    "react",
-    "solid-js",
-  ],
+  deps: {
+    neverBundle: [
+      "@opentui/core",
+      "@opentui/react",
+      "@opentui/solid",
+      "react",
+      "solid-js",
+    ],
+  },
 });

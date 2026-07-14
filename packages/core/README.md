@@ -1,187 +1,82 @@
 # @opentui-ui/core
 
-Framework-agnostic core renderables for terminal UI components built on [OpenTUI](https://github.com/anomalyco/opentui).
+Framework-neutral OpenTUI behavior for the OpenTUI UI foundation.
+
+New to the package/recipe split? Start with the
+[foundation guide](https://github.com/msmps/opentui-ui/blob/main/docs/foundation.md).
 
 ## Installation
 
 ```bash
-npm install @opentui-ui/core
-# or
-pnpm add @opentui-ui/core
+pnpm add @opentui-ui/core @opentui/core
 ```
 
-## Overview
+The package supports `@opentui/core` `^0.4.3`.
 
-This package provides the foundational component logic that framework bindings (React, Solid) wrap. Components are implemented as `Renderable` classes that can be styled using the companion `@opentui-ui/styles` package.
+## Foundation Modules
 
-## Components
+Foundation modules own terminal interaction and coordination without choosing
+colors, spacing, glyphs, labels, or fixed visual trees.
 
-### Badge
+| Module | Core interface | Public parts |
+| --- | --- | --- |
+| Button | `ButtonStore` | `ButtonRenderable` |
+| Checkbox | `CheckboxStore` | `CheckboxRootRenderable`, `CheckboxIndicatorRenderable` |
+| Dialog | `DialogStore` | Root, Trigger, Portal, Backdrop, Popup, Title, Description, Close Renderables |
+| Input | OpenTUI-native state | `InputRenderable` |
+| Radio / RadioGroup | `RadioGroupStore` | `RadioGroupRenderable`, `RadioRootRenderable`, `RadioIndicatorRenderable` |
+| Switch | `SwitchStore` | `SwitchRootRenderable`, `SwitchThumbRenderable` |
 
-A simple text badge component for displaying labels.
+Core callers pass the owning Store between compound parts. React and Solid hide
+the same wiring behind compound-component context.
 
 ```ts
-import { BadgeRenderable, type BadgeOptions } from "@opentui-ui/core/badge";
+import {
+  CheckboxIndicatorRenderable,
+  CheckboxRootRenderable,
+} from "@opentui-ui/core/checkbox";
 
-const badge = new BadgeRenderable(ctx, {
-  label: "New",
-  styles: {
-    root: {
-      backgroundColor: "#3B82F6",
-      color: "#FFFFFF",
-      paddingX: 2,
-      paddingY: 0,
-    },
-  },
+const root = new CheckboxRootRenderable(ctx, {
+  defaultChecked: true,
+  onCheckedChange: console.log,
+});
+const indicator = new CheckboxIndicatorRenderable(ctx, { store: root.store });
+
+root.add(indicator);
+parent.add(root);
+```
+
+Consumer-owned recipes assemble these parts with native OpenTUI Renderables and
+choose their presentation. Installable examples live under `registry/`.
+
+## Input
+
+`InputRenderable` preserves OpenTUI's mutable `value` and event model instead
+of adding browser-style controlled ownership or `defaultValue`.
+
+```ts
+import { InputRenderable } from "@opentui-ui/core/input";
+
+const input = new InputRenderable(ctx, {
+  value: "initial",
+  onInput: console.log,
+  onChange: commit,
+  onSubmit: submit,
 });
 ```
 
-#### Badge Props
+`onInput` reports buffer mutations, `onChange` reports a changed blur or submit
+commit, and `onSubmit` reports successful Enter submission.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `label` | `string` | `""` | Text content of the badge |
-| `styles` | `BadgeSlotStyles` | - | Static slot styles |
-| `styleResolver` | `(state: BadgeState) => BadgeSlotStyles` | - | Dynamic style resolver |
+## Recipe Boundary
 
-#### Badge Slots
+Behaviorless presentation such as Badge is distributed as editable registry
+source rather than a Core package module. Recipes use ordinary TypeScript and
+native OpenTUI properties; foundation behavior owns no styling infrastructure.
 
-| Slot | Style Props | Description |
-|------|-------------|-------------|
-| `root` | `color`, `backgroundColor`, `paddingX`, `paddingY` | The badge container |
-
-### Checkbox
-
-An interactive checkbox with controlled and uncontrolled modes.
-
-```ts
-import { CheckboxRenderable, CHECKBOX_SYMBOLS } from "@opentui-ui/core/checkbox";
-
-// Uncontrolled
-const checkbox = new CheckboxRenderable(ctx, {
-  label: "Accept terms",
-  defaultChecked: false,
-  symbols: CHECKBOX_SYMBOLS.BALLOT,
-  onCheckedChange: (checked) => console.log("Checked:", checked),
-});
-
-// Controlled
-const controlled = new CheckboxRenderable(ctx, {
-  label: "Subscribe",
-  checked: isSubscribed,
-  onCheckedChange: setIsSubscribed,
-});
-```
-
-#### Checkbox Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `label` | `string` | `""` | Text label next to the checkbox |
-| `checked` | `boolean` | - | Controlled checked state |
-| `defaultChecked` | `boolean` | `false` | Initial checked state (uncontrolled) |
-| `disabled` | `boolean` | `false` | Whether the checkbox is disabled |
-| `focused` | `boolean` | `false` | Whether the checkbox has focus |
-| `symbols` | `CheckboxSymbolSet` | `CIRCLE` | Checked/unchecked symbols |
-| `onCheckedChange` | `(checked: boolean) => void` | - | Called when checked state changes |
-| `styles` | `CheckboxSlotStyles` | - | Static slot styles |
-| `styleResolver` | `(state: CheckboxState) => CheckboxSlotStyles` | - | Dynamic style resolver |
-
-#### Checkbox Slots
-
-| Slot | Style Props | Description |
-|------|-------------|-------------|
-| `box` | `color`, `backgroundColor`, `gap` | The checkbox container |
-| `mark` | `color` | The check/uncheck symbol |
-| `label` | `color` | The label text |
-
-#### Checkbox State
-
-The checkbox exposes state for dynamic styling:
-
-```ts
-interface CheckboxState {
-  checked: boolean;
-  focused: boolean;
-  disabled: boolean;
-}
-```
-
-#### Built-in Symbol Sets
-
-```ts
-import { CHECKBOX_SYMBOLS } from "@opentui-ui/core/checkbox";
-
-CHECKBOX_SYMBOLS.CIRCLE   // { checked: "◉", unchecked: "○" }
-CHECKBOX_SYMBOLS.BALLOT   // { checked: "☑", unchecked: "☐" }
-CHECKBOX_SYMBOLS.CHECK    // { checked: "✓", unchecked: "○" }
-CHECKBOX_SYMBOLS.ASCII    // { checked: "[x]", unchecked: "[ ]" }
-CHECKBOX_SYMBOLS.SQUARE   // { checked: "■", unchecked: "□" }
-```
-
-## Architecture
-
-### Slot System
-
-Components use a slot-based styling system where each visual part of a component is a named "slot":
-
-- **Slots**: Named parts (e.g., `root`, `box`, `label`, `mark`)
-- **SlotStyles**: Object mapping slot names to style properties
-- **State**: Boolean keys for dynamic styling (e.g., `checked`, `focused`)
-
-### StyledRenderable Base Class
-
-All styled components extend `StyledRenderable`, which provides:
-
-- Static styles via `styles` prop
-- Dynamic styles via `styleResolver` prop
-- State-based style resolution via `getState()` / `getResolvedStyles()`
-
-### Component Metadata
-
-Each component exports metadata (`*_META`) used by the `styled()` API for type inference:
-
-```ts
-import { CHECKBOX_META } from "@opentui-ui/core/checkbox";
-
-CHECKBOX_META.slots      // ["box", "mark", "label"]
-CHECKBOX_META.stateKeys  // ["checked", "focused", "disabled"]
-```
-
-## Exports
-
-### Main Entry (`@opentui-ui/core`)
-
-```ts
-// Badge
-export { BadgeRenderable, BADGE_META, BADGE_SLOTS, ... } from "./badge";
-
-// Checkbox
-export { CheckboxRenderable, CHECKBOX_META, CHECKBOX_SLOTS, CHECKBOX_SYMBOLS, ... } from "./checkbox";
-
-// Base classes
-export { StyledRenderable, type StyleResolver, type StyleState, type Styles } from "./styled-renderable";
-
-// Layout props
-export type { BadgeLayoutProps, CheckboxLayoutProps, ContainerLayoutProps } from "./types";
-```
-
-### Subpath Exports
-
-```ts
-import { BadgeRenderable } from "@opentui-ui/core/badge";
-import { CheckboxRenderable } from "@opentui-ui/core/checkbox";
-```
-
-## Peer Dependencies
-
-- `@opentui/core` - The core OpenTUI rendering engine
-
-## Related Packages
-
-- [`@opentui-ui/react`](../react) - React bindings
-- [`@opentui-ui/solid`](../solid) - Solid bindings
-- [`@opentui-ui/styles`](../styles) - Styling engine with variants
+See [`FOUNDATION_PRIMITIVE_CONTRACT.md`](../../FOUNDATION_PRIMITIVE_CONTRACT.md)
+and [`PRIMITIVES_AND_RECIPES.md`](../../PRIMITIVES_AND_RECIPES.md) for the
+ownership and composition contract.
 
 ## License
 

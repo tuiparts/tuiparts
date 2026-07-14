@@ -2,7 +2,7 @@
   "name": "opentui-ui",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.11.0",
+  "packageManager": "pnpm@10.34.5",
   "keywords": [
     "ui",
     "opentui",
@@ -17,12 +17,24 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "pnpm build && changeset publish",
+    "test": "pnpm -r --if-present test",
+    "validate:packages": "pnpm build && node scripts/validate-packages.mjs",
+    "validate:packages:built": "node scripts/validate-packages.mjs",
+    "validate:registry": "node scripts/validate-registry.mjs",
+    "validate:registry:built": "node scripts/validate-registry.mjs --built",
+    "changeset:status": "changeset status",
+    "validate:release-scope": "node scripts/validate-foundation-release.mjs",
+    "validate:foundation": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm validate:packages:built && pnpm validate:registry:built && pnpm validate:release-scope",
     "create": "./scripts/create-package.sh"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.10",
-    "@changesets/changelog-github": "^0.5.2",
-    "@changesets/cli": "^2.29.4",
-    "typescript": "^5"
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@biomejs/biome": "^2.5.3",
+    "@changesets/changelog-github": "^0.7.0",
+    "@changesets/cli": "^2.31.0",
+    "publint": "^0.3.21",
+    "semver": "^7.7.2",
+    "shadcn": "4.13.0",
+    "typescript": "^5.9.3"
   }
 }

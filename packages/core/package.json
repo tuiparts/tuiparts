@@ -13,8 +13,13 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./badge": "./src/badge/index.ts",
-    "./checkbox": "./src/checkbox/index.ts"
+    "./button": "./src/button/index.ts",
+    "./checkbox": "./src/checkbox/index.ts",
+    "./dialog": "./src/dialog/index.ts",
+    "./input": "./src/input/index.ts",
+    "./radio": "./src/radio/index.ts",
+    "./radio-group": "./src/radio-group/index.ts",
+    "./switch": "./src/switch/index.ts"
   },
   "publishConfig": {
     "main": "./dist/index.mjs",
@@ -24,13 +29,33 @@
         "types": "./dist/index.d.mts",
         "import": "./dist/index.mjs"
       },
-      "./badge": {
-        "types": "./dist/badge/index.d.mts",
-        "import": "./dist/badge/index.mjs"
+      "./button": {
+        "types": "./dist/button/index.d.mts",
+        "import": "./dist/button/index.mjs"
       },
       "./checkbox": {
         "types": "./dist/checkbox/index.d.mts",
         "import": "./dist/checkbox/index.mjs"
+      },
+      "./dialog": {
+        "types": "./dist/dialog/index.d.mts",
+        "import": "./dist/dialog/index.mjs"
+      },
+      "./input": {
+        "types": "./dist/input/index.d.mts",
+        "import": "./dist/input/index.mjs"
+      },
+      "./radio": {
+        "types": "./dist/radio/index.d.mts",
+        "import": "./dist/radio/index.mjs"
+      },
+      "./radio-group": {
+        "types": "./dist/radio-group/index.d.mts",
+        "import": "./dist/radio-group/index.mjs"
+      },
+      "./switch": {
+        "types": "./dist/switch/index.d.mts",
+        "import": "./dist/switch/index.mjs"
       }
     }
   },
@@ -52,14 +77,16 @@
   ],
   "scripts": {
     "build": "tsdown",
+    "test": "bun test",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
   "devDependencies": {
     "@opentui/core": "catalog:",
-    "@types/bun": "^1",
-    "tsdown": "^0.18.2",
-    "typescript": "^5"
+    "@types/bun": "^1.3.14",
+    "@types/node": "catalog:",
+    "tsdown": "^0.22.5",
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "@opentui/core": "catalog:"

@@ -1,5 +1,6 @@
-import { execFileSync, spawnSync } from "node:child_process";
+import { spawn } from "node:child_process";
 import {
+  existsSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
@@ -106,21 +107,68 @@ const consumers = recipes.flatMap((recipe) =>
     smoke: `registry/${recipe}/smoke/${framework}.test.${config.extension}`,
   })),
 );
+const built = process.argv.includes("--built");
+const since = process.argv.find((argument) => argument.startsWith("--since="));
+const recipeFilter = process.argv
+  .find((argument) => argument.startsWith("--recipe="))
+  ?.slice("--recipe=".length);
+const frameworkFilter = process.argv
+  .find((argument) => argument.startsWith("--framework="))
+  ?.slice("--framework=".length);
+const jobs = Number(
+  process.argv
+    .find((argument) => argument.startsWith("--jobs="))
+    ?.slice("--jobs=".length) ?? 3,
+);
 
 function run(command, args, cwd = root) {
-  execFileSync(command, args, { cwd, stdio: "inherit" });
+  return new Promise((resolvePromise, reject) => {
+    const child = spawn(command, args, { cwd, stdio: "inherit" });
+    child.once("error", reject);
+    child.once("exit", (code, signal) => {
+      if (code === 0) {
+        resolvePromise();
+        return;
+      }
+      reject(
+        new Error(
+          `${command} ${args.join(" ")} failed with ${signal ?? `exit code ${code}`}`,
+        ),
+      );
+    });
+  });
 }
 
 function capture(command, args, cwd = root) {
-  const result = spawnSync(command, args, {
-    cwd,
-    encoding: "utf8",
+  return new Promise((resolvePromise, reject) => {
+    const child = spawn(command, args, {
+      cwd,
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    let stdout = "";
+    let stderr = "";
+    child.stdout.setEncoding("utf8");
+    child.stderr.setEncoding("utf8");
+    child.stdout.on("data", (chunk) => {
+      stdout += chunk;
+    });
+    child.stderr.on("data", (chunk) => {
+      stderr += chunk;
+    });
+    child.once("error", reject);
+    child.once("close", (code, signal) => {
+      const output = `${stdout}${stderr}`;
+      if (code === 0) {
+        resolvePromise(output);
+        return;
+      }
+      reject(
+        new Error(
+          `${command} ${args.join(" ")} failed with ${signal ?? `exit code ${code}`}\n${output}`,
+        ),
+      );
+    });
   });
-  assert(
-    result.status === 0,
-    `${command} ${args.join(" ")} failed:\n${result.stdout}${result.stderr}`,
-  );
-  return `${result.stdout}${result.stderr}`;
 }
 
 function assert(condition, message) {
@@ -160,7 +208,96 @@ function snapshotFiles(directory, current = directory, files = new Map()) {
   return files;
 }
 
+function validateOptions() {
+  assert(!recipeFilter || recipes.includes(recipeFilter), `Unknown recipe ${recipeFilter}`);
+  assert(
+    !frameworkFilter || Object.hasOwn(frameworks, frameworkFilter),
+    `Unknown framework ${frameworkFilter}`,
+  );
+  assert(Number.isInteger(jobs) && jobs > 0, "--jobs must be a positive integer");
+}
+
+function consumersAffectedBy(paths) {
+  const selected = new Set();
+  let exhaustive = false;
+
+  for (const path of paths) {
+    const recipeSource = path.match(
+      /^registry\/([^/]+)\/(core|react|solid)\.(?:ts|tsx)$/,
+    );
+    const recipeSmoke = path.match(
+      /^registry\/([^/]+)\/smoke\/(core|react|solid)\.test\.(?:ts|tsx)$/,
+    );
+    const recipeMatch = recipeSource ?? recipeSmoke;
+    if (recipeMatch && recipes.includes(recipeMatch[1])) {
+      selected.add(`${recipeMatch[2]}/${recipeMatch[1]}`);
+      continue;
+    }
+    if (path.startsWith("packages/core/")) {
+      exhaustive = true;
+      continue;
+    }
+    if (path.startsWith("packages/react/")) {
+      for (const recipe of recipes) selected.add(`react/${recipe}`);
+      continue;
+    }
+    if (path.startsWith("packages/solid/")) {
+      for (const recipe of recipes) selected.add(`solid/${recipe}`);
+      continue;
+    }
+    if (
+      path === "registry.json" ||
+      path === "package.json" ||
+      path === "pnpm-lock.yaml" ||
+      path === "pnpm-workspace.yaml" ||
+      path === "scripts/validate-registry.mjs"
+    ) {
+      exhaustive = true;
+    }
+  }
+
+  return exhaustive
+    ? consumers
+    : consumers.filter((consumer) =>
+        selected.has(`${consumer.framework}/${consumer.recipe}`),
+      );
+}
+
+async function runPool(items, concurrency, worker) {
+  let next = 0;
+  let failure;
+  async function consume() {
+    while (!failure && next < items.length) {
+      const item = items[next];
+      next += 1;
+      try {
+        await worker(item);
+      } catch (error) {
+        failure = error;
+      }
+    }
+  }
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, items.length) }, consume),
+  );
+  if (failure) throw failure;
+}
+
 try {
+  validateOptions();
+  for (const consumer of consumers) {
+    const itemName = `${consumer.framework}/${consumer.recipe}`;
+    const item = registry.items.find((candidate) => candidate.name === itemName);
+    assert(item, `Missing registry item ${itemName}`);
+    assert(
+      item.files.length === 1 &&
+        item.files[0]?.path === consumer.source &&
+        item.files[0]?.target === consumer.target,
+      `${itemName} must map its recipe source to the expected consumer target`,
+    );
+    assert(existsSync(join(root, consumer.source)), `Missing ${consumer.source}`);
+    assert(existsSync(join(root, consumer.smoke)), `Missing ${consumer.smoke}`);
+  }
   for (const recipe of foundationCatalogRecipes) {
     const reactSource = readFileSync(
       join(root, `registry/${recipe}/react.tsx`),
@@ -205,33 +342,86 @@ try {
   }
   mkdirSync(tarballDir);
 
-  const packageNames = Object.keys(packageDirectories);
-  run("pnpm", packageNames.flatMap((name) => ["--filter", name]).concat("build"));
-
-  const tarballs = new Map();
-  const packageVersions = new Map();
-  for (const [packageName, directory] of Object.entries(packageDirectories)) {
-    const tarball = join(tarballDir, `${directory}.tgz`);
-    run("pnpm", ["--dir", `packages/${directory}`, "pack", "--out", tarball]);
-    tarballs.set(packageName, tarball);
-    packageVersions.set(
-      packageName,
-      JSON.parse(
-        readFileSync(join(root, `packages/${directory}/package.json`), "utf8"),
-      ).version,
+  let selectedConsumers = consumers;
+  if (since) {
+    const changedFiles = (
+      await capture("git", [
+        "diff",
+        "--name-only",
+        `${since.slice("--since=".length)}...HEAD`,
+      ])
+    )
+      .trim()
+      .split("\n")
+      .filter(Boolean);
+    selectedConsumers = consumersAffectedBy(changedFiles);
+  }
+  selectedConsumers = selectedConsumers.filter(
+    (consumer) =>
+      (!recipeFilter || consumer.recipe === recipeFilter) &&
+      (!frameworkFilter || consumer.framework === frameworkFilter),
+  );
+  if (selectedConsumers.length === 0) {
+    console.log("Registry structure is valid; no affected consumers to run.");
+  } else {
+    console.log(
+      `Validating ${selectedConsumers.length} registry consumers with ${Math.min(jobs, selectedConsumers.length)} workers.`,
     );
   }
 
-  run("pnpm", [
-    "dlx",
-    "shadcn@4.13.0",
-    "build",
-    "registry.json",
-    "--output",
-    registryDir,
-  ]);
+  const packageNames = [
+    ...new Set(
+      selectedConsumers.flatMap((consumer) => {
+        const itemName = `${consumer.framework}/${consumer.recipe}`;
+        const item = registry.items.find((candidate) => candidate.name === itemName);
+        const dependencies = new Set(item.dependencies.map(packageName));
+        return consumer.localPackages.filter((name) => dependencies.has(name));
+      }),
+    ),
+  ];
+  if (!built && selectedConsumers.length > 0) {
+    await run(
+      "pnpm",
+      packageNames.flatMap((name) => ["--filter", name]).concat("build"),
+    );
+  }
 
-  for (const consumer of consumers) {
+  const tarballs = new Map();
+  const packageVersions = new Map();
+  if (selectedConsumers.length > 0) {
+    for (const packageName of packageNames) {
+      const directory = packageDirectories[packageName];
+      const tarball = join(tarballDir, `${directory}.tgz`);
+      await run("pnpm", [
+        "--dir",
+        `packages/${directory}`,
+        "pack",
+        "--out",
+        tarball,
+      ]);
+      tarballs.set(packageName, tarball);
+      packageVersions.set(
+        packageName,
+        JSON.parse(
+          readFileSync(join(root, `packages/${directory}/package.json`), "utf8"),
+        ).version,
+      );
+    }
+  }
+
+  if (selectedConsumers.length > 0) {
+    await run("pnpm", [
+      "exec",
+      "shadcn",
+      "build",
+      "registry.json",
+      "--output",
+      registryDir,
+    ]);
+  }
+
+  async function validateConsumer(consumer) {
+    const startedAt = performance.now();
     const itemName = `${consumer.framework}/${consumer.recipe}`;
     const consumerDir = join(
       workDir,
@@ -324,9 +514,9 @@ try {
     writeFileSync(join(consumerDir, "untouched.txt"), untouched);
     const beforeInstall = snapshotFiles(consumerDir);
 
-    run("pnpm", [
-      "dlx",
-      "shadcn@4.13.0",
+    await capture("pnpm", [
+      "exec",
+      "shadcn",
       "add",
       join(registryDir, `${itemName}.json`),
       "--cwd",
@@ -339,7 +529,7 @@ try {
         readFileSync(join(root, consumer.source), "utf8"),
       `Installed ${itemName} recipe differs from its registry source`,
     );
-    if (consumer.recipe === "checkbox") {
+    if (itemName === "react/checkbox") {
       const targetPath = join(consumerDir, consumer.target);
       const localMarker = `// consumer-owned edit for ${itemName}`;
       const upstreamMarker = `// upstream recipe change for ${itemName}`;
@@ -352,7 +542,7 @@ try {
       const [updatedFile] = updatedItem.files;
       assert(
         updatedItem.files.length === 1 && updatedFile,
-        `${itemName} lifecycle tracer expects one recipe file`,
+        `${itemName} lifecycle check expects one recipe file`,
       );
       updatedFile.content = `${updatedFile.content}\n${upstreamMarker}\n`;
       const updatedItemPath = join(
@@ -361,9 +551,9 @@ try {
       );
       writeJson(updatedItemPath, updatedItem);
 
-      const diff = capture("pnpm", [
-        "dlx",
-        "shadcn@4.13.0",
+      const diff = await capture("pnpm", [
+        "exec",
+        "shadcn",
         "add",
         updatedItemPath,
         "--cwd",
@@ -377,9 +567,9 @@ try {
       );
 
       const editedSource = readFileSync(targetPath, "utf8");
-      const updateAttempt = capture("pnpm", [
-        "dlx",
-        "shadcn@4.13.0",
+      const updateAttempt = await capture("pnpm", [
+        "exec",
+        "shadcn",
         "add",
         updatedItemPath,
         "--cwd",
@@ -434,15 +624,16 @@ try {
     const publishedPackages = consumer.localPackages.filter(
       (name) => installedPackage.dependencies?.[name] !== undefined,
     );
+    const overrides = [...tarballs.keys()]
+      .map((name) => `  "${name}": "file:${tarballs.get(name)}"`)
+      .join("\n");
     writeFileSync(
       join(consumerDir, "pnpm-workspace.yaml"),
-      `packages:\n  - "."\n\noverrides:\n${Object.keys(packageDirectories)
-        .map((name) => `  "${name}": "file:${tarballs.get(name)}"`)
-        .join("\n")}\n`,
+      `packages:\n  - "."${overrides ? `\n\noverrides:\n${overrides}` : ""}\n`,
     );
     if (publishedPackages.length > 0) {
-      run("pnpm", ["remove", ...publishedPackages], consumerDir);
-      run(
+      await capture("pnpm", ["remove", ...publishedPackages], consumerDir);
+      await capture(
         "pnpm",
         [
           "add",
@@ -455,7 +646,7 @@ try {
     }
     // The workspace overrides were just rewritten to local tarballs, so this
     // generated consumer must refresh its lockfile even when CI defaults to frozen.
-    run(
+    await capture(
       "pnpm",
       ["install", "--strict-peer-dependencies", "--no-frozen-lockfile"],
       consumerDir,
@@ -482,11 +673,11 @@ try {
         readFileSync(join(root, consumer.smoke), "utf8"),
       );
     }
-    run("pnpm", ["exec", "tsc", "-p", "tsconfig.json"], consumerDir);
+    await capture("pnpm", ["exec", "tsc", "-p", "tsconfig.json"], consumerDir);
     if (consumer.smoke) {
       let smokeFile = consumer.smokeFile;
       if (consumer.smokeBuild) {
-        run(
+        await capture(
           "bun",
           [
             "build",
@@ -502,7 +693,7 @@ try {
         );
         smokeFile = `compiled/${smokeFile.replace(/\.tsx?$/, ".js")}`;
       }
-      run(
+      await capture(
         "bun",
         [
           "test",
@@ -514,7 +705,12 @@ try {
         consumerDir,
       );
     }
+    console.log(
+      `${itemName} passed in ${((performance.now() - startedAt) / 1000).toFixed(1)}s`,
+    );
   }
+
+  await runPool(selectedConsumers, jobs, validateConsumer);
 } finally {
   rmSync(workDir, { recursive: true, force: true });
 }

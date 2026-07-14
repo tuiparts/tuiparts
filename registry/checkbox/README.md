@@ -21,5 +21,6 @@ framework contract.
 From the workspace root, `pnpm validate:registry` installs all three items with
 the official shadcn CLI in isolated consumers, compiles the installed source,
 and runs controlled, uncontrolled, disabled, and custom-mark runtime smokes. It
-also exercises the install, local-edit, upstream-diff, and safe-update lifecycle
-described in [`registry/README.md`](../README.md).
+also uses the React item to exercise the framework-independent install,
+local-edit, upstream-diff, and safe-update lifecycle described in
+[`registry/README.md`](../README.md).

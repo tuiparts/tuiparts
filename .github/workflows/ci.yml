@@ -49,7 +49,12 @@ jobs:
         run: pnpm validate:packages:built
 
       - name: Validate registry consumers
-        run: pnpm validate:registry
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            pnpm validate:registry:built --since=origin/main
+          else
+            pnpm validate:registry:built
+          fi
 
       - name: Validate Changesets status
         run: |

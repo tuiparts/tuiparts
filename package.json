@@ -21,9 +21,10 @@
     "validate:packages": "pnpm build && node scripts/validate-packages.mjs",
     "validate:packages:built": "node scripts/validate-packages.mjs",
     "validate:registry": "node scripts/validate-registry.mjs",
+    "validate:registry:built": "node scripts/validate-registry.mjs --built",
     "changeset:status": "changeset status",
     "validate:release-scope": "node scripts/validate-foundation-release.mjs",
-    "validate:foundation": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm validate:packages:built && pnpm validate:registry && pnpm validate:release-scope",
+    "validate:foundation": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm validate:packages:built && pnpm validate:registry:built && pnpm validate:release-scope",
     "create": "./scripts/create-package.sh"
   },
   "devDependencies": {
@@ -33,6 +34,7 @@
     "@changesets/cli": "^2.31.0",
     "publint": "^0.3.21",
     "semver": "^7.7.2",
+    "shadcn": "4.13.0",
     "typescript": "^5.9.3"
   }
 }

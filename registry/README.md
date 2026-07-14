@@ -92,7 +92,14 @@ not package APIs or dependencies on a hidden theme runtime.
 `pnpm validate:registry` verifies the catalog's dependencies, lifecycle
 metadata, and matching React/Solid vocabulary. It builds every registry item
 with the pinned official shadcn CLI, installs all 21 items into isolated strict
-consumers, type-checks them, and runs their runtime smokes. For Checkbox in
-Core, React, and Solid it additionally applies a local edit, creates a newer
+consumers with bounded concurrency, type-checks them, and runs their runtime
+smokes. React Checkbox additionally applies a local edit, creates a newer
 upstream payload, verifies `--diff` shows both changes, and proves ordinary
-`add` does not overwrite the local source.
+`add` does not overwrite the local source; that installer behavior is
+framework-independent.
+
+Use `--recipe=<name>` or `--framework=<core|react|solid>` for focused local
+feedback, and combine them when only one consumer matters. CI uses `--built`
+to reuse the workspace build. Pull requests add `--since=origin/main` to run
+only affected consumers after the fast whole-catalog structural checks; main
+and release workflows always run the exhaustive matrix.

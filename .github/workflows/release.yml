@@ -55,7 +55,7 @@ jobs:
         run: pnpm validate:packages:built
 
       - name: Validate registry consumers
-        run: pnpm validate:registry
+        run: pnpm validate:registry:built
 
       - name: Validate Changesets status
         run: pnpm changeset:status

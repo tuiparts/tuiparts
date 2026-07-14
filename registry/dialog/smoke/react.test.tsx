@@ -10,7 +10,13 @@ import {
   type DialogTriggerRenderable,
 } from "@opentui-ui/core/dialog";
 import { act, createRef } from "react";
-import { Dialog } from "./components/ui/dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "./components/ui/dialog";
 
 let setup: TestRendererSetup | undefined;
 
@@ -24,22 +30,26 @@ test("installed React Dialog recipe delegates controlled intent once and retains
   let changes = 0;
   setup = await testRender(
     <box flexDirection="column">
-      <Dialog
-        ref={root}
-        defaultOpen={false}
-        title="Delete file?"
-        trigger={<text content="Open" />}
-      >
-        <box>
+      <Dialog ref={root} defaultOpen={false}>
+        <DialogTrigger>
+          <text content="Open" />
+        </DialogTrigger>
+        <DialogContent>
+          <DialogTitle content="Delete file?" />
           <text content="Body" />
-        </box>
+          <DialogClose>
+            <text content="Close" />
+          </DialogClose>
+        </DialogContent>
       </Dialog>
-      <Dialog
-        open={false}
-        title="Controlled"
-        trigger={<text content="Controlled open" />}
-        onOpenChange={() => changes++}
-      />
+      <Dialog open={false} onOpenChange={() => changes++}>
+        <DialogTrigger>
+          <text content="Controlled open" />
+        </DialogTrigger>
+        <DialogContent>
+          <DialogTitle content="Controlled" />
+        </DialogContent>
+      </Dialog>
     </box>,
     { width: 60, height: 16 },
   );

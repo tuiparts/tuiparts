@@ -108,7 +108,12 @@ export class CheckboxRootRenderable extends BoxRenderable {
       if (onCheckedChange !== undefined)
         store.setOnCheckedChange(onCheckedChange);
     }
-    this._unsubscribe = this._store.subscribe(() => this.requestRender());
+    this._focusable = !this._store.state.disabled;
+    this._unsubscribe = this._store.subscribe((state) => {
+      if (state.disabled && this._focused) this.blur();
+      this._focusable = !state.disabled;
+      this.requestRender();
+    });
   }
 
   getState(): CheckboxState {
@@ -166,9 +171,7 @@ export class CheckboxRootRenderable extends BoxRenderable {
   }
 
   set disabled(disabled: boolean | null | undefined) {
-    const next = disabled ?? false;
-    this._store.setDisabled(next);
-    if (next && this._focused) super.blur();
+    this._store.setDisabled(disabled ?? false);
   }
 
   set onCheckedChange(callback: ((checked: boolean) => void) | undefined) {

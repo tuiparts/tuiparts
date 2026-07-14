@@ -29,10 +29,7 @@ import {
   type Ref,
   useCallback,
   useContext,
-  useEffect,
-  useImperativeHandle,
   useRef,
-  useState,
   useSyncExternalStore,
 } from "react";
 
@@ -58,7 +55,6 @@ extend({
 });
 
 const StoreContext = createContext<DialogStore | null>(null);
-const PopupContext = createContext<DialogPopupRenderable | null>(null);
 type PartProps<Options, Renderable> = Omit<Options, "store"> & {
   ref?: Ref<Renderable>;
   children?: ReactNode;
@@ -160,25 +156,11 @@ export function Backdrop({ children, ref, ...props }: Backdrop.Props) {
   );
 }
 export function Popup({ children, ref, ...props }: Popup.Props) {
-  const store = useStore("Popup");
-  const [popup, setPopup] = useState<DialogPopupRenderable | null>(null);
   return createElement(
     tags.popup,
-    { ...props, store, ref: setPopup },
-    popup ? createElement(PopupContent, { children, popup, ref }) : undefined,
+    { ...props, store: useStore("Popup"), ref },
+    children,
   );
-}
-function PopupContent({
-  children,
-  popup,
-  ref,
-}: {
-  children?: ReactNode;
-  popup: DialogPopupRenderable;
-  ref?: Ref<DialogPopupRenderable>;
-}) {
-  useImperativeHandle(ref, () => popup, [popup]);
-  return createElement(PopupContext.Provider, { value: popup }, children);
 }
 function TextPart({
   tag,
@@ -208,31 +190,11 @@ export function Description({ children, ...props }: Description.Props) {
   );
 }
 export function Close({ children, ref, ...props }: Close.Props) {
-  const store = useStore("Close");
-  const popup = useContext(PopupContext);
-  const [close, setClose] = useState<DialogCloseRenderable | null>(null);
   return createElement(
     tags.close,
-    { ...props, store, ref: setClose },
-    close
-      ? createElement(CloseContent, { children, close, popup, ref })
-      : undefined,
+    { ...props, store: useStore("Close"), ref },
+    children,
   );
-}
-function CloseContent({
-  children,
-  close,
-  popup,
-  ref,
-}: {
-  children?: ReactNode;
-  close: DialogCloseRenderable;
-  popup: DialogPopupRenderable | null;
-  ref?: Ref<DialogCloseRenderable>;
-}) {
-  useImperativeHandle(ref, () => close, [close]);
-  useEffect(() => popup?.registerFocusable(close), [close, popup]);
-  return children;
 }
 export namespace Root {
   export type Props = RootProps;

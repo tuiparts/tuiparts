@@ -87,6 +87,7 @@ describe("Checkbox primitive", () => {
     });
     setup.renderer.root.add(root);
 
+    expect(root.focusable).toBe(false);
     root.focus();
     root.press();
 
@@ -95,6 +96,7 @@ describe("Checkbox primitive", () => {
     expect(changes).toEqual([]);
 
     root.disabled = undefined;
+    expect(root.focusable).toBe(true);
     root.press();
     expect(root.checked).toBe(true);
   });

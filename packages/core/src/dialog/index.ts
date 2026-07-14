@@ -539,7 +539,7 @@ export class DialogPopupRenderable extends BoxRenderable {
       this.initialTarget && this.isLiveDescendant(this.initialTarget)
         ? this.initialTarget
         : undefined;
-    const targets = [...new Set([...explicit, ...descendants])];
+    const targets = [...new Set([...descendants, ...explicit])];
     if (initial) {
       const index = targets.indexOf(initial);
       if (index !== -1) targets.splice(index, 1);

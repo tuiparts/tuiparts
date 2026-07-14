@@ -27,6 +27,7 @@ export class InputRenderable extends OpenTuiInputRenderable {
     } = options;
     super(ctx, inputOptions);
     this._disabled = disabled;
+    this._focusable = !disabled;
     this.traits = { ...this.traits, suspend: disabled };
     if (onInput) this.on(InputRenderableEvents.INPUT, onInput);
     if (onChange) this.on(InputRenderableEvents.CHANGE, onChange);
@@ -56,5 +57,6 @@ export class InputRenderable extends OpenTuiInputRenderable {
     this._disabled = disabled;
     this.traits = { ...this.traits, suspend: disabled };
     if (disabled && this._focused) this.blur();
+    this._focusable = !disabled;
   }
 }

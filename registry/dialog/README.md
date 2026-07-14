@@ -5,10 +5,11 @@ Each item copies an editable composition into `components/ui/dialog.*`; it does
 not replace the foundation Dialog primitive exported by `@opentui-ui/core`,
 `@opentui-ui/react`, and `@opentui-ui/solid`.
 
-The recipe owns the terminal-wide black backdrop, centered popup, border,
-padding, colors, title and description treatment, and the `× Close` affordance.
-It intentionally keeps convenience props small (`title`, optional
-`description`, and optional `closeLabel`) so applications can edit the source.
+The recipe owns the terminal-wide black backdrop, responsive centered popup,
+border, padding, colors, and the default treatment of each public part. React
+and Solid expose the shadcn-style `Dialog`, `DialogTrigger`, `DialogContent`,
+`DialogTitle`, `DialogDescription`, and `DialogClose` composition. Each wrapper
+retains the matching primitive props and Renderable ref.
 
 ## Ownership and interaction
 
@@ -23,6 +24,11 @@ owner must provide the next `open` value. `defaultOpen` is uncontrolled. Escape
 and backdrop interaction target only the topmost eligible layer; a popup click
 does not dismiss it. Nested dialogs receive a higher layer and closing one
 restores focus to its parent or original trigger.
+
+`DialogContent` wraps the primitive Portal, Backdrop, and Popup. Its props are
+the primitive Popup props, so callers can set `initialFocus`, dimensions, and
+native OpenTUI presentation without replacing the layer behavior. A
+`DialogClose` with `reason="action"` reports an accepted action dismissal.
 
 This recipe is validated preview catalog evidence rather than part of the
 six-family starter catalog. The adopted `@opentui-ui/dialog` manager, provider,

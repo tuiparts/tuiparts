@@ -35,6 +35,7 @@
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
       ],
+      "devDependencies": ["@types/react@^19.2.0"],
       "files": [
         {
           "path": "registry/checkbox/react.tsx",
@@ -107,6 +108,7 @@
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
       ],
+      "devDependencies": ["@types/react@^19.2.0"],
       "files": [
         {
           "path": "registry/switch/react.tsx",
@@ -179,6 +181,7 @@
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
       ],
+      "devDependencies": ["@types/react@^19.2.0"],
       "files": [
         {
           "path": "registry/button/react.tsx",
@@ -249,6 +252,7 @@
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
       ],
+      "devDependencies": ["@types/react@^19.2.0"],
       "files": [
         {
           "path": "registry/badge/react.tsx",
@@ -319,6 +323,7 @@
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
       ],
+      "devDependencies": ["@types/react@^19.2.0"],
       "files": [
         {
           "path": "registry/radio-group/react.tsx",
@@ -365,6 +370,7 @@
       "title": "Input (Core)",
       "description": "Editable imperative Input recipe preserving OpenTUI-native editing and events.",
       "dependencies": ["@opentui-ui/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
+      "docs": "Input preserves OpenTUI's native mutable buffer: changed programmatic value assignments invoke onInput, while onChange reports blur or submit commits.",
       "files": [
         {
           "path": "registry/input/core.ts",
@@ -391,6 +397,8 @@
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
       ],
+      "devDependencies": ["@types/react@^19.2.0"],
+      "docs": "Input preserves OpenTUI's native mutable buffer: changed programmatic value assignments invoke onInput, while onChange reports blur or submit commits.",
       "files": [
         {
           "path": "registry/input/react.tsx",
@@ -417,6 +425,7 @@
         "@opentui/solid@^0.4.3",
         "solid-js@1.9.12"
       ],
+      "docs": "Input preserves OpenTUI's native mutable buffer: changed programmatic value assignments invoke onInput, while onChange reports blur or submit commits.",
       "files": [
         {
           "path": "registry/input/solid.tsx",
@@ -461,6 +470,7 @@
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
       ],
+      "devDependencies": ["@types/react@^19.2.0"],
       "files": [
         {
           "path": "registry/dialog/react.tsx",

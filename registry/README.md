@@ -57,6 +57,18 @@ The CLI installs declared dependencies and copies the recipe into
 `components/ui`. Running ordinary `add` against an existing file asks before
 replacement and defaults to preserving the local file.
 
+## Build The Registry
+
+Registry maintainers can build every distributable item without preparing its
+nested framework directories manually:
+
+```bash
+pnpm registry:build --output ./public/r
+```
+
+Application consumers use `shadcn add` against the published item address and
+do not run this build command.
+
 ## Discover And Review Updates
 
 The current registry item is the upstream recipe revision. Its Git commit, tag,

@@ -1,4 +1,8 @@
-import { type RenderContext, TextRenderable } from "@opentui/core";
+import {
+  type BoxOptions,
+  type RenderContext,
+  TextRenderable,
+} from "@opentui/core";
 import {
   DialogBackdropRenderable,
   DialogCloseRenderable,
@@ -13,7 +17,7 @@ import {
 
 /** Visual defaults only; the Dialog primitive retains all layer behavior. */
 export interface DialogOptions extends DialogRootOptions {
-  width?: number;
+  width?: BoxOptions["width"];
 }
 
 export interface DialogRecipe {
@@ -27,14 +31,12 @@ export interface DialogRecipe {
 /** Assemble an editable, terminal-wide Dialog layer from packaged Core parts. */
 export function createDialog(
   ctx: RenderContext,
-  { width = 48, ...options }: DialogOptions = {},
+  { width = "80%", ...options }: DialogOptions = {},
 ): DialogRecipe {
   const root = new DialogRootRenderable(ctx, options);
   const trigger = new DialogTriggerRenderable(ctx, {
     store: root.store,
     backgroundColor: "#262626",
-    border: true,
-    borderColor: "#525252",
     paddingLeft: 1,
     paddingRight: 1,
   });
@@ -56,12 +58,13 @@ export function createDialog(
   const popup = new DialogPopupRenderable(ctx, {
     store: root.store,
     width,
+    maxWidth: 56,
     flexDirection: "column",
     backgroundColor: "#171717",
     border: true,
     borderColor: "#737373",
-    padding: 1,
-    gap: 1,
+    paddingLeft: 1,
+    paddingRight: 1,
   });
   portal.add(backdrop);
   portal.add(popup);
@@ -106,8 +109,6 @@ export function addDialogClose(
   const close = new DialogCloseRenderable(ctx, {
     store: dialog.root.store,
     backgroundColor: "#262626",
-    border: true,
-    borderColor: "#525252",
     paddingLeft: 1,
     paddingRight: 1,
   });

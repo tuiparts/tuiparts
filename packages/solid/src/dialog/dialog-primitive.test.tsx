@@ -160,6 +160,32 @@ describe("Solid Dialog", () => {
     expect(popup?.visible).toBe(false);
   });
 
+  it("follows rendered descendant order when choosing initial focus", async () => {
+    let trigger: DialogTriggerRenderable | undefined;
+    let close: DialogCloseRenderable | undefined;
+    setup = await testRender(
+      () => (
+        <Dialog.Root>
+          <Dialog.Trigger ref={(value) => (trigger = value)} />
+          <Dialog.Portal>
+            <Dialog.Popup>
+              <box id="solid-first-action" focusable />
+              <Dialog.Close ref={(value) => (close = value)} />
+            </Dialog.Popup>
+          </Dialog.Portal>
+        </Dialog.Root>
+      ),
+      { width: 40, height: 10 },
+    );
+
+    trigger?.press();
+    expect(setup.renderer.currentFocusedRenderable?.id).toBe(
+      "solid-first-action",
+    );
+    await setup.mockInput.pressTab();
+    expect(close?.focused).toBe(true);
+  });
+
   it("applies one controlled request without remounting the layer", async () => {
     const changes: string[] = [];
     let root: DialogRootRenderable | undefined;

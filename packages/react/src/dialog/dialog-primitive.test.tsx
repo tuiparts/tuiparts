@@ -170,6 +170,10 @@ describe("React Dialog", () => {
               ref: descriptionRef,
               content: "Description",
             }),
+            createElement("box", {
+              id: "react-action",
+              focusable: true,
+            }),
             createElement(Dialog.Close, {
               id: "react-close",
               ref: closeRef,
@@ -206,7 +210,7 @@ describe("React Dialog", () => {
 
     await act(async () => triggerRef.current?.press());
     await setup.waitFor(() => rootRef.current?.state.open === true);
-    expect(closeRef.current?.focused).toBe(true);
+    expect(setup.renderer.currentFocusedRenderable?.id).toBe("react-action");
     await act(async () => setup?.mockInput.pressTab());
     expect(closeRef.current?.focused).toBe(true);
     await act(async () => setup?.mockInput.pressEscape());

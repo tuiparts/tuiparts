@@ -428,7 +428,13 @@ export class DialogPortalRenderable extends BoxRenderable {
 
   constructor(ctx: RenderContext, options: DialogPortalOptions) {
     const { store, ...boxOptions } = options;
-    super(ctx, { ...boxOptions, visible: false });
+    super(ctx, {
+      ...boxOptions,
+      top: boxOptions.top ?? 0,
+      left: boxOptions.left ?? 0,
+      position: boxOptions.position ?? "absolute",
+      visible: false,
+    });
     this.store = store;
     coordinatorFor(ctx).attach(store, this);
   }

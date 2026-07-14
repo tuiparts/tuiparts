@@ -66,6 +66,8 @@ describe("Dialog Core primitive", () => {
       setup.renderer.root.add(root);
 
       expect(layer.popup.getChildren()).toEqual([title]);
+      expect(layer.portal.top).toBe(0);
+      expect(layer.portal.left).toBe(0);
       trigger.press();
       expect(root.state.open).toBe(true);
       expect(layer.portal.visible).toBe(true);

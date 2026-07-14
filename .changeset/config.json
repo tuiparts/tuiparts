@@ -7,9 +7,9 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": [
-    "@opentui-ui-examples/core",
-    "@opentui-ui-examples/react",
-    "@opentui-ui-examples/solid"
-  ]
+  "ignore": [],
+  "privatePackages": {
+    "version": false,
+    "tag": false
+  }
 }

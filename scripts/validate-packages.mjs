@@ -42,6 +42,11 @@ try {
     private: true,
     type: "module",
     packageManager: "pnpm@10.34.5",
+    pnpm: {
+      supportedArchitectures: {
+        libc: ["current", "musl"],
+      },
+    },
     dependencies: {
       ...Object.fromEntries(tarballs),
       "@opentui/core": "0.4.3",

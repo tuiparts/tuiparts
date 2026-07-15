@@ -52,7 +52,9 @@ Graphite instrument pane (mode-invariant, maps 1:1 onto brand tokens):
 - `--tp-graphite` #0d1117 · `--tp-graphite-2` #161b22
 - `--tp-graphite-rule` #30363d
 - `--tp-graphite-ink` #e8e4d9 · `--tp-graphite-muted` #a8a296
-- `--tp-graphite-faint` #6c675d
+- `--tp-graphite-faint` #8e887c — web-AA lift of brand fg-faint #6c675d
+  (the brand tone is a terminal-cell value; 3.4:1 on graphite fails
+  WCAG 1.4.3 for the pane's visible text)
 - `--tp-signal` #ffb000 — the amber signal on graphite ·
   `--tp-signal-ink` #0d1117
 

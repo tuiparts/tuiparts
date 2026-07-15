@@ -66,7 +66,9 @@
   --tp-graphite-rule: #30363d;
   --tp-graphite-ink: #e8e4d9;
   --tp-graphite-muted: #a8a296;
-  --tp-graphite-faint: #6c675d;
+  /* Web-AA lift of brand fg-faint #6c675d, which is a terminal-cell tone:
+     4.9:1 on graphite-2, 5.4:1 on graphite (axe-checked). */
+  --tp-graphite-faint: #8e887c;
   --tp-signal: #ffb000;
   --tp-signal-ink: #0d1117;
 

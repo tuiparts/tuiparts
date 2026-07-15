@@ -155,6 +155,7 @@ const pillars = [
         class="mt-8 flex max-w-lg items-center gap-1 rounded-blume border border-border bg-muted/60 py-1 pr-1 pl-4"
       >
         <code
+          tabindex="0"
           class="min-w-0 flex-1 overflow-x-auto py-2 font-mono text-xs whitespace-nowrap text-muted-foreground [scrollbar-width:none]"
           >{installCommand}</code
         >
@@ -349,7 +350,9 @@ const pillars = [
         </p>
         <div class="band-cmd mt-8">
           <span class="t-signal shrink-0" aria-hidden="true">❯</span>
-          <code class="min-w-0 flex-1 overflow-x-auto whitespace-nowrap [scrollbar-width:none]"
+          <code
+            tabindex="0"
+            class="min-w-0 flex-1 overflow-x-auto whitespace-nowrap [scrollbar-width:none]"
             >{recipeCommand}</code
           >
           <button
@@ -994,6 +997,18 @@ const pillars = [
     for (const el of revealables) observer.observe(el);
   } else {
     for (const el of revealables) el.classList.add("is-in");
+  }
+
+  // Scrollable code regions must be keyboard-reachable (WCAG 2.1.1 /
+  // axe scrollable-region-focusable). Our own snippets carry tabindex in
+  // markup; this pass covers rendered CodeBlocks, skipping the aria-hidden
+  // demo pane (focusable content inside aria-hidden is its own violation).
+  for (const el of document.querySelectorAll<HTMLElement>("pre, pre > code")) {
+    if (el.closest('[aria-hidden="true"]')) continue;
+    const style = getComputedStyle(el);
+    if ((style.overflowX === "auto" || style.overflowX === "scroll") && el.tabIndex < 0) {
+      el.tabIndex = 0;
+    }
   }
 
   // Copy buttons: clipboard write, icon cross-fade via data-state, and a

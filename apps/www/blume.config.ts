@@ -46,6 +46,15 @@ export default defineConfig({
     code: {
       icons: true,
     },
+    codeBlocks: {
+      theme: {
+        // Default github-light was tuned for white: its red (#d73a49) and
+        // orange (#e36209) tokens fail WCAG AA on the warm-paper background
+        // (axe-checked). The high-contrast variant clears it; github-dark
+        // audits clean on brand graphite and stays.
+        light: "github-light-high-contrast",
+      },
+    },
   },
 
   ai: {

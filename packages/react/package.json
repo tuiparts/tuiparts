@@ -1,7 +1,7 @@
 {
-  "name": "@opentui-ui/react",
+  "name": "@tuiparts/react",
   "version": "0.0.3-rc.0",
-  "description": "React bindings for OpenTUI UI components",
+  "description": "React Adapter for tui.parts Primitives",
   "author": "Matt Simpson",
   "license": "MIT",
   "sideEffects": [
@@ -15,7 +15,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/msmps/opentui-ui.git",
+    "url": "git+https://github.com/tuiparts/tuiparts.git",
     "directory": "packages/react"
   },
   "type": "module",
@@ -68,12 +68,12 @@
     }
   },
   "bugs": {
-    "url": "https://github.com/msmps/opentui-ui/issues"
+    "url": "https://github.com/tuiparts/tuiparts/issues"
   },
   "files": [
     "dist"
   ],
-  "homepage": "https://github.com/msmps/opentui-ui#readme",
+  "homepage": "https://github.com/tuiparts/tuiparts#readme",
   "keywords": [
     "react",
     "ui",
@@ -90,7 +90,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@opentui-ui/core": "workspace:^"
+    "@tuiparts/core": "workspace:^"
   },
   "devDependencies": {
     "@opentui/core": "catalog:",

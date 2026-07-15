@@ -3,7 +3,7 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
-import type { SwitchRootRenderable } from "@opentui-ui/core/switch";
+import type { SwitchRootRenderable } from "@tuiparts/core/switch";
 import { createSignal } from "solid-js";
 import { Switch } from "./components/ui/switch";
 

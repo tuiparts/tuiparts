@@ -15,15 +15,15 @@ consumer-owned.
 <CodeGroup>
 
 ```bash React
-pnpm dlx shadcn@4.13.0 add @opentui-ui/react/checkbox
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox
 ```
 
 ```bash Solid
-pnpm dlx shadcn@4.13.0 add @opentui-ui/solid/checkbox
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/checkbox
 ```
 
 ```bash Core
-pnpm dlx shadcn@4.13.0 add @opentui-ui/core/checkbox
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/checkbox
 ```
 
 </CodeGroup>
@@ -73,7 +73,7 @@ ownership both pass through to `CheckboxPrimitive.Root`.
 ## Composing the primitive directly
 
 ```tsx
-import { Checkbox as CheckboxPrimitive } from "@opentui-ui/react/checkbox";
+import { Checkbox as CheckboxPrimitive } from "@tuiparts/react/checkbox";
 
 <CheckboxPrimitive.Root defaultChecked flexDirection="row" gap={1}>
   {(state) => (

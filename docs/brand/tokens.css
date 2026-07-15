@@ -1,0 +1,35 @@
+/* tui.parts design tokens — generated from tokens.json. Edit tokens.json first. */
+:root {
+  --tp-color-bg: #0d1117;
+  --tp-color-bg-surface: #161b22;
+  --tp-color-border: #30363d;
+  --tp-color-fg: #e8e4d9;
+  --tp-color-fg-muted: #a8a296;
+  --tp-color-fg-faint: #6c675d;
+  --tp-color-amber: #ffb000;
+  --tp-color-amber-dim: #cc8c00;
+  --tp-color-on-amber: #0d1117;
+  --tp-color-amber-glow: rgba(255, 176, 0, 0.14);
+  --tp-ansi-0: #161b22;
+  --tp-ansi-1: #e5484d;
+  --tp-ansi-2: #46a758;
+  --tp-ansi-3: #ffb000;
+  --tp-ansi-4: #4c8fd6;
+  --tp-ansi-5: #b083d9;
+  --tp-ansi-6: #4cc2ce;
+  --tp-ansi-7: #e8e4d9;
+  --tp-ansi-8: #565e68;
+  --tp-ansi-9: #ff7b72;
+  --tp-ansi-10: #6fcf73;
+  --tp-ansi-11: #ffc94d;
+  --tp-ansi-12: #7fb5f0;
+  --tp-ansi-13: #d2a8ff;
+  --tp-ansi-14: #7ce0ec;
+  --tp-ansi-15: #fbf8f0;
+  --tp-badge-core: var(--tp-ansi-7);
+  --tp-badge-react: var(--tp-ansi-6);
+  --tp-badge-solid: var(--tp-ansi-4);
+  --tp-font-mono:
+    "Commit Mono", "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas,
+    monospace;
+}

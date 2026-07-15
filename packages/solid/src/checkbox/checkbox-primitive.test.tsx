@@ -8,7 +8,7 @@ import type {
   CheckboxIndicatorRenderable,
   CheckboxRootRenderable,
   CheckboxState,
-} from "@opentui-ui/core/checkbox";
+} from "@tuiparts/core/checkbox";
 import { createSignal } from "solid-js";
 import * as Checkbox from "./primitive";
 

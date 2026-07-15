@@ -1,14 +1,14 @@
-# @opentui-ui/core
+# @tuiparts/core
 
-Framework-neutral OpenTUI behavior for the OpenTUI UI foundation.
+Framework-neutral OpenTUI behavior for the tui.parts Foundation.
 
 New to the package/recipe split? Start with the
-[foundation guide](https://github.com/msmps/opentui-ui/blob/main/docs/foundation.md).
+[foundation guide](https://github.com/tuiparts/tuiparts/blob/main/docs/foundation.md).
 
 ## Installation
 
 ```bash
-pnpm add @opentui-ui/core @opentui/core
+pnpm add @tuiparts/core @opentui/core
 ```
 
 The package supports `@opentui/core` `^0.4.3`.
@@ -34,7 +34,7 @@ the same wiring behind compound-component context.
 import {
   CheckboxIndicatorRenderable,
   CheckboxRootRenderable,
-} from "@opentui-ui/core/checkbox";
+} from "@tuiparts/core/checkbox";
 
 const root = new CheckboxRootRenderable(ctx, {
   defaultChecked: true,
@@ -55,7 +55,7 @@ choose their presentation. Installable examples live under `registry/`.
 of adding browser-style controlled ownership or `defaultValue`.
 
 ```ts
-import { InputRenderable } from "@opentui-ui/core/input";
+import { InputRenderable } from "@tuiparts/core/input";
 
 const input = new InputRenderable(ctx, {
   value: "initial",

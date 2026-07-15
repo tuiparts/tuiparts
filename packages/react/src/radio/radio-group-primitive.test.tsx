@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
-import { RadioRootRenderable, type RadioState } from "@opentui-ui/core/radio";
-import { RadioGroupRenderable } from "@opentui-ui/core/radio-group";
+import { RadioRootRenderable, type RadioState } from "@tuiparts/core/radio";
+import { RadioGroupRenderable } from "@tuiparts/core/radio-group";
 import { act, createElement, createRef, type ReactNode, useState } from "react";
 import { RadioGroup } from "../radio-group";
 import { Radio } from "./index";

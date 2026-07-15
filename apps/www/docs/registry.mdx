@@ -5,7 +5,7 @@ sidebar:
   order: 4
 ---
 
-The OpenTUI UI registry distributes editable recipe source through the
+The tui.parts registry distributes editable recipe source through the
 official shadcn CLI. It is hosted on this site: every item is a static JSON
 payload at `/r/<framework>/<name>.json`.
 
@@ -21,7 +21,7 @@ Add the registry namespace to your project's `components.json`:
 {
   "$schema": "https://ui.shadcn.com/schema.json",
   "registries": {
-    "@opentui-ui": "https://opentui-ui.dev/r/{name}.json"
+    "@tuiparts": "https://tui.parts/r/{name}.json"
   }
 }
 ```
@@ -29,13 +29,13 @@ Add the registry namespace to your project's `components.json`:
 Then install items by address:
 
 ```bash
-pnpm dlx shadcn@4.13.0 add @opentui-ui/react/checkbox
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox
 ```
 
 You can also install any item by direct URL without configuring a namespace:
 
 ```bash
-pnpm dlx shadcn@4.13.0 add https://opentui-ui.dev/r/react/checkbox.json
+pnpm dlx shadcn@4.13.0 add https://tui.parts/r/react/checkbox.json
 ```
 
 The CLI installs declared dependencies and copies the recipe into
@@ -61,8 +61,8 @@ runtime semantics permit. Core recipes expose equivalent imperative factory
 functions and install ordinary `.ts` source rather than framework JSX.
 
 The registry also contains a validated preview Dialog recipe, but it is not
-part of this starter catalog. The already-adopted `@opentui-ui/dialog` and
-`@opentui-ui/toast` packages remain the production companion paths.
+part of this starter catalog. The already-adopted `@tuiparts/dialog` and
+`@tuiparts/toast` packages remain the production companion paths.
 
 ## Compatibility
 
@@ -82,9 +82,9 @@ The current registry item is the upstream recipe revision. Inspect the current
 upstream source and compare it with your installed file:
 
 ```bash
-pnpm dlx shadcn@4.13.0 add @opentui-ui/react/checkbox --view
-pnpm dlx shadcn@4.13.0 add @opentui-ui/react/checkbox --diff
-pnpm dlx shadcn@4.13.0 add @opentui-ui/react/checkbox --dry-run
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox --view
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox --diff
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox --dry-run
 ```
 
 Review the diff and merge useful upstream changes into the consumer-owned

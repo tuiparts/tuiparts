@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": "../../examples/react",
     "paths": {
-      "@opentui-ui/react/*": ["../../packages/react/src/*/index.tsx"],
+      "@tuiparts/react/*": ["../../packages/react/src/*/index.tsx"],
       "react": ["node_modules/@types/react/index.d.ts"],
       "*": ["node_modules/*"]
     }

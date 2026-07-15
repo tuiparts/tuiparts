@@ -32,8 +32,8 @@ focus and activation.
 The canonical framework surface is:
 
 ```text
-@opentui-ui/{react,solid}/radio-group -> RadioGroup
-@opentui-ui/{react,solid}/radio       -> Radio.Root, Radio.Indicator
+@tuiparts/{react,solid}/radio-group -> RadioGroup
+@tuiparts/{react,solid}/radio       -> Radio.Root, Radio.Indicator
 ```
 
 `RadioGroup` is a direct component and callable type namespace, not a

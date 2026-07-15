@@ -1,8 +1,8 @@
-# OpenTUI UI Primitives And Recipes
+# tui.parts Primitives And Recipes
 
 ## Direction
 
-OpenTUI UI separates difficult packaged behavior from opinionated,
+tui.parts separates difficult packaged behavior from opinionated,
 consumer-owned presentation.
 
 This is the formal product architecture for foundation v1.
@@ -12,7 +12,7 @@ implementations must follow.
 
 ```text
 @opentui/core
-  -> @opentui-ui/core framework-neutral primitives
+  -> @tuiparts/core framework-neutral primitives
   -> React and Solid compound-part adapters
   -> editable recipes and blocks
 ```
@@ -173,7 +173,7 @@ Reference implementations:
 
 Badge has no reusable interaction, state, focus, keyboard, pointer, collection,
 overlay, or lifecycle behavior. It is therefore not a primitive and has no
-`@opentui-ui/core`, React, or Solid package export.
+`@tuiparts/core`, React, or Solid package export.
 
 Editable Core, React, and Solid Badge recipes are built directly from ordinary
 OpenTUI Box and Text nodes. They own label assembly, intent palettes, size,
@@ -228,12 +228,12 @@ installer is out of scope until an evidenced incompatibility requires one.
 
 ## Companion Package Boundary
 
-Foundation primitive behavior belongs in `@opentui-ui/core`, with matching
-compound adapters in `@opentui-ui/react` and `@opentui-ui/solid`. Dialog is the
+Foundation primitive behavior belongs in `@tuiparts/core`, with matching
+compound adapters in `@tuiparts/react` and `@tuiparts/solid`. Dialog is the
 overlay evidence for that boundary: its store and coordinator live at the
 foundation Dialog subpaths.
 
-The already-adopted `@opentui-ui/dialog` and `@opentui-ui/toast` packages are
+The already-adopted `@tuiparts/dialog` and `@tuiparts/toast` packages are
 independently versioned companion products. Their existing manager, provider,
 async, theme, and notification APIs remain supported on their current import
 paths. Reconciling their internals with foundation behavior is separate work

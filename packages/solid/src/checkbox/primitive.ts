@@ -6,7 +6,7 @@ import {
   type CheckboxRootOptions,
   CheckboxRootRenderable,
   type CheckboxState,
-} from "@opentui-ui/core/checkbox";
+} from "@tuiparts/core/checkbox";
 import {
   createComponent,
   createContext,

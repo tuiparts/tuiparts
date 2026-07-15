@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
-import { Button } from "@opentui-ui/react";
+import { Button } from "@tuiparts/react";
 import { act, createElement, Fragment } from "react";
 import { Input } from "./input/primitive";
 

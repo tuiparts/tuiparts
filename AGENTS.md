@@ -1,17 +1,21 @@
 # PROJECT KNOWLEDGE BASE
 
-**Updated:** 2026-07-14
+**Updated:** 2026-07-15
 ## OVERVIEW
 
-Terminal primitive and editable-recipe ecosystem for OpenTUI. The monorepo is
-built around framework-neutral Core behavior, React/Solid compound-part
-adapters, and shadcn-compatible consumer-owned recipes written with plain
-TypeScript and native OpenTUI properties.
+tui.parts — the primitive and recipe ecosystem for OpenTUI (npm scope
+`@tuiparts`). The monorepo is built around framework-neutral Core behavior,
+React/Solid compound-part adapters, and shadcn-compatible consumer-owned
+recipes written with plain TypeScript and native OpenTUI properties.
+Canonical vocabulary: packaged behavior units are Primitives exposing Parts;
+copied styled source is a Recipe; the user-facing surface is the Catalog and
+the serving layer is the Registry. Never call a packaged primitive a
+"component" in brand copy.
 
 ## STRUCTURE
 
 ```
-opentui-ui/
+tuiparts/
 ├── packages/
 │   ├── core/         # Framework-neutral primitive behavior
 │   ├── react/        # React primitive adapters
@@ -31,6 +35,7 @@ opentui-ui/
 | Primitive architecture | `PRIMITIVES_AND_RECIPES.md` | Package behavior; copy opinionated recipes |
 | Architecture decisions | `docs/adr/` | Read accepted ADRs before changing public APIs, ownership, package boundaries, or adapter state flow |
 | Foundation usage | `docs/foundation.md` | Package versus registry choice and public component matrix |
+| Brand rules & tokens | `docs/brand/` | Figure style guide, logomark, Kit sheet, design tokens (web + terminal) |
 | Editable recipes | `registry/` | Framework-specific source built on packaged primitives |
 | React binding | `packages/react/src/` | Mirrors core structure |
 | Solid binding | `packages/solid/src/` | Mirrors core structure |
@@ -90,7 +95,7 @@ pnpm create <name>   # Scaffold new package
 ## NOTES
 
 - **Companion boundary**: Dialog primitive behavior is in Core/React/Solid;
-  `@opentui-ui/dialog` and `@opentui-ui/toast` remain adopted, independently
+  `@tuiparts/dialog` and `@tuiparts/toast` remain adopted, independently
   versioned companion products outside the foundation release line.
 - **Linked versioning**: core, react, and solid version together
 - **OpenTUI peer deps**: Uses pnpm catalog for `@opentui/core`, `@opentui/react`, `@opentui/solid`

@@ -1,6 +1,6 @@
 /** @jsxImportSource @opentui/solid */
 
-import { Checkbox as CheckboxPrimitive } from "@opentui-ui/solid/checkbox";
+import { Checkbox as CheckboxPrimitive } from "@tuiparts/solid/checkbox";
 import { splitProps } from "solid-js";
 
 export interface CheckboxProps

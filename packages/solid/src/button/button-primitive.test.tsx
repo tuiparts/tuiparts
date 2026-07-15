@@ -8,7 +8,7 @@ import type {
   ButtonPressDetails,
   ButtonRenderable,
   ButtonState,
-} from "@opentui-ui/core/button";
+} from "@tuiparts/core/button";
 import { createSignal } from "solid-js";
 import { Button } from "./button";
 

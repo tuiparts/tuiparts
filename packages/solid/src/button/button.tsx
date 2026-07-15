@@ -5,7 +5,7 @@ import {
   type ButtonPressDetails,
   ButtonRenderable,
   type ButtonState,
-} from "@opentui-ui/core/button";
+} from "@tuiparts/core/button";
 import { createEffect, type Ref, splitProps, untrack } from "solid-js";
 import {
   setRenderableRef,

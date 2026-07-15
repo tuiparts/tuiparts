@@ -6,7 +6,7 @@ import {
 import {
   SwitchRootRenderable,
   SwitchThumbRenderable,
-} from "@opentui-ui/core/switch";
+} from "@tuiparts/core/switch";
 
 export interface SwitchOptions {
   checked?: boolean;

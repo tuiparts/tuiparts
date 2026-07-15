@@ -1,6 +1,6 @@
 /** @jsxImportSource @opentui/solid */
 
-import { Button as ButtonPrimitive } from "@opentui-ui/solid/button";
+import { Button as ButtonPrimitive } from "@tuiparts/solid/button";
 import { splitProps } from "solid-js";
 
 export interface ButtonProps extends Omit<ButtonPrimitive.Props, "children"> {

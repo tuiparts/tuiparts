@@ -1,9 +1,12 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.1.0/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "msmps/opentui-ui" }],
+  "changelog": [
+    "@changesets/changelog-github",
+    { "repo": "tuiparts/tuiparts" }
+  ],
   "commit": false,
   "fixed": [],
-  "linked": [["@opentui-ui/core", "@opentui-ui/react", "@opentui-ui/solid"]],
+  "linked": [["@tuiparts/core", "@tuiparts/react", "@tuiparts/solid"]],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",

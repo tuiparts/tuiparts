@@ -180,13 +180,13 @@ function validateContentAccessor(
 ): asserts content is ContentAccessor {
   if (typeof content !== "function") {
     throw new Error(
-      `[@opentui-ui/dialog/solid] Invalid content type: expected a function returning JSX, but received ${typeof content}.\n\n` +
+      `[@tuiparts/dialog/solid] Invalid content type: expected a function returning JSX, but received ${typeof content}.\n\n` +
         `Solid.js JSX is eagerly evaluated, so you must wrap content in a function:\n\n` +
         `  // CORRECT\n` +
         `  dialog.show({ content: () => <text>Hello</text> })\n\n` +
         `  // WRONG - JSX evaluated immediately, before dialog context exists\n` +
         `  dialog.show({ content: <text>Hello</text> })\n\n` +
-        `See: https://github.com/msmps/opentui-ui for more information.`,
+        `See: https://github.com/tuiparts/tuiparts for more information.`,
     );
   }
 }
@@ -198,7 +198,7 @@ function useDialogContext(): DialogContextValue {
     throw new Error(
       "useDialog/useDialogState must be used within a DialogProvider.\n\n" +
         "Wrap your app with <DialogProvider>:\n\n" +
-        "  import { DialogProvider } from '@opentui-ui/dialog/solid';\n\n" +
+        "  import { DialogProvider } from '@tuiparts/dialog/solid';\n\n" +
         "  function App() {\n" +
         "    return (\n" +
         "      <DialogProvider>\n" +

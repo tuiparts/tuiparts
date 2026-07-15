@@ -11,7 +11,7 @@ import type {
   DialogRootRenderable,
   DialogTitleRenderable,
   DialogTriggerRenderable,
-} from "@opentui-ui/core/dialog";
+} from "@tuiparts/core/dialog";
 import {
   act,
   createElement,

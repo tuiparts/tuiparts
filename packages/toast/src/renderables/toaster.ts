@@ -34,7 +34,7 @@ import { ToastRenderable } from "./toast";
  *
  * @example
  * ```ts
- * import { ToasterRenderable, toast } from '@opentui-ui/toast';
+ * import { ToasterRenderable, toast } from '@tuiparts/toast';
  *
  * // Basic usage - add to your app once
  * const toaster = new ToasterRenderable(ctx);
@@ -65,7 +65,7 @@ import { ToastRenderable } from "./toast";
  * @example
  * ```ts
  * // With a theme preset
- * import { minimal } from '@opentui-ui/toast/themes';
+ * import { minimal } from '@tuiparts/toast/themes';
  *
  * const toaster = new ToasterRenderable(ctx, {
  *   ...minimal,

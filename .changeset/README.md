@@ -12,6 +12,6 @@ pnpm changeset
 
 Follow the prompts to select which packages changed and the semver bump type.
 
-The foundation RC intentionally releases only `@opentui-ui/core`,
-`@opentui-ui/react`, and `@opentui-ui/solid`. The Dialog and Toast companions
+The foundation RC intentionally releases only `@tuiparts/core`,
+`@tuiparts/react`, and `@tuiparts/solid`. The Dialog and Toast companions
 remain unchanged. `pnpm validate:release-scope` enforces that release plan.

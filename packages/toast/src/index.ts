@@ -1,5 +1,5 @@
 /**
- * @opentui-ui/toast - Toast notification system for terminal applications
+ * @tuiparts/toast - Toast notification system for terminal applications
  *
  * A Sonner-inspired toast library for @opentui/core.
  */

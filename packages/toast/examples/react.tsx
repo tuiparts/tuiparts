@@ -4,7 +4,7 @@
 
 import { createCliRenderer } from "@opentui/core";
 import { createRoot, useKeyboard, useRenderer } from "@opentui/react";
-import { Toaster, toast } from "@opentui-ui/toast/react";
+import { Toaster, toast } from "@tuiparts/toast/react";
 
 function App() {
   const renderer = useRenderer();

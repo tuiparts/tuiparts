@@ -75,7 +75,7 @@ export class DialogRenderable extends BoxRenderable {
       const originalStack = error instanceof Error ? error.stack : undefined;
 
       const enhancedError = new Error(
-        `[@opentui-ui/dialog] Failed to create content for dialog "${dialogId}".\n\n` +
+        `[@tuiparts/dialog] Failed to create content for dialog "${dialogId}".\n\n` +
           `Root cause: ${originalMessage}\n\n` +
           `This error occurred while executing the content factory function. ` +
           `Check that your content factory returns a valid Renderable and doesn't throw.\n\n` +

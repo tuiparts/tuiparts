@@ -1,6 +1,6 @@
 /** @jsxImportSource @opentui/react */
 
-import { Switch as SwitchPrimitive } from "@opentui-ui/react/switch";
+import { Switch as SwitchPrimitive } from "@tuiparts/react/switch";
 
 export interface SwitchProps
   extends Omit<SwitchPrimitive.Root.Props, "children"> {

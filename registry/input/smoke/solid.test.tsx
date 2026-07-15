@@ -3,7 +3,7 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
-import type { InputRenderable } from "@opentui-ui/core/input";
+import type { InputRenderable } from "@tuiparts/core/input";
 import { Input } from "./components/ui/input";
 
 let setup: TestRendererSetup | undefined;

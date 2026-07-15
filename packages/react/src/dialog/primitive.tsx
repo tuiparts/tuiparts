@@ -21,7 +21,7 @@ import {
   DialogTitleRenderable,
   type DialogTriggerOptions,
   DialogTriggerRenderable,
-} from "@opentui-ui/core/dialog";
+} from "@tuiparts/core/dialog";
 import {
   createContext,
   createElement,

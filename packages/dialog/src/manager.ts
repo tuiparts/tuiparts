@@ -149,7 +149,7 @@ export class DialogManager {
       try {
         subscriber(data);
       } catch (error) {
-        console.error("[@opentui-ui/dialog] Subscriber threw an error:", error);
+        console.error("[@tuiparts/dialog] Subscriber threw an error:", error);
       }
     }
   }
@@ -173,25 +173,25 @@ export class DialogManager {
   show(options: DialogShowOptions): DialogId {
     if (this.destroyed) {
       throw new Error(
-        "[@opentui-ui/dialog] Cannot show dialog: DialogManager has been destroyed.",
+        "[@tuiparts/dialog] Cannot show dialog: DialogManager has been destroyed.",
       );
     }
 
     if (options.content === undefined || options.content === null) {
       throw new Error(
-        `[@opentui-ui/dialog] Missing required 'content' property.\n\n` +
+        `[@tuiparts/dialog] Missing required 'content' property.\n\n` +
           `The 'content' property must be a factory function that returns a Renderable:\n\n` +
           `  manager.show({\n` +
           `    content: (ctx) => new TextRenderable(ctx, { content: "Hello" }),\n` +
           `  });\n\n` +
-          `For React, use: import { useDialog } from '@opentui-ui/dialog/react'\n` +
-          `For Solid, use: import { useDialog } from '@opentui-ui/dialog/solid'`,
+          `For React, use: import { useDialog } from '@tuiparts/dialog/react'\n` +
+          `For Solid, use: import { useDialog } from '@tuiparts/dialog/solid'`,
       );
     }
 
     if (typeof options.content !== "function") {
       throw new Error(
-        `[@opentui-ui/dialog] Invalid 'content' type: expected function, got ${typeof options.content}.\n\n` +
+        `[@tuiparts/dialog] Invalid 'content' type: expected function, got ${typeof options.content}.\n\n` +
           `The 'content' property must be a factory function that receives a RenderContext\n` +
           `and returns a Renderable:\n\n` +
           `  manager.show({\n` +
@@ -199,8 +199,8 @@ export class DialogManager {
           `  });\n\n` +
           `If you're using React or Solid, make sure you're importing from\n` +
           `the correct entry point:\n` +
-          `  - React: import { useDialog } from '@opentui-ui/dialog/react'\n` +
-          `  - Solid: import { useDialog } from '@opentui-ui/dialog/solid'`,
+          `  - React: import { useDialog } from '@tuiparts/dialog/react'\n` +
+          `  - Solid: import { useDialog } from '@tuiparts/dialog/solid'`,
       );
     }
 

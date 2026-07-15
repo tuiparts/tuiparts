@@ -1,6 +1,6 @@
 import type { JSX } from "@opentui/solid";
 import { useRenderer } from "@opentui/solid";
-import { type InputOptions, InputRenderable } from "@opentui-ui/core/input";
+import { type InputOptions, InputRenderable } from "@tuiparts/core/input";
 import { type Ref, splitProps, untrack } from "solid-js";
 import {
   setRenderableRef,

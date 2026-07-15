@@ -1,5 +1,5 @@
 /**
- * Shared utility functions for OpenTUI UI components
+ * Shared utility functions for tui.parts packages
  */
 
 // Opacity utilities

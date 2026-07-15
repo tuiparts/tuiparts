@@ -42,9 +42,13 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .knowledge
 planning/
 .hallmark/
+.scratch/
 
 # examples
 examples/
 
 # benchmarks
 benchmarks
+
+# throwaway prototypes (local only, per decree)
+prototypes/

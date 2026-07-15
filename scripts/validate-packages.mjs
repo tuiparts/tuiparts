@@ -5,13 +5,13 @@ import { join, resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
 const packages = [
-  ["core", "@opentui-ui/core"],
-  ["react", "@opentui-ui/react"],
-  ["solid", "@opentui-ui/solid"],
-  ["dialog", "@opentui-ui/dialog"],
-  ["toast", "@opentui-ui/toast"],
+  ["core", "@tuiparts/core"],
+  ["react", "@tuiparts/react"],
+  ["solid", "@tuiparts/solid"],
+  ["dialog", "@tuiparts/dialog"],
+  ["toast", "@tuiparts/toast"],
 ];
-const workDir = mkdtempSync(join(tmpdir(), "opentui-ui-packages-"));
+const workDir = mkdtempSync(join(tmpdir(), "tuiparts-packages-"));
 const tarballDir = join(workDir, "tarballs");
 const consumerDir = join(workDir, "consumer");
 
@@ -38,7 +38,7 @@ try {
   }
 
   const packageJson = {
-    name: "opentui-ui-packed-consumer",
+    name: "tuiparts-packed-consumer",
     private: true,
     type: "module",
     packageManager: "pnpm@10.34.5",
@@ -69,7 +69,7 @@ try {
   );
   writeFileSync(
     join(consumerDir, "pnpm-workspace.yaml"),
-    `packages:\n  - "."\n\noverrides:\n  "@opentui-ui/core": "${tarballs.get("@opentui-ui/core")}"\n`,
+    `packages:\n  - "."\n\noverrides:\n  "@tuiparts/core": "${tarballs.get("@tuiparts/core")}"\n`,
   );
   writeFileSync(
     join(consumerDir, "tsconfig.json"),
@@ -93,39 +93,39 @@ try {
   );
 
   const entrypoints = [
-    "@opentui-ui/core",
-    "@opentui-ui/core/button",
-    "@opentui-ui/core/checkbox",
-    "@opentui-ui/core/dialog",
-    "@opentui-ui/core/input",
-    "@opentui-ui/core/radio",
-    "@opentui-ui/core/radio-group",
-    "@opentui-ui/core/switch",
-    "@opentui-ui/react",
-    "@opentui-ui/react/button",
-    "@opentui-ui/react/checkbox",
-    "@opentui-ui/react/dialog",
-    "@opentui-ui/react/input",
-    "@opentui-ui/react/radio",
-    "@opentui-ui/react/radio-group",
-    "@opentui-ui/react/switch",
-    "@opentui-ui/solid",
-    "@opentui-ui/solid/button",
-    "@opentui-ui/solid/checkbox",
-    "@opentui-ui/solid/dialog",
-    "@opentui-ui/solid/input",
-    "@opentui-ui/solid/radio",
-    "@opentui-ui/solid/radio-group",
-    "@opentui-ui/solid/switch",
-    "@opentui-ui/dialog",
-    "@opentui-ui/dialog/themes",
-    "@opentui-ui/dialog/react",
-    "@opentui-ui/dialog/solid",
-    "@opentui-ui/toast",
-    "@opentui-ui/toast/themes",
-    "@opentui-ui/toast/icons",
-    "@opentui-ui/toast/react",
-    "@opentui-ui/toast/solid",
+    "@tuiparts/core",
+    "@tuiparts/core/button",
+    "@tuiparts/core/checkbox",
+    "@tuiparts/core/dialog",
+    "@tuiparts/core/input",
+    "@tuiparts/core/radio",
+    "@tuiparts/core/radio-group",
+    "@tuiparts/core/switch",
+    "@tuiparts/react",
+    "@tuiparts/react/button",
+    "@tuiparts/react/checkbox",
+    "@tuiparts/react/dialog",
+    "@tuiparts/react/input",
+    "@tuiparts/react/radio",
+    "@tuiparts/react/radio-group",
+    "@tuiparts/react/switch",
+    "@tuiparts/solid",
+    "@tuiparts/solid/button",
+    "@tuiparts/solid/checkbox",
+    "@tuiparts/solid/dialog",
+    "@tuiparts/solid/input",
+    "@tuiparts/solid/radio",
+    "@tuiparts/solid/radio-group",
+    "@tuiparts/solid/switch",
+    "@tuiparts/dialog",
+    "@tuiparts/dialog/themes",
+    "@tuiparts/dialog/react",
+    "@tuiparts/dialog/solid",
+    "@tuiparts/toast",
+    "@tuiparts/toast/themes",
+    "@tuiparts/toast/icons",
+    "@tuiparts/toast/react",
+    "@tuiparts/toast/solid",
   ];
   const imports = entrypoints
     .map((entrypoint) => `import * as module${entrypoints.indexOf(entrypoint)} from "${entrypoint}";`)
@@ -144,7 +144,7 @@ try {
   writeFileSync(
     join(consumerDir, "executable.ts"),
     `import { createTestRenderer } from "@opentui/core/testing";
-import { CheckboxRootRenderable } from "@opentui-ui/core/checkbox";
+import { CheckboxRootRenderable } from "@tuiparts/core/checkbox";
 
 const setup = await createTestRenderer({ width: 20, height: 3 });
 try {

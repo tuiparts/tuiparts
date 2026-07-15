@@ -1,5 +1,5 @@
 {
-  "name": "@opentui-ui/core",
+  "name": "@tuiparts/core",
   "version": "0.0.3-rc.0",
   "description": "Framework-agnostic core renderables for terminal applications built on OpenTUI",
   "author": "Matt Simpson",
@@ -7,7 +7,7 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/msmps/opentui-ui.git",
+    "url": "git+https://github.com/tuiparts/tuiparts.git",
     "directory": "packages/core"
   },
   "type": "module",
@@ -60,12 +60,12 @@
     }
   },
   "bugs": {
-    "url": "https://github.com/msmps/opentui-ui/issues"
+    "url": "https://github.com/tuiparts/tuiparts/issues"
   },
   "files": [
     "dist"
   ],
-  "homepage": "https://github.com/msmps/opentui-ui#readme",
+  "homepage": "https://github.com/tuiparts/tuiparts#readme",
   "keywords": [
     "headless",
     "ui",

@@ -1,6 +1,6 @@
 /** @jsxImportSource @opentui/react */
 
-import { Dialog as DialogPrimitive } from "@opentui-ui/react/dialog";
+import { Dialog as DialogPrimitive } from "@tuiparts/react/dialog";
 
 /** Props for the consumer-owned Dialog root. */
 export interface DialogProps extends DialogPrimitive.Root.Props {}

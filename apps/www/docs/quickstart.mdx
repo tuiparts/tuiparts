@@ -5,7 +5,7 @@ sidebar:
   order: 2
 ---
 
-OpenTUI UI supports three runtimes — React, Solid, and imperative Core. Install
+tui.parts supports three runtimes — React, Solid, and imperative Core. Install
 one adapter and its OpenTUI peers, then either compose primitives directly or
 install editable recipes from the registry.
 
@@ -14,17 +14,17 @@ install editable recipes from the registry.
 <CodeGroup>
 
 ```bash React
-pnpm add @opentui-ui/react @opentui-ui/core \
+pnpm add @tuiparts/react @tuiparts/core \
   @opentui/core @opentui/react react
 ```
 
 ```bash Solid
-pnpm add @opentui-ui/solid @opentui-ui/core \
+pnpm add @tuiparts/solid @tuiparts/core \
   @opentui/core @opentui/solid solid-js
 ```
 
 ```bash Core
-pnpm add @opentui-ui/core @opentui/core
+pnpm add @tuiparts/core @opentui/core
 ```
 
 </CodeGroup>
@@ -41,7 +41,7 @@ exports stay clean; recipes conventionally alias them locally with a
 <CodeGroup>
 
 ```tsx React
-import { Checkbox as CheckboxPrimitive } from "@opentui-ui/react/checkbox";
+import { Checkbox as CheckboxPrimitive } from "@tuiparts/react/checkbox";
 
 export function Checkbox() {
   return (
@@ -63,7 +63,7 @@ export function Checkbox() {
 import {
   CheckboxIndicatorRenderable,
   CheckboxRootRenderable,
-} from "@opentui-ui/core/checkbox";
+} from "@tuiparts/core/checkbox";
 
 const root = new CheckboxRootRenderable(ctx, { defaultChecked: true });
 const indicator = new CheckboxIndicatorRenderable(ctx, { store: root.store });
@@ -84,13 +84,13 @@ application-owned source.
 
 1. **Configure shadcn**
 
-    Add the OpenTUI UI registry to your `components.json`:
+    Add the tui.parts registry to your `components.json`:
 
     ```json title="components.json"
     {
       "$schema": "https://ui.shadcn.com/schema.json",
       "registries": {
-        "@opentui-ui": "https://opentui-ui.dev/r/{name}.json"
+        "@tuiparts": "https://tui.parts/r/{name}.json"
       }
     }
     ```
@@ -100,10 +100,10 @@ application-owned source.
     Choose the `core/*`, `react/*`, or `solid/*` item:
 
     ```bash
-    pnpm dlx shadcn@4.13.0 add @opentui-ui/react/checkbox
+    pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox
     ```
 
-3. **Use the installed component**
+3. **Use the installed recipe**
 
     The copied file lands in `components/ui` and belongs to your application:
 
@@ -122,7 +122,7 @@ use them as the basis of another registry.
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Components" href="/components" icon="layout-grid">
+  <Card title="Catalog" href="/catalog" icon="layout-grid">
     The starter catalog: Button, Checkbox, Switch, RadioGroup, Input, Badge.
   </Card>
   <Card title="Registry lifecycle" href="/registry" icon="git-compare">

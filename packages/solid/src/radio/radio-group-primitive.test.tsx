@@ -8,11 +8,11 @@ import type {
   RadioIndicatorRenderable,
   RadioRootRenderable,
   RadioState,
-} from "@opentui-ui/core/radio";
+} from "@tuiparts/core/radio";
 import type {
   RadioGroupRenderable,
   RadioGroupState,
-} from "@opentui-ui/core/radio-group";
+} from "@tuiparts/core/radio-group";
 import { createSignal } from "solid-js";
 import { RadioGroup } from "../radio-group";
 import { Radio } from "./index";

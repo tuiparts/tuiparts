@@ -6,7 +6,7 @@ import {
 import {
   CheckboxIndicatorRenderable,
   CheckboxRootRenderable,
-} from "@opentui-ui/core/checkbox";
+} from "@tuiparts/core/checkbox";
 
 export interface CheckboxOptions {
   checked?: boolean;

@@ -1,12 +1,12 @@
 {
-  "name": "opentui-ui",
+  "name": "tuiparts",
   "type": "module",
   "private": true,
   "packageManager": "pnpm@10.34.5",
   "keywords": [
     "ui",
     "opentui",
-    "opentui-ui"
+    "tuiparts"
   ],
   "scripts": {
     "build": "pnpm -r --filter=!www build",

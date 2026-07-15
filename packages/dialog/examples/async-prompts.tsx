@@ -823,7 +823,7 @@ function App() {
           {/* Header */}
           <box flexDirection="column" gap={0}>
             <text fg={colors.blue}>
-              <b>@opentui-ui/dialog</b>
+              <b>@tuiparts/dialog</b>
             </text>
           </box>
 

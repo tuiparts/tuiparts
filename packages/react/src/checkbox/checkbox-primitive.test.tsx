@@ -6,7 +6,7 @@ import {
   CheckboxIndicatorRenderable,
   type CheckboxRootRenderable,
   type CheckboxState,
-} from "@opentui-ui/core/checkbox";
+} from "@tuiparts/core/checkbox";
 import { act, createElement, Fragment, type ReactNode, useState } from "react";
 import * as Checkbox from "./primitive";
 

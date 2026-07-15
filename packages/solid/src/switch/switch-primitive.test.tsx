@@ -8,7 +8,7 @@ import type {
   SwitchRootRenderable,
   SwitchState,
   SwitchThumbRenderable,
-} from "@opentui-ui/core/switch";
+} from "@tuiparts/core/switch";
 import { createSignal } from "solid-js";
 import * as Switch from "./primitive";
 

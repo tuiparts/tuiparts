@@ -1,6 +1,6 @@
 /** @jsxImportSource @opentui/react */
 
-import { Input as InputPrimitive } from "@opentui-ui/react/input";
+import { Input as InputPrimitive } from "@tuiparts/react/input";
 
 export interface InputProps extends InputPrimitive.Props {}
 

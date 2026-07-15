@@ -1,13 +1,14 @@
 {
-  "name": "@opentui-ui/utils",
+  "name": "@tuiparts/utils",
   "version": "0.0.1",
-  "description": "Shared utilities and types for OpenTUI UI components",
+  "private": true,
+  "description": "Shared utilities and types for tui.parts packages",
   "author": "Matt Simpson",
   "license": "MIT",
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/msmps/opentui-ui.git",
+    "url": "git+https://github.com/tuiparts/tuiparts.git",
     "directory": "packages/utils"
   },
   "type": "module",
@@ -36,12 +37,12 @@
     }
   },
   "bugs": {
-    "url": "https://github.com/msmps/opentui-ui/issues"
+    "url": "https://github.com/tuiparts/tuiparts/issues"
   },
   "files": [
     "dist"
   ],
-  "homepage": "https://github.com/msmps/opentui-ui#readme",
+  "homepage": "https://github.com/tuiparts/tuiparts#readme",
   "keywords": [
     "utils",
     "utilities",

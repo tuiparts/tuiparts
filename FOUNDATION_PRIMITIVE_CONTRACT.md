@@ -37,7 +37,7 @@ state machine. Input is the normative example.
 ### Primitive
 
 A versioned, visually unstyled behavior module exported by
-`@opentui-ui/core`, with equivalent React and Solid adapters where applicable.
+`@tuiparts/core`, with equivalent React and Solid adapters where applicable.
 Primitive modules use component-specific package subpaths.
 
 ### Store

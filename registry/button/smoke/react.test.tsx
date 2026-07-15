@@ -6,7 +6,7 @@ import { testRender } from "@opentui/react/test-utils";
 import type {
   ButtonPressDetails,
   ButtonRenderable,
-} from "@opentui-ui/core/button";
+} from "@tuiparts/core/button";
 import { act } from "react";
 import { Button } from "./components/ui/button";
 

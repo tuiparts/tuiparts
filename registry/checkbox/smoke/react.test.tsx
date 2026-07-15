@@ -4,7 +4,7 @@ import { afterEach, expect, test } from "bun:test";
 import { type BaseRenderable, TextRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
-import type { CheckboxRootRenderable } from "@opentui-ui/core/checkbox";
+import type { CheckboxRootRenderable } from "@tuiparts/core/checkbox";
 import { act, useState } from "react";
 import { Checkbox } from "./components/ui/checkbox";
 

@@ -6,7 +6,7 @@ import {
   type SwitchRootRenderable,
   type SwitchState,
   SwitchThumbRenderable,
-} from "@opentui-ui/core/switch";
+} from "@tuiparts/core/switch";
 import { act, createElement, type ReactNode, useState } from "react";
 import * as Switch from "./primitive";
 

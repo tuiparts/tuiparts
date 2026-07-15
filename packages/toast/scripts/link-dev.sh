@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# link-dev.sh - Development linking script for @opentui-ui/toast
+# link-dev.sh - Development linking script for @tuiparts/toast
 #
-# This script creates a symbolic link (or copy) of the @opentui-ui/toast package
+# This script creates a symbolic link (or copy) of the @tuiparts/toast package
 # into another project's node_modules directory for local development and testing.
 #
 # Usage:
@@ -88,7 +88,7 @@ if [ ! -d "$NODE_MODULES_DIR" ]; then
 	exit 1
 fi
 
-echo "Linking @opentui-ui/toast from: $REPO_ROOT"
+echo "Linking @tuiparts/toast from: $REPO_ROOT"
 echo "To node_modules in: $NODE_MODULES_DIR"
 echo
 
@@ -127,11 +127,11 @@ else
 	echo "Creating symbolic link..."
 fi
 
-# Link @opentui-ui/toast
-remove_if_exists "$NODE_MODULES_DIR/@opentui-ui/toast"
+# Link @tuiparts/toast
+remove_if_exists "$NODE_MODULES_DIR/@tuiparts/toast"
 PACKAGE_PATH="$REPO_ROOT$SUFFIX"
 if [ -d "$PACKAGE_PATH" ]; then
-	link_or_copy "$PACKAGE_PATH" "$NODE_MODULES_DIR/@opentui-ui/toast" "@opentui-ui/toast"
+	link_or_copy "$PACKAGE_PATH" "$NODE_MODULES_DIR/@tuiparts/toast" "@tuiparts/toast"
 else
 	echo "Warning: $PACKAGE_PATH not found"
 fi

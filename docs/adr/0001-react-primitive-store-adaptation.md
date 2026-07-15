@@ -4,7 +4,7 @@ status: accepted
 
 # Use Core Stores for React early state without consumer wiring
 
-OpenTUI UI exposes Base UI-style primitive modules to React and Solid consumers,
+tui.parts exposes Base UI-style primitive modules to React and Solid consumers,
 while Core owns framework-neutral behavior. React automatically creates a Core
 Store before the OpenTUI reconciler constructs the corresponding Renderable.
 The later Root uses that exact Store. Consumers configure Root props and do not
@@ -15,7 +15,7 @@ wire Stores through framework components.
 The public product direction is:
 
 ```text
-@opentui-ui/core behavior
+@tuiparts/core behavior
   -> React and Solid primitive modules
   -> consumer-owned shadcn-compatible recipes
 ```
@@ -41,7 +41,7 @@ Root synchronously and can provide that Renderable through context.
 Compound React and Solid primitives follow the Base UI module-namespace shape:
 
 ```ts
-import { Checkbox as CheckboxPrimitive } from "@opentui-ui/react/checkbox";
+import { Checkbox as CheckboxPrimitive } from "@tuiparts/react/checkbox";
 
 function Checkbox(props: CheckboxPrimitive.Root.Props) {
   return (
@@ -270,7 +270,7 @@ fails, the Store/reconciler integration must be fixed instead.
 
 ## Bundling and executable requirements
 
-The implementation uses ordinary exports from `@opentui-ui/core`; there is no
+The implementation uses ordinary exports from `@tuiparts/core`; there is no
 private runtime dependency. Packed-package validation must still verify:
 
 - no `_internal`, `primitive-runtime`, or cross-package source import remains;

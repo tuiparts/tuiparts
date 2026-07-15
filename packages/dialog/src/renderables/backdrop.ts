@@ -4,7 +4,7 @@ import {
   type RenderContext,
   type RGBA,
 } from "@opentui/core";
-import { normalizeOpacity } from "@opentui-ui/utils";
+import { normalizeOpacity } from "@tuiparts/utils";
 import { DEFAULT_BACKDROP_COLOR, DEFAULT_BACKDROP_OPACITY } from "../themes";
 import type { DialogContainerOptions, InternalDialog } from "../types";
 
@@ -61,7 +61,7 @@ export class BackdropRenderable extends BoxRenderable {
     const opacity = normalizeOpacity(
       dialog?.backdropOpacity ?? containerOptions.backdropOpacity,
       DEFAULT_BACKDROP_OPACITY,
-      "@opentui-ui/dialog",
+      "@tuiparts/dialog",
     );
     const rgba = parseColor(color);
     rgba.a = opacity / 255;

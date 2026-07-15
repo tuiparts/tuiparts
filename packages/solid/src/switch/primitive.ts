@@ -6,7 +6,7 @@ import {
   type SwitchState,
   type SwitchThumbOptions,
   SwitchThumbRenderable,
-} from "@opentui-ui/core/switch";
+} from "@tuiparts/core/switch";
 import {
   createComponent,
   createContext,

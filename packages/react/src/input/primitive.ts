@@ -1,6 +1,6 @@
 import type { RenderContext } from "@opentui/core";
 import { extend } from "@opentui/react";
-import { type InputOptions, InputRenderable } from "@opentui-ui/core/input";
+import { type InputOptions, InputRenderable } from "@tuiparts/core/input";
 import { createElement, type ReactElement, type Ref } from "react";
 
 const INPUT_TAG = "otui-input";

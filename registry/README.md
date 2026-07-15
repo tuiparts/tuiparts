@@ -1,8 +1,11 @@
 # Foundation Recipe Catalog
 
-The OpenTUI UI registry distributes editable recipe source through the shadcn
+The tui.parts registry distributes editable recipe source through the shadcn
 CLI. Installed files belong to the consuming project. The registry does not
 maintain a second package manager, recipe lockfile, or automatic merge engine.
+Deployed catalog items are served at `/r/{adapter}/{recipe}.json` (for
+example `r/react/checkbox.json`), which lets consumers register the
+`@tuiparts` namespace once and install by name.
 
 ## Catalog
 
@@ -24,8 +27,8 @@ functions. Core installation uses the same shadcn item lifecycle; it installs
 ordinary `.ts` source rather than framework JSX.
 
 The registry also contains a validated preview Dialog recipe, but it is not
-part of this starter catalog. The already-adopted `@opentui-ui/dialog` and
-`@opentui-ui/toast` packages remain the production companion paths. The preview
+part of this starter catalog. The already-adopted `@tuiparts/dialog` and
+`@tuiparts/toast` packages remain the production companion paths. The preview
 recipe does not replace either package.
 
 ## Compatibility
@@ -72,7 +75,7 @@ do not run this build command.
 ## Discover And Review Updates
 
 The current registry item is the upstream recipe revision. Its Git commit, tag,
-or deployed registry version identifies the exact upstream source; OpenTUI UI
+or deployed registry version identifies the exact upstream source; tui.parts
 does not write hidden revision state into the consumer's project.
 
 Inspect the current upstream source and compare it with the installed file:

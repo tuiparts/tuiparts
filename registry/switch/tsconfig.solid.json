@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": "../../examples/solid",
     "paths": {
-      "@opentui-ui/solid/*": ["../../packages/solid/src/*/index.tsx"],
+      "@tuiparts/solid/*": ["../../packages/solid/src/*/index.tsx"],
       "*": ["node_modules/*"]
     }
   },

@@ -5,7 +5,7 @@ sidebar:
   order: 1
 ---
 
-OpenTUI UI is a component foundation for
+tui.parts is the primitive and recipe ecosystem for
 [OpenTUI](https://github.com/anomalyco/opentui) — composable interaction
 primitives and editable recipes for building terminal UIs in React, Solid, or
 imperative Core. It makes the same trade Base UI and shadcn/ui made on the
@@ -28,13 +28,13 @@ layout, glyphs, colors, and convenience props you can edit.
 
 | Package | Purpose |
 | --- | --- |
-| `@opentui-ui/core` | Framework-neutral primitive state and Renderables |
-| `@opentui-ui/react` | React compound-part adapters |
-| `@opentui-ui/solid` | Solid compound-part adapters |
+| `@tuiparts/core` | Framework-neutral primitive state and Renderables |
+| `@tuiparts/react` | React compound-part adapters |
+| `@tuiparts/solid` | Solid compound-part adapters |
 
 Button, Checkbox, Dialog, Input, RadioGroup, and Switch expose foundation
 behavior. Badge is distributed only as editable registry source because it has
-no reusable interaction behavior. `@opentui-ui/dialog` and `@opentui-ui/toast`
+no reusable interaction behavior. `@tuiparts/dialog` and `@tuiparts/toast`
 are independently versioned companion products with higher-level APIs outside
 the foundation release line.
 
@@ -55,7 +55,7 @@ the foundation release line.
   <Card title="Quickstart" href="/quickstart" icon="rocket">
     Install an adapter and render your first primitive.
   </Card>
-  <Card title="Components" href="/components" icon="layout-grid">
+  <Card title="Catalog" href="/catalog" icon="layout-grid">
     Browse the starter catalog of editable recipes.
   </Card>
   <Card title="Architecture" href="/architecture" icon="blocks">

@@ -2,7 +2,7 @@ import type { RenderContext } from "@opentui/core";
 import {
   type InputOptions as BaseInputOptions,
   InputRenderable,
-} from "@opentui-ui/core/input";
+} from "@tuiparts/core/input";
 
 export interface InputOptions extends BaseInputOptions {}
 

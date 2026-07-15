@@ -16,8 +16,8 @@ primitive packages.
 The framework recipe follows the Base UI module split:
 
 ```tsx
-import { Radio as RadioPrimitive } from "@opentui-ui/react/radio";
-import { RadioGroup as RadioGroupPrimitive } from "@opentui-ui/react/radio-group";
+import { Radio as RadioPrimitive } from "@tuiparts/react/radio";
+import { RadioGroup as RadioGroupPrimitive } from "@tuiparts/react/radio-group";
 
 <RadioGroupPrimitive defaultValue="alpha">
   <RadioPrimitive.Root value="alpha">

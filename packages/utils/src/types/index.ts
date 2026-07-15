@@ -1,5 +1,5 @@
 /**
- * Shared type definitions for OpenTUI UI components
+ * Shared type definitions for tui.parts packages
  */
 
 /**

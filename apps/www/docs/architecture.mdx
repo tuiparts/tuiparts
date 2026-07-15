@@ -5,7 +5,7 @@ sidebar:
   order: 3
 ---
 
-OpenTUI UI splits every component into behavior that is packaged and
+tui.parts splits every component into behavior that is packaged and
 presentation that is copied.
 
 ## Two layers
@@ -54,7 +54,7 @@ dismissal, focus containment, and restoration.
 
 :::note
 The complete ownership, event, part, lifecycle, and conformance rules live in
-[`FOUNDATION_PRIMITIVE_CONTRACT.md`](https://github.com/msmps/opentui-ui/blob/main/FOUNDATION_PRIMITIVE_CONTRACT.md)
+[`FOUNDATION_PRIMITIVE_CONTRACT.md`](https://github.com/tuiparts/tuiparts/blob/main/FOUNDATION_PRIMITIVE_CONTRACT.md)
 in the repository.
 :::
 
@@ -74,19 +74,19 @@ in the repository.
 
 Three Dialog surfaces currently have distinct roles:
 
-- `@opentui-ui/{core,react,solid}/dialog` is the foundation compound primitive.
+- `@tuiparts/{core,react,solid}/dialog` is the foundation compound primitive.
 - `registry/dialog` is a validated preview recipe, not part of the six-family
   starter catalog.
-- `@opentui-ui/dialog` is the adopted companion product with manager, provider,
+- `@tuiparts/dialog` is the adopted companion product with manager, provider,
   theme, and async prompt/confirm/alert/choice conveniences.
 
-`@opentui-ui/toast` is also an adopted companion product with notification,
+`@tuiparts/toast` is also an adopted companion product with notification,
 theme, icon, React, and Solid APIs. Neither companion is re-exported by the
 foundation packages, and installing a foundation recipe does not replace
 either companion. Companions are independently versioned and supported.
 
 ## Versioning
 
-`@opentui-ui/core`, `@opentui-ui/react`, and `@opentui-ui/solid` version
+`@tuiparts/core`, `@tuiparts/react`, and `@tuiparts/solid` version
 together as a linked foundation release line, managed with Changesets. The
 Dialog and Toast companion packages version independently.

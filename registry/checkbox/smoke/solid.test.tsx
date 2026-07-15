@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it } from "bun:test";
 import { type BaseRenderable, TextRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
-import type { CheckboxRootRenderable } from "@opentui-ui/core/checkbox";
+import type { CheckboxRootRenderable } from "@tuiparts/core/checkbox";
 import { createSignal } from "solid-js";
 import { Checkbox } from "./components/ui/checkbox";
 

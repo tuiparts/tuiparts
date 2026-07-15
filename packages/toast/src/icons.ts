@@ -34,7 +34,7 @@ export const DEFAULT_SPINNER: SpinnerConfig = {
  *
  * @example
  * ```ts
- * import { DEFAULT_ICONS, ToasterRenderable } from '@opentui-ui/toast';
+ * import { DEFAULT_ICONS, ToasterRenderable } from '@tuiparts/toast';
  *
  * // Use defaults with a custom success icon
  * const toaster = new ToasterRenderable(ctx, {
@@ -59,7 +59,7 @@ export const DEFAULT_ICONS: ToastIcons = {
  *
  * @example
  * ```ts
- * import { ASCII_ICONS, ToasterRenderable } from '@opentui-ui/toast';
+ * import { ASCII_ICONS, ToasterRenderable } from '@tuiparts/toast';
  *
  * const toaster = new ToasterRenderable(ctx, {
  *   icons: ASCII_ICONS,
@@ -83,8 +83,8 @@ export const ASCII_ICONS: ToastIcons = {
  *
  * @example
  * ```ts
- * import { MINIMAL_ICONS, ToasterRenderable } from '@opentui-ui/toast';
- * import { minimal } from '@opentui-ui/toast/themes';
+ * import { MINIMAL_ICONS, ToasterRenderable } from '@tuiparts/toast';
+ * import { minimal } from '@tuiparts/toast/themes';
  *
  * const toaster = new ToasterRenderable(ctx, {
  *   ...minimal,
@@ -109,7 +109,7 @@ export const MINIMAL_ICONS: ToastIcons = {
  *
  * @example
  * ```ts
- * import { EMOJI_ICONS, ToasterRenderable } from '@opentui-ui/toast';
+ * import { EMOJI_ICONS, ToasterRenderable } from '@tuiparts/toast';
  *
  * const toaster = new ToasterRenderable(ctx, {
  *   icons: EMOJI_ICONS,

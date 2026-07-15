@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "opentui-ui",
+  "name": "tuiparts",
   "compatibility_date": "2026-07-14",
   "assets": {
     "directory": "./dist",

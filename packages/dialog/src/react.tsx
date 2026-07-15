@@ -166,7 +166,7 @@ function useDialogManager(): DialogManager {
     throw new Error(
       "useDialog/useDialogState must be used within a DialogProvider.\n\n" +
         "Wrap your app with <DialogProvider>:\n\n" +
-        "  import { DialogProvider } from '@opentui-ui/dialog/react';\n\n" +
+        "  import { DialogProvider } from '@tuiparts/dialog/react';\n\n" +
         "  function App() {\n" +
         "    return (\n" +
         "      <DialogProvider>\n" +

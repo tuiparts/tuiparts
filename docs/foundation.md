@@ -1,6 +1,6 @@
-# tui.parts Foundation
+# tuiparts.sh Foundation
 
-tui.parts has two Foundation layers:
+tuiparts.sh has two Foundation layers:
 
 1. Versioned packages provide reusable terminal behavior.
 2. Registry recipes copy editable presentation into your application.

@@ -1,5 +1,5 @@
 /**
- * Shared utility functions for tui.parts packages
+ * Shared utility functions for tuiparts.sh packages
  */
 
 // Opacity utilities

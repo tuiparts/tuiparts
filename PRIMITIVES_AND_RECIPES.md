@@ -1,8 +1,8 @@
-# tui.parts Primitives And Recipes
+# tuiparts.sh Primitives And Recipes
 
 ## Direction
 
-tui.parts separates difficult packaged behavior from opinionated,
+tuiparts.sh separates difficult packaged behavior from opinionated,
 consumer-owned presentation.
 
 This is the formal product architecture for foundation v1.

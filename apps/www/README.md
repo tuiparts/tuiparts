@@ -1,6 +1,6 @@
 # www
 
-The tui.parts website: landing page, docs, and shadcn-compatible registry
+The tuiparts.sh website: landing page, docs, and shadcn-compatible registry
 host, built with [Blume](https://useblume.dev).
 
 ## Structure
@@ -35,4 +35,4 @@ The site is a fully static build. Two options:
 
 After the production domain exists, update `deployment.site` in
 `blume.config.ts` and the registry URLs in `docs/quickstart.mdx` and
-`docs/registry.mdx` (currently `https://tui.parts`).
+`docs/registry.mdx` (currently `https://tuiparts.sh`).

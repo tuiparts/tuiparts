@@ -1,6 +1,6 @@
 # @tuiparts/core
 
-Framework-neutral OpenTUI behavior for the tui.parts Foundation.
+Framework-neutral OpenTUI behavior for the tuiparts.sh Foundation.
 
 New to the package/recipe split? Start with the
 [foundation guide](https://github.com/tuiparts/tuiparts/blob/main/docs/foundation.md).

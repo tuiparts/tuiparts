@@ -3,7 +3,7 @@
 **Updated:** 2026-07-15
 ## OVERVIEW
 
-tui.parts — the primitive and recipe ecosystem for OpenTUI (npm scope
+tuiparts.sh — the primitive and recipe ecosystem for OpenTUI (npm scope
 `@tuiparts`). The monorepo is built around framework-neutral Core behavior,
 React/Solid compound-part adapters, and shadcn-compatible consumer-owned
 recipes written with plain TypeScript and native OpenTUI properties.

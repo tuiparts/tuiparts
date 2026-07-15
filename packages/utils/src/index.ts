@@ -1,7 +1,7 @@
 /**
  * @tuiparts/utils
  *
- * Shared utilities and types for tui.parts packages
+ * Shared utilities and types for tuiparts.sh packages
  */
 
 // Types

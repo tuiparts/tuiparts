@@ -2,7 +2,7 @@
   "name": "@tuiparts/utils",
   "version": "0.0.1",
   "private": true,
-  "description": "Shared utilities and types for tui.parts packages",
+  "description": "Shared utilities and types for tuiparts.sh packages",
   "author": "Matt Simpson",
   "license": "MIT",
   "sideEffects": false,

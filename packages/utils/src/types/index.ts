@@ -1,5 +1,5 @@
 /**
- * Shared type definitions for tui.parts packages
+ * Shared type definitions for tuiparts.sh packages
  */
 
 /**

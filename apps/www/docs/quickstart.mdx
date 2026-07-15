@@ -5,7 +5,7 @@ sidebar:
   order: 2
 ---
 
-tui.parts supports three runtimes — React, Solid, and imperative Core. Install
+tuiparts.sh supports three runtimes — React, Solid, and imperative Core. Install
 one adapter and its OpenTUI peers, then either compose primitives directly or
 install editable recipes from the registry.
 
@@ -84,13 +84,13 @@ application-owned source.
 
 1. **Configure shadcn**
 
-    Add the tui.parts registry to your `components.json`:
+    Add the tuiparts.sh registry to your `components.json`:
 
     ```json title="components.json"
     {
       "$schema": "https://ui.shadcn.com/schema.json",
       "registries": {
-        "@tuiparts": "https://tui.parts/r/{name}.json"
+        "@tuiparts": "https://tuiparts.sh/r/{name}.json"
       }
     }
     ```

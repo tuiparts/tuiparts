@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-  <title>tui.parts — checkbox, exploded view</title>
+  <title>tuiparts.sh — checkbox, exploded view</title>
   <path d="M8 6.5l3 3L16.5 3" stroke="#2D62E4" stroke-width="2" />
   <rect x="5" y="13" width="14" height="9" stroke="currentColor" stroke-width="2" />
 </svg>

@@ -1,20 +1,20 @@
-# tui.parts Brand System
+# tuiparts.sh Brand System
 
-Working brand reference for tui.parts — the primitive and recipe ecosystem
+Working brand reference for tuiparts.sh — the primitive and recipe ecosystem
 for OpenTUI. Derived from the 2026-07-15 brand handoff. Where this document
 and the handoff disagree, this document wins: it carries the amendments
 (registry URL shape, mascot name, typeface).
 
 ## The name
 
-- The brand is written `tui.parts` — always lowercase, always with the dot.
+- The brand is written `tuiparts.sh` — always lowercase, always with the dot.
   The domain is the wordmark.
 - The npm scope and handle form is `@tuiparts`.
 - Pronunciation is documented once, in the root README, and never again.
 - The descriptor accompanies the brand wherever honesty matters:
   "The primitive and recipe ecosystem for OpenTUI."
 - Tagline: "Parts for terminal interfaces. Some assembly encouraged."
-- Attribution is mandatory: tui.parts is an independent project and is not
+- Attribution is mandatory: tuiparts.sh is an independent project and is not
   affiliated with, or endorsed by, the OpenTUI project.
 
 ## Voice
@@ -107,7 +107,7 @@ PART NO. r/react/checkbox.json
 ```
 
 The Catalog manifest is served at `/r/registry.json`; consumers register the
-namespace once: `@tuiparts = https://tui.parts/r/{name}.json`.
+namespace once: `@tuiparts = https://tuiparts.sh/r/{name}.json`.
 
 ## Applications
 

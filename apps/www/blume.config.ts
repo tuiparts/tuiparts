@@ -1,12 +1,12 @@
 import { defineConfig } from "blume";
 
 export default defineConfig({
-  title: "tui.parts",
+  title: "tuiparts.sh",
   description:
     "The primitive and recipe ecosystem for OpenTUI. Package the difficult behavior. Copy the opinionated layer.",
   logo: {
     image: "/logo.svg",
-    text: "tui.parts",
+    text: "tuiparts.sh",
   },
 
   // Docs mount at /docs; the site root is the custom landing page.
@@ -66,6 +66,6 @@ export default defineConfig({
   deployment: {
     output: "static",
     // TODO: replace with the production domain once it exists.
-    site: "https://tui.parts",
+    site: "https://tuiparts.sh",
   },
 });

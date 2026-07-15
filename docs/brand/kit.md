@@ -1,6 +1,6 @@
 # Kit — Mascot Sheet
 
-Kit is the tui.parts mascot: an assembly robot built entirely from
+Kit is the tuiparts.sh mascot: an assembly robot built entirely from
 box-drawing characters. The mascot is literally made of parts, which is the
 product thesis in creature form. A "kit" is a set of parts you assemble
 yourself.

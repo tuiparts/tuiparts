@@ -39,7 +39,7 @@ is a checkbox; the exploded checkbox is the brand.
 
 ## Wordmark
 
-`tui.parts` set in Commit Mono, lowercase, with the dot. The domain is the
+`tuiparts.sh` set in Commit Mono, lowercase, with the dot. The domain is the
 wordmark.
 
 Dot treatments:
@@ -60,20 +60,20 @@ Primary (vertical, brand contexts) — the wordmark takes the caption slot:
         1 ─╌╌ ┌─┐
               └─┘
 
-  tui.parts
+  tuiparts.sh
 ```
 
 Wordmark with descriptor (anywhere honesty matters):
 
 ```
-tui.parts
+tuiparts.sh
 The primitive and recipe ecosystem for OpenTUI.
 ```
 
 Launch line (single-line contexts):
 
 ```
-tui.parts — Parts for terminal interfaces. Some assembly encouraged.
+tuiparts.sh — Parts for terminal interfaces. Some assembly encouraged.
 ```
 
 ## Clearspace and minimums

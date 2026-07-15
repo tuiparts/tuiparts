@@ -1,4 +1,4 @@
-# tui.parts
+# tuiparts.sh
 
 The primitive and recipe ecosystem for
 [OpenTUI](https://github.com/anomalyco/opentui).
@@ -20,7 +20,7 @@ Parts for terminal interfaces. Some assembly encouraged.
   1. Root   2. Indicator
 ```
 
-tui.parts ships in two halves:
+tuiparts.sh ships in two halves:
 
 - **Primitives** — npm packages that own the difficult, unstyled behavior:
   state, focus, keyboard and pointer handling, overlays, collections. Every
@@ -119,7 +119,7 @@ typechecks every exported subpath, and executes representative runtime imports.
 
 ## Attribution
 
-tui.parts is an independent project built for OpenTUI. It is not affiliated
+tuiparts.sh is an independent project built for OpenTUI. It is not affiliated
 with, or endorsed by, the OpenTUI project.
 
 ## License

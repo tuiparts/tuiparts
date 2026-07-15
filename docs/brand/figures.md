@@ -2,7 +2,7 @@
 
 Rules for producing `FIG. N` box-drawing schematics. A Figure is any
 captioned box-drawing diagram, including every Kit appearance. Figures are
-the signature graphic system of tui.parts: exploded views of real
+the signature graphic system of tuiparts.sh: exploded views of real
 Primitives, labeled with real Part names.
 
 ## The hard requirement

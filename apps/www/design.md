@@ -1,4 +1,4 @@
-# Design — tui.parts docs site
+# Design — tuiparts.sh docs site
 
 A locked design system for `apps/www`. Every page redesign reads this file
 before emitting code. Do not regenerate per page — extend or amend this file

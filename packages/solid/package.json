@@ -1,7 +1,7 @@
 {
   "name": "@tuiparts/solid",
   "version": "0.0.3-rc.0",
-  "description": "Solid Adapter for tui.parts Primitives",
+  "description": "Solid Adapter for tuiparts.sh Primitives",
   "author": "Matt Simpson",
   "license": "MIT",
   "sideEffects": [

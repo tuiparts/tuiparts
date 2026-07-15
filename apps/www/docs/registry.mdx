@@ -5,7 +5,7 @@ sidebar:
   order: 4
 ---
 
-The tui.parts registry distributes editable recipe source through the
+The tuiparts.sh registry distributes editable recipe source through the
 official shadcn CLI. It is hosted on this site: every item is a static JSON
 payload at `/r/<framework>/<name>.json`.
 
@@ -21,7 +21,7 @@ Add the registry namespace to your project's `components.json`:
 {
   "$schema": "https://ui.shadcn.com/schema.json",
   "registries": {
-    "@tuiparts": "https://tui.parts/r/{name}.json"
+    "@tuiparts": "https://tuiparts.sh/r/{name}.json"
   }
 }
 ```
@@ -35,7 +35,7 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox
 You can also install any item by direct URL without configuring a namespace:
 
 ```bash
-pnpm dlx shadcn@4.13.0 add https://tui.parts/r/react/checkbox.json
+pnpm dlx shadcn@4.13.0 add https://tuiparts.sh/r/react/checkbox.json
 ```
 
 The CLI installs declared dependencies and copies the recipe into

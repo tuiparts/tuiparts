@@ -1,6 +1,6 @@
 # @tuiparts/solid
 
-The Solid Adapter for the tui.parts Foundation.
+The Solid Adapter for the tuiparts.sh Foundation.
 
 New to package primitives and editable recipes? Start with the
 [foundation guide](https://github.com/tuiparts/tuiparts/blob/main/docs/foundation.md).

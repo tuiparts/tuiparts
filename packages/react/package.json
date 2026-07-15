@@ -1,7 +1,7 @@
 {
   "name": "@tuiparts/react",
   "version": "0.0.3-rc.0",
-  "description": "React Adapter for tui.parts Primitives",
+  "description": "React Adapter for tuiparts.sh Primitives",
   "author": "Matt Simpson",
   "license": "MIT",
   "sideEffects": [

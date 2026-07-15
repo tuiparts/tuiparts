@@ -49,3 +49,6 @@ examples/
 
 # benchmarks
 benchmarks
+
+# throwaway prototypes (local only, per decree)
+prototypes/

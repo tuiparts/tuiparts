@@ -1,5 +1,5 @@
 {
-  "name": "@opentui-ui/utils",
+  "name": "@tuiparts/utils",
   "version": "0.0.1",
   "description": "Shared utilities and types for OpenTUI UI components",
   "author": "Matt Simpson",

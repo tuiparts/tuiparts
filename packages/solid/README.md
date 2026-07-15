@@ -1,4 +1,4 @@
-# @opentui-ui/solid
+# @tuiparts/solid
 
 Solid bindings for the OpenTUI UI foundation.
 
@@ -8,7 +8,7 @@ New to package primitives and editable recipes? Start with the
 ## Installation
 
 ```bash
-pnpm add @opentui-ui/solid @opentui-ui/core \
+pnpm add @tuiparts/solid @tuiparts/core \
   @opentui/core @opentui/solid solid-js
 ```
 
@@ -18,7 +18,7 @@ Peer requirements are `@opentui/core` and `@opentui/solid` `^0.4.3`, with
 ## Foundation Example
 
 ```tsx
-import { Button, Checkbox, Input, Radio, RadioGroup, Switch } from "@opentui-ui/solid";
+import { Button, Checkbox, Input, Radio, RadioGroup, Switch } from "@tuiparts/solid";
 import { createSignal } from "solid-js";
 
 export function Settings() {
@@ -54,27 +54,27 @@ update controlled primitive state without remounting.
 ## Imports
 
 ```ts
-import { Button } from "@opentui-ui/solid/button";
-import { Checkbox } from "@opentui-ui/solid/checkbox";
-import { Input } from "@opentui-ui/solid/input";
-import { Radio } from "@opentui-ui/solid/radio";
-import { RadioGroup } from "@opentui-ui/solid/radio-group";
-import { Switch } from "@opentui-ui/solid/switch";
-import { Dialog } from "@opentui-ui/solid/dialog";
+import { Button } from "@tuiparts/solid/button";
+import { Checkbox } from "@tuiparts/solid/checkbox";
+import { Input } from "@tuiparts/solid/input";
+import { Radio } from "@tuiparts/solid/radio";
+import { RadioGroup } from "@tuiparts/solid/radio-group";
+import { Switch } from "@tuiparts/solid/switch";
+import { Dialog } from "@tuiparts/solid/dialog";
 ```
 
-All components are also exported from `@opentui-ui/solid`.
+All components are also exported from `@tuiparts/solid`.
 
 ## Dialog
 
 `Dialog` is the Solid compound adapter for the foundation Dialog
-behavior in `@opentui-ui/core/dialog`. Compose its Root, Trigger, Portal,
+behavior in `@tuiparts/core/dialog`. Compose its Root, Trigger, Portal,
 Backdrop, Popup, Title, Description, and Close parts, or install the editable
 `solid/dialog` registry recipe for visual assembly. Its reactive props and
 portal lifecycle preserve coordinator-owned visibility/z-index, focus
 containment, detached restoration, and reverse Tab behavior.
 
-The existing `@opentui-ui/dialog/solid` provider, hooks, and async APIs remain
+The existing `@tuiparts/dialog/solid` provider, hooks, and async APIs remain
 the companion convenience surface; they are not re-exported by the foundation
 adapter.
 
@@ -85,7 +85,7 @@ mutable value and event model. It has no `defaultValue`, controlled rollback,
 or callback aliases.
 
 ```tsx
-import { Input } from "@opentui-ui/solid/input";
+import { Input } from "@tuiparts/solid/input";
 
 <Input
   value="initial"

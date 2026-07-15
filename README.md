@@ -24,16 +24,16 @@ Toast boundaries.
 
 | Package | Purpose |
 | --- | --- |
-| [`@opentui-ui/core`](./packages/core) | Framework-neutral primitive state and Renderables |
-| [`@opentui-ui/react`](./packages/react) | React compound-part adapters |
-| [`@opentui-ui/solid`](./packages/solid) | Solid compound-part adapters |
+| [`@tuiparts/core`](./packages/core) | Framework-neutral primitive state and Renderables |
+| [`@tuiparts/react`](./packages/react) | React compound-part adapters |
+| [`@tuiparts/solid`](./packages/solid) | Solid compound-part adapters |
 | [`registry`](./registry) | Consumer-owned Core, React, and Solid recipes plus their install/update lifecycle |
 
 Button, Checkbox, Dialog, Input, RadioGroup, and Switch expose foundation
 behavior. Badge is distributed
 only as editable registry source because it has no reusable interaction
-behavior. [`@opentui-ui/dialog`](./packages/dialog) and
-[`@opentui-ui/toast`](./packages/toast) remain independently versioned companion
+behavior. [`@tuiparts/dialog`](./packages/dialog) and
+[`@tuiparts/toast`](./packages/toast) remain independently versioned companion
 products with higher-level APIs outside the foundation release line.
 
 The foundation registry catalog contains Checkbox, Switch, Button,
@@ -46,12 +46,12 @@ consumer-owned update guidance.
 Choose one adapter and install its OpenTUI peers. For example:
 
 ```bash
-pnpm add @opentui-ui/react @opentui-ui/core \
+pnpm add @tuiparts/react @tuiparts/core \
   @opentui/core @opentui/react react
 ```
 
 ```bash
-pnpm add @opentui-ui/solid @opentui-ui/core \
+pnpm add @tuiparts/solid @tuiparts/core \
   @opentui/core @opentui/solid solid-js
 ```
 

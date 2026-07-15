@@ -11,7 +11,7 @@ import {
   TextAttributes,
   TextRenderable,
 } from "@opentui/core";
-import { resolvePadding } from "@opentui-ui/utils";
+import { resolvePadding } from "@tuiparts/utils";
 import { TIME_BEFORE_UNMOUNT, TOAST_WIDTH } from "../constants";
 import {
   DEFAULT_ICONS,

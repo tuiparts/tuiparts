@@ -13,7 +13,7 @@ import type {
   DialogRootRenderable,
   DialogTitleRenderable,
   DialogTriggerRenderable,
-} from "@opentui-ui/core/dialog";
+} from "@tuiparts/core/dialog";
 import { createSignal } from "solid-js";
 import * as Dialog from "./primitive";
 

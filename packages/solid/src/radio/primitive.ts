@@ -6,7 +6,7 @@ import {
   type RadioRootOptions,
   RadioRootRenderable,
   type RadioState,
-} from "@opentui-ui/core/radio";
+} from "@tuiparts/core/radio";
 import {
   type RadioGroupChangeDetails,
   type RadioGroupOptions,
@@ -14,7 +14,7 @@ import {
   type RadioGroupState,
   RadioGroupStore,
   type RadioGroupValueChangeHandler,
-} from "@opentui-ui/core/radio-group";
+} from "@tuiparts/core/radio-group";
 import {
   createComponent,
   createContext,

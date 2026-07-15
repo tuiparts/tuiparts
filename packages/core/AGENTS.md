@@ -22,6 +22,6 @@ wrap. This package owns interaction and lifecycle, not recipe presentation.
 - **DO NOT** forget the package subpath export for a new component
 - **DO NOT** use `@opentui/core` types without the explicit `type` import keyword
 - **DO NOT** create per-component `*LayoutProps` types; native OpenTUI options already carry layout properties
-- **DO NOT** import from `@opentui-ui/utils` from in-scope packages
+- **DO NOT** import from `@tuiparts/utils` from in-scope packages
   (core/react/solid). The `utils` package is currently
   toast/dialog-internal-by-coincidence and not part of the foundation.

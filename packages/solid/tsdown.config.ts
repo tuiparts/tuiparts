@@ -18,7 +18,7 @@ export default defineConfig({
     neverBundle: [
       "@opentui/core",
       "@opentui/solid",
-      "@opentui-ui/core",
+      "@tuiparts/core",
       "solid-js",
     ],
   },

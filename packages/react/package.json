@@ -1,5 +1,5 @@
 {
-  "name": "@opentui-ui/react",
+  "name": "@tuiparts/react",
   "version": "0.0.3-rc.0",
   "description": "React bindings for OpenTUI UI components",
   "author": "Matt Simpson",
@@ -90,7 +90,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@opentui-ui/core": "workspace:^"
+    "@tuiparts/core": "workspace:^"
   },
   "devDependencies": {
     "@opentui/core": "catalog:",

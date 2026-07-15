@@ -7,12 +7,12 @@ import {
 import {
   RadioIndicatorRenderable,
   RadioRootRenderable,
-} from "@opentui-ui/core/radio";
+} from "@tuiparts/core/radio";
 import {
   RadioGroupRenderable,
   type RadioGroupStore,
   type RadioGroupStoreOptions,
-} from "@opentui-ui/core/radio-group";
+} from "@tuiparts/core/radio-group";
 
 export interface RadioGroupOptions extends RadioGroupStoreOptions {
   gap?: BoxOptions["gap"];

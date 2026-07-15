@@ -1,7 +1,7 @@
 ---
-"@opentui-ui/core": patch
-"@opentui-ui/react": patch
-"@opentui-ui/solid": patch
+"@tuiparts/core": patch
+"@tuiparts/react": patch
+"@tuiparts/solid": patch
 ---
 
 Make disabled controls truthful focus-traversal candidates, preserve rendered

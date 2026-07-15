@@ -5,7 +5,7 @@
     "types": ["bun", "node"],
     "typeRoots": ["../../packages/solid/node_modules/@types"],
     "paths": {
-      "@opentui-ui/solid/dialog": [
+      "@tuiparts/solid/dialog": [
         "../../packages/solid/dist/dialog/index.d.mts"
       ],
       "*": ["node_modules/*"]

@@ -3,7 +3,7 @@
 /** @jsxImportSource @opentui/solid */
 
 import { render, useKeyboard, useRenderer } from "@opentui/solid";
-import { Toaster, toast } from "@opentui-ui/toast/solid";
+import { Toaster, toast } from "@tuiparts/toast/solid";
 
 function App() {
   const renderer = useRenderer();

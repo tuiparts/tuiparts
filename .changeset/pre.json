@@ -2,12 +2,12 @@
   "mode": "pre",
   "tag": "rc",
   "initialVersions": {
-    "@opentui-ui/core": "0.0.2",
-    "@opentui-ui/dialog": "0.1.2",
-    "@opentui-ui/react": "0.0.2",
-    "@opentui-ui/solid": "0.0.2",
-    "@opentui-ui/toast": "0.0.5",
-    "@opentui-ui/utils": "0.0.1"
+    "@tuiparts/core": "0.0.2",
+    "@tuiparts/dialog": "0.1.2",
+    "@tuiparts/react": "0.0.2",
+    "@tuiparts/solid": "0.0.2",
+    "@tuiparts/toast": "0.0.5",
+    "@tuiparts/utils": "0.0.1"
   },
   "changesets": [
     "brave-buttons-press",

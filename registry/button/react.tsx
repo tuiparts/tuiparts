@@ -1,6 +1,6 @@
 /** @jsxImportSource @opentui/react */
 
-import { Button as ButtonPrimitive } from "@opentui-ui/react/button";
+import { Button as ButtonPrimitive } from "@tuiparts/react/button";
 
 export interface ButtonProps extends Omit<ButtonPrimitive.Props, "children"> {
   intent?: "neutral" | "primary";

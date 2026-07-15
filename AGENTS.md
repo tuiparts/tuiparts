@@ -90,7 +90,7 @@ pnpm create <name>   # Scaffold new package
 ## NOTES
 
 - **Companion boundary**: Dialog primitive behavior is in Core/React/Solid;
-  `@opentui-ui/dialog` and `@opentui-ui/toast` remain adopted, independently
+  `@tuiparts/dialog` and `@tuiparts/toast` remain adopted, independently
   versioned companion products outside the foundation release line.
 - **Linked versioning**: core, react, and solid version together
 - **OpenTUI peer deps**: Uses pnpm catalog for `@opentui/core`, `@opentui/react`, `@opentui/solid`

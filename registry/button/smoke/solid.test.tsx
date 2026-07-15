@@ -6,7 +6,7 @@ import { testRender } from "@opentui/solid";
 import type {
   ButtonPressDetails,
   ButtonRenderable,
-} from "@opentui-ui/core/button";
+} from "@tuiparts/core/button";
 import { Button } from "./components/ui/button";
 
 let setup: TestRendererSetup | undefined;

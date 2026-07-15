@@ -42,6 +42,7 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .knowledge
 planning/
 .hallmark/
+.scratch/
 
 # examples
 examples/

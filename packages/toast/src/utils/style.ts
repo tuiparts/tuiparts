@@ -2,7 +2,7 @@
  * Style utilities for toast rendering
  */
 
-import { mergeStyles } from "@opentui-ui/utils";
+import { mergeStyles } from "@tuiparts/utils";
 import { DEFAULT_TOAST_OPTIONS } from "../constants";
 import type { ToastOptions, ToastStyle, ToastType } from "../types";
 

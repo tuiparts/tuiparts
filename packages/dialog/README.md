@@ -50,7 +50,7 @@
 ## Installation
 
 ```bash
-bun add @opentui-ui/dialog
+bun add @tuiparts/dialog
 ```
 
 ---
@@ -62,7 +62,7 @@ Use the core API when working directly with `@opentui/core` renderables without 
 ### Quick Start
 
 ```ts
-import { DialogContainerRenderable, DialogManager } from "@opentui-ui/dialog";
+import { DialogContainerRenderable, DialogManager } from "@tuiparts/dialog";
 import { TextRenderable } from "@opentui/core";
 
 // 1. Create the manager and container
@@ -317,7 +317,7 @@ import {
   useDialog,
   useDialogKeyboard,
   useDialogState,
-} from "@opentui-ui/dialog/react";
+} from "@tuiparts/dialog/react";
 
 // Solid
 import {
@@ -325,7 +325,7 @@ import {
   useDialog,
   useDialogKeyboard,
   useDialogState,
-} from "@opentui-ui/dialog/solid";
+} from "@tuiparts/dialog/solid";
 
 function App() {
   return (
@@ -339,8 +339,8 @@ function App() {
 #### Using Themes
 
 ```tsx
-import { DialogProvider } from "@opentui-ui/dialog/react";
-import { themes } from "@opentui-ui/dialog/themes";
+import { DialogProvider } from "@tuiparts/dialog/react";
+import { themes } from "@tuiparts/dialog/themes";
 
 function App() {
   return (
@@ -527,7 +527,7 @@ When using `useKeyboard` from `@opentui/react` or `@opentui/solid` inside dialog
 `useDialogKeyboard` solves this by only firing the handler when the dialog is the topmost in the stack:
 
 ```tsx
-import { useDialogKeyboard, type ConfirmContext } from "@opentui-ui/dialog/react";
+import { useDialogKeyboard, type ConfirmContext } from "@tuiparts/dialog/react";
 
 function DeleteConfirmDialog({ resolve, dialogId }: ConfirmContext) {
   const [selected, setSelected] = useState<"cancel" | "delete">("cancel");
@@ -563,7 +563,7 @@ If you need more control, use `dialogId` with `useDialogState` and the standard 
 
 ```tsx
 import { useKeyboard } from "@opentui/react";
-import { useDialogState, type ConfirmContext } from "@opentui-ui/dialog/react";
+import { useDialogState, type ConfirmContext } from "@tuiparts/dialog/react";
 
 function MyDialog({ resolve, dialogId }: ConfirmContext) {
   // Reactively check if this dialog is topmost
@@ -636,11 +636,11 @@ This provides a clean, unobtrusive appearance while still being usable immediate
 
 ### Themes
 
-Theme presets provide alternative visual styles. Import from `@opentui-ui/dialog/themes`:
+Theme presets provide alternative visual styles. Import from `@tuiparts/dialog/themes`:
 
 ```ts
-import { DialogContainerRenderable, DialogManager } from "@opentui-ui/dialog";
-import { themes } from "@opentui-ui/dialog/themes";
+import { DialogContainerRenderable, DialogManager } from "@tuiparts/dialog";
+import { themes } from "@tuiparts/dialog/themes";
 
 const container = new DialogContainerRenderable(renderer, {
   manager,
@@ -743,10 +743,10 @@ import type {
   BaseConfirmOptions,
   BaseDialogActions,
   BasePromptOptions,
-} from "@opentui-ui/dialog";
+} from "@tuiparts/dialog";
 
 // Type guard for close events
-import { isDialogToClose } from "@opentui-ui/dialog";
+import { isDialogToClose } from "@tuiparts/dialog";
 
 // Themes and default style constants
 import {
@@ -756,7 +756,7 @@ import {
   DEFAULT_STYLE,
   themes,
   type DialogTheme,
-} from "@opentui-ui/dialog/themes";
+} from "@tuiparts/dialog/themes";
 ```
 
 ## License

@@ -1,7 +1,7 @@
 ---
-"@opentui-ui/core": patch
-"@opentui-ui/react": patch
-"@opentui-ui/solid": patch
+"@tuiparts/core": patch
+"@tuiparts/react": patch
+"@tuiparts/solid": patch
 ---
 
 Harden the canonical `Checkbox.Root` and `Checkbox.Indicator` contract across

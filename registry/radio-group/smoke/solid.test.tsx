@@ -4,8 +4,8 @@ import { afterEach, expect, test } from "bun:test";
 import { type BaseRenderable, TextRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
-import type { RadioRootRenderable } from "@opentui-ui/core/radio";
-import type { RadioGroupRenderable } from "@opentui-ui/core/radio-group";
+import type { RadioRootRenderable } from "@tuiparts/core/radio";
+import type { RadioGroupRenderable } from "@tuiparts/core/radio-group";
 import { createSignal } from "solid-js";
 import { RadioGroup, RadioGroupItem } from "./components/ui/radio-group";
 

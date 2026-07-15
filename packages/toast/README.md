@@ -14,13 +14,13 @@
 ## Installation
 
 ```bash
-bun add @opentui-ui/toast
+bun add @tuiparts/toast
 ```
 
 ## Quick Start
 
 ```ts
-import { toast, ToasterRenderable } from "@opentui-ui/toast";
+import { toast, ToasterRenderable } from "@tuiparts/toast";
 
 // 1. Add the toaster to your app (one line!)
 ctx.root.add(new ToasterRenderable(ctx));
@@ -140,7 +140,7 @@ toast.dismiss();
 Use the built-in `TOAST_DURATION` presets for consistent, readable duration values:
 
 ```ts
-import { toast, TOAST_DURATION } from "@opentui-ui/toast";
+import { toast, TOAST_DURATION } from "@tuiparts/toast";
 
 // Quick confirmation (2s)
 toast.success("Copied!", { duration: TOAST_DURATION.SHORT });
@@ -189,8 +189,8 @@ toast("I'll stay until dismissed", {
 Optional theme presets are available via a separate import. These override the built-in defaults with alternative visual styles.
 
 ```ts
-import { ToasterRenderable } from "@opentui-ui/toast";
-import { minimal } from "@opentui-ui/toast/themes";
+import { ToasterRenderable } from "@tuiparts/toast";
+import { minimal } from "@tuiparts/toast/themes";
 
 const toaster = new ToasterRenderable(ctx, minimal);
 ```
@@ -207,7 +207,7 @@ const toaster = new ToasterRenderable(ctx, minimal);
 Spread a theme and override specific options:
 
 ```ts
-import { minimal } from "@opentui-ui/toast/themes";
+import { minimal } from "@tuiparts/toast/themes";
 
 const toaster = new ToasterRenderable(ctx, {
   ...minimal,
@@ -219,7 +219,7 @@ const toaster = new ToasterRenderable(ctx, {
 ### Theme Utilities
 
 ```ts
-import { themes } from "@opentui-ui/toast/themes";
+import { themes } from "@tuiparts/toast/themes";
 
 // Access all themes
 themes.minimal;
@@ -229,7 +229,7 @@ themes.monochrome;
 ### Theme Types
 
 ```ts
-import type { ToasterTheme } from "@opentui-ui/toast/themes";
+import type { ToasterTheme } from "@tuiparts/toast/themes";
 ```
 
 ## Toaster Configuration
@@ -431,7 +431,7 @@ import {
   ASCII_ICONS, // ASCII-only for limited terminals
   MINIMAL_ICONS, // Single character icons
   EMOJI_ICONS, // Emoji icons
-} from "@opentui-ui/toast";
+} from "@tuiparts/toast";
 
 // Use ASCII icons for terminals with limited Unicode support
 const toaster = new ToasterRenderable(ctx, {
@@ -559,7 +559,7 @@ Get all toasts ever created (including dismissed).
 
 ```ts
 import { createCliRenderer } from "@opentui/core";
-import { toast, ToasterRenderable } from "@opentui-ui/toast";
+import { toast, ToasterRenderable } from "@tuiparts/toast";
 
 const renderer = await createCliRenderer();
 
@@ -615,7 +615,7 @@ async function uploadFile(file: File) {
 For React applications, use the `Toaster` component and `useToasts` hook:
 
 ```tsx
-import { Toaster, useToasts, toast } from "@opentui-ui/toast/react";
+import { Toaster, useToasts, toast } from "@tuiparts/toast/react";
 
 function App() {
   return (
@@ -650,7 +650,7 @@ The `useToasts` hook provides **reactive access** to the current toast state, re
 For Solid applications, use the `Toaster` component and `useToasts` hook:
 
 ```tsx
-import { Toaster, useToasts, toast } from "@opentui-ui/toast/solid";
+import { Toaster, useToasts, toast } from "@tuiparts/toast/solid";
 
 function App() {
   return (
@@ -699,19 +699,19 @@ import type {
   ToastStyle,       // Per-toast styling options
   ToastType,        // Toast type variants
   TypeToastOptions, // Per-type options (style + duration)
-} from "@opentui-ui/toast";
+} from "@tuiparts/toast";
 
 // Border types (for customBorderChars) come from @opentui/core
 import type { BorderCharacters, BorderSides, BorderStyle } from "@opentui/core";
 
 // Type guards
-import { isAction, isSpinnerConfig } from "@opentui-ui/toast";
+import { isAction, isSpinnerConfig } from "@tuiparts/toast";
 ```
 
 ### Constants
 
 ```ts
-import { TOAST_DURATION } from "@opentui-ui/toast";
+import { TOAST_DURATION } from "@tuiparts/toast";
 
 // Duration presets
 TOAST_DURATION.SHORT;      // 2000ms - brief confirmations

@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
-import type { InputRenderable } from "@opentui-ui/core/input";
+import type { InputRenderable } from "@tuiparts/core/input";
 import { act, createElement, createRef, useState } from "react";
 import { Input } from "./primitive";
 

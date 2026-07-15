@@ -6,7 +6,7 @@ import type {
   ButtonPressDetails,
   ButtonRenderable,
   ButtonState,
-} from "@opentui-ui/core/button";
+} from "@tuiparts/core/button";
 import { act, createElement, type ReactNode, useState } from "react";
 import { Button } from "./button";
 

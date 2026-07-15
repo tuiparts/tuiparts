@@ -1,6 +1,6 @@
 /** @jsxImportSource @opentui/solid */
 
-import { Dialog as DialogPrimitive } from "@opentui-ui/solid/dialog";
+import { Dialog as DialogPrimitive } from "@tuiparts/solid/dialog";
 import { splitProps } from "solid-js";
 
 /** Props for the consumer-owned Dialog root. */

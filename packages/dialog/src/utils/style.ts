@@ -1,4 +1,4 @@
-import { mergeStyles, resolvePadding } from "@opentui-ui/utils";
+import { mergeStyles, resolvePadding } from "@tuiparts/utils";
 import { DEFAULT_SIZE, DEFAULT_SIZES, FULL_SIZE_OFFSET } from "../constants";
 import { DEFAULT_PADDING, DEFAULT_STYLE } from "../themes";
 import type {

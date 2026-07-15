@@ -1,4 +1,4 @@
-# @opentui-ui/react
+# @tuiparts/react
 
 React bindings for the OpenTUI UI foundation.
 
@@ -8,7 +8,7 @@ New to package primitives and editable recipes? Start with the
 ## Installation
 
 ```bash
-pnpm add @opentui-ui/react @opentui-ui/core \
+pnpm add @tuiparts/react @tuiparts/core \
   @opentui/core @opentui/react react
 ```
 
@@ -18,7 +18,7 @@ Peer requirements are `@opentui/core` and `@opentui/react` `^0.4.3`, React
 ## Foundation Example
 
 ```tsx
-import { Button, Checkbox, Input, Radio, RadioGroup, Switch } from "@opentui-ui/react";
+import { Button, Checkbox, Input, Radio, RadioGroup, Switch } from "@tuiparts/react";
 import { useState } from "react";
 
 export function Settings() {
@@ -50,29 +50,29 @@ export function Settings() {
 
 ## Imports
 
-All components are exported from `@opentui-ui/react`. Focused imports are also
+All components are exported from `@tuiparts/react`. Focused imports are also
 supported:
 
 ```ts
-import { Button } from "@opentui-ui/react/button";
-import { Checkbox } from "@opentui-ui/react/checkbox";
-import { Input } from "@opentui-ui/react/input";
-import { Radio } from "@opentui-ui/react/radio";
-import { RadioGroup } from "@opentui-ui/react/radio-group";
-import { Switch } from "@opentui-ui/react/switch";
-import { Dialog } from "@opentui-ui/react/dialog";
+import { Button } from "@tuiparts/react/button";
+import { Checkbox } from "@tuiparts/react/checkbox";
+import { Input } from "@tuiparts/react/input";
+import { Radio } from "@tuiparts/react/radio";
+import { RadioGroup } from "@tuiparts/react/radio-group";
+import { Switch } from "@tuiparts/react/switch";
+import { Dialog } from "@tuiparts/react/dialog";
 ```
 
 ## Dialog
 
 `Dialog` is the React compound adapter for the foundation Dialog
-behavior in `@opentui-ui/core/dialog`. Compose its Root, Trigger, Portal,
+behavior in `@tuiparts/core/dialog`. Compose its Root, Trigger, Portal,
 Backdrop, Popup, Title, Description, and Close parts, or install the editable
 `react/dialog` registry recipe for an opinionated visual assembly. The adapter
 preserves coordinator-owned visibility and z-index plus portal, focus, and
 controlled-state lifecycle behavior.
 
-The existing `@opentui-ui/dialog/react` provider, hooks, and async APIs remain
+The existing `@tuiparts/dialog/react` provider, hooks, and async APIs remain
 the companion convenience surface; they are not re-exported by the foundation
 adapter.
 
@@ -83,7 +83,7 @@ mutable value and event model. It has no `defaultValue`, controlled rollback,
 or callback aliases.
 
 ```tsx
-import { Input } from "@opentui-ui/react/input";
+import { Input } from "@tuiparts/react/input";
 
 <Input
   value="initial"

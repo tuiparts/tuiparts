@@ -1,6 +1,6 @@
 /** @jsxImportSource @opentui/solid */
 
-import { Switch as SwitchPrimitive } from "@opentui-ui/solid/switch";
+import { Switch as SwitchPrimitive } from "@tuiparts/solid/switch";
 import { splitProps } from "solid-js";
 
 export interface SwitchProps

@@ -1,5 +1,5 @@
 {
-  "name": "@opentui-ui/toast",
+  "name": "@tuiparts/toast",
   "version": "0.0.5",
   "description": "A beautiful toast library for terminal UIs built on OpenTUI",
   "author": "Matt Simpson",
@@ -57,7 +57,7 @@
     "clean": "rm -rf dist"
   },
   "devDependencies": {
-    "@opentui-ui/utils": "workspace:^",
+    "@tuiparts/utils": "workspace:^",
     "@opentui/core": "catalog:",
     "@opentui/react": "catalog:",
     "@opentui/solid": "catalog:",

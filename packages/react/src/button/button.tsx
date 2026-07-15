@@ -5,7 +5,7 @@ import {
   ButtonRenderable,
   type ButtonState,
   ButtonStore,
-} from "@opentui-ui/core/button";
+} from "@tuiparts/core/button";
 import {
   createElement,
   type ReactElement,

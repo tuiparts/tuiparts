@@ -1,5 +1,5 @@
 /**
- * @opentui-ui/utils
+ * @tuiparts/utils
  *
  * Shared utilities and types for OpenTUI UI components
  */

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": "../../examples/core",
     "paths": {
-      "@opentui-ui/core/*": ["../../packages/core/src/*/index.ts"],
+      "@tuiparts/core/*": ["../../packages/core/src/*/index.ts"],
       "*": ["node_modules/*"]
     }
   },

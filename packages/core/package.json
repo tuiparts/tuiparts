@@ -1,5 +1,5 @@
 {
-  "name": "@opentui-ui/core",
+  "name": "@tuiparts/core",
   "version": "0.0.3-rc.0",
   "description": "Framework-agnostic core renderables for terminal applications built on OpenTUI",
   "author": "Matt Simpson",

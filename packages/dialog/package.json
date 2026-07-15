@@ -1,5 +1,5 @@
 {
-  "name": "@opentui-ui/dialog",
+  "name": "@tuiparts/dialog",
   "version": "0.1.2",
   "description": "A dialog/modal library for terminal UIs built on OpenTUI",
   "author": "Matt Simpson",
@@ -54,7 +54,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.7",
     "@babel/preset-typescript": "^7.29.7",
-    "@opentui-ui/utils": "workspace:^",
+    "@tuiparts/utils": "workspace:^",
     "@opentui/core": "catalog:",
     "@opentui/react": "catalog:",
     "@opentui/solid": "catalog:",

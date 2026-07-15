@@ -1,13 +1,13 @@
 /**
- * @opentui-ui/toast/themes
+ * @tuiparts/toast/themes
  *
  * Optional theme presets for the toaster.
  * These override the built-in defaults with alternative visual styles.
  *
  * @example
  * ```ts
- * import { ToasterRenderable } from '@opentui-ui/toast'
- * import { minimal } from '@opentui-ui/toast/themes'
+ * import { ToasterRenderable } from '@tuiparts/toast'
+ * import { minimal } from '@tuiparts/toast/themes'
  *
  * const toaster = new ToasterRenderable(ctx, minimal)
  * ```
@@ -39,8 +39,8 @@ export interface ToasterTheme extends ToasterOptions {
  *
  * @example
  * ```ts
- * import { ToasterRenderable } from '@opentui-ui/toast';
- * import { minimal } from '@opentui-ui/toast/themes';
+ * import { ToasterRenderable } from '@tuiparts/toast';
+ * import { minimal } from '@tuiparts/toast/themes';
  *
  * const toaster = new ToasterRenderable(ctx, minimal);
  *
@@ -82,8 +82,8 @@ export const minimal: ToasterTheme = {
  *
  * @example
  * ```ts
- * import { ToasterRenderable } from '@opentui-ui/toast';
- * import { monochrome } from '@opentui-ui/toast/themes';
+ * import { ToasterRenderable } from '@tuiparts/toast';
+ * import { monochrome } from '@tuiparts/toast/themes';
  *
  * const toaster = new ToasterRenderable(ctx, monochrome);
  * ```
@@ -124,7 +124,7 @@ export const monochrome: ToasterTheme = {
  *
  * @example
  * ```ts
- * import { themes } from '@opentui-ui/toast/themes';
+ * import { themes } from '@tuiparts/toast/themes';
  *
  * // Access themes by name
  * const toaster = new ToasterRenderable(ctx, themes.minimal);

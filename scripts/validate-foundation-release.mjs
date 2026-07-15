@@ -13,11 +13,11 @@ const root = resolve(import.meta.dirname, "..");
 const workDir = mkdtempSync(join(tmpdir(), "opentui-ui-release-"));
 const output = join(workDir, "changeset-status.json");
 const foundationPackages = [
-  "@opentui-ui/core",
-  "@opentui-ui/react",
-  "@opentui-ui/solid",
+  "@tuiparts/core",
+  "@tuiparts/react",
+  "@tuiparts/solid",
 ];
-const companionPackages = ["@opentui-ui/dialog", "@opentui-ui/toast"];
+const companionPackages = ["@tuiparts/dialog", "@tuiparts/toast"];
 const versionedRelease = process.argv.includes("--versioned");
 const since = process.argv.find((argument) => argument.startsWith("--since="));
 
@@ -107,7 +107,7 @@ try {
     }
   }
   assert(
-    !releases.has("@opentui-ui/styles"),
+    !releases.has("@tuiparts/styles"),
     "The removed styles package must not appear in the release plan",
   );
   assert(

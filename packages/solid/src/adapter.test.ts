@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from "bun:test";
 import type { BaseRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { createElement, testRender } from "@opentui/solid";
-import { Button, type Checkbox, type Switch } from "@opentui-ui/solid";
+import { Button, type Checkbox, type Switch } from "@tuiparts/solid";
 import { Input } from "./input/primitive";
 
 let setup: TestRendererSetup | undefined;

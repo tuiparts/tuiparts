@@ -1,5 +1,5 @@
 {
-  "name": "@opentui-ui/solid",
+  "name": "@tuiparts/solid",
   "version": "0.0.3-rc.0",
   "description": "Solid bindings for OpenTUI UI components",
   "author": "Matt Simpson",
@@ -90,7 +90,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@opentui-ui/core": "workspace:^"
+    "@tuiparts/core": "workspace:^"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

@@ -3,7 +3,7 @@ import {
   createTestRenderer,
   type TestRendererSetup,
 } from "@opentui/core/testing";
-import type { ButtonPressDetails } from "@opentui-ui/core/button";
+import type { ButtonPressDetails } from "@tuiparts/core/button";
 import { createButton } from "./components/ui/button";
 
 let setup: TestRendererSetup | undefined;

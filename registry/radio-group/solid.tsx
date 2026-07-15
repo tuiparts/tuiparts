@@ -1,7 +1,7 @@
 /** @jsxImportSource @opentui/solid */
 
-import { Radio as RadioPrimitive } from "@opentui-ui/solid/radio";
-import { RadioGroup as RadioGroupPrimitive } from "@opentui-ui/solid/radio-group";
+import { Radio as RadioPrimitive } from "@tuiparts/solid/radio";
+import { RadioGroup as RadioGroupPrimitive } from "@tuiparts/solid/radio-group";
 import { splitProps } from "solid-js";
 
 export interface RadioGroupProps extends RadioGroupPrimitive.Props {}

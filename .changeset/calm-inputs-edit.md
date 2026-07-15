@@ -1,7 +1,7 @@
 ---
-"@opentui-ui/core": patch
-"@opentui-ui/react": patch
-"@opentui-ui/solid": patch
+"@tuiparts/core": patch
+"@tuiparts/react": patch
+"@tuiparts/solid": patch
 ---
 
 Add the canonical unstyled `Input`, `Input.Props`, and `InputRenderable`

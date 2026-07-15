@@ -37,7 +37,7 @@ export const DEFAULT_OPACITY = 255;
 export function normalizeOpacity(
   value: number | string | undefined,
   defaultValue: number = DEFAULT_OPACITY,
-  caller: string = "@opentui-ui/utils",
+  caller: string = "@tuiparts/utils",
 ): number {
   if (value === undefined) {
     return defaultValue;

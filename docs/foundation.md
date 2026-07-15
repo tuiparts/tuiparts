@@ -15,15 +15,15 @@ Install one framework adapter and its peers:
 
 ```bash
 # React
-pnpm add @opentui-ui/react @opentui-ui/core \
+pnpm add @tuiparts/react @tuiparts/core \
   @opentui/core @opentui/react react
 
 # Solid
-pnpm add @opentui-ui/solid @opentui-ui/core \
+pnpm add @tuiparts/solid @tuiparts/core \
   @opentui/core @opentui/solid solid-js
 
 # Imperative Core
-pnpm add @opentui-ui/core @opentui/core
+pnpm add @tuiparts/core @opentui/core
 ```
 
 The React and Solid packages expose the same primitive vocabulary where their
@@ -36,7 +36,7 @@ exports stay clean; recipes conventionally alias them locally with a
 `Primitive` suffix.
 
 ```tsx
-import { Checkbox as CheckboxPrimitive } from "@opentui-ui/react/checkbox";
+import { Checkbox as CheckboxPrimitive } from "@tuiparts/react/checkbox";
 
 export function Checkbox() {
   return (
@@ -65,7 +65,7 @@ Core callers may use Stores directly when composing Renderables:
 import {
   CheckboxIndicatorRenderable,
   CheckboxRootRenderable,
-} from "@opentui-ui/core/checkbox";
+} from "@tuiparts/core/checkbox";
 
 const root = new CheckboxRootRenderable(ctx, { defaultChecked: true });
 const indicator = new CheckboxIndicatorRenderable(ctx, { store: root.store });
@@ -137,13 +137,13 @@ when you deliberately want to discard local changes. See the
 
 Three Dialog surfaces currently have distinct roles:
 
-- `@opentui-ui/{core,react,solid}/dialog` is the foundation compound primitive.
+- `@tuiparts/{core,react,solid}/dialog` is the foundation compound primitive.
 - `registry/dialog` is a validated preview recipe, not part of the six-family
   starter catalog.
-- `@opentui-ui/dialog` is the adopted companion product with manager, provider,
+- `@tuiparts/dialog` is the adopted companion product with manager, provider,
   theme, and async prompt/confirm/alert/choice conveniences.
 
-`@opentui-ui/toast` is also an adopted companion product. It retains its
+`@tuiparts/toast` is also an adopted companion product. It retains its
 current notification, theme, icon, React, and Solid APIs. Neither companion is
 re-exported by the foundation packages, and installing a foundation recipe
 does not replace either companion.

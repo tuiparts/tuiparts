@@ -35,7 +35,7 @@ if [ -d "$PACKAGE_DIR" ]; then
   exit 1
 fi
 
-echo -e "${BLUE}Creating package: @opentui-ui/$PACKAGE_NAME${NC}"
+echo -e "${BLUE}Creating package: @tuiparts/$PACKAGE_NAME${NC}"
 
 # Create directory structure
 mkdir -p "$PACKAGE_DIR/src"
@@ -44,7 +44,7 @@ mkdir -p "$PACKAGE_DIR/examples"
 # Create package.json
 cat > "$PACKAGE_DIR/package.json" << EOF
 {
-  "name": "@opentui-ui/$PACKAGE_NAME",
+  "name": "@tuiparts/$PACKAGE_NAME",
   "version": "0.0.1",
   "description": "A $PACKAGE_NAME component for terminal UIs built on OpenTUI",
   "author": "Matt Simpson",
@@ -131,20 +131,20 @@ EOF
 
 # Create README.md
 cat > "$PACKAGE_DIR/README.md" << EOF
-# @opentui-ui/$PACKAGE_NAME
+# @tuiparts/$PACKAGE_NAME
 
 A $PACKAGE_NAME component for terminal UIs built on OpenTUI.
 
 ## Installation
 
 \`\`\`bash
-bun add @opentui-ui/$PACKAGE_NAME
+bun add @tuiparts/$PACKAGE_NAME
 \`\`\`
 
 ## Usage
 
 \`\`\`typescript
-import { $PACKAGE_NAME } from "@opentui-ui/$PACKAGE_NAME";
+import { $PACKAGE_NAME } from "@tuiparts/$PACKAGE_NAME";
 
 // TODO: Add usage example
 \`\`\`

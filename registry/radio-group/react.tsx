@@ -1,7 +1,7 @@
 /** @jsxImportSource @opentui/react */
 
-import { Radio as RadioPrimitive } from "@opentui-ui/react/radio";
-import { RadioGroup as RadioGroupPrimitive } from "@opentui-ui/react/radio-group";
+import { Radio as RadioPrimitive } from "@tuiparts/react/radio";
+import { RadioGroup as RadioGroupPrimitive } from "@tuiparts/react/radio-group";
 
 export interface RadioGroupProps extends RadioGroupPrimitive.Props {}
 

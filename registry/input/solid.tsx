@@ -1,6 +1,6 @@
 /** @jsxImportSource @opentui/solid */
 
-import { Input as InputPrimitive } from "@opentui-ui/solid/input";
+import { Input as InputPrimitive } from "@tuiparts/solid/input";
 
 export interface InputProps extends InputPrimitive.Props {}
 

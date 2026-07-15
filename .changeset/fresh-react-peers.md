@@ -1,5 +1,5 @@
 ---
-"@opentui-ui/react": patch
+"@tuiparts/react": patch
 ---
 
 Stop declaring `ws` as an OpenTUI UI peer. Applications install the React

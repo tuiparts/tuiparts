@@ -3,7 +3,7 @@
 import { afterEach, expect, test } from "bun:test";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
-import type { SwitchRootRenderable } from "@opentui-ui/core/switch";
+import type { SwitchRootRenderable } from "@tuiparts/core/switch";
 import { act, useState } from "react";
 import { Switch } from "./components/ui/switch";
 

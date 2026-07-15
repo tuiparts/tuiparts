@@ -15,11 +15,6 @@ export default defineConfig({
   dts: true,
   clean: true,
   deps: {
-    neverBundle: [
-      "@opentui/core",
-      "@opentui/react",
-      "@opentui-ui/core",
-      "react",
-    ],
+    neverBundle: ["@opentui/core", "@opentui/react", "@tuiparts/core", "react"],
   },
 });

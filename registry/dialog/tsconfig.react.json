@@ -5,7 +5,7 @@
     "types": ["bun", "node"],
     "typeRoots": ["../../packages/react/node_modules/@types"],
     "paths": {
-      "@opentui-ui/react/dialog": [
+      "@tuiparts/react/dialog": [
         "../../packages/react/dist/dialog/index.d.mts"
       ],
       "react": ["node_modules/@types/react/index.d.ts"],

@@ -2,8 +2,8 @@
 
 The root registry exposes `core/dialog`, `react/dialog`, and `solid/dialog`.
 Each item copies an editable composition into `components/ui/dialog.*`; it does
-not replace the foundation Dialog primitive exported by `@opentui-ui/core`,
-`@opentui-ui/react`, and `@opentui-ui/solid`.
+not replace the foundation Dialog primitive exported by `@tuiparts/core`,
+`@tuiparts/react`, and `@tuiparts/solid`.
 
 The recipe owns the terminal-wide black backdrop, responsive centered popup,
 border, padding, colors, and the default treatment of each public part. React
@@ -31,7 +31,7 @@ native OpenTUI presentation without replacing the layer behavior. A
 `DialogClose` with `reason="action"` reports an accepted action dismissal.
 
 This recipe is validated preview catalog evidence rather than part of the
-six-family starter catalog. The adopted `@opentui-ui/dialog` manager, provider,
+six-family starter catalog. The adopted `@tuiparts/dialog` manager, provider,
 and async APIs stay separate and unchanged.
 
 The `tsconfig.*.json` fixtures compile copied recipes against each supported

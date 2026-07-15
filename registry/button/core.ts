@@ -3,7 +3,7 @@ import {
   type ButtonPressDetails,
   ButtonRenderable,
   type ButtonState,
-} from "@opentui-ui/core/button";
+} from "@tuiparts/core/button";
 
 export interface ButtonOptions {
   disabled?: boolean;

@@ -15,7 +15,7 @@ import type { ToasterOffset, ToastOptions, ToastStyle } from "./types";
  *
  * @example
  * ```ts
- * import { toast, TOAST_DURATION } from '@opentui-ui/toast';
+ * import { toast, TOAST_DURATION } from '@tuiparts/toast';
  *
  * // Quick confirmation
  * toast.success('Copied!', { duration: TOAST_DURATION.SHORT });

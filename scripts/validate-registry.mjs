@@ -19,9 +19,9 @@ const registryDir = join(workDir, "registry");
 const tarballDir = join(workDir, "tarballs");
 const registry = JSON.parse(readFileSync(join(root, "registry.json"), "utf8"));
 const packageDirectories = {
-  "@opentui-ui/core": "core",
-  "@opentui-ui/react": "react",
-  "@opentui-ui/solid": "solid",
+  "@tuiparts/core": "core",
+  "@tuiparts/react": "react",
+  "@tuiparts/solid": "solid",
 };
 const nextFoundationVersion = inc(
   JSON.parse(
@@ -33,12 +33,12 @@ assert(nextFoundationVersion, "Core package version cannot be incremented");
 const frameworks = {
   core: {
     extension: "ts",
-    localPackages: ["@opentui-ui/core"],
+    localPackages: ["@tuiparts/core"],
     smokeFile: "smoke.test.ts",
   },
   react: {
     extension: "tsx",
-    localPackages: ["@opentui-ui/core", "@opentui-ui/react"],
+    localPackages: ["@tuiparts/core", "@tuiparts/react"],
     compilerOptions: {
       jsx: "react-jsx",
       jsxImportSource: "@opentui/react",
@@ -48,7 +48,7 @@ const frameworks = {
   },
   solid: {
     extension: "tsx",
-    localPackages: ["@opentui-ui/core", "@opentui-ui/solid"],
+    localPackages: ["@tuiparts/core", "@tuiparts/solid"],
     compilerOptions: {
       jsx: "preserve",
       jsxImportSource: "@opentui/solid",
@@ -76,13 +76,13 @@ const foundationCatalogRecipes = [
 ];
 const expectedCatalogDependencyNames = {
   core: {
-    primitive: ["@opentui-ui/core", "@opentui/core"],
+    primitive: ["@tuiparts/core", "@opentui/core"],
     recipe: ["@opentui/core"],
   },
   react: {
     primitive: [
-      "@opentui-ui/react",
-      "@opentui-ui/core",
+      "@tuiparts/react",
+      "@tuiparts/core",
       "@opentui/core",
       "@opentui/react",
       "react",
@@ -91,8 +91,8 @@ const expectedCatalogDependencyNames = {
   },
   solid: {
     primitive: [
-      "@opentui-ui/solid",
-      "@opentui-ui/core",
+      "@tuiparts/solid",
+      "@tuiparts/core",
       "@opentui/core",
       "@opentui/solid",
       "solid-js",

@@ -1,6 +1,6 @@
 /** @jsxImportSource @opentui/react */
 
-import { Checkbox as CheckboxPrimitive } from "@opentui-ui/react/checkbox";
+import { Checkbox as CheckboxPrimitive } from "@tuiparts/react/checkbox";
 
 export interface CheckboxProps
   extends Omit<CheckboxPrimitive.Root.Props, "children"> {

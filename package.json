@@ -39,5 +39,10 @@
     "semver": "^7.7.2",
     "shadcn": "4.13.0",
     "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "path-to-regexp@6.1.0": "6.3.0"
+    }
   }
 }

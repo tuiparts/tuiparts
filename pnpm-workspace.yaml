@@ -1,6 +1,7 @@
 packages:
   - "packages/*"
   - "examples/*"
+  - "apps/*"
 
 catalog:
   "@opentui/core": "^0.4.3"

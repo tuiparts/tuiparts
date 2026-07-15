@@ -1,0 +1,92 @@
+---
+title: Checkbox
+description: Root and Indicator parts over controlled or uncontrolled checked state, wrapped in an editable mark-and-label recipe.
+---
+
+<Badge variant="accent">Foundation</Badge>
+
+The Checkbox recipe renders a one-cell mark next to a label. Checked-state
+ownership, activation keys, focus, and the Indicator's visibility come from
+the packaged primitive; the mark glyph, tone palette, and label colors are
+consumer-owned.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @opentui-ui/react/checkbox
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @opentui-ui/solid/checkbox
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @opentui-ui/core/checkbox
+```
+
+</CodeGroup>
+
+## Usage
+
+```tsx
+import { Checkbox } from "./components/ui/checkbox";
+
+<Checkbox
+  label="Enable notifications"
+  defaultChecked
+  onCheckedChange={(checked) => console.log(checked)}
+/>;
+```
+
+## Props
+
+<TypeTable
+  type={{
+    label: {
+      type: "string",
+      required: true,
+      description: "Text rendered next to the mark.",
+    },
+    mark: {
+      type: "string",
+      default: '"✓"',
+      description:
+        "One terminal-cell mark; widen the editable mark cell for wider content.",
+    },
+    tone: {
+      type: '"accent" | "success"',
+      default: '"accent"',
+      description: "Starter mark color. Edit or extend it locally.",
+    },
+    disabled: {
+      type: "boolean",
+      description: "Disabled checkboxes reject focus and activation.",
+    },
+  }}
+/>
+
+Controlled (`checked` + `onCheckedChange`) and uncontrolled (`defaultChecked`)
+ownership both pass through to `CheckboxPrimitive.Root`.
+
+## Composing the primitive directly
+
+```tsx
+import { Checkbox as CheckboxPrimitive } from "@opentui-ui/react/checkbox";
+
+<CheckboxPrimitive.Root defaultChecked flexDirection="row" gap={1}>
+  {(state) => (
+    <>
+      <CheckboxPrimitive.Indicator>
+        <text content="✓" />
+      </CheckboxPrimitive.Indicator>
+      <text content={state.checked ? "Enabled" : "Disabled"} />
+    </>
+  )}
+</CheckboxPrimitive.Root>;
+```
+
+The Indicator renders its children only while checked. Core callers can build
+the same structure with `CheckboxRootRenderable` and
+`CheckboxIndicatorRenderable`, sharing the Root's Store.

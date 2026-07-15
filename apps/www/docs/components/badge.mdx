@@ -1,0 +1,71 @@
+---
+title: Badge
+description: A presentation-only status label composed from ordinary OpenTUI elements — no packaged behavior at all.
+---
+
+<Badge>Recipe only</Badge>
+
+Badge has no reusable interaction behavior, so it is distributed only as
+editable registry source. The installed file composes ordinary OpenTUI
+elements — a `box` and a `text` — with a starter intent palette.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @opentui-ui/react/badge
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @opentui-ui/solid/badge
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @opentui-ui/core/badge
+```
+
+</CodeGroup>
+
+## Usage
+
+```tsx
+import { Badge } from "./components/ui/badge";
+
+<Badge label="Passing" intent="success" />
+<Badge label="Deprecated" intent="danger" size="comfortable" />
+```
+
+## Props
+
+<TypeTable
+  type={{
+    label: {
+      type: "string",
+      required: true,
+      description: "The badge text.",
+    },
+    intent: {
+      type: '"danger" | "neutral" | "success" | "warning"',
+      default: '"neutral"',
+      description: "Starter background/foreground palette pairs.",
+    },
+    size: {
+      type: '"compact" | "comfortable"',
+      default: '"compact"',
+      description: "Horizontal padding density.",
+    },
+    labelOptions: {
+      type: "Omit<TextOptions, 'content'>",
+      description: "Extra OpenTUI text options for the label.",
+    },
+  }}
+/>
+
+Remaining props are ordinary OpenTUI `BoxOptions` applied to the root.
+
+## Why there is no Badge package
+
+Packages exist to version difficult behavior — state, focus, keys, overlays.
+Badge has none, so packaging it would only hide presentation behind an API.
+The recipe is the whole component; edit the palette map directly.

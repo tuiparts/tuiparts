@@ -1,0 +1,67 @@
+---
+title: Introduction
+description: Composable, framework-neutral interaction primitives and editable UI recipes for OpenTUI.
+sidebar:
+  order: 1
+---
+
+OpenTUI UI is a component foundation for
+[OpenTUI](https://github.com/anomalyco/opentui) — composable interaction
+primitives and editable recipes for building terminal UIs in React, Solid, or
+imperative Core. It makes the same trade Base UI and shadcn/ui made on the
+web:
+
+> Package the difficult behavior. Copy the opinionated layer.
+
+That trade ships in two foundation layers:
+
+1. **Versioned packages** own state, keyboard and pointer interaction, focus,
+   collections, overlays, lifecycle, public parts, and framework adapters.
+2. **Registry recipes** own glyphs, layout, colors, themes, semantic variants,
+   and convenience assembly — installed as source your application controls.
+
+Use a package primitive when you are building a component or design system.
+Install a registry recipe when you want a useful starting component whose
+layout, glyphs, colors, and convenience props you can edit.
+
+## Foundation packages
+
+| Package | Purpose |
+| --- | --- |
+| `@opentui-ui/core` | Framework-neutral primitive state and Renderables |
+| `@opentui-ui/react` | React compound-part adapters |
+| `@opentui-ui/solid` | Solid compound-part adapters |
+
+Button, Checkbox, Dialog, Input, RadioGroup, and Switch expose foundation
+behavior. Badge is distributed only as editable registry source because it has
+no reusable interaction behavior. `@opentui-ui/dialog` and `@opentui-ui/toast`
+are independently versioned companion products with higher-level APIs outside
+the foundation release line.
+
+## Principles
+
+- **Open code** — recipes install as plain TypeScript in your project. Edit the
+  palette, glyphs, and layout directly; there is no hidden theme runtime.
+- **Composition** — primitives expose independently composable parts
+  (`Checkbox.Root`, `Checkbox.Indicator`), not style slots.
+- **Framework-neutral behavior** — the same Core Stores and Renderables power
+  the React and Solid adapters, and can be used imperatively.
+- **shadcn-compatible distribution** — recipes install and update through the
+  official shadcn CLI with the standard view/diff/add lifecycle.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" href="/quickstart" icon="rocket">
+    Install an adapter and render your first primitive.
+  </Card>
+  <Card title="Components" href="/components" icon="layout-grid">
+    Browse the starter catalog of editable recipes.
+  </Card>
+  <Card title="Architecture" href="/architecture" icon="blocks">
+    Understand primitives, recipes, and who owns what.
+  </Card>
+  <Card title="Registry" href="/registry" icon="package">
+    Configure shadcn and manage consumer-owned updates.
+  </Card>
+</CardGroup>

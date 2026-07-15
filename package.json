@@ -9,7 +9,9 @@
     "opentui-ui"
   ],
   "scripts": {
-    "build": "pnpm -r build",
+    "build": "pnpm -r --filter=!www build",
+    "docs:dev": "pnpm --filter=www dev",
+    "docs:build": "pnpm --filter=www build",
     "typecheck": "pnpm -r typecheck",
     "clean": "pnpm -r clean",
     "lint": "biome check .",

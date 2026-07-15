@@ -1,0 +1,131 @@
+---
+title: Quickstart
+description: Install a framework adapter, compose a primitive, and install your first editable recipe.
+sidebar:
+  order: 2
+---
+
+OpenTUI UI supports three runtimes — React, Solid, and imperative Core. Install
+one adapter and its OpenTUI peers, then either compose primitives directly or
+install editable recipes from the registry.
+
+## Install a runtime
+
+<CodeGroup>
+
+```bash React
+pnpm add @opentui-ui/react @opentui-ui/core \
+  @opentui/core @opentui/react react
+```
+
+```bash Solid
+pnpm add @opentui-ui/solid @opentui-ui/core \
+  @opentui/core @opentui/solid solid-js
+```
+
+```bash Core
+pnpm add @opentui-ui/core @opentui/core
+```
+
+</CodeGroup>
+
+The React and Solid packages expose the same primitive vocabulary where their
+runtimes permit it. Core exposes the same behavior as Stores and Renderables.
+
+## Compose a primitive
+
+Compound framework primitives use Base UI-style module namespaces. Package
+exports stay clean; recipes conventionally alias them locally with a
+`Primitive` suffix.
+
+<CodeGroup>
+
+```tsx React
+import { Checkbox as CheckboxPrimitive } from "@opentui-ui/react/checkbox";
+
+export function Checkbox() {
+  return (
+    <CheckboxPrimitive.Root defaultChecked flexDirection="row" gap={1}>
+      {(state) => (
+        <>
+          <CheckboxPrimitive.Indicator>
+            <text content="✓" />
+          </CheckboxPrimitive.Indicator>
+          <text content={state.checked ? "Enabled" : "Disabled"} />
+        </>
+      )}
+    </CheckboxPrimitive.Root>
+  );
+}
+```
+
+```ts Core
+import {
+  CheckboxIndicatorRenderable,
+  CheckboxRootRenderable,
+} from "@opentui-ui/core/checkbox";
+
+const root = new CheckboxRootRenderable(ctx, { defaultChecked: true });
+const indicator = new CheckboxIndicatorRenderable(ctx, { store: root.store });
+root.add(indicator);
+```
+
+</CodeGroup>
+
+State callbacks receive readonly primitive state. A `ref` points to the actual
+Core Renderable, so imperative actions do not require a wrapper handle.
+Framework consumers configure controlled props and callbacks; they do not
+construct or pass Core Stores.
+
+## Install a recipe
+
+Recipes are installed with the official shadcn CLI and become
+application-owned source.
+
+1. **Configure shadcn**
+
+    Add the OpenTUI UI registry to your `components.json`:
+
+    ```json title="components.json"
+    {
+      "$schema": "https://ui.shadcn.com/schema.json",
+      "registries": {
+        "@opentui-ui": "https://opentui-ui.dev/r/{name}.json"
+      }
+    }
+    ```
+
+2. **Install the item for your runtime**
+
+    Choose the `core/*`, `react/*`, or `solid/*` item:
+
+    ```bash
+    pnpm dlx shadcn@4.13.0 add @opentui-ui/react/checkbox
+    ```
+
+3. **Use the installed component**
+
+    The copied file lands in `components/ui` and belongs to your application:
+
+    ```tsx
+    import { Checkbox } from "./components/ui/checkbox";
+
+    <Checkbox label="Enable notifications" defaultChecked />;
+    ```
+
+:::tip
+The installed palette, density, symbols, labels, intent variants, and component
+assembly are starter choices rather than package APIs. Edit them directly or
+use them as the basis of another registry.
+:::
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Components" href="/components" icon="layout-grid">
+    The starter catalog: Button, Checkbox, Switch, RadioGroup, Input, Badge.
+  </Card>
+  <Card title="Registry lifecycle" href="/registry" icon="git-compare">
+    Review upstream recipe changes without discarding local edits.
+  </Card>
+</CardGroup>

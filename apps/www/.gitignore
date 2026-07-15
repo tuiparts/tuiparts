@@ -1,0 +1,9 @@
+# Blume generated runtime
+.blume/
+
+# Build output
+dist/
+
+# Registry output generated from /registry.json at build time
+public/r/
+.blume-verify/

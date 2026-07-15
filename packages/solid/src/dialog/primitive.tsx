@@ -192,11 +192,18 @@ export function Backdrop(props: Backdrop.Props): JSX.Element {
 export function Popup(props: Popup.Props): JSX.Element {
   const store = useStore("Popup");
   const renderer = useRenderer();
-  const [local, initial] = splitProps(props, ["children", "ref"]);
+  const [local, initial] = splitProps(props, [
+    "children",
+    "initialFocus",
+    "ref",
+  ]);
   const element = new DialogPopupRenderable(
     renderer,
-    untrack(() => ({ ...initial, store })),
+    untrack(() => ({ ...initial, initialFocus: local.initialFocus, store })),
   );
+  createEffect(() => {
+    element.initialFocus = local.initialFocus;
+  });
   setRenderableRef(local.ref, element);
   spreadRenderableProps(element, () => ({
     ...initial,

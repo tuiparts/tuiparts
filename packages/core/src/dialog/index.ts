@@ -491,8 +491,16 @@ export class DialogPopupRenderable extends BoxRenderable {
       visible: false,
     });
     this.store = store;
-    this.initialTarget = initialFocus;
+    this.initialFocus = initialFocus;
     coordinatorFor(ctx).setPopup(store, this);
+  }
+
+  get initialFocus(): Renderable | undefined {
+    return this.initialTarget;
+  }
+
+  set initialFocus(target: Renderable | undefined) {
+    this.initialTarget = target;
   }
 
   registerFocusable(target: Renderable, initial = false): () => void {
@@ -539,7 +547,7 @@ export class DialogPopupRenderable extends BoxRenderable {
       this.initialTarget && this.isLiveDescendant(this.initialTarget)
         ? this.initialTarget
         : undefined;
-    const targets = [...new Set([...explicit, ...descendants])];
+    const targets = [...new Set([...descendants, ...explicit])];
     if (initial) {
       const index = targets.indexOf(initial);
       if (index !== -1) targets.splice(index, 1);

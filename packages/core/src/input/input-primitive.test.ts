@@ -95,6 +95,7 @@ describe("InputRenderable", () => {
       onSubmit: (value) => events.push(`submit:${value}`),
     });
 
+    expect(input.focusable).toBe(false);
     input.focus();
     await setup?.mockInput.typeText("X");
 
@@ -102,5 +103,8 @@ describe("InputRenderable", () => {
     expect(input.value).toBe("Fixed");
     expect(input.submit()).toBe(false);
     expect(events).toEqual([]);
+
+    input.disabled = false;
+    expect(input.focusable).toBe(true);
   });
 });

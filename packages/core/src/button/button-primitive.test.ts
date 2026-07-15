@@ -143,6 +143,7 @@ describe("Button primitive", () => {
     });
 
     root.disabled = true;
+    expect(root.focusable).toBe(false);
     expect(root.getState()).toEqual({
       disabled: true,
       focused: false,
@@ -156,6 +157,7 @@ describe("Button primitive", () => {
     expect(presses).toEqual([]);
 
     root.disabled = undefined;
+    expect(root.focusable).toBe(true);
     root.focus();
     await setup.mockMouse.pressDown(0, 0);
     root.blur();

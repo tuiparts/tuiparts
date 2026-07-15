@@ -102,7 +102,12 @@ export class ButtonRenderable extends BoxRenderable {
       if (disabled !== undefined) store.setDisabled(disabled);
       if (onPress !== undefined) store.setOnPress(onPress);
     }
-    this._unsubscribe = this._store.subscribe(() => this.requestRender());
+    this._focusable = !this._store.state.disabled;
+    this._unsubscribe = this._store.subscribe((state) => {
+      if (state.disabled && this._focused) this.blur();
+      this._focusable = !state.disabled;
+      this.requestRender();
+    });
   }
 
   getState(): ButtonState {
@@ -123,8 +128,13 @@ export class ButtonRenderable extends BoxRenderable {
 
   protected override onMouseEvent(event: MouseEvent): void {
     super.onMouseEvent(event);
+    if (this._store.state.disabled) {
+      event.preventDefault();
+      if (this._focused) super.blur();
+      return;
+    }
     if (event.type === "down") {
-      if (event.button !== 0 || this._store.state.disabled) return;
+      if (event.button !== 0) return;
       if (event.defaultPrevented) {
         this._store.setPressed(false);
         return;
@@ -187,9 +197,7 @@ export class ButtonRenderable extends BoxRenderable {
   }
 
   set disabled(disabled: boolean | null | undefined) {
-    const next = disabled ?? false;
-    this._store.setDisabled(next);
-    if (next && this._focused) super.blur();
+    this._store.setDisabled(disabled ?? false);
   }
 
   set onPress(callback: ((details: ButtonPressDetails) => void) | undefined) {

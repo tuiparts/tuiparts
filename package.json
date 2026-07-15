@@ -22,6 +22,7 @@
     "validate:packages:built": "node scripts/validate-packages.mjs",
     "validate:registry": "node scripts/validate-registry.mjs",
     "validate:registry:built": "node scripts/validate-registry.mjs --built",
+    "registry:build": "node scripts/build-registry.mjs",
     "changeset:status": "changeset status",
     "validate:release-scope": "node scripts/validate-foundation-release.mjs",
     "validate:foundation": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm validate:packages:built && pnpm validate:registry:built && pnpm validate:release-scope",

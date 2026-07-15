@@ -39,9 +39,6 @@ const frameworks = {
   react: {
     extension: "tsx",
     localPackages: ["@opentui-ui/core", "@opentui-ui/react"],
-    devDependencies: {
-      "@types/react": "19.2.17",
-    },
     compilerOptions: {
       jsx: "react-jsx",
       jsxImportSource: "@opentui/react",
@@ -306,6 +303,12 @@ try {
     assert(existsSync(join(root, consumer.smoke)), `Missing ${consumer.smoke}`);
   }
   for (const item of registry.items) {
+    if (item.meta?.framework === "react") {
+      assert(
+        item.devDependencies?.includes("@types/react@^19.2.0"),
+        `${item.name} must install React types as a development dependency`,
+      );
+    }
     for (const dependency of item.dependencies) {
       if (!Object.hasOwn(packageDirectories, packageName(dependency))) continue;
       assert(
@@ -457,6 +460,11 @@ try {
       JSON.stringify(builtItem.dependencies) ===
         JSON.stringify(registryItem.dependencies),
       `${itemName} build changed registry dependencies`,
+    );
+    assert(
+      JSON.stringify(builtItem.devDependencies) ===
+        JSON.stringify(registryItem.devDependencies),
+      `${itemName} build changed registry development dependencies`,
     );
     assert(
       JSON.stringify(builtItem.meta) === JSON.stringify(registryItem.meta),

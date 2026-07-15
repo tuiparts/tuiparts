@@ -92,6 +92,7 @@ describe("Switch primitive", () => {
     });
     setup.renderer.root.add(root);
 
+    expect(root.focusable).toBe(false);
     root.focus();
     root.press();
     expect(root.handleKeyPress({ name: "space" } as KeyEvent)).toBe(false);
@@ -99,6 +100,7 @@ describe("Switch primitive", () => {
     expect(changes).toEqual([]);
 
     root.disabled = undefined;
+    expect(root.focusable).toBe(true);
     expect(root.handleKeyPress({ name: "enter" } as KeyEvent)).toBe(true);
     expect(root.checked).toBe(true);
     expect(root.handleKeyPress({ name: "return" } as KeyEvent)).toBe(true);

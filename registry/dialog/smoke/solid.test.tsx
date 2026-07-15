@@ -10,7 +10,13 @@ import {
   type DialogTriggerRenderable,
 } from "@opentui-ui/core/dialog";
 import { createSignal } from "solid-js";
-import { Dialog } from "./components/ui/dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "./components/ui/dialog";
 
 let setup: TestRendererSetup | undefined;
 
@@ -28,28 +34,35 @@ test("installed Solid Dialog recipe delegates controlled intent once and retains
       const [controlledOpen, setControlledOpen] = createSignal(false);
       return (
         <box flexDirection="column">
-          <Dialog
-            ref={(node) => (root = node)}
-            defaultOpen={false}
-            title="Delete file?"
-            trigger={<text content="Open" />}
-          >
-            <box>
+          <Dialog ref={(node) => (root = node)} defaultOpen={false}>
+            <DialogTrigger>
+              <text content="Open" />
+            </DialogTrigger>
+            <DialogContent>
+              <DialogTitle content="Delete file?" />
               <text content="Body" />
-            </box>
+              <DialogClose>
+                <text content="Close" />
+              </DialogClose>
+            </DialogContent>
           </Dialog>
           <Dialog
             ref={(node) => {
               controlledRoot = node;
             }}
             open={controlledOpen()}
-            title="Controlled"
-            trigger={<text content="Controlled open" />}
             onOpenChange={(open) => {
               controlledChanges++;
               setControlledOpen(open);
             }}
-          />
+          >
+            <DialogTrigger>
+              <text content="Controlled open" />
+            </DialogTrigger>
+            <DialogContent>
+              <DialogTitle content="Controlled" />
+            </DialogContent>
+          </Dialog>
         </box>
       );
     },

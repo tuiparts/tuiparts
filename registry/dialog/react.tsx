@@ -1,78 +1,84 @@
 /** @jsxImportSource @opentui/react */
 
 import { Dialog as DialogPrimitive } from "@opentui-ui/react/dialog";
-import type { ReactNode } from "react";
 
-export interface DialogProps
-  extends Omit<DialogPrimitive.Root.Props, "children"> {
-  children?: ReactNode;
-  closeLabel?: string;
-  description?: string;
-  title: string;
-  trigger: ReactNode;
+/** Props for the consumer-owned Dialog root. */
+export interface DialogProps extends DialogPrimitive.Root.Props {}
+
+/** Props for the styled Dialog content composition. */
+export interface DialogContentProps extends DialogPrimitive.Popup.Props {
+  backdropColor?: DialogPrimitive.Backdrop.Props["backgroundColor"];
 }
 
-/** Editable visual composition over the packaged Dialog primitive parts. */
-export function Dialog({
-  children,
-  closeLabel = "× Close",
-  description,
-  title,
-  trigger,
-  ...props
-}: DialogProps) {
-  return (
-    <DialogPrimitive.Root {...props}>
-      <DialogTrigger>{trigger}</DialogTrigger>
-      <DialogPrimitive.Portal
-        position="absolute"
-        width="100%"
-        height="100%"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <DialogPrimitive.Backdrop
-          position="absolute"
-          width="100%"
-          height="100%"
-          backgroundColor="#000000"
-        />
-        <DialogPrimitive.Popup
-          width={48}
-          flexDirection="column"
-          backgroundColor="#171717"
-          border
-          borderColor="#737373"
-          padding={1}
-          gap={1}
-        >
-          <DialogPrimitive.Title content={title} fg="#FFFFFF" />
-          {description ? (
-            <DialogPrimitive.Description content={description} fg="#A3A3A3" />
-          ) : null}
-          {children}
-          <DialogPrimitive.Close
-            backgroundColor="#262626"
-            border
-            borderColor="#525252"
-            paddingLeft={1}
-            paddingRight={1}
-          >
-            <text content={closeLabel} fg="#E5E5E5" />
-          </DialogPrimitive.Close>
-        </DialogPrimitive.Popup>
-      </DialogPrimitive.Portal>
-    </DialogPrimitive.Root>
-  );
+/** Consumer-owned wrapper over the packaged Dialog root. */
+export function Dialog(props: DialogProps) {
+  return <DialogPrimitive.Root {...props} />;
 }
 
-/** A small, editable trigger presentation for the packaged Trigger part. */
+/** Editable trigger presentation that retains the primitive Trigger ref. */
 export function DialogTrigger(props: DialogPrimitive.Trigger.Props) {
   return (
     <DialogPrimitive.Trigger
       backgroundColor="#262626"
-      border
-      borderColor="#525252"
+      paddingLeft={1}
+      paddingRight={1}
+      {...props}
+    />
+  );
+}
+
+/** Responsive Portal, Backdrop, and Popup composition for Dialog content. */
+export function DialogContent({
+  backdropColor = "#000000",
+  children,
+  ...props
+}: DialogContentProps) {
+  return (
+    <DialogPrimitive.Portal
+      position="absolute"
+      width="100%"
+      height="100%"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <DialogPrimitive.Backdrop
+        position="absolute"
+        width="100%"
+        height="100%"
+        backgroundColor={backdropColor}
+      />
+      <DialogPrimitive.Popup
+        width="80%"
+        maxWidth={56}
+        flexDirection="column"
+        backgroundColor="#171717"
+        border
+        borderColor="#737373"
+        paddingLeft={1}
+        paddingRight={1}
+        {...props}
+      >
+        {children}
+      </DialogPrimitive.Popup>
+    </DialogPrimitive.Portal>
+  );
+}
+
+/** Editable semantic Dialog title. */
+export function DialogTitle(props: DialogPrimitive.Title.Props) {
+  return <DialogPrimitive.Title fg="#FFFFFF" {...props} />;
+}
+
+/** Editable semantic Dialog description. */
+export function DialogDescription(props: DialogPrimitive.Description.Props) {
+  return <DialogPrimitive.Description fg="#A3A3A3" {...props} />;
+}
+
+/** Editable Dialog dismissal or action control. */
+export function DialogClose(props: DialogPrimitive.Close.Props) {
+  return (
+    <DialogPrimitive.Close
+      backgroundColor="#262626"
       paddingLeft={1}
       paddingRight={1}
       {...props}

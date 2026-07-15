@@ -175,6 +175,21 @@ describe("Dialog Core primitive", () => {
     })();
   });
 
+  it("restores the focused control after programmatic opening", async () => {
+    setup = await createTestRenderer({ width: 40, height: 10 });
+    const opener = new BoxRenderable(setup.renderer, { focusable: true });
+    setup.renderer.root.add(opener);
+    opener.focus();
+    const store = new DialogStore(setup.renderer);
+    dialog(setup.renderer, store);
+
+    store.setOpen(true);
+    expect(opener.focused).toBe(false);
+    store.setOpen(false);
+
+    expect(opener.focused).toBe(true);
+  });
+
   it("arbitrates direct backdrop dismissal to the topmost layer", () => {
     return (async () => {
       setup = await createTestRenderer({ width: 40, height: 10 });

@@ -70,6 +70,13 @@ Amber rules:
 - Deliberately avoided hues: green phosphor (hacker cliche), pink/pastel
   (Charm owns it), rust orange (Ratatui adjacency).
 
+Scope (decided 2026-07-15, three-way palette comparison): this palette
+governs **brand-identity contexts** — the logomark on brand surfaces,
+Figures, Kit, social assets, and terminal renders. The docs-site UI
+(`apps/www`) anchors its own cobalt palette (`apps/www/design.md`);
+amber is a dark-ground phosphor and does not survive as a light-mode
+web accent. On the site, the logomark's check follows the site accent.
+
 ### ANSI system palette
 
 Structured accents use the ANSI 16-color palette. In terminal contexts,

@@ -19,25 +19,41 @@ export default defineConfig({
   },
 
   theme: {
-    // Electric cobalt. theme.css refines this per-mode in OKLCH; this hex
-    // keeps config-driven surfaces (OG images, etc.) on brand.
+    // Electric cobalt (comparison revert). theme.css refines this per-mode
+    // in OKLCH; this hex keeps config-driven surfaces (OG images, etc.)
+    // consistent.
     accent: "#2D62E4",
     radius: "sm",
     mode: "system",
+    // The brand face is Commit Mono (not a Google font) — self-hosted via
+    // @font-face in theme.css, which overrides all three role vars. Every
+    // role here is the decreed fallback, IBM Plex Mono
+    // (docs/brand/typography.md); Blume dedupes it to one hosted family.
+    // There is no "off" switch — absent roles re-default to Inter/Inter
+    // Tight, shipping families the single-face rule would never render.
     fonts: {
-      display: "space-grotesk",
-      body: "inter",
-      mono: "jetbrains-mono",
+      display: "ibm-plex-mono",
+      body: "ibm-plex-mono",
+      mono: "ibm-plex-mono",
     },
     background: {
-      // Cool graphite, matches --blume-background dark in theme.css.
-      dark: "#14161B",
+      // Deep cool graphite, matches --blume-background dark in theme.css.
+      dark: "#0B0E15",
     },
   },
 
   markdown: {
     code: {
       icons: true,
+    },
+    codeBlocks: {
+      theme: {
+        // Default github-light was tuned for white: its red (#d73a49) and
+        // orange (#e36209) tokens fail WCAG AA on the warm-paper background
+        // (axe-checked). The high-contrast variant clears it; github-dark
+        // audits clean on brand graphite and stays.
+        light: "github-light-high-contrast",
+      },
     },
   },
 

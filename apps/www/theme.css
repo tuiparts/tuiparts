@@ -1,7 +1,47 @@
-/* Hallmark · genre: modern-minimal · theme: cobalt · design-system: design.md · designed-as-app */
-/* Cobalt — cool engineered near-white light mode, cool graphite dark mode,
-   one electric cobalt signal accent. Canonical token file for apps/www;
-   Blume injects this last, so it wins over config and framework defaults. */
+/* Hallmark · genre: modern-minimal · theme: cobalt-deep · design-system: design.md · designed-as-app */
+/* Cobalt Deep — cool engineered near-white light mode, deep cool-graphite
+   dark mode, one electric cobalt signal accent; the hue anchor never
+   switches between modes. Chosen over the amber brand palette in a
+   three-way comparison (2026-07-15); brand amber stays scoped to
+   brand-identity contexts (docs/brand/README.md § Color). Canonical token
+   file for apps/www; Blume injects this last, so it wins over config and
+   framework defaults. */
+
+/* ── Commit Mono — self-hosted, OFL 1.1 (public/fonts/LICENSE.txt) ──────
+   Full glyph set, deliberately unsubset: Figures need U+2500-259F intact
+   or they silently fall back mid-glyph (docs/brand/typography.md). */
+
+@font-face {
+  font-family: "Commit Mono";
+  src: url("/fonts/CommitMono-400-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Commit Mono";
+  src: url("/fonts/CommitMono-700-Regular.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Commit Mono";
+  src: url("/fonts/CommitMono-400-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Commit Mono";
+  src: url("/fonts/CommitMono-700-Italic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
 
 :root {
   --blume-background: oklch(0.985 0.004 250);
@@ -15,31 +55,48 @@
   --blume-radius: 0.5rem;
 
   /* Hover shade for solid-accent actions (locked token, no mid-render mixing). */
-  --ou-action-hover: oklch(0.47 0.19 257);
+  --tp-action-hover: oklch(0.47 0.19 257);
 
   /* Instrument pane — fixed graphite in BOTH modes. Terminals are dark;
-     the product render never flips with the site theme. */
-  --ou-graphite: oklch(0.21 0.016 260);
-  --ou-graphite-2: oklch(0.245 0.016 260);
-  --ou-graphite-rule: oklch(0.33 0.02 258);
-  --ou-graphite-ink: oklch(0.93 0.008 250);
-  --ou-graphite-muted: oklch(0.66 0.015 255);
-  --ou-graphite-faint: oklch(0.48 0.018 258);
-  --ou-signal: oklch(0.72 0.15 252);
-  --ou-signal-ink: oklch(0.16 0.014 260);
+     the product render never flips with the site theme. Deepened so the
+     pane sits nearly flush with the dark page (a one-step elevation)
+     instead of floating as a visibly lighter box. */
+  --tp-graphite: oklch(0.16 0.014 258);
+  --tp-graphite-2: oklch(0.2 0.015 258);
+  --tp-graphite-rule: oklch(0.3 0.02 258);
+  --tp-graphite-ink: oklch(0.93 0.008 250);
+  --tp-graphite-muted: oklch(0.66 0.015 255);
+  /* Web-AA lift of the original faint oklch(0.48 0.018 258), which fails
+     WCAG 1.4.3 on both graphite surfaces (axe-checked). */
+  --tp-graphite-faint: oklch(0.635 0.015 256);
+  --tp-signal: oklch(0.72 0.15 252);
+  --tp-signal-ink: oklch(0.16 0.014 260);
+
+  /* Single-face rule: every role renders Commit Mono; IBM Plex Mono is the
+     decreed fallback (docs/brand/typography.md) — the var() resolves to the
+     Blume-hosted family, then the named font covers local installs. */
+  --tp-font-mono:
+    "Commit Mono", var(--blume-font-mono-src, "IBM Plex Mono"), "IBM Plex Mono",
+    ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --blume-font-display: var(--tp-font-mono);
+  --blume-font-body: var(--tp-font-mono);
+  --blume-font-mono: var(--tp-font-mono);
 }
 
 :root[data-theme="dark"] {
-  --blume-background: oklch(0.155 0.012 260);
+  /* Deepened per the Hallmark dark recipe: paper drops toward L 13.5%
+     (the depth of the brand-graphite variant the comparison favored),
+     hue anchor unchanged — never switch the hue between modes. */
+  --blume-background: oklch(0.135 0.014 258);
   --blume-foreground: oklch(0.93 0.008 250);
-  --blume-muted: oklch(0.195 0.014 260);
+  --blume-muted: oklch(0.175 0.015 258);
   --blume-muted-foreground: oklch(0.7 0.015 255);
   --blume-border: oklch(0.3 0.02 258 / 0.75);
   --blume-accent: oklch(0.7 0.145 253);
-  --blume-accent-foreground: oklch(0.145 0.012 260);
-  --blume-code-background: oklch(0.185 0.014 260);
+  --blume-accent-foreground: oklch(0.135 0.014 258);
+  --blume-code-background: oklch(0.165 0.014 258);
 
-  --ou-action-hover: oklch(0.75 0.14 253);
+  --tp-action-hover: oklch(0.75 0.14 253);
 }
 
 /* Base niceties: no sideways scroll ever, crisper text on macOS,

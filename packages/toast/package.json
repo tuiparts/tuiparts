@@ -1,6 +1,7 @@
 {
   "name": "@tuiparts/toast",
   "version": "0.0.5",
+  "private": true,
   "description": "A beautiful toast library for terminal UIs built on OpenTUI",
   "author": "Matt Simpson",
   "license": "MIT",

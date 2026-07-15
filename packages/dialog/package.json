@@ -1,6 +1,7 @@
 {
   "name": "@tuiparts/dialog",
   "version": "0.1.2",
+  "private": true,
   "description": "A dialog/modal library for terminal UIs built on OpenTUI",
   "author": "Matt Simpson",
   "license": "MIT",

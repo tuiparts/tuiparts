@@ -1,6 +1,7 @@
 {
   "name": "@tuiparts/utils",
   "version": "0.0.1",
+  "private": true,
   "description": "Shared utilities and types for tui.parts packages",
   "author": "Matt Simpson",
   "license": "MIT",

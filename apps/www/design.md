@@ -16,46 +16,55 @@ modern-minimal (dev-tool register)
 - Content pages (docs): Blume's built-in docs layout. Typography and token
   theming only — no enrichment, no custom sections.
 
-## Theme — Cobalt (dual mode)
+## Theme — tui.parts amber/graphite (dual mode)
 
-Cool engineered near-white light mode, cool graphite dark mode, exactly one
-electric cobalt signal accent. The terminal demo pane is **fixed graphite in
-both modes** — terminals are dark; the product render never flips.
+Brand-exact graphite dark mode, warm paper light mode derived from the same
+palette, exactly one amber signal accent. Palette source of truth:
+`docs/brand/tokens.json`. The terminal demo pane is **fixed brand graphite
+in both modes** — terminals are dark; the product render never flips.
 
-Light:
+Light (warm paper — derived, since the brand defines one dark scheme):
 
-- `--blume-background` oklch(0.985 0.004 250)
-- `--blume-foreground` oklch(0.24 0.02 258)
-- `--blume-muted` oklch(0.958 0.006 250)
-- `--blume-muted-foreground` oklch(0.45 0.018 257)
-- `--blume-border` oklch(0.895 0.01 255)
-- `--blume-accent` oklch(0.52 0.19 257)
-- `--blume-code-background` oklch(0.972 0.005 250)
+- `--blume-background` #fbf8f0 (brand ansi-15 cream)
+- `--blume-foreground` #161b22 (dark-mode surface doubles as light-mode ink)
+- `--blume-muted` #f2ecdf
+- `--blume-muted-foreground` #6c675d (brand fg-faint; 5.3:1 on cream)
+- `--blume-border` #e4ddca
+- `--blume-accent` #8f6400 — deepened amber; #ffb000 is a dark-ground
+  signal and fails text contrast on cream (AA-checked, 4.9:1)
+- `--blume-code-background` #f4efe2
 
-Dark:
+Dark (brand-exact from `docs/brand/tokens.json`):
 
-- `--blume-background` oklch(0.155 0.012 260)
-- `--blume-foreground` oklch(0.93 0.008 250)
-- `--blume-muted` oklch(0.195 0.014 260)
-- `--blume-muted-foreground` oklch(0.7 0.015 255)
-- `--blume-border` oklch(0.3 0.02 258 / 0.75)
-- `--blume-accent` oklch(0.7 0.145 253)
-- `--blume-code-background` oklch(0.185 0.014 260)
+- `--blume-background` #0d1117
+- `--blume-foreground` #e8e4d9
+- `--blume-muted` #161b22
+- `--blume-muted-foreground` #a8a296
+- `--blume-border` #30363d
+- `--blume-accent` #ffb000 · `--blume-accent-foreground` #0d1117
+- `--blume-code-background` #161b22
 
-Graphite instrument pane (mode-invariant):
+Graphite instrument pane (mode-invariant, maps 1:1 onto brand tokens):
 
-- `--ou-graphite` oklch(0.21 0.016 260) · `--ou-graphite-2` oklch(0.245 0.016 260)
-- `--ou-graphite-rule` oklch(0.33 0.02 258)
-- `--ou-graphite-ink` oklch(0.93 0.008 250) · `--ou-graphite-muted` oklch(0.66 0.015 255)
-- `--ou-graphite-faint` oklch(0.48 0.018 258)
-- `--ou-signal` oklch(0.72 0.15 252) — the cobalt signal on graphite
+- `--tp-graphite` #0d1117 · `--tp-graphite-2` #161b22
+- `--tp-graphite-rule` #30363d
+- `--tp-graphite-ink` #e8e4d9 · `--tp-graphite-muted` #a8a296
+- `--tp-graphite-faint` #6c675d
+- `--tp-signal` #ffb000 — the amber signal on graphite ·
+  `--tp-signal-ink` #0d1117
 
 ## Typography
 
-- Display: Space Grotesk 500–600, roman only, tracking -0.02em
-- Body: Inter 400/500
-- Mono: JetBrains Mono — code, eyebrows, meta, kbd hints; UPPERCASE labels at
-  0.12–0.14em tracking
+- One face for every role: **Commit Mono** (self-hosted WOFF2, OFL 1.1,
+  `public/fonts/`), fallback IBM Plex Mono — the brand's single-face rule
+  (`docs/brand/typography.md`). Static instances 400/700 ship; weight
+  requests between snap to the nearer instance.
+- Display: Commit Mono 600–700, roman only
+- Body: Commit Mono 400
+- Mono roles as before — code, eyebrows, meta, kbd hints; UPPERCASE labels
+  at 0.12–0.14em tracking
+- Never subset below U+2500-259F: Figures must render from one face or
+  box-drawing glyphs silently fall back mid-figure
 - Headings use `text-wrap: balance`; ledes use `text-wrap: pretty`
 - No italic headings, ever. Emphasis via weight or the accent.
 
@@ -87,7 +96,7 @@ Tailwind 4-pt scale. Landing sections breathe at py-20/py-24; hairlines
 
 ## CTA voice
 
-- Primary: solid cobalt fill, `rounded-blume` (0.5rem), px-5 py-2.5,
+- Primary: solid amber fill (`--blume-accent`), `rounded-blume` (0.5rem), px-5 py-2.5,
   named destination ("Read the docs", "Quickstart")
 - Secondary: 1px `--blume-border` outline, hover border shifts to accent
 - Tertiary: accent text link with `→`, arrow nudges 2px on hover
@@ -103,8 +112,9 @@ Tailwind 4-pt scale. Landing sections breathe at py-20/py-24; hairlines
 
 ## What pages MUST share
 
-- The wordmark, the cobalt accent (< 5% of any viewport), the three fonts,
-  the CTA voice, mono UPPERCASE eyebrow rhythm, hairline section language.
+- The wordmark, the amber accent (< 5% of any viewport — one amber element
+  per lockup), the single Commit Mono face, the CTA voice, mono UPPERCASE
+  eyebrow rhythm, hairline section language.
 
 ## What pages MAY differ on
 

@@ -537,7 +537,7 @@ const pillars = [
 </PageLayout>
 
 <style>
-  /* Hallmark · genre: modern-minimal · macrostructure: dev-tool/CLI · theme: cobalt
+  /* Hallmark · genre: modern-minimal · macrostructure: dev-tool/CLI · theme: tui.parts amber/graphite
      · enrichment: Tier-A CSS art (TUI instrument pane) · nav: blume-default
      · footer: Ft3 (docs-root allowance) · design-system: design.md · designed-as-app
      · pre-emit critique: P4 H5 E4 S5 R4 V4 */
@@ -561,7 +561,7 @@ const pillars = [
   }
 
   .btn-solid:hover {
-    background: var(--ou-action-hover);
+    background: var(--tp-action-hover);
   }
 
   .btn-outline {
@@ -628,12 +628,12 @@ const pillars = [
   /* ── The instrument pane — a real TUI render, fixed graphite ──────── */
 
   .demo {
-    background: var(--ou-graphite);
-    border: 1px solid var(--ou-graphite-rule);
+    background: var(--tp-graphite);
+    border: 1px solid var(--tp-graphite-rule);
     border-radius: 10px;
     box-shadow:
-      0 1px 2px oklch(0.24 0.02 258 / 0.06),
-      0 12px 32px oklch(0.24 0.02 258 / 0.08);
+      0 1px 2px rgb(13 17 23 / 0.06),
+      0 12px 32px rgb(13 17 23 / 0.1);
     overflow: hidden;
   }
 
@@ -642,22 +642,22 @@ const pillars = [
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    background: var(--ou-graphite-2);
-    border-bottom: 1px solid var(--ou-graphite-rule);
+    background: var(--tp-graphite-2);
+    border-bottom: 1px solid var(--tp-graphite-rule);
     padding: 0.625rem 1rem;
     font-family: var(--font-mono);
     font-size: 0.75rem;
   }
 
   .demo-file {
-    color: var(--ou-graphite-muted);
+    color: var(--tp-graphite-muted);
   }
 
   .demo-meta {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    color: var(--ou-graphite-faint);
+    color: var(--tp-graphite-faint);
     letter-spacing: 0.06em;
   }
 
@@ -665,7 +665,7 @@ const pillars = [
     width: 6px;
     height: 6px;
     border-radius: 9999px;
-    background: var(--ou-signal);
+    background: var(--tp-signal);
   }
 
   .demo-screen {
@@ -673,7 +673,7 @@ const pillars = [
     font-family: var(--font-mono);
     font-size: 0.8125rem;
     line-height: 1.75;
-    color: var(--ou-graphite-ink);
+    color: var(--tp-graphite-ink);
     overflow-x: auto;
   }
 
@@ -690,25 +690,25 @@ const pillars = [
   }
 
   .t-bright {
-    color: var(--ou-graphite-ink);
+    color: var(--tp-graphite-ink);
     font-weight: 600;
   }
 
   .t-muted {
-    color: var(--ou-graphite-muted);
+    color: var(--tp-graphite-muted);
   }
 
   .t-dim {
-    color: var(--ou-graphite-faint);
+    color: var(--tp-graphite-faint);
   }
 
   .t-faint {
-    color: var(--ou-graphite-faint);
+    color: var(--tp-graphite-faint);
     font-size: 0.75rem;
   }
 
   .t-signal {
-    color: var(--ou-signal);
+    color: var(--tp-signal);
   }
 
   .typed {
@@ -720,7 +720,7 @@ const pillars = [
 
   .caret-cmd,
   .caret-input {
-    color: var(--ou-signal);
+    color: var(--tp-signal);
   }
 
   /* Chips render square — real terminals have no border radius. */
@@ -730,14 +730,14 @@ const pillars = [
   }
 
   .chip-solid {
-    background: var(--ou-signal);
-    color: var(--ou-signal-ink);
+    background: var(--tp-signal);
+    color: var(--tp-signal-ink);
     font-weight: 500;
   }
 
   .chip-ghost {
-    background: var(--ou-graphite-rule);
-    color: var(--ou-graphite-ink);
+    background: var(--tp-graphite-rule);
+    color: var(--tp-graphite-ink);
   }
 
   /* Type-in plays once, rows rise in after it, one caret keeps blinking. */
@@ -820,9 +820,9 @@ const pillars = [
   /* ── Graphite band — the page's one dark beat, both modes ─────────── */
 
   .band {
-    background: var(--ou-graphite);
-    border-block: 1px solid var(--ou-graphite-rule);
-    color: var(--ou-graphite-ink);
+    background: var(--tp-graphite);
+    border-block: 1px solid var(--tp-graphite-rule);
+    color: var(--tp-graphite-ink);
   }
 
   .band-eyebrow {
@@ -830,28 +830,28 @@ const pillars = [
     font-size: 0.75rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--ou-signal);
+    color: var(--tp-signal);
   }
 
   .band-muted {
-    color: var(--ou-graphite-muted);
+    color: var(--tp-graphite-muted);
   }
 
   .band-cmd {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    background: var(--ou-graphite-2);
-    border: 1px solid var(--ou-graphite-rule);
+    background: var(--tp-graphite-2);
+    border: 1px solid var(--tp-graphite-rule);
     border-radius: 6px;
     padding: 0.5rem 0.625rem 0.5rem 1rem;
     font-family: var(--font-mono);
     font-size: 0.75rem;
-    color: var(--ou-graphite-ink);
+    color: var(--tp-graphite-ink);
   }
 
   .copy-btn-band {
-    color: var(--ou-graphite-muted);
+    color: var(--tp-graphite-muted);
     transition:
       color 150ms ease,
       background-color 150ms ease,
@@ -859,16 +859,16 @@ const pillars = [
   }
 
   .copy-btn-band:hover {
-    background: var(--ou-graphite-rule);
-    color: var(--ou-graphite-ink);
+    background: var(--tp-graphite-rule);
+    color: var(--tp-graphite-ink);
   }
 
   .copy-btn-band .icon-check {
-    color: var(--ou-signal);
+    color: var(--tp-signal);
   }
 
   .band-link {
-    color: var(--ou-signal);
+    color: var(--tp-signal);
   }
 
   .band-link:hover {
@@ -880,7 +880,7 @@ const pillars = [
     list-style: none;
     margin: 0;
     padding: 0;
-    border-top: 1px solid var(--ou-graphite-rule);
+    border-top: 1px solid var(--tp-graphite-rule);
   }
 
   .band-row {
@@ -889,19 +889,19 @@ const pillars = [
     align-items: baseline;
     gap: 0.75rem;
     padding: 0.6875rem 0.25rem;
-    border-bottom: 1px solid var(--ou-graphite-rule);
+    border-bottom: 1px solid var(--tp-graphite-rule);
     text-decoration: none;
     transition: background-color 150ms ease;
   }
 
   @media (hover: hover) and (pointer: fine) {
     .band-row:hover {
-      background: var(--ou-graphite-2);
+      background: var(--tp-graphite-2);
     }
 
     .band-row:hover .band-index,
     .band-row:hover .band-arrow {
-      color: var(--ou-signal);
+      color: var(--tp-signal);
     }
 
     .band-row:hover .band-arrow {
@@ -912,26 +912,26 @@ const pillars = [
   .band-index {
     font-family: var(--font-mono);
     font-size: 0.6875rem;
-    color: var(--ou-graphite-faint);
+    color: var(--tp-graphite-faint);
     transition: color 150ms ease;
   }
 
   .band-name {
     font-size: 0.875rem;
     font-weight: 500;
-    color: var(--ou-graphite-ink);
+    color: var(--tp-graphite-ink);
   }
 
   .band-parts {
     font-family: var(--font-mono);
     font-size: 0.6875rem;
-    color: var(--ou-graphite-faint);
+    color: var(--tp-graphite-faint);
   }
 
   .band-arrow {
     display: inline-block;
     justify-self: end;
-    color: var(--ou-graphite-faint);
+    color: var(--tp-graphite-faint);
     transition:
       color 150ms ease,
       transform 150ms cubic-bezier(0.23, 1, 0.32, 1);

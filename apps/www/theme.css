@@ -1,49 +1,100 @@
-/* Hallmark · genre: modern-minimal · theme: cobalt · design-system: design.md · designed-as-app */
-/* Cobalt — cool engineered near-white light mode, cool graphite dark mode,
-   one electric cobalt signal accent. Canonical token file for apps/www;
-   Blume injects this last, so it wins over config and framework defaults. */
+/* Hallmark · genre: modern-minimal · theme: tui.parts amber/graphite · design-system: design.md · designed-as-app */
+/* tui.parts brand theme — warm paper light mode, brand-exact graphite dark
+   mode, exactly one amber signal accent. Palette source of truth:
+   docs/brand/tokens.json. Canonical token file for apps/www; Blume injects
+   this last, so it wins over config and framework defaults. */
+
+/* ── Commit Mono — self-hosted, OFL 1.1 (public/fonts/LICENSE.txt) ──────
+   Full glyph set, deliberately unsubset: Figures need U+2500-259F intact
+   or they silently fall back mid-glyph (docs/brand/typography.md). */
+
+@font-face {
+  font-family: "Commit Mono";
+  src: url("/fonts/CommitMono-400-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Commit Mono";
+  src: url("/fonts/CommitMono-700-Regular.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Commit Mono";
+  src: url("/fonts/CommitMono-400-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Commit Mono";
+  src: url("/fonts/CommitMono-700-Italic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
 
 :root {
-  --blume-background: oklch(0.985 0.004 250);
-  --blume-foreground: oklch(0.24 0.02 258);
-  --blume-muted: oklch(0.958 0.006 250);
-  --blume-muted-foreground: oklch(0.45 0.018 257);
-  --blume-border: oklch(0.895 0.01 255);
-  --blume-accent: oklch(0.52 0.19 257);
-  --blume-accent-foreground: oklch(0.985 0.004 250);
-  --blume-code-background: oklch(0.972 0.005 250);
+  /* Light — warm paper derived from the brand palette. The accent deepens
+     to #8f6400 here: #ffb000 is a dark-ground signal and cannot carry
+     text contrast on cream (AA-checked, 4.9:1). */
+  --blume-background: #fbf8f0;
+  --blume-foreground: #161b22;
+  --blume-muted: #f2ecdf;
+  --blume-muted-foreground: #6c675d;
+  --blume-border: #e4ddca;
+  --blume-accent: #8f6400;
+  --blume-accent-foreground: #fbf8f0;
+  --blume-code-background: #f4efe2;
   --blume-radius: 0.5rem;
 
   /* Hover shade for solid-accent actions (locked token, no mid-render mixing). */
-  --ou-action-hover: oklch(0.47 0.19 257);
+  --tp-action-hover: #7a5500;
 
-  /* Instrument pane — fixed graphite in BOTH modes. Terminals are dark;
+  /* Instrument pane — brand graphite in BOTH modes. Terminals are dark;
      the product render never flips with the site theme. */
-  --ou-graphite: oklch(0.21 0.016 260);
-  --ou-graphite-2: oklch(0.245 0.016 260);
-  --ou-graphite-rule: oklch(0.33 0.02 258);
-  --ou-graphite-ink: oklch(0.93 0.008 250);
-  --ou-graphite-muted: oklch(0.66 0.015 255);
-  --ou-graphite-faint: oklch(0.48 0.018 258);
-  --ou-signal: oklch(0.72 0.15 252);
-  --ou-signal-ink: oklch(0.16 0.014 260);
+  --tp-graphite: #0d1117;
+  --tp-graphite-2: #161b22;
+  --tp-graphite-rule: #30363d;
+  --tp-graphite-ink: #e8e4d9;
+  --tp-graphite-muted: #a8a296;
+  --tp-graphite-faint: #6c675d;
+  --tp-signal: #ffb000;
+  --tp-signal-ink: #0d1117;
+
+  /* Single-face rule: every role renders Commit Mono; IBM Plex Mono is the
+     decreed fallback (docs/brand/typography.md) — the var() resolves to the
+     Blume-hosted family, then the named font covers local installs. */
+  --tp-font-mono:
+    "Commit Mono", var(--blume-font-mono-src, "IBM Plex Mono"), "IBM Plex Mono",
+    ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --blume-font-display: var(--tp-font-mono);
+  --blume-font-body: var(--tp-font-mono);
+  --blume-font-mono: var(--tp-font-mono);
 }
 
 :root[data-theme="dark"] {
-  --blume-background: oklch(0.155 0.012 260);
-  --blume-foreground: oklch(0.93 0.008 250);
-  --blume-muted: oklch(0.195 0.014 260);
-  --blume-muted-foreground: oklch(0.7 0.015 255);
-  --blume-border: oklch(0.3 0.02 258 / 0.75);
-  --blume-accent: oklch(0.7 0.145 253);
-  --blume-accent-foreground: oklch(0.145 0.012 260);
-  --blume-code-background: oklch(0.185 0.014 260);
+  /* Dark — brand-exact (docs/brand/tokens.json). */
+  --blume-background: #0d1117;
+  --blume-foreground: #e8e4d9;
+  --blume-muted: #161b22;
+  --blume-muted-foreground: #a8a296;
+  --blume-border: #30363d;
+  --blume-accent: #ffb000;
+  --blume-accent-foreground: #0d1117;
+  --blume-code-background: #161b22;
 
-  --ou-action-hover: oklch(0.75 0.14 253);
+  --tp-action-hover: #ffc94d;
 }
 
 /* Base niceties: no sideways scroll ever, crisper text on macOS,
-   cobalt selection so even highlighting text feels on-theme. */
+   amber selection so even highlighting text feels on-theme. */
 html,
 body {
   overflow-x: clip;
@@ -54,11 +105,11 @@ body {
 }
 
 ::selection {
-  background: oklch(0.52 0.19 257 / 0.18);
+  background: rgba(204, 140, 0, 0.22);
 }
 
 :root[data-theme="dark"] ::selection {
-  background: oklch(0.7 0.145 253 / 0.28);
+  background: rgba(255, 176, 0, 0.25);
 }
 
 /* Headings wrap without orphans. */

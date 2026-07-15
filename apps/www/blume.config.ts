@@ -19,19 +19,26 @@ export default defineConfig({
   },
 
   theme: {
-    // Electric cobalt. theme.css refines this per-mode in OKLCH; this hex
-    // keeps config-driven surfaces (OG images, etc.) on brand.
-    accent: "#2D62E4",
+    // Brand amber (docs/brand/tokens.json). theme.css refines this per-mode
+    // — full #FFB000 on graphite in dark, deepened for contrast on paper in
+    // light. This hex keeps config-driven surfaces (OG images, etc.) on brand.
+    accent: "#FFB000",
     radius: "sm",
     mode: "system",
+    // The brand face is Commit Mono (not a Google font) — self-hosted via
+    // @font-face in theme.css, which overrides all three role vars. Every
+    // role here is the decreed fallback, IBM Plex Mono
+    // (docs/brand/typography.md); Blume dedupes it to one hosted family.
+    // There is no "off" switch — absent roles re-default to Inter/Inter
+    // Tight, shipping families the single-face rule would never render.
     fonts: {
-      display: "space-grotesk",
-      body: "inter",
-      mono: "jetbrains-mono",
+      display: "ibm-plex-mono",
+      body: "ibm-plex-mono",
+      mono: "ibm-plex-mono",
     },
     background: {
-      // Cool graphite, matches --blume-background dark in theme.css.
-      dark: "#14161B",
+      // Brand graphite, matches --blume-background dark in theme.css.
+      dark: "#0D1117",
     },
   },
 

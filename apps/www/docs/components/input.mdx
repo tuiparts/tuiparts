@@ -1,0 +1,63 @@
+---
+title: Input
+description: OpenTUI-native text editing with input, change, and submit events, wrapped in an editable visual-defaults recipe.
+---
+
+<Badge variant="accent">Foundation</Badge>
+
+The Input recipe applies editable visual defaults — text, placeholder, cursor,
+and focus colors — over the packaged Input primitive, which preserves
+OpenTUI's native editing behavior.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @opentui-ui/react/input
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @opentui-ui/solid/input
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @opentui-ui/core/input
+```
+
+</CodeGroup>
+
+## Usage
+
+```tsx
+import { Input } from "./components/ui/input";
+
+<Input
+  placeholder="Search components…"
+  onInput={(value) => setQuery(value)}
+  onSubmit={(value) => search(value)}
+/>;
+```
+
+## Events
+
+Input deliberately preserves OpenTUI's native mutable buffer and event order
+instead of inventing browser-style controlled rollback:
+
+| Event | Fires when |
+| --- | --- |
+| `onInput` | The value changes — including changed programmatic assignments. |
+| `onChange` | A blur or submit commits the value. |
+| `onSubmit` | The user submits (Enter/Return). |
+
+:::note
+Programmatic `value` assignments that change the buffer invoke `onInput`,
+while `onChange` reports blur or submit commits. If you need strict
+controlled-value semantics, layer them in your consumer-owned recipe.
+:::
+
+## Presentation
+
+Every visual default in the installed file — `textColor`,
+`placeholderColor`, `cursorColor`, and the focused variants — is an ordinary
+OpenTUI property you can change or expose as variants.

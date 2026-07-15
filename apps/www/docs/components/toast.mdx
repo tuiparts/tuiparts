@@ -1,0 +1,38 @@
+---
+title: Toast
+description: The independently versioned Toast companion package — a global toast API and a Toaster container for OpenTUI apps.
+---
+
+<Badge variant="success">Companion package</Badge>
+
+Toast is an adopted companion product, not a foundation primitive or registry
+recipe. It retains its notification, theme, icon, React, and Solid APIs and
+versions independently from the foundation release line.
+
+## Install
+
+```bash
+pnpm add @opentui-ui/toast
+```
+
+## Usage
+
+Mount a `Toaster` container once, then notify from anywhere with the global
+`toast` API:
+
+```ts
+import { toast } from "@opentui-ui/toast";
+
+toast.success("Recipe installed");
+toast.error("Registry unreachable");
+```
+
+The `ToasterRenderable` container manages notification layout and lifecycle
+inside your OpenTUI renderer, and the package ships React and Solid bindings
+alongside the Core API.
+
+:::note
+Neither `@opentui-ui/toast` nor `@opentui-ui/dialog` is re-exported by the
+foundation packages. They are supported, independently versioned products —
+installing foundation recipes never replaces them.
+:::

@@ -1,0 +1,92 @@
+---
+title: Architecture
+description: The two foundation layers — versioned behavior packages and consumer-owned registry recipes — and the primitive contract behind them.
+sidebar:
+  order: 3
+---
+
+OpenTUI UI splits every component into behavior that is packaged and
+presentation that is copied.
+
+## Two layers
+
+<Columns cols={2}>
+  <Column>
+    <Card title="Packages own behavior" icon="package">
+      State, keyboard and pointer interaction, focus, collections, overlays,
+      lifecycle, public parts, and framework adapters ship as versioned npm
+      packages. Upgrades deliver behavior fixes.
+    </Card>
+  </Column>
+  <Column>
+    <Card title="Recipes own presentation" icon="palette">
+      Glyphs, layout, colors, themes, semantic variants, and convenience
+      assembly install as editable source controlled by the application.
+      Updates are optional source integrations.
+    </Card>
+  </Column>
+</Columns>
+
+This is the same trade Base UI and shadcn/ui make on the web, applied to the
+terminal: the difficult, correctness-critical behavior is centralized and
+tested once, while everything opinionated stays in code you can read and
+change.
+
+## Primitive reference
+
+| Primitive | Framework shape | Readonly state | Actions and keys |
+| --- | --- | --- | --- |
+| Button | `Button` | disabled, focused, pressed | `press()`; Enter/Return, Space, primary pointer |
+| Checkbox | `Checkbox.Root`, `Checkbox.Indicator` | checked, disabled, focused | `press()`; Enter/Return, Space, primary pointer |
+| Switch | `Switch.Root`, `Switch.Thumb` | checked, disabled, focused | `press()`; Enter/Return, Space, primary pointer |
+| RadioGroup/Radio | `RadioGroup`, `Radio.Root`, `Radio.Indicator` | group value/disabled; radio checked/focused/availability | Radio `press()`; arrows, Home/End, Enter/Return/Space |
+| Input | `Input` | OpenTUI-owned mutable buffer | native editing; `onInput`, `onChange`, `onSubmit` |
+| Dialog | `Dialog.Root`, Trigger, Portal, Backdrop, Popup, Title, Description, Close | open | Trigger/Close `press()`; Enter/Return/Space, Escape, Tab containment |
+
+Checkbox, Switch, RadioGroup, and Dialog support controlled and uncontrolled
+ownership. RadioGroup owns one collection value and every Radio must belong to
+a group. Input deliberately preserves OpenTUI's native mutable value and event
+order instead of inventing browser-style controlled rollback.
+
+Disabled controls reject focus and activation. Radio navigation skips
+unavailable items. Dialog coordinates renderer-scoped layers, topmost
+dismissal, focus containment, and restoration.
+
+:::note
+The complete ownership, event, part, lifecycle, and conformance rules live in
+[`FOUNDATION_PRIMITIVE_CONTRACT.md`](https://github.com/msmps/opentui-ui/blob/main/FOUNDATION_PRIMITIVE_CONTRACT.md)
+in the repository.
+:::
+
+## Parts, state, and refs
+
+- **Public parts** — primitives expose independently composable nodes
+  (`Checkbox.Root`, `Checkbox.Indicator`); parts are not merely style slots.
+- **Readonly state callbacks** — render functions receive readonly primitive
+  state, so recipes react to `checked`, `focused`, `pressed`, and `disabled`
+  without owning them.
+- **Real refs** — a `ref` points at the actual Core Renderable. Imperative
+  actions like `press()` never need a wrapper handle.
+- **No Store passing** — framework consumers configure controlled props and
+  callbacks; only Core callers construct Stores directly.
+
+## Dialog and Toast companions
+
+Three Dialog surfaces currently have distinct roles:
+
+- `@opentui-ui/{core,react,solid}/dialog` is the foundation compound primitive.
+- `registry/dialog` is a validated preview recipe, not part of the six-family
+  starter catalog.
+- `@opentui-ui/dialog` is the adopted companion product with manager, provider,
+  theme, and async prompt/confirm/alert/choice conveniences.
+
+`@opentui-ui/toast` is also an adopted companion product with notification,
+theme, icon, React, and Solid APIs. Neither companion is re-exported by the
+foundation packages, and installing a foundation recipe does not replace
+either companion. Companions are independently versioned and supported.
+
+## Versioning
+
+`@opentui-ui/core`, `@opentui-ui/react`, and `@opentui-ui/solid` version
+together as a linked foundation release line, managed with Changesets. The
+Dialog and Toast companion packages version independently.

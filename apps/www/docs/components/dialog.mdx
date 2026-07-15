@@ -1,0 +1,63 @@
+---
+title: Dialog
+description: A foundation overlay primitive with layered dismissal and focus containment, a preview recipe, and a production companion package.
+---
+
+<Badge variant="warning">Preview recipe</Badge>
+
+Dialog currently has three distinct surfaces:
+
+- **`@opentui-ui/{core,react,solid}/dialog`** — the foundation compound
+  primitive.
+- **`registry/dialog`** — a validated preview recipe, not part of the
+  six-family starter catalog.
+- **`@opentui-ui/dialog`** — the adopted companion package with manager,
+  provider, theme, and async `prompt`/`confirm`/`alert`/`choice` conveniences.
+
+Installing the preview recipe does not replace the companion package.
+
+## The foundation primitive
+
+The compound primitive exposes `Dialog.Root`, `Trigger`, `Portal`, `Backdrop`,
+`Popup`, `Title`, `Description`, and `Close` parts over controlled or
+uncontrolled `open` state.
+
+Behavior owned by the package:
+
+- Renderer-scoped layer coordination and topmost dismissal.
+- Escape to dismiss; Tab containment inside the open popup.
+- Focus restoration to the trigger on close.
+- Trigger/Close activation via Enter/Return, Space, and the primary pointer.
+
+## Install the preview recipe
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @opentui-ui/react/dialog
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @opentui-ui/solid/dialog
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @opentui-ui/core/dialog
+```
+
+</CodeGroup>
+
+## The companion package
+
+For production convenience APIs — imperative prompts, confirm/alert/choice
+flows, theming, and a managed container — use the independently versioned
+companion:
+
+```bash
+pnpm add @opentui-ui/dialog
+```
+
+The companion's `DialogManager` provides `prompt`, `confirm`, `alert`, and
+`choice`, and `DialogContainerRenderable` renders dialogs with a backdrop. It
+is built on the same foundation `DialogStore` but ships and versions
+separately from the foundation release line.

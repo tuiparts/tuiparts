@@ -1,0 +1,81 @@
+---
+title: Button
+description: An activation primitive with pressed, focused, and disabled state, wrapped in an editable intent-and-size recipe.
+---
+
+<Badge variant="accent">Foundation</Badge>
+
+The Button recipe renders a filled, focusable action. Behavior — activation
+via Enter/Return, Space, and the primary pointer, plus focus and disabled
+handling — comes from the packaged primitive. The intent palette, sizing, and
+label rendering are yours to edit.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @opentui-ui/react/button
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @opentui-ui/solid/button
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @opentui-ui/core/button
+```
+
+</CodeGroup>
+
+## Usage
+
+```tsx
+import { Button } from "./components/ui/button";
+
+<Button
+  label="Save changes"
+  intent="primary"
+  size="comfortable"
+  onPress={() => save()}
+/>;
+```
+
+## Props
+
+The installed recipe adds presentation props on top of the primitive's
+`ButtonPrimitive.Props`:
+
+<TypeTable
+  type={{
+    label: {
+      type: "string",
+      required: true,
+      description: "The button's visible label.",
+    },
+    intent: {
+      type: '"neutral" | "primary"',
+      default: '"primary"',
+      description: "Starter background palette. Edit or extend it locally.",
+    },
+    size: {
+      type: '"compact" | "comfortable"',
+      default: '"compact"',
+      description: "Horizontal padding density.",
+    },
+    disabled: {
+      type: "boolean",
+      description: "Disabled buttons reject focus and activation.",
+    },
+  }}
+/>
+
+All remaining primitive props — layout, colors, and event callbacks — pass
+through to `ButtonPrimitive`.
+
+## Behavior
+
+- `press()` on the Renderable ref triggers activation imperatively.
+- Enter/Return, Space, and the primary pointer button activate.
+- The render callback receives readonly `pressed`, `focused`, and `disabled`
+  state, which the starter recipe maps to background colors.

@@ -1,0 +1,79 @@
+---
+title: Switch
+description: Root and Thumb parts with a movable thumb over a glyph track, wrapped in an editable density-and-symbols recipe.
+---
+
+<Badge variant="accent">Foundation</Badge>
+
+The Switch recipe renders a thumb glyph that slides along a track when
+toggled. Checked-state ownership, activation keys, and focus come from the
+packaged primitive; the track width, symbol set, and label styling are
+consumer-owned.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @opentui-ui/react/switch
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @opentui-ui/solid/switch
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @opentui-ui/core/switch
+```
+
+</CodeGroup>
+
+## Usage
+
+```tsx
+import { Switch } from "./components/ui/switch";
+
+<Switch
+  label="Dark mode"
+  density="comfortable"
+  symbols="round"
+  defaultChecked
+/>;
+```
+
+## Props
+
+<TypeTable
+  type={{
+    label: {
+      type: "string",
+      required: true,
+      description: "Text rendered next to the track.",
+    },
+    density: {
+      type: '"compact" | "comfortable"',
+      default: '"compact"',
+      description: "Track width and gap. Compact is 3 cells, comfortable 5.",
+    },
+    symbols: {
+      type: '"round" | "ascii"',
+      default: '"round"',
+      description:
+        "Thumb and track glyph set — round (● ─) or pure ASCII (* -).",
+    },
+    disabled: {
+      type: "boolean",
+      description: "Disabled switches reject focus and activation.",
+    },
+  }}
+/>
+
+Controlled (`checked` + `onCheckedChange`) and uncontrolled (`defaultChecked`)
+ownership both pass through to `SwitchPrimitive.Root`.
+
+## Parts
+
+`Switch.Root` owns state and activation; `Switch.Thumb` is a passive part that
+positions itself from the shared Store. The starter recipe places the Thumb
+absolutely over a repeated track glyph — replace the glyphs or layout freely,
+the behavior does not depend on them.

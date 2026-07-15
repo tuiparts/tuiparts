@@ -1,0 +1,1022 @@
+---
+import data from "blume:data";
+import CodeBlock from "blume/components/content/CodeBlock.astro";
+import PageLayout from "blume/components/layout/PageLayout.astro";
+
+const { config } = data;
+
+const installCommand =
+  "pnpm add @opentui-ui/react @opentui-ui/core @opentui/core @opentui/react react";
+
+const recipeCommand = "pnpm dlx shadcn@4.13.0 add @opentui-ui/react/checkbox";
+
+const primitiveSource = `import { Checkbox as CheckboxPrimitive } from "@opentui-ui/react/checkbox";
+
+export function Checkbox() {
+  return (
+    <CheckboxPrimitive.Root defaultChecked flexDirection="row" gap={1}>
+      {(state) => (
+        <>
+          <CheckboxPrimitive.Indicator>
+            <text content="✓" />
+          </CheckboxPrimitive.Indicator>
+          <text content={state.checked ? "Enabled" : "Disabled"} />
+        </>
+      )}
+    </CheckboxPrimitive.Root>
+  );
+}`;
+
+const packagedOwns = [
+  "focus management",
+  "keyboard activation",
+  "pointer events",
+  "collections",
+  "overlay layering",
+  "lifecycle",
+];
+
+const copiedOwns = [
+  "glyphs and marks",
+  "palettes",
+  "density and layout",
+  "semantic variants",
+  "labels",
+  "convenience props",
+];
+
+const catalog = [
+  {
+    href: "/docs/components/button",
+    label: "Button",
+    parts: "pressed · focused · disabled",
+  },
+  {
+    href: "/docs/components/checkbox",
+    label: "Checkbox",
+    parts: "Root · Indicator",
+  },
+  { href: "/docs/components/switch", label: "Switch", parts: "Root · Thumb" },
+  {
+    href: "/docs/components/radio-group",
+    label: "Radio Group",
+    parts: "roving arrow-key focus",
+  },
+  {
+    href: "/docs/components/input",
+    label: "Input",
+    parts: "input · change · submit",
+  },
+  {
+    href: "/docs/components/badge",
+    label: "Badge",
+    parts: "presentation-only",
+  },
+  {
+    href: "/docs/components/dialog",
+    label: "Dialog",
+    parts: "overlay · companion",
+  },
+  {
+    href: "/docs/components/toast",
+    label: "Toast",
+    parts: "companion package",
+  },
+];
+
+const pillars = [
+  {
+    title: "One vocabulary, three runtimes",
+    body: "React and Solid adapters sit over the same Core Stores and Renderables — which you can also drive imperatively.",
+  },
+  {
+    title: "shadcn-compatible registry",
+    body: "Recipes install with the official shadcn CLI and update through the standard view, diff, and add lifecycle.",
+  },
+  {
+    title: "AI-ready docs",
+    body: "Every page is available as raw Markdown, with llms.txt generated for coding agents and assistants.",
+  },
+];
+---
+
+<PageLayout
+  site={{ title: config.title, description: config.description }}
+  logo={config.logo}
+  banner={config.banner}
+  analytics={config.analytics}
+  navigation={data.navigation}
+  favicon={config.favicon}
+  fontCssVars={data.fontCssVars}
+  themeMode={config.theme.mode}
+  searchEnabled={config.search.enabled}
+  siteUrl={config.site}
+  ogEnabled={config.og.enabled}
+  page={{
+    title: "OpenTUI UI — The foundation for your terminal UI",
+    description: config.description,
+  }}
+>
+  <script is:inline>document.documentElement.classList.add("js");</script>
+
+  {/* ── Hero — title left, live terminal render right ── */}
+  <section
+    class="mx-auto grid max-w-6xl items-center gap-12 px-6 pt-16 pb-20 lg:grid-cols-[minmax(0,10fr)_minmax(0,9fr)] lg:gap-16 lg:pt-24 lg:pb-24"
+  >
+    <div>
+      <p
+        class="inline-flex items-center gap-2 font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase"
+      >
+        <span class="text-accent" aria-hidden="true">●</span> Foundation RC · now on npm
+      </p>
+      <h1
+        class="mt-5 max-w-xl text-balance font-display text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl"
+      >
+        The foundation for your <span class="text-accent">terminal</span> UI.
+      </h1>
+      <p class="mt-6 max-w-lg text-pretty text-lg leading-8 text-muted-foreground">
+        Composable interaction primitives and editable recipes for{" "}
+        <a
+          class="font-medium text-foreground underline decoration-border underline-offset-4 transition-colors hover:decoration-accent"
+          href="https://github.com/anomalyco/opentui">OpenTUI</a
+        >. Behavior ships as versioned packages. Presentation installs as
+        source you own.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <a class="btn-solid press rounded-blume px-5 py-2.5 text-sm font-medium" href="/docs"
+          >Read the docs</a
+        >
+        <a
+          class="btn-outline press rounded-blume border border-border px-5 py-2.5 text-sm font-medium text-foreground"
+          href="/docs/components">Browse components</a
+        >
+      </div>
+      <div
+        class="mt-8 flex max-w-lg items-center gap-1 rounded-blume border border-border bg-muted/60 py-1 pr-1 pl-4"
+      >
+        <code
+          class="min-w-0 flex-1 overflow-x-auto py-2 font-mono text-xs whitespace-nowrap text-muted-foreground [scrollbar-width:none]"
+          >{installCommand}</code
+        >
+        <button
+          type="button"
+          class="copy-btn press relative shrink-0 rounded-[calc(var(--blume-radius)-0.25rem)] p-2.5 text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
+          data-copy={installCommand}
+          aria-label="Copy install command"
+        >
+          <svg
+            class="icon-copy size-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <rect width="14" height="14" x="8" y="8" rx="2"></rect>
+            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+          </svg>
+          <svg
+            class="icon-check size-4 text-accent"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg>
+          <span class="sr-only" aria-live="polite" data-copy-live></span>
+        </button>
+      </div>
+    </div>
+
+    <figure
+      class="demo m-0"
+      role="img"
+      aria-label="Terminal running settings.tsx built with OpenTUI UI: a checkbox list, a radio-group theme picker, a switch, a focused search input, and Save and Cancel buttons."
+    >
+      <div class="demo-bar">
+        <span class="demo-file">demo/settings.tsx</span>
+        <span class="demo-meta"><span class="demo-dot" aria-hidden="true"></span>opentui · react</span>
+      </div>
+      <div class="demo-screen" aria-hidden="true">
+        <div class="demo-line demo-cmd"><span class="t-signal">❯</span> <span class="typed">bun run settings.tsx</span><span class="caret-cmd">▍</span></div>
+        <div class="demo-ui">
+          <div class="demo-line t-bright demo-gap">Settings</div>
+          <div class="demo-line t-faint">────────────────────────────────</div>
+          <div class="demo-line demo-gap"><span class="t-dim">[</span><span class="t-signal">✓</span><span class="t-dim">]</span> Enable notifications</div>
+          <div class="demo-line"><span class="t-dim">[ ]</span> Auto-install updates</div>
+          <div class="demo-line demo-gap">Theme      <span class="t-dim">(</span><span class="t-signal">●</span><span class="t-dim">)</span> Dark   <span class="t-dim">( )</span> Light</div>
+          <div class="demo-line demo-gap">Telemetry  <span class="t-dim">○──</span>  <span class="t-muted">off</span></div>
+          <div class="demo-line demo-gap"><span class="t-signal">┃</span> <span class="caret-input">▍</span><span class="t-muted">Search components…</span></div>
+          <div class="demo-line demo-gap"><span class="chip chip-solid"> Save changes </span>  <span class="chip chip-ghost"> Cancel </span></div>
+          <div class="demo-line t-faint demo-gap">tab focus · space toggle · ↵ submit</div>
+        </div>
+      </div>
+    </figure>
+  </section>
+
+  {/* ── The trade — one statement, two owners ── */}
+  <section class="border-t border-border">
+    <div class="mx-auto max-w-6xl px-6 py-20 lg:py-24">
+      <p class="reveal font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
+        The trade
+      </p>
+      <h2
+        class="reveal mt-4 max-w-2xl text-balance font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl"
+        data-d="1"
+      >
+        Package the difficult behavior. Copy the opinionated layer.
+      </h2>
+      <p class="reveal mt-4 max-w-2xl text-pretty text-muted-foreground" data-d="2">
+        The same split Base UI and shadcn/ui made on the web, applied to the
+        terminal. Correctness-critical behavior is centralized and tested
+        once; everything opinionated stays in code you can read and change.
+      </p>
+      <div class="mt-14 grid gap-12 lg:grid-cols-2 lg:gap-0">
+        <div class="reveal lg:border-r lg:border-border lg:pr-12" data-d="1">
+          <p class="font-mono text-xs tracking-[0.14em] text-accent uppercase">
+            01 · Shipped as packages
+          </p>
+          <h3 class="mt-3 font-display text-xl font-semibold text-foreground">
+            Behavior, versioned
+          </h3>
+          <p class="mt-3 text-pretty text-sm leading-6 text-muted-foreground">
+            The parts that are hard to get right and expensive to maintain.
+            Upgrades deliver fixes, not surprises.
+          </p>
+          <ul class="mt-6 grid grid-cols-2 gap-x-6 gap-y-2.5">
+            {
+              packagedOwns.map((item) => (
+                <li class="flex items-baseline gap-2.5 font-mono text-xs text-muted-foreground">
+                  <span class="text-accent" aria-hidden="true">
+                    ▪
+                  </span>
+                  {item}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="reveal lg:pl-12" data-d="2">
+          <p class="font-mono text-xs tracking-[0.14em] text-accent uppercase">
+            02 · Copied as source
+          </p>
+          <h3 class="mt-3 font-display text-xl font-semibold text-foreground">
+            Presentation, yours
+          </h3>
+          <p class="mt-3 text-pretty text-sm leading-6 text-muted-foreground">
+            Plain TypeScript installed into your project. Edit anything;
+            there is no hidden theme runtime.
+          </p>
+          <ul class="mt-6 grid grid-cols-2 gap-x-6 gap-y-2.5">
+            {
+              copiedOwns.map((item) => (
+                <li class="flex items-baseline gap-2.5 font-mono text-xs text-muted-foreground">
+                  <span class="text-accent" aria-hidden="true">
+                    ▪
+                  </span>
+                  {item}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ── Primitives — for system builders ── */}
+  <section class="border-t border-border">
+    <div
+      class="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16 lg:py-24"
+    >
+      <div class="reveal">
+        <p class="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
+          Primitives
+        </p>
+        <h2
+          class="mt-4 text-balance font-display text-3xl font-semibold tracking-tight text-foreground"
+        >
+          When you're building a system.
+        </h2>
+        <p class="mt-4 text-pretty leading-7 text-muted-foreground">
+          Compound parts with readonly state callbacks and real Renderable
+          refs. Controlled or uncontrolled ownership, keyboard and pointer
+          activation, focus, and overlay layering — solved once, versioned,
+          and tested.
+        </p>
+        <ul class="mt-6 space-y-2.5">
+          <li class="flex items-baseline gap-2.5 font-mono text-xs text-muted-foreground">
+            <span class="text-accent" aria-hidden="true">▪</span> readonly state callbacks — no wrapper components
+          </li>
+          <li class="flex items-baseline gap-2.5 font-mono text-xs text-muted-foreground">
+            <span class="text-accent" aria-hidden="true">▪</span> real parts: Root, Indicator, Thumb, Popup
+          </li>
+          <li class="flex items-baseline gap-2.5 font-mono text-xs text-muted-foreground">
+            <span class="text-accent" aria-hidden="true">▪</span> controlled or uncontrolled — your call
+          </li>
+        </ul>
+        <a class="link-arrow mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-accent" href="/docs/quickstart"
+          >Read the quickstart <span class="arrow" aria-hidden="true">→</span></a
+        >
+      </div>
+      <div class="reveal" data-d="1">
+        <CodeBlock code={primitiveSource} lang="tsx" icons={false} />
+      </div>
+    </div>
+  </section>
+
+  {/* ── Graphite band — recipes + the catalog index ── */}
+  <section class="band">
+    <div
+      class="mx-auto grid max-w-6xl gap-14 px-6 py-20 lg:grid-cols-[minmax(0,10fr)_minmax(0,9fr)] lg:gap-20 lg:py-24"
+    >
+      <div class="reveal">
+        <p class="band-eyebrow">Registry</p>
+        <h2 class="mt-4 text-balance font-display text-3xl font-semibold tracking-tight">
+          When you want a head start.
+        </h2>
+        <p class="band-muted mt-4 text-pretty leading-7">
+          One command copies an editable component into your project — built
+          on the packaged primitives, with a starter palette, glyphs, and
+          variants that are yours to change. Review upstream changes later
+          with shadcn's diff workflow; nothing overwrites your edits.
+        </p>
+        <div class="band-cmd mt-8">
+          <span class="t-signal shrink-0" aria-hidden="true">❯</span>
+          <code class="min-w-0 flex-1 overflow-x-auto whitespace-nowrap [scrollbar-width:none]"
+            >{recipeCommand}</code
+          >
+          <button
+            type="button"
+            class="copy-btn copy-btn-band press relative shrink-0 rounded-[4px] p-2"
+            data-copy={recipeCommand}
+            aria-label="Copy recipe install command"
+          >
+            <svg
+              class="icon-copy size-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <rect width="14" height="14" x="8" y="8" rx="2"></rect>
+              <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+            </svg>
+            <svg
+              class="icon-check size-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M20 6 9 17l-5-5"></path>
+            </svg>
+            <span class="sr-only" aria-live="polite" data-copy-live></span>
+          </button>
+        </div>
+        <a class="band-link link-arrow mt-8 inline-flex items-center gap-1.5 text-sm font-medium" href="/docs/registry"
+          >How the registry works <span class="arrow" aria-hidden="true">→</span></a
+        >
+      </div>
+      <div class="reveal" data-d="1">
+        <p class="band-eyebrow">Starter catalog</p>
+        <ol class="band-list mt-5">
+          {
+            catalog.map((item, index) => (
+              <li>
+                <a class="band-row" href={item.href}>
+                  <span class="band-index">{String(index + 1).padStart(2, "0")}</span>
+                  <span class="band-name">{item.label}</span>
+                  <span class="band-parts">{item.parts}</span>
+                  <span class="band-arrow" aria-hidden="true">
+                    →
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="band-muted mt-5 font-mono text-xs">
+          Every recipe ships for Core, React, and Solid.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ── Pillars — three points, hairline-divided, no boxes ── */}
+  <section class="mx-auto max-w-6xl px-6 py-20 lg:py-24">
+    <div class="grid gap-12 sm:grid-cols-3 sm:gap-0">
+      {
+        pillars.map((pillar, index) => (
+          <div
+            class:list={[
+              "reveal",
+              index > 0 && "sm:border-l sm:border-border sm:pl-10",
+              index < pillars.length - 1 && "sm:pr-10",
+            ]}
+            data-d={String(index)}
+          >
+            <p class="font-mono text-xs tracking-[0.14em] text-accent uppercase">
+              {String(index + 1).padStart(2, "0")}
+            </p>
+            <h3 class="mt-3 text-balance font-display text-lg font-semibold text-foreground">
+              {pillar.title}
+            </h3>
+            <p class="mt-3 text-pretty text-sm leading-6 text-muted-foreground">{pillar.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* ── Closing CTA ── */}
+  <section class="border-t border-border">
+    <div class="mx-auto max-w-4xl px-6 py-20 text-center lg:py-24">
+      <h2
+        class="reveal mx-auto max-w-2xl text-balance font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl"
+      >
+        Build your terminal UI on a foundation.
+      </h2>
+      <p class="reveal mx-auto mt-4 max-w-xl text-pretty text-muted-foreground" data-d="1">
+        Behavior in packages. Presentation in your repo. Free and open source
+        under MIT.
+      </p>
+      <div class="reveal mt-8 flex flex-wrap items-center justify-center gap-3" data-d="2">
+        <a class="btn-solid press rounded-blume px-5 py-2.5 text-sm font-medium" href="/docs/quickstart"
+          >Quickstart</a
+        >
+        <a
+          class="btn-outline press rounded-blume border border-border px-5 py-2.5 text-sm font-medium text-foreground"
+          href="https://github.com/msmps/opentui-ui">View the code</a
+        >
+      </div>
+    </div>
+  </section>
+
+  <footer slot="footer" class="border-t border-border">
+    <div
+      class="mx-auto flex max-w-6xl flex-col items-start justify-between gap-10 px-6 py-14 sm:flex-row"
+    >
+      <div class="max-w-xs">
+        <p class="font-display text-sm font-semibold text-foreground">OpenTUI UI</p>
+        <p class="mt-2 text-pretty text-sm text-muted-foreground">
+          Terminal primitives and editable recipes for OpenTUI.
+        </p>
+        <p class="mt-5 font-mono text-xs text-muted-foreground">
+          <span class="text-accent" aria-hidden="true">●</span> MIT licensed
+        </p>
+      </div>
+      <div class="grid grid-cols-2 gap-x-14 gap-y-10 sm:grid-cols-3">
+        <div>
+          <p class="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">Docs</p>
+          <ul class="mt-4 space-y-2.5 text-sm">
+            <li>
+              <a class="footer-link" href="/docs">Introduction</a>
+            </li>
+            <li>
+              <a class="footer-link" href="/docs/quickstart">Quickstart</a>
+            </li>
+            <li>
+              <a class="footer-link" href="/docs/components">Components</a>
+            </li>
+            <li>
+              <a class="footer-link" href="/docs/registry">Registry</a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
+            Packages
+          </p>
+          <ul class="mt-4 space-y-2.5 text-sm">
+            <li>
+              <a class="footer-link" href="https://www.npmjs.com/package/@opentui-ui/core"
+                >@opentui-ui/core</a
+              >
+            </li>
+            <li>
+              <a class="footer-link" href="https://www.npmjs.com/package/@opentui-ui/react"
+                >@opentui-ui/react</a
+              >
+            </li>
+            <li>
+              <a class="footer-link" href="https://www.npmjs.com/package/@opentui-ui/solid"
+                >@opentui-ui/solid</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
+            Community
+          </p>
+          <ul class="mt-4 space-y-2.5 text-sm">
+            <li>
+              <a class="footer-link" href="https://github.com/msmps/opentui-ui">GitHub</a>
+            </li>
+            <li>
+              <a class="footer-link" href="https://github.com/anomalyco/opentui">OpenTUI</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+</PageLayout>
+
+<style>
+  /* Hallmark · genre: modern-minimal · macrostructure: dev-tool/CLI · theme: cobalt
+     · enrichment: Tier-A CSS art (TUI instrument pane) · nav: blume-default
+     · footer: Ft3 (docs-root allowance) · design-system: design.md · designed-as-app
+     · pre-emit critique: P4 H5 E4 S5 R4 V4 */
+
+  /* ── CTAs ─────────────────────────────────────────────────────────── */
+
+  .press {
+    transition: transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .press:active {
+    transform: scale(0.97);
+  }
+
+  .btn-solid {
+    background: var(--blume-action);
+    color: var(--blume-action-foreground);
+    transition:
+      background-color 150ms ease,
+      transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .btn-solid:hover {
+    background: var(--ou-action-hover);
+  }
+
+  .btn-outline {
+    transition:
+      border-color 150ms ease,
+      background-color 150ms ease,
+      transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--blume-accent);
+  }
+
+  .link-arrow .arrow {
+    display: inline-block;
+    transition: transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .link-arrow:hover .arrow {
+      transform: translateX(2px);
+    }
+  }
+
+  .footer-link {
+    color: var(--blume-foreground);
+    transition: color 150ms ease;
+  }
+
+  .footer-link:hover {
+    color: var(--blume-accent);
+  }
+
+  /* ── Copy button — clipboard ⇢ check cross-fade ───────────────────── */
+
+  .copy-btn svg {
+    transition:
+      opacity 300ms cubic-bezier(0.2, 0, 0, 1),
+      transform 300ms cubic-bezier(0.2, 0, 0, 1),
+      filter 300ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .copy-btn .icon-check {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    opacity: 0;
+    transform: scale(0.25);
+    filter: blur(4px);
+  }
+
+  .copy-btn[data-state="copied"] .icon-copy {
+    opacity: 0;
+    transform: scale(0.25);
+    filter: blur(4px);
+  }
+
+  .copy-btn[data-state="copied"] .icon-check {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+
+  /* ── The instrument pane — a real TUI render, fixed graphite ──────── */
+
+  .demo {
+    background: var(--ou-graphite);
+    border: 1px solid var(--ou-graphite-rule);
+    border-radius: 10px;
+    box-shadow:
+      0 1px 2px oklch(0.24 0.02 258 / 0.06),
+      0 12px 32px oklch(0.24 0.02 258 / 0.08);
+    overflow: hidden;
+  }
+
+  .demo-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background: var(--ou-graphite-2);
+    border-bottom: 1px solid var(--ou-graphite-rule);
+    padding: 0.625rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  .demo-file {
+    color: var(--ou-graphite-muted);
+  }
+
+  .demo-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--ou-graphite-faint);
+    letter-spacing: 0.06em;
+  }
+
+  .demo-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--ou-signal);
+  }
+
+  .demo-screen {
+    padding: 1.25rem 1.5rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.75;
+    color: var(--ou-graphite-ink);
+    overflow-x: auto;
+  }
+
+  .demo-line {
+    white-space: pre;
+  }
+
+  .demo-gap {
+    margin-top: 0.9em;
+  }
+
+  .demo-cmd {
+    margin-bottom: 0.25em;
+  }
+
+  .t-bright {
+    color: var(--ou-graphite-ink);
+    font-weight: 600;
+  }
+
+  .t-muted {
+    color: var(--ou-graphite-muted);
+  }
+
+  .t-dim {
+    color: var(--ou-graphite-faint);
+  }
+
+  .t-faint {
+    color: var(--ou-graphite-faint);
+    font-size: 0.75rem;
+  }
+
+  .t-signal {
+    color: var(--ou-signal);
+  }
+
+  .typed {
+    display: inline-block;
+    vertical-align: bottom;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .caret-cmd,
+  .caret-input {
+    color: var(--ou-signal);
+  }
+
+  /* Chips render square — real terminals have no border radius. */
+  .chip {
+    display: inline-block;
+    padding: 0 0.25em;
+  }
+
+  .chip-solid {
+    background: var(--ou-signal);
+    color: var(--ou-signal-ink);
+    font-weight: 500;
+  }
+
+  .chip-ghost {
+    background: var(--ou-graphite-rule);
+    color: var(--ou-graphite-ink);
+  }
+
+  /* Type-in plays once, rows rise in after it, one caret keeps blinking. */
+  @media (prefers-reduced-motion: no-preference) {
+    .typed {
+      width: 0;
+      animation: typing 1s steps(20, end) 0.4s forwards;
+    }
+
+    .caret-cmd {
+      animation:
+        blink 0.8s step-end 3,
+        vanish 1ms linear 1.6s forwards;
+    }
+
+    .caret-input {
+      animation: blink 1.1s step-end infinite;
+    }
+
+    .demo-ui > * {
+      opacity: 0;
+      transform: translateY(6px);
+      animation: rise 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .demo-ui > *:nth-child(1) {
+      animation-delay: 1.55s;
+    }
+    .demo-ui > *:nth-child(2) {
+      animation-delay: 1.6s;
+    }
+    .demo-ui > *:nth-child(3) {
+      animation-delay: 1.65s;
+    }
+    .demo-ui > *:nth-child(4) {
+      animation-delay: 1.7s;
+    }
+    .demo-ui > *:nth-child(5) {
+      animation-delay: 1.75s;
+    }
+    .demo-ui > *:nth-child(6) {
+      animation-delay: 1.8s;
+    }
+    .demo-ui > *:nth-child(7) {
+      animation-delay: 1.85s;
+    }
+    .demo-ui > *:nth-child(8) {
+      animation-delay: 1.9s;
+    }
+    .demo-ui > *:nth-child(9) {
+      animation-delay: 1.95s;
+    }
+  }
+
+  @keyframes typing {
+    to {
+      width: 20ch;
+    }
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes vanish {
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes rise {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* ── Graphite band — the page's one dark beat, both modes ─────────── */
+
+  .band {
+    background: var(--ou-graphite);
+    border-block: 1px solid var(--ou-graphite-rule);
+    color: var(--ou-graphite-ink);
+  }
+
+  .band-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ou-signal);
+  }
+
+  .band-muted {
+    color: var(--ou-graphite-muted);
+  }
+
+  .band-cmd {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--ou-graphite-2);
+    border: 1px solid var(--ou-graphite-rule);
+    border-radius: 6px;
+    padding: 0.5rem 0.625rem 0.5rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ou-graphite-ink);
+  }
+
+  .copy-btn-band {
+    color: var(--ou-graphite-muted);
+    transition:
+      color 150ms ease,
+      background-color 150ms ease,
+      transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .copy-btn-band:hover {
+    background: var(--ou-graphite-rule);
+    color: var(--ou-graphite-ink);
+  }
+
+  .copy-btn-band .icon-check {
+    color: var(--ou-signal);
+  }
+
+  .band-link {
+    color: var(--ou-signal);
+  }
+
+  .band-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .band-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--ou-graphite-rule);
+  }
+
+  .band-row {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr) auto 1.25rem;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.6875rem 0.25rem;
+    border-bottom: 1px solid var(--ou-graphite-rule);
+    text-decoration: none;
+    transition: background-color 150ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .band-row:hover {
+      background: var(--ou-graphite-2);
+    }
+
+    .band-row:hover .band-index,
+    .band-row:hover .band-arrow {
+      color: var(--ou-signal);
+    }
+
+    .band-row:hover .band-arrow {
+      transform: translateX(2px);
+    }
+  }
+
+  .band-index {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--ou-graphite-faint);
+    transition: color 150ms ease;
+  }
+
+  .band-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ou-graphite-ink);
+  }
+
+  .band-parts {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--ou-graphite-faint);
+  }
+
+  .band-arrow {
+    display: inline-block;
+    justify-self: end;
+    color: var(--ou-graphite-faint);
+    transition:
+      color 150ms ease,
+      transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  @media (max-width: 480px) {
+    .band-parts {
+      display: none;
+    }
+
+    .band-row {
+      grid-template-columns: 2.25rem minmax(0, 1fr) 1.25rem;
+    }
+  }
+
+  /* ── Scroll reveals — fade + rise, once, JS-gated ──────────────────── */
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html.js) .reveal {
+      opacity: 0;
+      transform: translateY(10px);
+      transition:
+        opacity 500ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    :global(html.js) .reveal.is-in {
+      opacity: 1;
+      transform: none;
+    }
+
+    :global(html.js) .reveal[data-d="1"] {
+      transition-delay: 50ms;
+    }
+
+    :global(html.js) .reveal[data-d="2"] {
+      transition-delay: 100ms;
+    }
+  }
+</style>
+
+<script>
+  // Scroll reveals: observe once, add .is-in, unobserve. Passive by nature;
+  // no layout reads interleaved with writes.
+  const revealables = document.querySelectorAll<HTMLElement>(".reveal");
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-in");
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px" },
+    );
+
+    for (const el of revealables) observer.observe(el);
+  } else {
+    for (const el of revealables) el.classList.add("is-in");
+  }
+
+  // Copy buttons: clipboard write, icon cross-fade via data-state, and a
+  // polite live-region announcement for screen readers.
+  for (const button of document.querySelectorAll<HTMLButtonElement>("[data-copy]")) {
+    button.addEventListener("click", async () => {
+      const text = button.dataset.copy;
+      if (!text) return;
+
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        return;
+      }
+
+      button.dataset.state = "copied";
+      const live = button.querySelector("[data-copy-live]");
+      if (live) live.textContent = "Copied to clipboard";
+
+      window.setTimeout(() => {
+        delete button.dataset.state;
+        if (live) live.textContent = "";
+      }, 2000);
+    });
+  }
+</script>

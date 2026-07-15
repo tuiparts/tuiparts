@@ -1,0 +1,118 @@
+---
+title: Registry
+description: The shadcn-compatible registry hosted on this site — configuration, the install lifecycle, and consumer-owned updates.
+sidebar:
+  order: 4
+---
+
+The OpenTUI UI registry distributes editable recipe source through the
+official shadcn CLI. It is hosted on this site: every item is a static JSON
+payload at `/r/<framework>/<name>.json`.
+
+Installed files belong to the consuming project. The registry does not
+maintain a second package manager, a recipe lockfile, or an automatic merge
+engine.
+
+## Configure
+
+Add the registry namespace to your project's `components.json`:
+
+```json title="components.json"
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "registries": {
+    "@opentui-ui": "https://opentui-ui.dev/r/{name}.json"
+  }
+}
+```
+
+Then install items by address:
+
+```bash
+pnpm dlx shadcn@4.13.0 add @opentui-ui/react/checkbox
+```
+
+You can also install any item by direct URL without configuring a namespace:
+
+```bash
+pnpm dlx shadcn@4.13.0 add https://opentui-ui.dev/r/react/checkbox.json
+```
+
+The CLI installs declared dependencies and copies the recipe into
+`components/ui`. Running ordinary `add` against an existing file asks before
+replacement and defaults to preserving the local file.
+
+## Catalog
+
+Each foundation recipe is available as `core/<name>`, `react/<name>`, and
+`solid/<name>`:
+
+| Recipe | Packaged behavior | Installed vocabulary |
+| --- | --- | --- |
+| Checkbox | Checkbox Root and Indicator | `Checkbox` |
+| Switch | Switch Root and Thumb | `Switch` |
+| Button | Button activation primitive | `Button` |
+| RadioGroup/Radio | Radio collection and selectable parts | `RadioGroup`, `RadioGroupItem` |
+| Input | Native OpenTUI input behavior | `Input` |
+| Badge | None; presentation-only recipe | `Badge` |
+
+React and Solid recipes expose the same installed names and props where their
+runtime semantics permit. Core recipes expose equivalent imperative factory
+functions and install ordinary `.ts` source rather than framework JSX.
+
+The registry also contains a validated preview Dialog recipe, but it is not
+part of this starter catalog. The already-adopted `@opentui-ui/dialog` and
+`@opentui-ui/toast` packages remain the production companion paths.
+
+## Compatibility
+
+Each registry item records its framework in `meta.framework` and declares its
+compatible primitive and OpenTUI package ranges in `dependencies`.
+
+- `meta.sourceOwnership: "consumer"` — the installed source is expected to be
+  edited locally.
+- `meta.updateStrategy: "shadcn-diff"` — the supported update workflow.
+
+Package ranges are the compatibility contract. Registry metadata describes the
+source lifecycle; it does not replace package dependency resolution.
+
+## Discover and review updates
+
+The current registry item is the upstream recipe revision. Inspect the current
+upstream source and compare it with your installed file:
+
+```bash
+pnpm dlx shadcn@4.13.0 add @opentui-ui/react/checkbox --view
+pnpm dlx shadcn@4.13.0 add @opentui-ui/react/checkbox --diff
+pnpm dlx shadcn@4.13.0 add @opentui-ui/react/checkbox --dry-run
+```
+
+Review the diff and merge useful upstream changes into the consumer-owned
+file.
+
+:::warning
+Use `--overwrite` only when intentionally discarding local edits. Ordinary
+updates must never rely on unattended overwrite.
+:::
+
+## Primitive upgrades versus recipe updates
+
+Primitive packages own behavior, state, focus, keyboard and pointer handling,
+and lifecycle fixes. Update those packages with your package manager, subject
+to the recipe item's declared version ranges.
+
+Registry recipes own presentation and convenience composition. A recipe update
+is optional source integration unless its release notes explicitly identify a
+required compatibility change.
+
+## Hosting
+
+This site builds the registry from the repository's `registry.json` with the
+pinned shadcn CLI and serves the output as static assets:
+
+```bash
+pnpm registry:build --output apps/www/public/r
+```
+
+Application consumers never run this build command — they use `shadcn add`
+against the published item address.

@@ -1,0 +1,67 @@
+/* Hallmark · genre: modern-minimal · theme: cobalt · design-system: design.md · designed-as-app */
+/* Cobalt — cool engineered near-white light mode, cool graphite dark mode,
+   one electric cobalt signal accent. Canonical token file for apps/www;
+   Blume injects this last, so it wins over config and framework defaults. */
+
+:root {
+  --blume-background: oklch(0.985 0.004 250);
+  --blume-foreground: oklch(0.24 0.02 258);
+  --blume-muted: oklch(0.958 0.006 250);
+  --blume-muted-foreground: oklch(0.45 0.018 257);
+  --blume-border: oklch(0.895 0.01 255);
+  --blume-accent: oklch(0.52 0.19 257);
+  --blume-accent-foreground: oklch(0.985 0.004 250);
+  --blume-code-background: oklch(0.972 0.005 250);
+  --blume-radius: 0.5rem;
+
+  /* Hover shade for solid-accent actions (locked token, no mid-render mixing). */
+  --ou-action-hover: oklch(0.47 0.19 257);
+
+  /* Instrument pane — fixed graphite in BOTH modes. Terminals are dark;
+     the product render never flips with the site theme. */
+  --ou-graphite: oklch(0.21 0.016 260);
+  --ou-graphite-2: oklch(0.245 0.016 260);
+  --ou-graphite-rule: oklch(0.33 0.02 258);
+  --ou-graphite-ink: oklch(0.93 0.008 250);
+  --ou-graphite-muted: oklch(0.66 0.015 255);
+  --ou-graphite-faint: oklch(0.48 0.018 258);
+  --ou-signal: oklch(0.72 0.15 252);
+  --ou-signal-ink: oklch(0.16 0.014 260);
+}
+
+:root[data-theme="dark"] {
+  --blume-background: oklch(0.155 0.012 260);
+  --blume-foreground: oklch(0.93 0.008 250);
+  --blume-muted: oklch(0.195 0.014 260);
+  --blume-muted-foreground: oklch(0.7 0.015 255);
+  --blume-border: oklch(0.3 0.02 258 / 0.75);
+  --blume-accent: oklch(0.7 0.145 253);
+  --blume-accent-foreground: oklch(0.145 0.012 260);
+  --blume-code-background: oklch(0.185 0.014 260);
+
+  --ou-action-hover: oklch(0.75 0.14 253);
+}
+
+/* Base niceties: no sideways scroll ever, crisper text on macOS,
+   cobalt selection so even highlighting text feels on-theme. */
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: oklch(0.52 0.19 257 / 0.18);
+}
+
+:root[data-theme="dark"] ::selection {
+  background: oklch(0.7 0.145 253 / 0.28);
+}
+
+/* Headings wrap without orphans. */
+.prose :where(h1, h2, h3) {
+  text-wrap: balance;
+}

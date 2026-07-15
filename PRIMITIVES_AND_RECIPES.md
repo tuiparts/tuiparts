@@ -1,8 +1,8 @@
-# OpenTUI UI Primitives And Recipes
+# tui.parts Primitives And Recipes
 
 ## Direction
 
-OpenTUI UI separates difficult packaged behavior from opinionated,
+tui.parts separates difficult packaged behavior from opinionated,
 consumer-owned presentation.
 
 This is the formal product architecture for foundation v1.

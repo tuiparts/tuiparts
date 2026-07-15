@@ -1,7 +1,7 @@
 {
   "name": "@tuiparts/solid",
   "version": "0.0.3-rc.0",
-  "description": "Solid bindings for OpenTUI UI components",
+  "description": "Solid Adapter for tui.parts Primitives",
   "author": "Matt Simpson",
   "license": "MIT",
   "sideEffects": [

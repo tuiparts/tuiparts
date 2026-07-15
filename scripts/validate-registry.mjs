@@ -14,7 +14,7 @@ import { join, relative, resolve } from "node:path";
 import { inc, satisfies } from "semver";
 
 const root = resolve(import.meta.dirname, "..");
-const workDir = mkdtempSync(join(tmpdir(), "opentui-ui-registry-"));
+const workDir = mkdtempSync(join(tmpdir(), "tuiparts-registry-"));
 const registryDir = join(workDir, "registry");
 const tarballDir = join(workDir, "tarballs");
 const registry = JSON.parse(readFileSync(join(root, "registry.json"), "utf8"));
@@ -485,7 +485,7 @@ try {
 
     mkdirSync(consumerDir);
     writeJson(join(consumerDir, "package.json"), {
-      name: `opentui-ui-registry-${consumer.recipe}-${consumer.framework}-consumer`,
+      name: `tuiparts-registry-${consumer.recipe}-${consumer.framework}-consumer`,
       private: true,
       type: "module",
       packageManager: "pnpm@10.34.5",

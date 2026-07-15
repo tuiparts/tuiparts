@@ -1,6 +1,6 @@
-# OpenTUI UI Foundation
+# tui.parts Foundation
 
-OpenTUI UI has two foundation layers:
+tui.parts has two Foundation layers:
 
 1. Versioned packages provide reusable terminal behavior.
 2. Registry recipes copy editable presentation into your application.

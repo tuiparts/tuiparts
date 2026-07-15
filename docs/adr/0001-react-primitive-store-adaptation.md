@@ -4,7 +4,7 @@ status: accepted
 
 # Use Core Stores for React early state without consumer wiring
 
-OpenTUI UI exposes Base UI-style primitive modules to React and Solid consumers,
+tui.parts exposes Base UI-style primitive modules to React and Solid consumers,
 while Core owns framework-neutral behavior. React automatically creates a Core
 Store before the OpenTUI reconciler constructs the corresponding Renderable.
 The later Root uses that exact Store. Consumers configure Root props and do not

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Bootstrap a new package in the opentui-ui monorepo
+# Bootstrap a new package in the tuiparts monorepo
 
 set -e
 
@@ -52,7 +52,7 @@ cat > "$PACKAGE_DIR/package.json" << EOF
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/msmps/opentui-ui.git",
+    "url": "git+https://github.com/msmps/tuiparts.git",
     "directory": "packages/$PACKAGE_NAME"
   },
   "type": "module",
@@ -65,12 +65,12 @@ cat > "$PACKAGE_DIR/package.json" << EOF
     }
   },
   "bugs": {
-    "url": "https://github.com/msmps/opentui-ui/issues"
+    "url": "https://github.com/msmps/tuiparts/issues"
   },
   "files": [
     "dist"
   ],
-  "homepage": "https://github.com/msmps/opentui-ui#readme",
+  "homepage": "https://github.com/msmps/tuiparts#readme",
   "keywords": [
     "$PACKAGE_NAME",
     "tui",

@@ -1,6 +1,6 @@
 # @tuiparts/solid
 
-Solid bindings for the OpenTUI UI foundation.
+The Solid Adapter for the tui.parts Foundation.
 
 New to package primitives and editable recipes? Start with the
 [foundation guide](https://github.com/msmps/opentui-ui/blob/main/docs/foundation.md).
@@ -63,7 +63,7 @@ import { Switch } from "@tuiparts/solid/switch";
 import { Dialog } from "@tuiparts/solid/dialog";
 ```
 
-All components are also exported from `@tuiparts/solid`.
+All Primitives are also exported from `@tuiparts/solid`.
 
 ## Dialog
 

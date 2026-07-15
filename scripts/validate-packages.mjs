@@ -11,7 +11,7 @@ const packages = [
   ["dialog", "@tuiparts/dialog"],
   ["toast", "@tuiparts/toast"],
 ];
-const workDir = mkdtempSync(join(tmpdir(), "opentui-ui-packages-"));
+const workDir = mkdtempSync(join(tmpdir(), "tuiparts-packages-"));
 const tarballDir = join(workDir, "tarballs");
 const consumerDir = join(workDir, "consumer");
 
@@ -38,7 +38,7 @@ try {
   }
 
   const packageJson = {
-    name: "opentui-ui-packed-consumer",
+    name: "tuiparts-packed-consumer",
     private: true,
     type: "module",
     packageManager: "pnpm@10.34.5",

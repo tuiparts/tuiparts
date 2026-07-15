@@ -1,17 +1,21 @@
 # PROJECT KNOWLEDGE BASE
 
-**Updated:** 2026-07-14
+**Updated:** 2026-07-15
 ## OVERVIEW
 
-Terminal primitive and editable-recipe ecosystem for OpenTUI. The monorepo is
-built around framework-neutral Core behavior, React/Solid compound-part
-adapters, and shadcn-compatible consumer-owned recipes written with plain
-TypeScript and native OpenTUI properties.
+tui.parts — the primitive and recipe ecosystem for OpenTUI (npm scope
+`@tuiparts`). The monorepo is built around framework-neutral Core behavior,
+React/Solid compound-part adapters, and shadcn-compatible consumer-owned
+recipes written with plain TypeScript and native OpenTUI properties.
+Canonical vocabulary: packaged behavior units are Primitives exposing Parts;
+copied styled source is a Recipe; the user-facing surface is the Catalog and
+the serving layer is the Registry. Never call a packaged primitive a
+"component" in brand copy.
 
 ## STRUCTURE
 
 ```
-opentui-ui/
+tuiparts/
 ├── packages/
 │   ├── core/         # Framework-neutral primitive behavior
 │   ├── react/        # React primitive adapters

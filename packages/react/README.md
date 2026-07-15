@@ -1,6 +1,6 @@
 # @tuiparts/react
 
-React bindings for the OpenTUI UI foundation.
+The React Adapter for the tui.parts Foundation.
 
 New to package primitives and editable recipes? Start with the
 [foundation guide](https://github.com/msmps/opentui-ui/blob/main/docs/foundation.md).
@@ -50,7 +50,7 @@ export function Settings() {
 
 ## Imports
 
-All components are exported from `@tuiparts/react`. Focused imports are also
+All Primitives are exported from `@tuiparts/react`. Focused imports are also
 supported:
 
 ```ts

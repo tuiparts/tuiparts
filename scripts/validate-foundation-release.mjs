@@ -10,7 +10,7 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
-const workDir = mkdtempSync(join(tmpdir(), "opentui-ui-release-"));
+const workDir = mkdtempSync(join(tmpdir(), "tuiparts-release-"));
 const output = join(workDir, "changeset-status.json");
 const foundationPackages = [
   "@tuiparts/core",

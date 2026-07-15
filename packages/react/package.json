@@ -1,7 +1,7 @@
 {
   "name": "@tuiparts/react",
   "version": "0.0.3-rc.0",
-  "description": "React bindings for OpenTUI UI components",
+  "description": "React Adapter for tui.parts Primitives",
   "author": "Matt Simpson",
   "license": "MIT",
   "sideEffects": [

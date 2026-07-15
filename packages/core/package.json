@@ -1,6 +1,6 @@
 {
   "name": "@opentui-ui/core",
-  "version": "0.0.3-rc.0",
+  "version": "0.0.3-rc.1",
   "description": "Framework-agnostic core renderables for terminal applications built on OpenTUI",
   "author": "Matt Simpson",
   "license": "MIT",

@@ -1,5 +1,17 @@
 # @opentui-ui/react
 
+## 0.0.3-rc.1
+
+### Patch Changes
+
+- [#28](https://github.com/tuiparts/tuiparts/pull/28) [`d148be5`](https://github.com/tuiparts/tuiparts/commit/d148be507856843e6f0b6fe8f2f6a9e9a4fe1762) Thanks [@msmps](https://github.com/msmps)! - Make disabled controls truthful focus-traversal candidates, preserve rendered
+  Dialog focus order and programmatic focus restoration, and reshape the Dialog
+  recipes into responsive shadcn-style compound exports. Registry builds now
+  prepare nested item paths and React recipes install their required type
+  declarations.
+- Updated dependencies [[`d148be5`](https://github.com/tuiparts/tuiparts/commit/d148be507856843e6f0b6fe8f2f6a9e9a4fe1762)]:
+  - @opentui-ui/core@0.0.3-rc.1
+
 ## 0.0.3-rc.0
 
 ### Patch Changes

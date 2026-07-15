@@ -7,11 +7,13 @@
     "@opentui-ui/react": "0.0.2",
     "@opentui-ui/solid": "0.0.2",
     "@opentui-ui/toast": "0.0.5",
-    "@opentui-ui/utils": "0.0.1"
+    "@opentui-ui/utils": "0.0.1",
+    "www": "0.0.0"
   },
   "changesets": [
     "brave-buttons-press",
     "bright-dialogs-copy",
+    "calm-dialogs-focus",
     "calm-inputs-edit",
     "clean-foundation-contracts",
     "flat-badges-vanish",

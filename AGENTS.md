@@ -35,6 +35,7 @@ tuiparts/
 | Primitive architecture | `PRIMITIVES_AND_RECIPES.md` | Package behavior; copy opinionated recipes |
 | Architecture decisions | `docs/adr/` | Read accepted ADRs before changing public APIs, ownership, package boundaries, or adapter state flow |
 | Foundation usage | `docs/foundation.md` | Package versus registry choice and public component matrix |
+| Brand rules & tokens | `docs/brand/` | Figure style guide, logomark, Kit sheet, design tokens (web + terminal) |
 | Editable recipes | `registry/` | Framework-specific source built on packaged primitives |
 | React binding | `packages/react/src/` | Mirrors core structure |
 | Solid binding | `packages/solid/src/` | Mirrors core structure |

@@ -1,8 +1,11 @@
-/* Hallmark · genre: modern-minimal · theme: tui.parts amber/graphite · design-system: design.md · designed-as-app */
-/* tui.parts brand theme — warm paper light mode, brand-exact graphite dark
-   mode, exactly one amber signal accent. Palette source of truth:
-   docs/brand/tokens.json. Canonical token file for apps/www; Blume injects
-   this last, so it wins over config and framework defaults. */
+/* Hallmark · genre: modern-minimal · theme: cobalt-deep · design-system: design.md · designed-as-app */
+/* Cobalt Deep — cool engineered near-white light mode, deep cool-graphite
+   dark mode, one electric cobalt signal accent; the hue anchor never
+   switches between modes. Chosen over the amber brand palette in a
+   three-way comparison (2026-07-15); brand amber stays scoped to
+   brand-identity contexts (docs/brand/README.md § Color). Canonical token
+   file for apps/www; Blume injects this last, so it wins over config and
+   framework defaults. */
 
 /* ── Commit Mono — self-hosted, OFL 1.1 (public/fonts/LICENSE.txt) ──────
    Full glyph set, deliberately unsubset: Figures need U+2500-259F intact
@@ -41,36 +44,33 @@
 }
 
 :root {
-  /* Light — warm paper derived from the brand palette. Amber is a
-     dark-ground signal: it cannot carry text on cream, and deepening it
-     only makes brown. So on paper the accent is graphite ink — buttons,
-     links, and active states print like a datasheet — while amber keeps
-     living on the graphite surfaces (demo pane, band, logomark). */
-  --blume-background: #fbf8f0;
-  --blume-foreground: #161b22;
-  --blume-muted: #f2ecdf;
-  --blume-muted-foreground: #6c675d;
-  --blume-border: #e4ddca;
-  --blume-accent: #0d1117;
-  --blume-accent-foreground: #fbf8f0;
-  --blume-code-background: #f4efe2;
+  --blume-background: oklch(0.985 0.004 250);
+  --blume-foreground: oklch(0.24 0.02 258);
+  --blume-muted: oklch(0.958 0.006 250);
+  --blume-muted-foreground: oklch(0.45 0.018 257);
+  --blume-border: oklch(0.895 0.01 255);
+  --blume-accent: oklch(0.52 0.19 257);
+  --blume-accent-foreground: oklch(0.985 0.004 250);
+  --blume-code-background: oklch(0.972 0.005 250);
   --blume-radius: 0.5rem;
 
   /* Hover shade for solid-accent actions (locked token, no mid-render mixing). */
-  --tp-action-hover: #2b3340;
+  --tp-action-hover: oklch(0.47 0.19 257);
 
-  /* Instrument pane — brand graphite in BOTH modes. Terminals are dark;
-     the product render never flips with the site theme. */
-  --tp-graphite: #0d1117;
-  --tp-graphite-2: #161b22;
-  --tp-graphite-rule: #30363d;
-  --tp-graphite-ink: #e8e4d9;
-  --tp-graphite-muted: #a8a296;
-  /* Web-AA lift of brand fg-faint #6c675d, which is a terminal-cell tone:
-     4.9:1 on graphite-2, 5.4:1 on graphite (axe-checked). */
-  --tp-graphite-faint: #8e887c;
-  --tp-signal: #ffb000;
-  --tp-signal-ink: #0d1117;
+  /* Instrument pane — fixed graphite in BOTH modes. Terminals are dark;
+     the product render never flips with the site theme. Deepened so the
+     pane sits nearly flush with the dark page (a one-step elevation)
+     instead of floating as a visibly lighter box. */
+  --tp-graphite: oklch(0.16 0.014 258);
+  --tp-graphite-2: oklch(0.2 0.015 258);
+  --tp-graphite-rule: oklch(0.3 0.02 258);
+  --tp-graphite-ink: oklch(0.93 0.008 250);
+  --tp-graphite-muted: oklch(0.66 0.015 255);
+  /* Web-AA lift of the original faint oklch(0.48 0.018 258), which fails
+     WCAG 1.4.3 on both graphite surfaces (axe-checked). */
+  --tp-graphite-faint: oklch(0.635 0.015 256);
+  --tp-signal: oklch(0.72 0.15 252);
+  --tp-signal-ink: oklch(0.16 0.014 260);
 
   /* Single-face rule: every role renders Commit Mono; IBM Plex Mono is the
      decreed fallback (docs/brand/typography.md) — the var() resolves to the
@@ -84,21 +84,23 @@
 }
 
 :root[data-theme="dark"] {
-  /* Dark — brand-exact (docs/brand/tokens.json). */
-  --blume-background: #0d1117;
-  --blume-foreground: #e8e4d9;
-  --blume-muted: #161b22;
-  --blume-muted-foreground: #a8a296;
-  --blume-border: #30363d;
-  --blume-accent: #ffb000;
-  --blume-accent-foreground: #0d1117;
-  --blume-code-background: #161b22;
+  /* Deepened per the Hallmark dark recipe: paper drops toward L 13.5%
+     (the depth of the brand-graphite variant the comparison favored),
+     hue anchor unchanged — never switch the hue between modes. */
+  --blume-background: oklch(0.135 0.014 258);
+  --blume-foreground: oklch(0.93 0.008 250);
+  --blume-muted: oklch(0.175 0.015 258);
+  --blume-muted-foreground: oklch(0.7 0.015 255);
+  --blume-border: oklch(0.3 0.02 258 / 0.75);
+  --blume-accent: oklch(0.7 0.145 253);
+  --blume-accent-foreground: oklch(0.135 0.014 258);
+  --blume-code-background: oklch(0.165 0.014 258);
 
-  --tp-action-hover: #ffc94d;
+  --tp-action-hover: oklch(0.75 0.14 253);
 }
 
 /* Base niceties: no sideways scroll ever, crisper text on macOS,
-   amber selection so even highlighting text feels on-theme. */
+   cobalt selection so even highlighting text feels on-theme. */
 html,
 body {
   overflow-x: clip;
@@ -109,11 +111,11 @@ body {
 }
 
 ::selection {
-  background: rgba(204, 140, 0, 0.22);
+  background: oklch(0.52 0.19 257 / 0.18);
 }
 
 :root[data-theme="dark"] ::selection {
-  background: rgba(255, 176, 0, 0.25);
+  background: oklch(0.7 0.145 253 / 0.28);
 }
 
 /* Headings wrap without orphans. */

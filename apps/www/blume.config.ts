@@ -19,10 +19,10 @@ export default defineConfig({
   },
 
   theme: {
-    // Brand amber (docs/brand/tokens.json). theme.css refines this per-mode
-    // — full #FFB000 on graphite in dark, deepened for contrast on paper in
-    // light. This hex keeps config-driven surfaces (OG images, etc.) on brand.
-    accent: "#FFB000",
+    // Electric cobalt (comparison revert). theme.css refines this per-mode
+    // in OKLCH; this hex keeps config-driven surfaces (OG images, etc.)
+    // consistent.
+    accent: "#2D62E4",
     radius: "sm",
     mode: "system",
     // The brand face is Commit Mono (not a Google font) — self-hosted via
@@ -37,8 +37,8 @@ export default defineConfig({
       mono: "ibm-plex-mono",
     },
     background: {
-      // Brand graphite, matches --blume-background dark in theme.css.
-      dark: "#0D1117",
+      // Deep cool graphite, matches --blume-background dark in theme.css.
+      dark: "#0B0E15",
     },
   },
 

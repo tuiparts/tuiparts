@@ -16,47 +16,50 @@ modern-minimal (dev-tool register)
 - Content pages (docs): Blume's built-in docs layout. Typography and token
   theming only — no enrichment, no custom sections.
 
-## Theme — tui.parts amber/graphite (dual mode)
+## Theme — Cobalt Deep (dual mode)
 
-Brand-exact graphite dark mode, warm paper light mode derived from the same
-palette, exactly one amber signal accent. Palette source of truth:
-`docs/brand/tokens.json`. The terminal demo pane is **fixed brand graphite
-in both modes** — terminals are dark; the product render never flips.
+Cool engineered near-white light mode, deep cool-graphite dark mode,
+exactly one electric cobalt signal accent — the hue anchor never switches
+between modes; only lightness moves. Chosen 2026-07-15 in a three-way
+comparison against the amber brand palette: the brand's amber stays scoped
+to brand-identity contexts (logomark on brand surfaces, Figures, Kit,
+terminal renders — see `docs/brand/README.md` § Color); the docs site UI
+anchors cobalt. The terminal demo pane is **fixed graphite in both
+modes** — terminals are dark; the product render never flips.
 
-Light (warm paper — derived, since the brand defines one dark scheme):
+Light:
 
-- `--blume-background` #fbf8f0 (brand ansi-15 cream)
-- `--blume-foreground` #161b22 (dark-mode surface doubles as light-mode ink)
-- `--blume-muted` #f2ecdf
-- `--blume-muted-foreground` #6c675d (brand fg-faint; 5.3:1 on cream)
-- `--blume-border` #e4ddca
-- `--blume-accent` #0d1117 — graphite ink. Amber is a **dark-ground
-  signal**: it fails text contrast on cream and deepening it makes brown
-  (and rust orange is banned). On paper the accent prints like a
-  datasheet; amber appears only on graphite surfaces (demo pane, band,
-  logomark), which never flip modes.
-- `--blume-code-background` #f4efe2
+- `--blume-background` oklch(0.985 0.004 250)
+- `--blume-foreground` oklch(0.24 0.02 258)
+- `--blume-muted` oklch(0.958 0.006 250)
+- `--blume-muted-foreground` oklch(0.45 0.018 257)
+- `--blume-border` oklch(0.895 0.01 255)
+- `--blume-accent` oklch(0.52 0.19 257)
+- `--blume-code-background` oklch(0.972 0.005 250)
 
-Dark (brand-exact from `docs/brand/tokens.json`):
+Dark (deepened per the Hallmark dark recipe — paper L 13.5%, one-step
+elevation, hue held):
 
-- `--blume-background` #0d1117
-- `--blume-foreground` #e8e4d9
-- `--blume-muted` #161b22
-- `--blume-muted-foreground` #a8a296
-- `--blume-border` #30363d
-- `--blume-accent` #ffb000 · `--blume-accent-foreground` #0d1117
-- `--blume-code-background` #161b22
+- `--blume-background` oklch(0.135 0.014 258)
+- `--blume-foreground` oklch(0.93 0.008 250)
+- `--blume-muted` oklch(0.175 0.015 258)
+- `--blume-muted-foreground` oklch(0.7 0.015 255)
+- `--blume-border` oklch(0.3 0.02 258 / 0.75)
+- `--blume-accent` oklch(0.7 0.145 253) ·
+  `--blume-accent-foreground` oklch(0.135 0.014 258)
+- `--blume-code-background` oklch(0.165 0.014 258)
 
-Graphite instrument pane (mode-invariant, maps 1:1 onto brand tokens):
+Graphite instrument pane (mode-invariant, sits nearly flush with the dark
+page — a one-step elevation, not a floating lighter box):
 
-- `--tp-graphite` #0d1117 · `--tp-graphite-2` #161b22
-- `--tp-graphite-rule` #30363d
-- `--tp-graphite-ink` #e8e4d9 · `--tp-graphite-muted` #a8a296
-- `--tp-graphite-faint` #8e887c — web-AA lift of brand fg-faint #6c675d
-  (the brand tone is a terminal-cell value; 3.4:1 on graphite fails
-  WCAG 1.4.3 for the pane's visible text)
-- `--tp-signal` #ffb000 — the amber signal on graphite ·
-  `--tp-signal-ink` #0d1117
+- `--tp-graphite` oklch(0.16 0.014 258) · `--tp-graphite-2` oklch(0.2 0.015 258)
+- `--tp-graphite-rule` oklch(0.3 0.02 258)
+- `--tp-graphite-ink` oklch(0.93 0.008 250) ·
+  `--tp-graphite-muted` oklch(0.66 0.015 255)
+- `--tp-graphite-faint` oklch(0.635 0.015 256) — web-AA lift of the
+  original oklch(0.48 0.018 258), which fails WCAG 1.4.3 on the pane
+- `--tp-signal` oklch(0.72 0.15 252) — the cobalt signal on graphite ·
+  `--tp-signal-ink` oklch(0.16 0.014 260)
 
 ## Typography
 
@@ -101,7 +104,7 @@ Tailwind 4-pt scale. Landing sections breathe at py-20/py-24; hairlines
 
 ## CTA voice
 
-- Primary: solid amber fill (`--blume-accent`), `rounded-blume` (0.5rem), px-5 py-2.5,
+- Primary: solid cobalt fill (`--blume-accent`), `rounded-blume` (0.5rem), px-5 py-2.5,
   named destination ("Read the docs", "Quickstart")
 - Secondary: 1px `--blume-border` outline, hover border shifts to accent
 - Tertiary: accent text link with `→`, arrow nudges 2px on hover
@@ -117,9 +120,9 @@ Tailwind 4-pt scale. Landing sections breathe at py-20/py-24; hairlines
 
 ## What pages MUST share
 
-- The wordmark, the amber accent (< 5% of any viewport — one amber element
-  per lockup), the single Commit Mono face, the CTA voice, mono UPPERCASE
-  eyebrow rhythm, hairline section language.
+- The wordmark, the cobalt accent (< 5% of any viewport), the single
+  Commit Mono face, the CTA voice, mono UPPERCASE eyebrow rhythm, hairline
+  section language.
 
 ## What pages MAY differ on
 

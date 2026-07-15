@@ -2,6 +2,10 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "tuiparts",
   "compatibility_date": "2026-07-14",
+  // Custom domain: wrangler creates the DNS record and provisions TLS on
+  // deploy. Requires the tuiparts.sh zone to be active on the same
+  // Cloudflare account.
+  "routes": [{ "pattern": "tuiparts.sh", "custom_domain": true }],
   "assets": {
     "directory": "./dist",
     "not_found_handling": "404-page"

@@ -30,8 +30,11 @@ Light (warm paper — derived, since the brand defines one dark scheme):
 - `--blume-muted` #f2ecdf
 - `--blume-muted-foreground` #6c675d (brand fg-faint; 5.3:1 on cream)
 - `--blume-border` #e4ddca
-- `--blume-accent` #8f6400 — deepened amber; #ffb000 is a dark-ground
-  signal and fails text contrast on cream (AA-checked, 4.9:1)
+- `--blume-accent` #0d1117 — graphite ink. Amber is a **dark-ground
+  signal**: it fails text contrast on cream and deepening it makes brown
+  (and rust orange is banned). On paper the accent prints like a
+  datasheet; amber appears only on graphite surfaces (demo pane, band,
+  logomark), which never flip modes.
 - `--blume-code-background` #f4efe2
 
 Dark (brand-exact from `docs/brand/tokens.json`):

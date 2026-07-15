@@ -41,21 +41,23 @@
 }
 
 :root {
-  /* Light — warm paper derived from the brand palette. The accent deepens
-     to #8f6400 here: #ffb000 is a dark-ground signal and cannot carry
-     text contrast on cream (AA-checked, 4.9:1). */
+  /* Light — warm paper derived from the brand palette. Amber is a
+     dark-ground signal: it cannot carry text on cream, and deepening it
+     only makes brown. So on paper the accent is graphite ink — buttons,
+     links, and active states print like a datasheet — while amber keeps
+     living on the graphite surfaces (demo pane, band, logomark). */
   --blume-background: #fbf8f0;
   --blume-foreground: #161b22;
   --blume-muted: #f2ecdf;
   --blume-muted-foreground: #6c675d;
   --blume-border: #e4ddca;
-  --blume-accent: #8f6400;
+  --blume-accent: #0d1117;
   --blume-accent-foreground: #fbf8f0;
   --blume-code-background: #f4efe2;
   --blume-radius: 0.5rem;
 
   /* Hover shade for solid-accent actions (locked token, no mid-render mixing). */
-  --tp-action-hover: #7a5500;
+  --tp-action-hover: #2b3340;
 
   /* Instrument pane — brand graphite in BOTH modes. Terminals are dark;
      the product render never flips with the site theme. */

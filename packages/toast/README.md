@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="512" src="https://github.com/msmps/opentui-ui/raw/main/packages/toast/assets/banner.png" />
+  <img width="512" src="https://github.com/tuiparts/tuiparts/raw/main/packages/toast/assets/banner.png" />
 </div>
 
 <br />

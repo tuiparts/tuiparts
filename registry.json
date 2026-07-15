@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "tuiparts",
-  "homepage": "https://github.com/msmps/opentui-ui",
+  "homepage": "https://tui.parts",
   "items": [
     {
       "name": "core/checkbox",

@@ -3,7 +3,7 @@
 The React Adapter for the tui.parts Foundation.
 
 New to package primitives and editable recipes? Start with the
-[foundation guide](https://github.com/msmps/opentui-ui/blob/main/docs/foundation.md).
+[foundation guide](https://github.com/tuiparts/tuiparts/blob/main/docs/foundation.md).
 
 ## Installation
 

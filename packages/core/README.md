@@ -3,7 +3,7 @@
 Framework-neutral OpenTUI behavior for the tui.parts Foundation.
 
 New to the package/recipe split? Start with the
-[foundation guide](https://github.com/msmps/opentui-ui/blob/main/docs/foundation.md).
+[foundation guide](https://github.com/tuiparts/tuiparts/blob/main/docs/foundation.md).
 
 ## Installation
 

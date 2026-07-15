@@ -186,7 +186,7 @@ function validateContentAccessor(
         `  dialog.show({ content: () => <text>Hello</text> })\n\n` +
         `  // WRONG - JSX evaluated immediately, before dialog context exists\n` +
         `  dialog.show({ content: <text>Hello</text> })\n\n` +
-        `See: https://github.com/msmps/opentui-ui for more information.`,
+        `See: https://github.com/tuiparts/tuiparts for more information.`,
     );
   }
 }

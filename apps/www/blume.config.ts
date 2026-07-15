@@ -1,20 +1,20 @@
 import { defineConfig } from "blume";
 
 export default defineConfig({
-  title: "OpenTUI UI",
+  title: "tui.parts",
   description:
-    "Composable, framework-neutral interaction primitives and editable UI recipes for OpenTUI. Package the difficult behavior. Copy the opinionated layer.",
+    "The primitive and recipe ecosystem for OpenTUI. Package the difficult behavior. Copy the opinionated layer.",
   logo: {
     image: "/logo.svg",
-    text: "OpenTUI UI",
+    text: "tui.parts",
   },
 
   // Docs mount at /docs; the site root is the custom landing page.
   basePath: "/docs",
 
   github: {
-    owner: "msmps",
-    repo: "opentui-ui",
+    owner: "tuiparts",
+    repo: "tuiparts",
     dir: "apps/www",
   },
 
@@ -50,6 +50,6 @@ export default defineConfig({
   deployment: {
     output: "static",
     // TODO: replace with the production domain once it exists.
-    site: "https://opentui-ui.dev",
+    site: "https://tui.parts",
   },
 });

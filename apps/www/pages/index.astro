@@ -6,11 +6,11 @@ import PageLayout from "blume/components/layout/PageLayout.astro";
 const { config } = data;
 
 const installCommand =
-  "pnpm add @opentui-ui/react @opentui-ui/core @opentui/core @opentui/react react";
+  "pnpm add @tuiparts/react @tuiparts/core @opentui/core @opentui/react react";
 
-const recipeCommand = "pnpm dlx shadcn@4.13.0 add @opentui-ui/react/checkbox";
+const recipeCommand = "pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox";
 
-const primitiveSource = `import { Checkbox as CheckboxPrimitive } from "@opentui-ui/react/checkbox";
+const primitiveSource = `import { Checkbox as CheckboxPrimitive } from "@tuiparts/react/checkbox";
 
 export function Checkbox() {
   return (
@@ -47,38 +47,38 @@ const copiedOwns = [
 
 const catalog = [
   {
-    href: "/docs/components/button",
+    href: "/docs/catalog/button",
     label: "Button",
     parts: "pressed · focused · disabled",
   },
   {
-    href: "/docs/components/checkbox",
+    href: "/docs/catalog/checkbox",
     label: "Checkbox",
     parts: "Root · Indicator",
   },
-  { href: "/docs/components/switch", label: "Switch", parts: "Root · Thumb" },
+  { href: "/docs/catalog/switch", label: "Switch", parts: "Root · Thumb" },
   {
-    href: "/docs/components/radio-group",
+    href: "/docs/catalog/radio-group",
     label: "Radio Group",
     parts: "roving arrow-key focus",
   },
   {
-    href: "/docs/components/input",
+    href: "/docs/catalog/input",
     label: "Input",
     parts: "input · change · submit",
   },
   {
-    href: "/docs/components/badge",
+    href: "/docs/catalog/badge",
     label: "Badge",
     parts: "presentation-only",
   },
   {
-    href: "/docs/components/dialog",
+    href: "/docs/catalog/dialog",
     label: "Dialog",
     parts: "overlay · companion",
   },
   {
-    href: "/docs/components/toast",
+    href: "/docs/catalog/toast",
     label: "Toast",
     parts: "companion package",
   },
@@ -113,7 +113,7 @@ const pillars = [
   siteUrl={config.site}
   ogEnabled={config.og.enabled}
   page={{
-    title: "OpenTUI UI — The foundation for your terminal UI",
+    title: "tui.parts — The foundation for your terminal UI",
     description: config.description,
   }}
 >
@@ -148,7 +148,7 @@ const pillars = [
         >
         <a
           class="btn-outline press rounded-blume border border-border px-5 py-2.5 text-sm font-medium text-foreground"
-          href="/docs/components">Browse components</a
+          href="/docs/catalog">Browse the Catalog</a
         >
       </div>
       <div
@@ -197,7 +197,7 @@ const pillars = [
     <figure
       class="demo m-0"
       role="img"
-      aria-label="Terminal running settings.tsx built with OpenTUI UI: a checkbox list, a radio-group theme picker, a switch, a focused search input, and Save and Cancel buttons."
+      aria-label="Terminal running settings.tsx built with tui.parts: a checkbox list, a radio-group theme picker, a switch, a focused search input, and Save and Cancel buttons."
     >
       <div class="demo-bar">
         <span class="demo-file">demo/settings.tsx</span>
@@ -212,7 +212,7 @@ const pillars = [
           <div class="demo-line"><span class="t-dim">[ ]</span> Auto-install updates</div>
           <div class="demo-line demo-gap">Theme      <span class="t-dim">(</span><span class="t-signal">●</span><span class="t-dim">)</span> Dark   <span class="t-dim">( )</span> Light</div>
           <div class="demo-line demo-gap">Telemetry  <span class="t-dim">○──</span>  <span class="t-muted">off</span></div>
-          <div class="demo-line demo-gap"><span class="t-signal">┃</span> <span class="caret-input">▍</span><span class="t-muted">Search components…</span></div>
+          <div class="demo-line demo-gap"><span class="t-signal">┃</span> <span class="caret-input">▍</span><span class="t-muted">Search the Catalog…</span></div>
           <div class="demo-line demo-gap"><span class="chip chip-solid"> Save changes </span>  <span class="chip chip-ghost"> Cancel </span></div>
           <div class="demo-line t-faint demo-gap">tab focus · space toggle · ↵ submit</div>
         </div>
@@ -459,7 +459,7 @@ const pillars = [
         >
         <a
           class="btn-outline press rounded-blume border border-border px-5 py-2.5 text-sm font-medium text-foreground"
-          href="https://github.com/msmps/opentui-ui">View the code</a
+          href="https://github.com/tuiparts/tuiparts">View the code</a
         >
       </div>
     </div>
@@ -470,7 +470,7 @@ const pillars = [
       class="mx-auto flex max-w-6xl flex-col items-start justify-between gap-10 px-6 py-14 sm:flex-row"
     >
       <div class="max-w-xs">
-        <p class="font-display text-sm font-semibold text-foreground">OpenTUI UI</p>
+        <p class="font-display text-sm font-semibold text-foreground">tui.parts</p>
         <p class="mt-2 text-pretty text-sm text-muted-foreground">
           Terminal primitives and editable recipes for OpenTUI.
         </p>
@@ -489,7 +489,7 @@ const pillars = [
               <a class="footer-link" href="/docs/quickstart">Quickstart</a>
             </li>
             <li>
-              <a class="footer-link" href="/docs/components">Components</a>
+              <a class="footer-link" href="/docs/catalog">Catalog</a>
             </li>
             <li>
               <a class="footer-link" href="/docs/registry">Registry</a>
@@ -502,18 +502,18 @@ const pillars = [
           </p>
           <ul class="mt-4 space-y-2.5 text-sm">
             <li>
-              <a class="footer-link" href="https://www.npmjs.com/package/@opentui-ui/core"
-                >@opentui-ui/core</a
+              <a class="footer-link" href="https://www.npmjs.com/package/@tuiparts/core"
+                >@tuiparts/core</a
               >
             </li>
             <li>
-              <a class="footer-link" href="https://www.npmjs.com/package/@opentui-ui/react"
-                >@opentui-ui/react</a
+              <a class="footer-link" href="https://www.npmjs.com/package/@tuiparts/react"
+                >@tuiparts/react</a
               >
             </li>
             <li>
-              <a class="footer-link" href="https://www.npmjs.com/package/@opentui-ui/solid"
-                >@opentui-ui/solid</a
+              <a class="footer-link" href="https://www.npmjs.com/package/@tuiparts/solid"
+                >@tuiparts/solid</a
               >
             </li>
           </ul>
@@ -524,7 +524,7 @@ const pillars = [
           </p>
           <ul class="mt-4 space-y-2.5 text-sm">
             <li>
-              <a class="footer-link" href="https://github.com/msmps/opentui-ui">GitHub</a>
+              <a class="footer-link" href="https://github.com/tuiparts/tuiparts">GitHub</a>
             </li>
             <li>
               <a class="footer-link" href="https://github.com/anomalyco/opentui">OpenTUI</a>

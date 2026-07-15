@@ -12,7 +12,7 @@ versions independently from the foundation release line.
 ## Install
 
 ```bash
-pnpm add @opentui-ui/toast
+pnpm add @tuiparts/toast
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ Mount a `Toaster` container once, then notify from anywhere with the global
 `toast` API:
 
 ```ts
-import { toast } from "@opentui-ui/toast";
+import { toast } from "@tuiparts/toast";
 
 toast.success("Recipe installed");
 toast.error("Registry unreachable");
@@ -32,7 +32,7 @@ inside your OpenTUI renderer, and the package ships React and Solid bindings
 alongside the Core API.
 
 :::note
-Neither `@opentui-ui/toast` nor `@opentui-ui/dialog` is re-exported by the
+Neither `@tuiparts/toast` nor `@tuiparts/dialog` is re-exported by the
 foundation packages. They are supported, independently versioned products —
 installing foundation recipes never replaces them.
 :::

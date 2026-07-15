@@ -7,11 +7,11 @@ description: A foundation overlay primitive with layered dismissal and focus con
 
 Dialog currently has three distinct surfaces:
 
-- **`@opentui-ui/{core,react,solid}/dialog`** — the foundation compound
+- **`@tuiparts/{core,react,solid}/dialog`** — the foundation compound
   primitive.
 - **`registry/dialog`** — a validated preview recipe, not part of the
   six-family starter catalog.
-- **`@opentui-ui/dialog`** — the adopted companion package with manager,
+- **`@tuiparts/dialog`** — the adopted companion package with manager,
   provider, theme, and async `prompt`/`confirm`/`alert`/`choice` conveniences.
 
 Installing the preview recipe does not replace the companion package.
@@ -34,15 +34,15 @@ Behavior owned by the package:
 <CodeGroup>
 
 ```bash React
-pnpm dlx shadcn@4.13.0 add @opentui-ui/react/dialog
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/dialog
 ```
 
 ```bash Solid
-pnpm dlx shadcn@4.13.0 add @opentui-ui/solid/dialog
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/dialog
 ```
 
 ```bash Core
-pnpm dlx shadcn@4.13.0 add @opentui-ui/core/dialog
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/dialog
 ```
 
 </CodeGroup>
@@ -54,7 +54,7 @@ flows, theming, and a managed container — use the independently versioned
 companion:
 
 ```bash
-pnpm add @opentui-ui/dialog
+pnpm add @tuiparts/dialog
 ```
 
 The companion's `DialogManager` provides `prompt`, `confirm`, `alert`, and

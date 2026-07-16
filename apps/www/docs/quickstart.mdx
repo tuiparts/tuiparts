@@ -1,15 +1,17 @@
 ---
-title: Quickstart
-description: Install a framework adapter, compose a primitive, and install your first editable recipe.
+title: Quick start
+description: Install a runtime adapter, compose a primitive, and install your first editable recipe.
 sidebar:
   order: 2
 ---
 
-tuiparts.sh supports three runtimes — React, Solid, and imperative Core. Install
-one adapter and its OpenTUI peers, then either compose primitives directly or
-install editable recipes from the registry.
+tuiparts.sh supports three runtimes: React, Solid, and imperative Core. This
+page covers the shortest path through both layers — composing a packaged
+primitive and installing an editable recipe.
 
 ## Install a runtime
+
+Install the adapter for your runtime together with its OpenTUI peers:
 
 <CodeGroup>
 
@@ -29,14 +31,12 @@ pnpm add @tuiparts/core @opentui/core
 
 </CodeGroup>
 
-The React and Solid packages expose the same primitive vocabulary where their
-runtimes permit it. Core exposes the same behavior as Stores and Renderables.
+The three runtimes share one primitive vocabulary. React and Solid expose
+compound parts; Core exposes the same behavior as Stores and Renderables.
 
 ## Compose a primitive
 
-Compound framework primitives use Base UI-style module namespaces. Package
-exports stay clean; recipes conventionally alias them locally with a
-`Primitive` suffix.
+Import a primitive from its module namespace and assemble its parts:
 
 <CodeGroup>
 
@@ -72,19 +72,18 @@ root.add(indicator);
 
 </CodeGroup>
 
-State callbacks receive readonly primitive state. A `ref` points to the actual
-Core Renderable, so imperative actions do not require a wrapper handle.
-Framework consumers configure controlled props and callbacks; they do not
-construct or pass Core Stores.
+The render callback receives readonly primitive state, and a `ref` points at
+the actual Core Renderable, so imperative actions never need a wrapper
+handle. Recipes conventionally alias primitives locally with a `Primitive`
+suffix.
 
 ## Install a recipe
 
-Recipes are installed with the official shadcn CLI and become
-application-owned source.
+Recipes install through the official shadcn CLI and become source your
+application owns.
 
-1. **Configure shadcn**
-
-    Add the tuiparts.sh registry to your `components.json`:
+1. Add the registry namespace to `components.json` so the CLI can resolve
+   `@tuiparts` addresses:
 
     ```json title="components.json"
     {
@@ -95,17 +94,16 @@ application-owned source.
     }
     ```
 
-2. **Install the item for your runtime**
-
-    Choose the `core/*`, `react/*`, or `solid/*` item:
+2. Install the item for your runtime — `core/*`, `react/*`, or `solid/*`:
 
     ```bash
     pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox
     ```
 
-3. **Use the installed recipe**
+    The command above copies the recipe into `components/ui` and installs its
+    declared dependencies.
 
-    The copied file lands in `components/ui` and belongs to your application:
+3. Import the installed component like any local file:
 
     ```tsx
     import { Checkbox } from "./components/ui/checkbox";
@@ -113,17 +111,15 @@ application-owned source.
     <Checkbox label="Enable notifications" defaultChecked />;
     ```
 
-:::tip
-The installed palette, density, symbols, labels, intent variants, and component
-assembly are starter choices rather than package APIs. Edit them directly or
-use them as the basis of another registry.
-:::
+**The installed file belongs to your application.** The palette, glyphs,
+labels, and variants inside it are starter choices, not package APIs — edit
+them directly or use them as the basis of your own registry.
 
 ## Next steps
 
 <CardGroup cols={2}>
   <Card title="Catalog" href="/catalog" icon="layout-grid">
-    The starter catalog: Button, Checkbox, Switch, RadioGroup, Input, Badge.
+    The starter catalog: Button, Checkbox, Switch, Radio Group, Input, Badge.
   </Card>
   <Card title="Registry lifecycle" href="/registry" icon="git-compare">
     Review upstream recipe changes without discarding local edits.

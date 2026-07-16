@@ -1,21 +1,23 @@
 ---
 title: Toast
-description: The independently versioned Toast companion package — a global toast API and a Toaster container for OpenTUI apps.
+description: A companion package that renders transient notifications through a global toast API.
 ---
 
 <Badge variant="success">Companion package</Badge>
 
-Toast is an adopted companion product, not a foundation primitive or registry
-recipe. It retains its notification, theme, icon, React, and Solid APIs and
-versions independently from the foundation release line.
+A companion package that renders transient notifications through a global
+`toast` API and a `Toaster` container. Toast is an adopted companion product,
+not a foundation primitive or registry recipe; it retains its notification,
+theme, icon, React, and Solid APIs and versions independently from the
+foundation release line.
 
-## Install
+## Installation
 
 ```bash
 pnpm add @tuiparts/toast
 ```
 
-## Usage
+## Anatomy
 
 Mount a `Toaster` container once, then notify from anywhere with the global
 `toast` API:
@@ -31,8 +33,6 @@ The `ToasterRenderable` container manages notification layout and lifecycle
 inside your OpenTUI renderer, and the package ships React and Solid bindings
 alongside the Core API.
 
-:::note
-Neither `@tuiparts/toast` nor `@tuiparts/dialog` is re-exported by the
-foundation packages. They are supported, independently versioned products —
-installing foundation recipes never replaces them.
-:::
+**Installing foundation recipes never replaces the companions.** Neither
+`@tuiparts/toast` nor `@tuiparts/dialog` is re-exported by the foundation
+packages; both are supported, independently versioned products.

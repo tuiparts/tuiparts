@@ -1,15 +1,23 @@
 ---
 title: Input
-description: OpenTUI-native text editing with input, change, and submit events, wrapped in an editable visual-defaults recipe.
+description: A single-line text field with OpenTUI's native editing behavior.
 ---
 
 <Badge variant="accent">Foundation</Badge>
 
-The Input recipe applies editable visual defaults — text, placeholder, cursor,
-and focus colors — over the packaged Input primitive, which preserves
-OpenTUI's native editing behavior.
+A single-line text field with OpenTUI's native editing behavior. The recipe
+applies editable visual defaults — text, placeholder, cursor, and focus
+colors — over the packaged Input primitive.
 
-## Install
+## Usage guidelines
+
+- **Input keeps OpenTUI's native mutable buffer and event order.** It does
+  not implement browser-style controlled rollback; if you need strict
+  controlled-value semantics, layer them in your consumer-owned recipe.
+- **Programmatic `value` assignments that change the buffer fire `onInput`.**
+  Commit-style updates arrive through `onChange` instead.
+
+## Installation
 
 <CodeGroup>
 
@@ -27,7 +35,12 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/input
 
 </CodeGroup>
 
-## Usage
+The command above copies the recipe into `components/ui`. The file belongs to
+your application.
+
+## Anatomy
+
+Import the installed component and render it:
 
 ```tsx
 import { Input } from "./components/ui/input";
@@ -39,25 +52,43 @@ import { Input } from "./components/ui/input";
 />;
 ```
 
-## Events
+## Keyboard interactions
 
-Input deliberately preserves OpenTUI's native mutable buffer and event order
-instead of inventing browser-style controlled rollback:
-
-| Event | Fires when |
+| Key | Behavior |
 | --- | --- |
-| `onInput` | The value changes — including changed programmatic assignments. |
-| `onChange` | A blur or submit commits the value. |
-| `onSubmit` | The user submits (Enter/Return). |
+| `Enter` | Submits the value and fires `onSubmit`. |
 
-:::note
-Programmatic `value` assignments that change the buffer invoke `onInput`,
-while `onChange` reports blur or submit commits. If you need strict
-controlled-value semantics, layer them in your consumer-owned recipe.
-:::
+Editing — cursor movement, insertion, and deletion — is OpenTUI's native
+input behavior.
 
-## Presentation
+## API reference
+
+<TypeTable
+  type={{
+    placeholder: {
+      type: "string",
+      description: "Text shown while the value is empty.",
+    },
+    onInput: {
+      type: "(value: string) => void",
+      description:
+        "Event handler called when the value changes, including programmatic assignments that change the buffer.",
+    },
+    onChange: {
+      type: "(value: string) => void",
+      description:
+        "Event handler called when a blur or submit commits the value.",
+    },
+    onSubmit: {
+      type: "(value: string) => void",
+      description: "Event handler called when the user submits with `Enter`.",
+    },
+  }}
+/>
 
 Every visual default in the installed file — `textColor`,
 `placeholderColor`, `cursorColor`, and the focused variants — is an ordinary
 OpenTUI property you can change or expose as variants.
+
+For the update workflow on installed recipes, see the
+[registry page](/registry).

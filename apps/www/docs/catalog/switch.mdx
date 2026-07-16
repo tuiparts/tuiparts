@@ -1,16 +1,22 @@
 ---
 title: Switch
-description: Root and Thumb parts with a movable thumb over a glyph track, wrapped in an editable density-and-symbols recipe.
+description: A toggle rendered as a thumb that slides along a glyph track.
 ---
 
 <Badge variant="accent">Foundation</Badge>
 
-The Switch recipe renders a thumb glyph that slides along a track when
-toggled. Checked-state ownership, activation keys, and focus come from the
-packaged primitive; the track width, symbol set, and label styling are
-consumer-owned.
+A toggle rendered as a thumb that slides along a glyph track. Checked-state
+ownership, activation keys, and focus come from the packaged primitive; the
+track width, symbol set, and label styling install as source you edit.
 
-## Install
+## Usage guidelines
+
+- **Use `Switch` for a setting that takes effect immediately.** Prefer
+  `Checkbox` for choices that are submitted together.
+- **Disabled switches reject focus and activation.** Focus skips them when it
+  moves through the screen.
+
+## Installation
 
 <CodeGroup>
 
@@ -28,7 +34,12 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/switch
 
 </CodeGroup>
 
-## Usage
+The command above copies the recipe into `components/ui`. The file belongs to
+your application.
+
+## Anatomy
+
+Import the installed component and render it:
 
 ```tsx
 import { Switch } from "./components/ui/switch";
@@ -41,7 +52,24 @@ import { Switch } from "./components/ui/switch";
 />;
 ```
 
-## Props
+`Switch.Root` owns state and activation; `Switch.Thumb` is a passive part
+that positions itself from the shared Store. The starter recipe places the
+Thumb absolutely over a repeated track glyph — replace the glyphs or layout
+freely; the behavior does not depend on them.
+
+## Keyboard interactions
+
+| Key | Behavior |
+| --- | --- |
+| `Enter` | Toggles the checked state. |
+| `Space` | Toggles the checked state. |
+
+The primary pointer button also toggles.
+
+## API reference
+
+The installed recipe adds presentation props and passes ownership props
+through to `SwitchPrimitive.Root`:
 
 <TypeTable
   type={{
@@ -50,30 +78,39 @@ import { Switch } from "./components/ui/switch";
       required: true,
       description: "Text rendered next to the track.",
     },
+    checked: {
+      type: "boolean",
+      description:
+        "Whether the switch is on. Use with `onCheckedChange` to control the state.",
+    },
+    defaultChecked: {
+      type: "boolean",
+      description:
+        "Whether the switch is initially on. To control the state, use the `checked` prop instead.",
+    },
+    onCheckedChange: {
+      type: "(checked: boolean) => void",
+      description: "Event handler called when the checked state changes.",
+    },
     density: {
       type: '"compact" | "comfortable"',
       default: '"compact"',
-      description: "Track width and gap. Compact is 3 cells, comfortable 5.",
+      description:
+        "Which track density to apply. Compact is 3 cells wide, comfortable is 5.",
     },
     symbols: {
       type: '"round" | "ascii"',
       default: '"round"',
       description:
-        "Thumb and track glyph set — round (● ─) or pure ASCII (* -).",
+        "Which glyph set to render for the thumb and track — round (● ─) or pure ASCII (* -).",
     },
     disabled: {
       type: "boolean",
-      description: "Disabled switches reject focus and activation.",
+      description:
+        "Whether the switch is disabled. Disabled switches reject focus and activation.",
     },
   }}
 />
 
-Controlled (`checked` + `onCheckedChange`) and uncontrolled (`defaultChecked`)
-ownership both pass through to `SwitchPrimitive.Root`.
-
-## Parts
-
-`Switch.Root` owns state and activation; `Switch.Thumb` is a passive part that
-positions itself from the shared Store. The starter recipe places the Thumb
-absolutely over a repeated track glyph — replace the glyphs or layout freely,
-the behavior does not depend on them.
+For the update workflow on installed recipes, see the
+[registry page](/registry).

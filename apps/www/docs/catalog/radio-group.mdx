@@ -1,16 +1,24 @@
 ---
 title: Radio Group
-description: A collection primitive owning one value with roving arrow-key focus, wrapped in editable group and item recipes.
+description: A group of selectable options that owns a single value.
 ---
 
 <Badge variant="accent">Foundation</Badge>
 
-The Radio Group recipe installs two components: `RadioGroup`, which owns the
-collection value, and `RadioGroupItem`, which renders a selectable mark and
-label. Selection, arrow-key navigation, Home/End, and skipping unavailable
-items come from the packaged primitives.
+A group of selectable options that owns a single value. The recipe installs
+two components: `RadioGroup`, which owns the collection value, and
+`RadioGroupItem`, which renders a selectable mark and label. Selection,
+arrow-key navigation, and skipping unavailable items come from the packaged
+primitives.
 
-## Install
+## Usage guidelines
+
+- **Use a radio group when exactly one option must be selected.** For an
+  independent on/off choice, use `Checkbox` or `Switch` instead.
+- **Every item must belong to a group.** The group owns the single collection
+  value; items contribute to it.
+
+## Installation
 
 <CodeGroup>
 
@@ -28,7 +36,12 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/radio-group
 
 </CodeGroup>
 
-## Usage
+The command above copies the recipe into `components/ui`. The file belongs to
+your application.
+
+## Anatomy
+
+Import the installed components and nest items inside the group:
 
 ```tsx
 import { RadioGroup, RadioGroupItem } from "./components/ui/radio-group";
@@ -40,18 +53,57 @@ import { RadioGroup, RadioGroupItem } from "./components/ui/radio-group";
 </RadioGroup>;
 ```
 
-## Props
+## Keyboard interactions
 
-`RadioGroup` passes through the primitive group props — `value`,
-`defaultValue`, `onValueChange`, and `disabled` — plus layout. Each
-`RadioGroupItem` adds:
+| Key | Behavior |
+| --- | --- |
+| `↑` `↓` `←` `→` | Moves focus and selection through the available items. |
+| `Home` | Moves focus and selection to the first available item. |
+| `End` | Moves focus and selection to the last available item. |
+| `Enter` | Selects the focused item. |
+| `Space` | Selects the focused item. |
+
+Unavailable items are skipped during navigation. The primary pointer button
+also selects.
+
+## API reference
+
+### RadioGroup
+
+<TypeTable
+  type={{
+    value: {
+      type: "string",
+      description:
+        "Value of the selected item. Use with `onValueChange` to control the group.",
+    },
+    defaultValue: {
+      type: "string",
+      description:
+        "Value selected initially. To control the group, use the `value` prop instead.",
+    },
+    onValueChange: {
+      type: "(value: string) => void",
+      description: "Event handler called when the selected value changes.",
+    },
+    disabled: {
+      type: "boolean",
+      description:
+        "Whether the whole group is disabled. Disabled groups reject focus and activation.",
+    },
+  }}
+/>
+
+Remaining group props are layout, passed through to the primitive.
+
+### RadioGroupItem
 
 <TypeTable
   type={{
     value: {
       type: "string",
       required: true,
-      description: "The value this item contributes to the group.",
+      description: "Value this item contributes to the group.",
     },
     label: {
       type: "string",
@@ -61,24 +113,22 @@ import { RadioGroup, RadioGroupItem } from "./components/ui/radio-group";
     mark: {
       type: "string",
       default: '"●"',
-      description: "One terminal-cell selection mark.",
+      description:
+        "Which glyph to render as the selection mark. One terminal cell.",
     },
     tone: {
       type: '"accent" | "success"',
       default: '"accent"',
-      description: "Starter mark color. Edit or extend it locally.",
+      description:
+        "Which starter color to apply to the mark. Edit or extend it in the installed file.",
     },
     disabled: {
       type: "boolean",
-      description: "Unavailable items are skipped during navigation.",
+      description:
+        "Whether the item is unavailable. Unavailable items are skipped during navigation.",
     },
   }}
 />
 
-## Behavior
-
-- The group owns exactly one value; every Radio must belong to a group.
-- Arrow keys move focus and selection through available items; Home and End
-  jump to the ends.
-- Enter/Return, Space, and the primary pointer select the focused item.
-- Controlled and uncontrolled value ownership are both supported.
+For the update workflow on installed recipes, see the
+[registry page](/registry).

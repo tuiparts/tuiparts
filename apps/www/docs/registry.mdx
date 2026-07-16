@@ -38,9 +38,9 @@ You can also install any item by direct URL without configuring a namespace:
 pnpm dlx shadcn@4.13.0 add https://tuiparts.sh/r/react/checkbox.json
 ```
 
-The CLI installs declared dependencies and copies the recipe into
-`components/ui`. Running ordinary `add` against an existing file asks before
-replacement and defaults to preserving the local file.
+The command above installs the item's declared dependencies and copies the
+recipe into `components/ui`. Running an ordinary `add` against an existing
+file asks before replacement and defaults to preserving the local file.
 
 ## Catalog
 
@@ -76,9 +76,9 @@ compatible primitive and OpenTUI package ranges in `dependencies`.
 Package ranges are the compatibility contract. Registry metadata describes the
 source lifecycle; it does not replace package dependency resolution.
 
-## Discover and review updates
+## Review updates
 
-The current registry item is the upstream recipe revision. Inspect the current
+The current registry item is the upstream recipe revision. Inspect the
 upstream source and compare it with your installed file:
 
 ```bash
@@ -91,8 +91,9 @@ Review the diff and merge useful upstream changes into the consumer-owned
 file.
 
 :::warning
-Use `--overwrite` only when intentionally discarding local edits. Ordinary
-updates must never rely on unattended overwrite.
+**`--overwrite` discards your local edits.** Use it only when you intend to
+replace the installed file; ordinary updates must never rely on unattended
+overwrite.
 :::
 
 ## Primitive upgrades versus recipe updates

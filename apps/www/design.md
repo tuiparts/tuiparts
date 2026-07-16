@@ -12,7 +12,8 @@ modern-minimal (dev-tool register)
 
 - Marketing pages (landing): **Dev-tool / CLI** — asymmetric hero (title left,
   live terminal demo right), trade statement, primitives split, one dark
-  graphite band (registry + catalog), hairline pillar row, closing CTA.
+  graphite band (registry + catalog), asymmetric hairline pillar row, closing
+  CTA.
 - Content pages (docs): Blume's built-in docs layout. Typography and token
   theming only — no enrichment, no custom sections.
 
@@ -69,8 +70,8 @@ page — a one-step elevation, not a floating lighter box):
   requests between snap to the nearer instance.
 - Display: Commit Mono 600–700, roman only
 - Body: Commit Mono 400
-- Mono roles as before — code, eyebrows, meta, kbd hints; UPPERCASE labels
-  at 0.12–0.14em tracking
+- Mono roles as before — code, status metadata, kbd hints; UPPERCASE labels at
+  0.12–0.14em tracking are reserved for status and genuinely ordinal content
 - Never subset below U+2500-259F: Figures must render from one face or
   box-drawing glyphs silently fall back mid-figure
 - Headings use `text-wrap: balance`; ledes use `text-wrap: pretty`
@@ -78,8 +79,10 @@ page — a one-step elevation, not a floating lighter box):
 
 ## Spacing
 
-Tailwind 4-pt scale. Landing sections breathe at py-20/py-24; hairlines
-(`--blume-border`) divide sections, not boxed cards.
+Tailwind 4-pt scale. The hero uses heavier bottom padding so it sits into the
+page; trade, primitives, and the graphite band use the py-20/py-24 baseline.
+Supporting pillars tighten to py-16/py-20; the closing CTA expands to
+py-24/py-28. Hairlines (`--blume-border`) divide sections, not boxed cards.
 
 ## Motion
 
@@ -87,8 +90,9 @@ Tailwind 4-pt scale. Landing sections breathe at py-20/py-24; hairlines
   `cubic-bezier(0.2, 0, 0, 1)` for icon cross-fades
 - Reveal: fade + 10px rise, 500ms, stagger ≤ 50ms, IntersectionObserver,
   plays once
-- Hero: one type-in of the demo command (steps), then static; one blinking
-  input caret persists (authentic terminal behavior)
+- Hero: one type-in of the demo command begins after 150ms; proof rows arrive
+  from 750–1150ms, then remain static; one blinking input caret persists
+  (authentic terminal behavior)
 - Press: `scale(0.97)`, 150ms, on every button-shaped element
 - Reduced motion: everything visible and static; the input caret still blinks
   is NOT allowed — all animation gates behind
@@ -99,6 +103,8 @@ Tailwind 4-pt scale. Landing sections breathe at py-20/py-24; hairlines
 
 - Copy buttons: clipboard + check cross-fade (opacity 0→1, scale 0.25→1,
   blur 4px→0), silent revert after 2s, `aria-live="polite"` announcement
+- Button-shaped controls use at least 40×40px targets and expand to 44×44px
+  for coarse pointers
 - Hover states gated behind hover-capable devices (Tailwind v4 default)
 - No celebratory toasts, no parallax, no autoplay loops beyond the caret
 
@@ -121,7 +127,7 @@ Tailwind 4-pt scale. Landing sections breathe at py-20/py-24; hairlines
 ## What pages MUST share
 
 - The wordmark, the cobalt accent (< 5% of any viewport), the single
-  Commit Mono face, the CTA voice, mono UPPERCASE eyebrow rhythm, hairline
+  Commit Mono face, the CTA voice, restrained metadata labels, and hairline
   section language.
 
 ## What pages MAY differ on

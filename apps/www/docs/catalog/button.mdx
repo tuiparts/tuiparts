@@ -1,16 +1,24 @@
 ---
 title: Button
-description: An activation primitive with pressed, focused, and disabled state, wrapped in an editable intent-and-size recipe.
+description: A focusable action that activates from the keyboard or pointer.
 ---
 
 <Badge variant="accent">Foundation</Badge>
 
-The Button recipe renders a filled, focusable action. Behavior — activation
-via Enter/Return, Space, and the primary pointer, plus focus and disabled
-handling — comes from the packaged primitive. The intent palette, sizing, and
-label rendering are yours to edit.
+A focusable action that activates on `Enter`, `Space`, or the primary pointer
+button. Activation, focus, and disabled handling come from the packaged
+primitive; the intent palette, sizing, and label rendering install as source
+you edit.
 
-## Install
+## Usage guidelines
+
+- **Install the recipe when you want a working button.** Compose
+  `ButtonPrimitive` directly when you are building your own component or
+  design system.
+- **Disabled buttons reject focus and activation.** Focus skips them when it
+  moves through the screen.
+
+## Installation
 
 <CodeGroup>
 
@@ -28,7 +36,12 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/button
 
 </CodeGroup>
 
-## Usage
+The command above copies the recipe into `components/ui`. The file belongs to
+your application.
+
+## Anatomy
+
+Import the installed component and render it:
 
 ```tsx
 import { Button } from "./components/ui/button";
@@ -41,7 +54,17 @@ import { Button } from "./components/ui/button";
 />;
 ```
 
-## Props
+## Keyboard interactions
+
+| Key | Behavior |
+| --- | --- |
+| `Enter` | Activates the button. |
+| `Space` | Activates the button. |
+
+The primary pointer button also activates. To activate imperatively, call
+`press()` on the Renderable `ref`.
+
+## API reference
 
 The installed recipe adds presentation props on top of the primitive's
 `ButtonPrimitive.Props`:
@@ -51,31 +74,31 @@ The installed recipe adds presentation props on top of the primitive's
     label: {
       type: "string",
       required: true,
-      description: "The button's visible label.",
+      description: "Text rendered inside the button.",
     },
     intent: {
       type: '"neutral" | "primary"',
       default: '"primary"',
-      description: "Starter background palette. Edit or extend it locally.",
+      description:
+        "Which starter palette to apply. Edit or extend the palette map in the installed file.",
     },
     size: {
       type: '"compact" | "comfortable"',
       default: '"compact"',
-      description: "Horizontal padding density.",
+      description: "Which horizontal padding density to apply.",
     },
     disabled: {
       type: "boolean",
-      description: "Disabled buttons reject focus and activation.",
+      description:
+        "Whether the button is disabled. Disabled buttons reject focus and activation.",
     },
   }}
 />
 
 All remaining primitive props — layout, colors, and event callbacks — pass
-through to `ButtonPrimitive`.
+through to `ButtonPrimitive`. The render callback receives readonly
+`pressed`, `focused`, and `disabled` state, which the starter recipe maps to
+background colors.
 
-## Behavior
-
-- `press()` on the Renderable ref triggers activation imperatively.
-- Enter/Return, Space, and the primary pointer button activate.
-- The render callback receives readonly `pressed`, `focused`, and `disabled`
-  state, which the starter recipe maps to background colors.
+For the split between packaged behavior and installed presentation, see the
+[architecture page](/architecture).

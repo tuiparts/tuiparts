@@ -1,11 +1,12 @@
 ---
 title: Dialog
-description: A foundation overlay primitive with layered dismissal and focus containment, a preview recipe, and a production companion package.
+description: An overlay that takes focus and holds it until dismissed.
 ---
 
 <Badge variant="warning">Preview recipe</Badge>
 
-Dialog currently has three distinct surfaces:
+An overlay that takes focus and holds it until dismissed. Dialog currently
+has three distinct surfaces:
 
 - **`@tuiparts/{core,react,solid}/dialog`** — the foundation compound
   primitive.
@@ -14,20 +15,27 @@ Dialog currently has three distinct surfaces:
 - **`@tuiparts/dialog`** — the adopted companion package with manager,
   provider, theme, and async `prompt`/`confirm`/`alert`/`choice` conveniences.
 
-Installing the preview recipe does not replace the companion package.
+**Installing the preview recipe does not replace the companion package.**
+The two are independent surfaces over the same foundation behavior.
 
 ## The foundation primitive
 
-The compound primitive exposes `Dialog.Root`, `Trigger`, `Portal`, `Backdrop`,
-`Popup`, `Title`, `Description`, and `Close` parts over controlled or
-uncontrolled `open` state.
+The compound primitive exposes `Dialog.Root`, `Trigger`, `Portal`,
+`Backdrop`, `Popup`, `Title`, `Description`, and `Close` parts over
+controlled or uncontrolled `open` state. The package owns renderer-scoped
+layer coordination, topmost dismissal, focus containment, and focus
+restoration to the trigger on close.
 
-Behavior owned by the package:
+## Keyboard interactions
 
-- Renderer-scoped layer coordination and topmost dismissal.
-- Escape to dismiss; Tab containment inside the open popup.
-- Focus restoration to the trigger on close.
-- Trigger/Close activation via Enter/Return, Space, and the primary pointer.
+| Key | Behavior |
+| --- | --- |
+| `Esc` | Dismisses the topmost open dialog. |
+| `Tab` | Moves focus within the open popup; focus is contained. |
+| `Enter` | Activates the focused `Trigger` or `Close`. |
+| `Space` | Activates the focused `Trigger` or `Close`. |
+
+The primary pointer button also activates `Trigger` and `Close`.
 
 ## Install the preview recipe
 
@@ -47,11 +55,14 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/dialog
 
 </CodeGroup>
 
+The command above copies the preview recipe into `components/ui`. The file
+belongs to your application.
+
 ## The companion package
 
 For production convenience APIs — imperative prompts, confirm/alert/choice
-flows, theming, and a managed container — use the independently versioned
-companion:
+flows, theming, and a managed container — install the independently
+versioned companion:
 
 ```bash
 pnpm add @tuiparts/dialog

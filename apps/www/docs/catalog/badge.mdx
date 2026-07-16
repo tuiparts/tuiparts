@@ -1,15 +1,23 @@
 ---
 title: Badge
-description: A presentation-only status label composed from ordinary OpenTUI elements — no packaged behavior at all.
+description: A presentation-only status label composed from ordinary OpenTUI elements.
 ---
 
 <Badge>Recipe only</Badge>
 
-Badge has no reusable interaction behavior, so it is distributed only as
-editable registry source. The installed file composes ordinary OpenTUI
-elements — a `box` and a `text` — with a starter intent palette.
+A presentation-only status label composed from ordinary OpenTUI elements — a
+`box` and a `text` — with a starter intent palette. Badge is not interactive:
+it renders no focus, keyboard, or pointer behavior, so it is distributed only
+as editable registry source.
 
-## Install
+## Usage guidelines
+
+- **Use `Badge` for status, not actions.** For anything the user activates,
+  use `Button`.
+- **The recipe is the entire implementation.** Edit the palette map directly;
+  there is no package behind it.
+
+## Installation
 
 <CodeGroup>
 
@@ -27,7 +35,12 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/badge
 
 </CodeGroup>
 
-## Usage
+The command above copies the recipe into `components/ui`. The file belongs to
+your application.
+
+## Anatomy
+
+Import the installed component and render it:
 
 ```tsx
 import { Badge } from "./components/ui/badge";
@@ -36,28 +49,29 @@ import { Badge } from "./components/ui/badge";
 <Badge label="Deprecated" intent="danger" size="comfortable" />
 ```
 
-## Props
+## API reference
 
 <TypeTable
   type={{
     label: {
       type: "string",
       required: true,
-      description: "The badge text.",
+      description: "Text rendered inside the badge.",
     },
     intent: {
       type: '"danger" | "neutral" | "success" | "warning"',
       default: '"neutral"',
-      description: "Starter background/foreground palette pairs.",
+      description:
+        "Which starter background and foreground palette pair to apply.",
     },
     size: {
       type: '"compact" | "comfortable"',
       default: '"compact"',
-      description: "Horizontal padding density.",
+      description: "Which horizontal padding density to apply.",
     },
     labelOptions: {
       type: "Omit<TextOptions, 'content'>",
-      description: "Extra OpenTUI text options for the label.",
+      description: "Extra OpenTUI text options applied to the label.",
     },
   }}
 />
@@ -68,4 +82,3 @@ Remaining props are ordinary OpenTUI `BoxOptions` applied to the root.
 
 Packages exist to version difficult behavior — state, focus, keys, overlays.
 Badge has none, so packaging it would only hide presentation behind an API.
-The recipe is the entire implementation; edit the palette map directly.

@@ -1,58 +1,80 @@
 ---
 title: Introduction
-description: Composable, framework-neutral interaction primitives and editable UI recipes for OpenTUI.
+description: Composable interaction primitives and editable UI recipes for building terminal interfaces with OpenTUI.
 sidebar:
   order: 1
 ---
 
-tuiparts.sh is the primitive and recipe ecosystem for
-[OpenTUI](https://github.com/anomalyco/opentui) — composable interaction
-primitives and editable recipes for building terminal UIs in React, Solid, or
-imperative Core. It makes the same trade Base UI and shadcn/ui made on the
-web:
+tuiparts.sh is the component ecosystem for
+[OpenTUI](https://github.com/anomalyco/opentui), covering React, Solid, and
+imperative Core. Behavior ships as versioned packages. Presentation installs
+as source you own.
 
-> Package the difficult behavior. Copy the opinionated layer.
+You already know the difficult parts of a terminal UI, because they are the
+same in every app you build: focus that moves predictably, keys that activate
+the right control, overlays that dismiss in the right order, disabled controls
+that reject input. None of that is what makes your interface yours — but it is
+where the time goes, and where the bugs live. tuiparts.sh splits every
+component along that line.
 
-That trade ships in two foundation layers:
+## Packages own behavior
 
-1. **Versioned packages** own state, keyboard and pointer interaction, focus,
-   collections, overlays, lifecycle, public parts, and framework adapters.
-2. **Registry recipes** own glyphs, layout, colors, themes, semantic variants,
-   and convenience assembly — installed as source your application controls.
+State, focus, keyboard and pointer interaction, collections, overlays, and
+lifecycle ship as versioned npm packages: `@tuiparts/core` provides
+framework-neutral Stores and Renderables, and `@tuiparts/react` and
+`@tuiparts/solid` provide compound-part adapters over them. Upgrading a
+package delivers behavior fixes without touching your presentation code.
 
-Use a package primitive when you are building a component or design system.
-Install a registry recipe when you want a useful starting component whose
-layout, glyphs, colors, and convenience props you can edit.
+## Recipes install as source you own
 
-## Foundation packages
+Glyphs, palettes, layout, semantic variants, and convenience assembly install
+as plain TypeScript through the official shadcn CLI. The installed file lands
+in your project and belongs to your application — edit the palette map
+directly; there is no hidden theme runtime.
 
-| Package | Purpose |
-| --- | --- |
-| `@tuiparts/core` | Framework-neutral primitive state and Renderables |
-| `@tuiparts/react` | React compound-part adapters |
-| `@tuiparts/solid` | Solid compound-part adapters |
+## One vocabulary, three runtimes
 
-Button, Checkbox, Dialog, Input, RadioGroup, and Switch expose foundation
-behavior. Badge is distributed only as editable registry source because it has
-no reusable interaction behavior. `@tuiparts/dialog` and `@tuiparts/toast`
-are independently versioned companion products with higher-level APIs outside
-the foundation release line.
+The React and Solid adapters sit over the same Core Stores and Renderables,
+so the primitive vocabulary is identical wherever the runtimes permit it. You
+can also drive the Core layer imperatively, without a framework.
 
-## Principles
+## Parts, not style slots
 
-- **Open code** — recipes install as plain TypeScript in your project. Edit the
-  palette, glyphs, and layout directly; there is no hidden theme runtime.
-- **Composition** — primitives expose independently composable parts
-  (`Checkbox.Root`, `Checkbox.Indicator`), not style slots.
-- **Framework-neutral behavior** — the same Core Stores and Renderables power
-  the React and Solid adapters, and can be used imperatively.
-- **shadcn-compatible distribution** — recipes install and update through the
-  official shadcn CLI with the standard view/diff/add lifecycle.
+Primitives expose independently composable parts — `Checkbox.Root`,
+`Checkbox.Indicator` — rather than a single styled component with escape
+hatches. Recipes assemble those parts into convenient components you can take
+apart again.
+
+## FAQ
+
+**Should I compose a primitive or install a recipe?**
+
+Compose a package primitive when you are building your own component or
+design system. Install a registry recipe when you want a working component
+whose layout, glyphs, and colors you can edit.
+
+**Why is Badge not a package?**
+
+Badge has no interaction behavior to version, so packaging it would only hide
+presentation behind an API. It is distributed only as editable registry
+source.
+
+**What are `@tuiparts/dialog` and `@tuiparts/toast`?**
+
+Independently versioned companion packages with higher-level APIs —
+imperative prompts and global notifications — outside the foundation release
+line. Installing a foundation recipe does not replace either companion.
+
+**What happens to my edits when a recipe updates?**
+
+Nothing, until you act. Run the `diff` command to review upstream changes and
+merge the ones you want; an ordinary `add` asks before touching an existing
+file.
 
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Quickstart" href="/quickstart" icon="rocket">
+  <Card title="Quick start" href="/quickstart" icon="rocket">
     Install an adapter and render your first primitive.
   </Card>
   <Card title="Catalog" href="/catalog" icon="layout-grid">

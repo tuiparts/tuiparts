@@ -121,7 +121,7 @@ const pillars = [
 
   {/* ── Hero — title left, live terminal render right ── */}
   <section
-    class="mx-auto grid max-w-6xl items-center gap-12 px-6 pt-16 pb-20 lg:grid-cols-[minmax(0,10fr)_minmax(0,9fr)] lg:gap-16 lg:pt-24 lg:pb-24"
+    class="mx-auto grid max-w-6xl items-center gap-12 px-6 pt-14 pb-20 lg:grid-cols-[minmax(0,10fr)_minmax(0,9fr)] lg:gap-16 lg:pt-20 lg:pb-28"
   >
     <div>
       <p
@@ -148,7 +148,7 @@ const pillars = [
         >
         <a
           class="btn-outline press rounded-blume border border-border px-5 py-2.5 text-sm font-medium text-foreground"
-          href="/docs/catalog">Browse the Catalog</a
+          href="/docs/catalog">Browse the catalog</a
         >
       </div>
       <div
@@ -213,7 +213,7 @@ const pillars = [
           <div class="demo-line"><span class="t-dim">[ ]</span> Auto-install updates</div>
           <div class="demo-line demo-gap">Theme      <span class="t-dim">(</span><span class="t-signal">●</span><span class="t-dim">)</span> Dark   <span class="t-dim">( )</span> Light</div>
           <div class="demo-line demo-gap">Telemetry  <span class="t-dim">○──</span>  <span class="t-muted">off</span></div>
-          <div class="demo-line demo-gap"><span class="t-signal">┃</span> <span class="caret-input">▍</span><span class="t-muted">Search the Catalog…</span></div>
+          <div class="demo-line demo-gap"><span class="t-signal">┃</span> <span class="caret-input">▍</span><span class="t-muted">Search the catalog…</span></div>
           <div class="demo-line demo-gap"><span class="chip chip-solid"> Save changes </span>  <span class="chip chip-ghost"> Cancel </span></div>
           <div class="demo-line t-faint demo-gap">tab focus · space toggle · ↵ submit</div>
         </div>
@@ -224,16 +224,12 @@ const pillars = [
   {/* ── The trade — one statement, two owners ── */}
   <section class="border-t border-border">
     <div class="mx-auto max-w-6xl px-6 py-20 lg:py-24">
-      <p class="reveal font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
-        The trade
-      </p>
       <h2
-        class="reveal mt-4 max-w-2xl text-balance font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl"
-        data-d="1"
+        class="reveal max-w-2xl text-balance font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl"
       >
         Package the difficult behavior. Copy the opinionated layer.
       </h2>
-      <p class="reveal mt-4 max-w-2xl text-pretty text-muted-foreground" data-d="2">
+      <p class="reveal mt-4 max-w-2xl text-pretty text-muted-foreground" data-d="1">
         The same split Base UI and shadcn/ui made on the web, applied to the
         terminal. Correctness-critical behavior is centralized and tested
         once; everything opinionated stays in code you can read and change.
@@ -297,11 +293,8 @@ const pillars = [
       class="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16 lg:py-24"
     >
       <div class="reveal">
-        <p class="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
-          Primitives
-        </p>
         <h2
-          class="mt-4 text-balance font-display text-3xl font-semibold tracking-tight text-foreground"
+          class="text-balance font-display text-3xl font-semibold tracking-tight text-foreground"
         >
           When you're building a system.
         </h2>
@@ -319,11 +312,11 @@ const pillars = [
             <span class="text-accent" aria-hidden="true">▪</span> real parts: Root, Indicator, Thumb, Popup
           </li>
           <li class="flex items-baseline gap-2.5 font-mono text-xs text-muted-foreground">
-            <span class="text-accent" aria-hidden="true">▪</span> controlled or uncontrolled — your call
+            <span class="text-accent" aria-hidden="true">▪</span> controlled or uncontrolled — you decide
           </li>
         </ul>
         <a class="link-arrow mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-accent" href="/docs/quickstart"
-          >Read the quickstart <span class="arrow" aria-hidden="true">→</span></a
+          >Read the quick start <span class="arrow" aria-hidden="true">→</span></a
         >
       </div>
       <div class="reveal" data-d="1">
@@ -338,8 +331,7 @@ const pillars = [
       class="mx-auto grid max-w-6xl gap-14 px-6 py-20 lg:grid-cols-[minmax(0,10fr)_minmax(0,9fr)] lg:gap-20 lg:py-24"
     >
       <div class="reveal">
-        <p class="band-eyebrow">Registry</p>
-        <h2 class="mt-4 text-balance font-display text-3xl font-semibold tracking-tight">
+        <h2 class="text-balance font-display text-3xl font-semibold tracking-tight">
           When you want a head start.
         </h2>
         <p class="band-muted mt-4 text-pretty leading-7">
@@ -394,7 +386,9 @@ const pillars = [
         >
       </div>
       <div class="reveal" data-d="1">
-        <p class="band-eyebrow">Starter catalog</p>
+        <h3 class="font-display text-base font-semibold text-[var(--tp-graphite-ink)]">
+          Starter catalog
+        </h3>
         <ol class="band-list mt-5">
           {
             catalog.map((item, index) => (
@@ -418,23 +412,26 @@ const pillars = [
     </div>
   </section>
 
-  {/* ── Pillars — three points, hairline-divided, no boxes ── */}
-  <section class="mx-auto max-w-6xl px-6 py-20 lg:py-24">
-    <div class="grid gap-12 sm:grid-cols-3 sm:gap-0">
+  {/* ── Pillars — asymmetric, hairline-divided, no boxes ── */}
+  <section class="mx-auto max-w-6xl px-6 py-16 lg:py-20">
+    <div class="grid gap-10 lg:grid-cols-[1.35fr_1fr_1fr] lg:gap-0">
       {
         pillars.map((pillar, index) => (
           <div
             class:list={[
               "reveal",
-              index > 0 && "sm:border-l sm:border-border sm:pl-10",
-              index < pillars.length - 1 && "sm:pr-10",
+              index === 0 && "lg:pr-14",
+              index > 0 && "lg:border-l lg:border-border lg:pl-10",
+              index === 1 && "lg:pr-10",
             ]}
             data-d={String(index)}
           >
-            <p class="font-mono text-xs tracking-[0.14em] text-accent uppercase">
-              {String(index + 1).padStart(2, "0")}
-            </p>
-            <h3 class="mt-3 text-balance font-display text-lg font-semibold text-foreground">
+            <h3
+              class:list={[
+                "text-balance font-display font-semibold text-foreground",
+                index === 0 ? "text-xl" : "text-lg",
+              ]}
+            >
               {pillar.title}
             </h3>
             <p class="mt-3 text-pretty text-sm leading-6 text-muted-foreground">{pillar.body}</p>
@@ -446,7 +443,7 @@ const pillars = [
 
   {/* ── Closing CTA ── */}
   <section class="border-t border-border">
-    <div class="mx-auto max-w-4xl px-6 py-20 text-center lg:py-24">
+    <div class="mx-auto max-w-4xl px-6 py-24 text-center lg:py-28">
       <h2
         class="reveal mx-auto max-w-2xl text-balance font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl"
       >
@@ -458,7 +455,7 @@ const pillars = [
       </p>
       <div class="reveal mt-8 flex flex-wrap items-center justify-center gap-3" data-d="2">
         <a class="btn-solid press rounded-blume px-5 py-2.5 text-sm font-medium" href="/docs/quickstart"
-          >Quickstart</a
+          >Quick start</a
         >
         <a
           class="btn-outline press rounded-blume border border-border px-5 py-2.5 text-sm font-medium text-foreground"
@@ -489,7 +486,7 @@ const pillars = [
               <a class="footer-link" href="/docs">Introduction</a>
             </li>
             <li>
-              <a class="footer-link" href="/docs/quickstart">Quickstart</a>
+              <a class="footer-link" href="/docs/quickstart">Quick start</a>
             </li>
             <li>
               <a class="footer-link" href="/docs/catalog">Catalog</a>
@@ -543,7 +540,8 @@ const pillars = [
   /* Hallmark · genre: modern-minimal · macrostructure: dev-tool/CLI · theme: cobalt-deep
      · enrichment: Tier-A CSS art (TUI instrument pane) · nav: blume-default
      · footer: Ft3 (docs-root allowance) · design-system: design.md · designed-as-app
-     · pre-emit critique: P4 H5 E4 S5 R4 V4 */
+     · contrast: pass (40–41) · responsive: pass (34, 49–57)
+     · pre-emit critique: P5 H5 E5 S5 R5 V5 */
 
   /* ── CTAs ─────────────────────────────────────────────────────────── */
 
@@ -556,6 +554,9 @@ const pillars = [
   }
 
   .btn-solid {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
     background: var(--blume-action);
     color: var(--blume-action-foreground);
     transition:
@@ -568,6 +569,9 @@ const pillars = [
   }
 
   .btn-outline {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
     transition:
       border-color 150ms ease,
       background-color 150ms ease,
@@ -599,6 +603,11 @@ const pillars = [
   }
 
   /* ── Copy button — clipboard ⇢ check cross-fade ───────────────────── */
+
+  .copy-btn {
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+  }
 
   .copy-btn svg {
     transition:
@@ -635,8 +644,8 @@ const pillars = [
     border: 1px solid var(--tp-graphite-rule);
     border-radius: 10px;
     box-shadow:
-      0 1px 2px oklch(0.24 0.02 258 / 0.06),
-      0 12px 32px oklch(0.24 0.02 258 / 0.08);
+      0 1px 2px var(--tp-demo-shadow-near),
+      0 12px 32px var(--tp-demo-shadow-far);
     overflow: hidden;
   }
 
@@ -743,17 +752,17 @@ const pillars = [
     color: var(--tp-graphite-ink);
   }
 
-  /* Type-in plays once, rows rise in after it, one caret keeps blinking. */
+  /* Type-in plays once, rows follow promptly, one caret keeps blinking. */
   @media (prefers-reduced-motion: no-preference) {
     .typed {
       width: 0;
-      animation: typing 1s steps(20, end) 0.4s forwards;
+      animation: typing 800ms steps(20, end) 150ms forwards;
     }
 
     .caret-cmd {
       animation:
-        blink 0.8s step-end 3,
-        vanish 1ms linear 1.6s forwards;
+        blink 650ms step-end 2,
+        vanish 1ms linear 1.05s forwards;
     }
 
     .caret-input {
@@ -763,35 +772,35 @@ const pillars = [
     .demo-ui > * {
       opacity: 0;
       transform: translateY(6px);
-      animation: rise 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: rise 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     .demo-ui > *:nth-child(1) {
-      animation-delay: 1.55s;
+      animation-delay: 0.75s;
     }
     .demo-ui > *:nth-child(2) {
-      animation-delay: 1.6s;
+      animation-delay: 0.8s;
     }
     .demo-ui > *:nth-child(3) {
-      animation-delay: 1.65s;
+      animation-delay: 0.85s;
     }
     .demo-ui > *:nth-child(4) {
-      animation-delay: 1.7s;
+      animation-delay: 0.9s;
     }
     .demo-ui > *:nth-child(5) {
-      animation-delay: 1.75s;
+      animation-delay: 0.95s;
     }
     .demo-ui > *:nth-child(6) {
-      animation-delay: 1.8s;
+      animation-delay: 1s;
     }
     .demo-ui > *:nth-child(7) {
-      animation-delay: 1.85s;
+      animation-delay: 1.05s;
     }
     .demo-ui > *:nth-child(8) {
-      animation-delay: 1.9s;
+      animation-delay: 1.1s;
     }
     .demo-ui > *:nth-child(9) {
-      animation-delay: 1.95s;
+      animation-delay: 1.15s;
     }
   }
 
@@ -826,14 +835,6 @@ const pillars = [
     background: var(--tp-graphite);
     border-block: 1px solid var(--tp-graphite-rule);
     color: var(--tp-graphite-ink);
-  }
-
-  .band-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--tp-signal);
   }
 
   .band-muted {
@@ -940,13 +941,25 @@ const pillars = [
       transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 30rem) {
     .band-parts {
       display: none;
     }
 
     .band-row {
       grid-template-columns: 2.25rem minmax(0, 1fr) 1.25rem;
+    }
+  }
+
+  @media (pointer: coarse) {
+    .btn-solid,
+    .btn-outline,
+    .copy-btn {
+      min-height: 2.75rem;
+    }
+
+    .copy-btn {
+      min-width: 2.75rem;
     }
   }
 

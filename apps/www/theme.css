@@ -71,6 +71,9 @@
   --tp-graphite-faint: oklch(0.635 0.015 256);
   --tp-signal: oklch(0.72 0.15 252);
   --tp-signal-ink: oklch(0.16 0.014 260);
+  --tp-demo-shadow-near: oklch(0.24 0.02 258 / 0.06);
+  --tp-demo-shadow-far: oklch(0.24 0.02 258 / 0.08);
+  --tp-selection: oklch(0.52 0.19 257 / 0.18);
 
   /* Single-face rule: every role renders Commit Mono; IBM Plex Mono is the
      decreed fallback (docs/brand/typography.md) — the var() resolves to the
@@ -97,6 +100,7 @@
   --blume-code-background: oklch(0.165 0.014 258);
 
   --tp-action-hover: oklch(0.75 0.14 253);
+  --tp-selection: oklch(0.7 0.145 253 / 0.28);
 }
 
 /* Base niceties: no sideways scroll ever, crisper text on macOS,
@@ -110,15 +114,54 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Blume owns the header markup. Keep its compact chrome while ensuring every
+   icon action has a truthful pointer target. */
+:where(
+  [data-blume-search-open],
+  [data-blume-theme-toggle],
+  [data-blume-nav-toggle],
+  [data-blume-header] a[aria-label]
+) {
+  min-height: 2.5rem;
+}
+
+:where(
+  [data-blume-theme-toggle],
+  [data-blume-nav-toggle],
+  [data-blume-header] a[aria-label]
+) {
+  min-width: 2.5rem;
+}
+
+@media (pointer: coarse) {
+  :where(
+    [data-blume-search-open],
+    [data-blume-theme-toggle],
+    [data-blume-nav-toggle],
+    [data-blume-header] a[aria-label]
+  ) {
+    min-height: 2.75rem;
+  }
+
+  :where(
+    [data-blume-theme-toggle],
+    [data-blume-nav-toggle],
+    [data-blume-header] a[aria-label]
+  ) {
+    min-width: 2.75rem;
+  }
+}
+
 ::selection {
-  background: oklch(0.52 0.19 257 / 0.18);
+  background: var(--tp-selection);
 }
 
-:root[data-theme="dark"] ::selection {
-  background: oklch(0.7 0.145 253 / 0.28);
+/* Display text keeps its measure even with long package or product names. */
+:where(h1, h2, h3) {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
-/* Headings wrap without orphans. */
 .prose :where(h1, h2, h3) {
   text-wrap: balance;
 }

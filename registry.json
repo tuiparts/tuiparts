@@ -8,7 +8,7 @@
       "type": "registry:ui",
       "title": "Checkbox (Core)",
       "description": "Editable imperative Checkbox Recipe built on the tuiparts.sh Foundation Primitive.",
-      "dependencies": ["@tuiparts/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
+      "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0", "@opentui/core@^0.4.3"],
       "files": [
         {
           "path": "registry/checkbox/core.ts",
@@ -29,8 +29,8 @@
       "title": "Checkbox (React)",
       "description": "Editable React Checkbox Recipe built on the tuiparts.sh Foundation Primitive.",
       "dependencies": [
-        "@tuiparts/react@^0.0.3-rc.0",
-        "@tuiparts/core@^0.0.3-rc.0",
+        "@tuiparts/react@>=0.0.1 <0.1.0",
+        "@tuiparts/core@>=0.0.1 <0.1.0",
         "@opentui/core@^0.4.3",
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
@@ -56,8 +56,8 @@
       "title": "Checkbox (Solid)",
       "description": "Editable Solid Checkbox Recipe built on the tuiparts.sh Foundation Primitive.",
       "dependencies": [
-        "@tuiparts/solid@^0.0.3-rc.0",
-        "@tuiparts/core@^0.0.3-rc.0",
+        "@tuiparts/solid@>=0.0.1 <0.1.0",
+        "@tuiparts/core@>=0.0.1 <0.1.0",
         "@opentui/core@^0.4.3",
         "@opentui/solid@^0.4.3",
         "solid-js@1.9.12"
@@ -81,7 +81,7 @@
       "type": "registry:ui",
       "title": "Switch (Core)",
       "description": "Editable imperative Switch Recipe built on the tuiparts.sh Foundation Primitive.",
-      "dependencies": ["@tuiparts/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
+      "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0", "@opentui/core@^0.4.3"],
       "files": [
         {
           "path": "registry/switch/core.ts",
@@ -102,8 +102,8 @@
       "title": "Switch (React)",
       "description": "Editable React Switch Recipe built on the tuiparts.sh Foundation Primitive.",
       "dependencies": [
-        "@tuiparts/react@^0.0.3-rc.0",
-        "@tuiparts/core@^0.0.3-rc.0",
+        "@tuiparts/react@>=0.0.1 <0.1.0",
+        "@tuiparts/core@>=0.0.1 <0.1.0",
         "@opentui/core@^0.4.3",
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
@@ -129,8 +129,8 @@
       "title": "Switch (Solid)",
       "description": "Editable Solid Switch Recipe built on the tuiparts.sh Foundation Primitive.",
       "dependencies": [
-        "@tuiparts/solid@^0.0.3-rc.0",
-        "@tuiparts/core@^0.0.3-rc.0",
+        "@tuiparts/solid@>=0.0.1 <0.1.0",
+        "@tuiparts/core@>=0.0.1 <0.1.0",
         "@opentui/core@^0.4.3",
         "@opentui/solid@^0.4.3",
         "solid-js@1.9.12"
@@ -154,7 +154,7 @@
       "type": "registry:ui",
       "title": "Button (Core)",
       "description": "Editable imperative Button Recipe built on the tuiparts.sh Foundation Primitive.",
-      "dependencies": ["@tuiparts/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
+      "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0", "@opentui/core@^0.4.3"],
       "files": [
         {
           "path": "registry/button/core.ts",
@@ -175,8 +175,8 @@
       "title": "Button (React)",
       "description": "Editable React Button Recipe built on the tuiparts.sh Foundation Primitive.",
       "dependencies": [
-        "@tuiparts/react@^0.0.3-rc.0",
-        "@tuiparts/core@^0.0.3-rc.0",
+        "@tuiparts/react@>=0.0.1 <0.1.0",
+        "@tuiparts/core@>=0.0.1 <0.1.0",
         "@opentui/core@^0.4.3",
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
@@ -202,8 +202,8 @@
       "title": "Button (Solid)",
       "description": "Editable Solid Button Recipe built on the tuiparts.sh Foundation Primitive.",
       "dependencies": [
-        "@tuiparts/solid@^0.0.3-rc.0",
-        "@tuiparts/core@^0.0.3-rc.0",
+        "@tuiparts/solid@>=0.0.1 <0.1.0",
+        "@tuiparts/core@>=0.0.1 <0.1.0",
         "@opentui/core@^0.4.3",
         "@opentui/solid@^0.4.3",
         "solid-js@1.9.12"
@@ -296,7 +296,7 @@
       "type": "registry:ui",
       "title": "Radio Group (Core)",
       "description": "Editable imperative Radio and Radio Group Recipe built on the tuiparts.sh collection Primitive.",
-      "dependencies": ["@tuiparts/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
+      "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0", "@opentui/core@^0.4.3"],
       "files": [
         {
           "path": "registry/radio-group/core.ts",
@@ -317,8 +317,8 @@
       "title": "Radio Group (React)",
       "description": "Editable React Radio and Radio Group Recipe built on the tuiparts.sh collection Primitive.",
       "dependencies": [
-        "@tuiparts/react@^0.0.3-rc.0",
-        "@tuiparts/core@^0.0.3-rc.0",
+        "@tuiparts/react@>=0.0.1 <0.1.0",
+        "@tuiparts/core@>=0.0.1 <0.1.0",
         "@opentui/core@^0.4.3",
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
@@ -344,8 +344,8 @@
       "title": "Radio Group (Solid)",
       "description": "Editable Solid Radio and Radio Group Recipe built on the tuiparts.sh collection Primitive.",
       "dependencies": [
-        "@tuiparts/solid@^0.0.3-rc.0",
-        "@tuiparts/core@^0.0.3-rc.0",
+        "@tuiparts/solid@>=0.0.1 <0.1.0",
+        "@tuiparts/core@>=0.0.1 <0.1.0",
         "@opentui/core@^0.4.3",
         "@opentui/solid@^0.4.3",
         "solid-js@1.9.12"
@@ -369,7 +369,7 @@
       "type": "registry:ui",
       "title": "Input (Core)",
       "description": "Editable imperative Input recipe preserving OpenTUI-native editing and events.",
-      "dependencies": ["@tuiparts/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
+      "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0", "@opentui/core@^0.4.3"],
       "docs": "Input preserves OpenTUI's native mutable buffer: changed programmatic value assignments invoke onInput, while onChange reports blur or submit commits.",
       "files": [
         {
@@ -391,8 +391,8 @@
       "title": "Input (React)",
       "description": "Editable React Input recipe preserving OpenTUI-native editing and events.",
       "dependencies": [
-        "@tuiparts/react@^0.0.3-rc.0",
-        "@tuiparts/core@^0.0.3-rc.0",
+        "@tuiparts/react@>=0.0.1 <0.1.0",
+        "@tuiparts/core@>=0.0.1 <0.1.0",
         "@opentui/core@^0.4.3",
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
@@ -419,8 +419,8 @@
       "title": "Input (Solid)",
       "description": "Editable Solid Input recipe preserving OpenTUI-native editing and events.",
       "dependencies": [
-        "@tuiparts/solid@^0.0.3-rc.0",
-        "@tuiparts/core@^0.0.3-rc.0",
+        "@tuiparts/solid@>=0.0.1 <0.1.0",
+        "@tuiparts/core@>=0.0.1 <0.1.0",
         "@opentui/core@^0.4.3",
         "@opentui/solid@^0.4.3",
         "solid-js@1.9.12"
@@ -445,7 +445,7 @@
       "type": "registry:ui",
       "title": "Dialog (Core)",
       "description": "Editable imperative Dialog Recipe built on the tuiparts.sh overlay Primitive tracer.",
-      "dependencies": ["@tuiparts/core@^0.0.3-rc.0", "@opentui/core@^0.4.3"],
+      "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0", "@opentui/core@^0.4.3"],
       "files": [
         {
           "path": "registry/dialog/core.ts",
@@ -464,8 +464,8 @@
       "title": "Dialog (React)",
       "description": "Editable React Dialog Recipe built on the tuiparts.sh overlay Primitive tracer.",
       "dependencies": [
-        "@tuiparts/react@^0.0.3-rc.0",
-        "@tuiparts/core@^0.0.3-rc.0",
+        "@tuiparts/react@>=0.0.1 <0.1.0",
+        "@tuiparts/core@>=0.0.1 <0.1.0",
         "@opentui/core@^0.4.3",
         "@opentui/react@^0.4.3",
         "react@^19.2.0"
@@ -489,8 +489,8 @@
       "title": "Dialog (Solid)",
       "description": "Editable Solid Dialog Recipe built on the tuiparts.sh overlay Primitive tracer.",
       "dependencies": [
-        "@tuiparts/solid@^0.0.3-rc.0",
-        "@tuiparts/core@^0.0.3-rc.0",
+        "@tuiparts/solid@>=0.0.1 <0.1.0",
+        "@tuiparts/core@>=0.0.1 <0.1.0",
         "@opentui/core@^0.4.3",
         "@opentui/solid@^0.4.3",
         "solid-js@1.9.12"

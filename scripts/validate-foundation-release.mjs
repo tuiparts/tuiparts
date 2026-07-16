@@ -26,8 +26,9 @@ function assert(condition, message) {
 }
 
 try {
-  const preState = JSON.parse(
-    readFileSync(join(root, ".changeset/pre.json"), "utf8"),
+  assert(
+    !existsSync(join(root, ".changeset/pre.json")),
+    "Foundation releases must not use Changesets prerelease mode",
   );
   let plan;
   if (versionedRelease) {
@@ -35,11 +36,10 @@ try {
       .filter((file) => file.endsWith(".md") && file !== "README.md")
       .map((file) => file.slice(0, -3));
     assert(
-      changesetIds.length > 0 &&
-        changesetIds.every((id) => preState.changesets.includes(id)),
-      "The version PR must record every release changeset as consumed",
+      changesetIds.length === 0,
+      "The version PR must consume every release changeset",
     );
-    plan = { releases: [], preState };
+    plan = { releases: [] };
   } else {
     const statusArguments = [
       "exec",
@@ -80,8 +80,8 @@ try {
           ),
         ).version;
     assert(
-      version.includes("-rc."),
-      `${packageName} must release on the RC prerelease tag`,
+      /^\d+\.\d+\.\d+$/.test(version),
+      `${packageName} must use a stable semantic version`,
     );
     foundationVersions.add(version);
   }
@@ -93,16 +93,23 @@ try {
   for (const packageName of companionPackages) {
     assert(
       !releases.has(packageName),
-      `${packageName} is a deferred companion and must not join the foundation RC`,
+      `${packageName} is an independent companion and must not join a foundation release`,
     );
     if (versionedRelease) {
       const packagePath = packageName.split("/").at(-1);
       const version = JSON.parse(
         readFileSync(join(root, `packages/${packagePath}/package.json`), "utf8"),
       ).version;
+      const baseVersion = JSON.parse(
+        execFileSync(
+          "git",
+          ["show", `origin/main:packages/${packagePath}/package.json`],
+          { cwd: root, encoding: "utf8" },
+        ),
+      ).version;
       assert(
-        version === preState.initialVersions[packageName],
-        `${packageName} must remain at its pre-RC version`,
+        version === baseVersion,
+        `${packageName} must remain unchanged in the foundation version PR`,
       );
     }
   }
@@ -113,10 +120,6 @@ try {
   assert(
     !existsSync(join(root, "packages/styles/package.json")),
     "The removed styles package must not be restored",
-  );
-  assert(
-    plan.preState?.mode === "pre" && plan.preState?.tag === "rc",
-    "Changesets must remain in RC prerelease mode",
   );
 } finally {
   rmSync(workDir, { recursive: true, force: true });

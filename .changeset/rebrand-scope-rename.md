@@ -9,6 +9,6 @@ tuiparts.sh — the primitive and recipe ecosystem for OpenTUI. Package behavior
 and APIs are unchanged; only the name moved. The final `@opentui-ui/*`
 releases are deprecated with pointers to their `@tuiparts/*` successors.
 
-The dialog, toast, and utils packages are deferred from the foundation RC
-cycle per release policy and receive their scope-rename release together,
-after this cycle ships (dialog and toast depend on utils).
+The dialog, toast, and utils packages are deferred from the initial foundation
+release per release policy and receive their scope-rename release together
+afterward (dialog and toast depend on utils).

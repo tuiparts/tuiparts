@@ -82,8 +82,17 @@ suffix.
 Recipes install through the official shadcn CLI and become source your
 application owns.
 
-1. Add the registry namespace to `components.json` so the CLI can resolve
-   `@tuiparts` addresses:
+1. Install the item for your runtime -- `core/*`, `react/*`, or `solid/*`:
+
+    ```bash
+    pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox
+    ```
+
+    The command above copies the recipe into `components/ui` and installs its
+    declared dependencies.
+
+2. If your CLI cannot resolve `@tuiparts`, add the registry namespace to
+   `components.json` and repeat the command:
 
     ```json title="components.json"
     {
@@ -93,15 +102,6 @@ application owns.
       }
     }
     ```
-
-2. Install the item for your runtime — `core/*`, `react/*`, or `solid/*`:
-
-    ```bash
-    pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox
-    ```
-
-    The command above copies the recipe into `components/ui` and installs its
-    declared dependencies.
 
 3. Import the installed component like any local file:
 

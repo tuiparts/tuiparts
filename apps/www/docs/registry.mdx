@@ -13,9 +13,17 @@ Installed files belong to the consuming project. The registry does not
 maintain a second package manager, a recipe lockfile, or an automatic merge
 engine.
 
-## Configure
+## Install
 
-Add the registry namespace to your project's `components.json`:
+When the shadcn Registry Directory resolves `@tuiparts`, install an item
+directly:
+
+```bash
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox
+```
+
+If your CLI cannot resolve the namespace yet, add the registry mapping to your
+project's `components.json`:
 
 ```json title="components.json"
 {
@@ -24,12 +32,6 @@ Add the registry namespace to your project's `components.json`:
     "@tuiparts": "https://tuiparts.sh/r/{name}.json"
   }
 }
-```
-
-Then install items by address:
-
-```bash
-pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox
 ```
 
 You can also install any item by direct URL without configuring a namespace:

@@ -49,8 +49,9 @@ overrides resolve them to the local packed tarballs under test.
 
 ## Install
 
-A consumer configures shadcn with a `components.json` file, then installs the
-item address published for its framework:
+A consumer installs an item by its `@tuiparts` address when the shadcn Registry
+Directory resolves the namespace. If it does not, the consumer configures the
+same namespace URL in `components.json` or installs the item by direct URL:
 
 ```bash
 pnpm dlx shadcn@4.13.0 add <item-address>

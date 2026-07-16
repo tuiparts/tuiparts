@@ -98,8 +98,9 @@ The complete ownership, event, part, lifecycle, and conformance rules are in
 
 ## Install A Recipe
 
-Configure shadcn with a `components.json`, then install the item for your
-runtime:
+Install the item for your runtime by its `@tuiparts` address. If the shadcn
+Registry Directory does not resolve the namespace, configure its URL in
+`components.json` or use the direct item URL:
 
 ```bash
 pnpm dlx shadcn@4.13.0 add <item-address>

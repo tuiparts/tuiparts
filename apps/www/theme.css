@@ -122,8 +122,15 @@ body {
   [data-blume-nav-toggle],
   [data-blume-header] a[aria-label]
 ) {
-  min-width: 2.5rem;
   min-height: 2.5rem;
+}
+
+:where(
+  [data-blume-theme-toggle],
+  [data-blume-nav-toggle],
+  [data-blume-header] a[aria-label]
+) {
+  min-width: 2.5rem;
 }
 
 @media (pointer: coarse) {
@@ -133,8 +140,15 @@ body {
     [data-blume-nav-toggle],
     [data-blume-header] a[aria-label]
   ) {
-    min-width: 2.75rem;
     min-height: 2.75rem;
+  }
+
+  :where(
+    [data-blume-theme-toggle],
+    [data-blume-nav-toggle],
+    [data-blume-header] a[aria-label]
+  ) {
+    min-width: 2.75rem;
   }
 }
 

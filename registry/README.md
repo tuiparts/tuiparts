@@ -42,10 +42,10 @@ the supported update workflow.
 Package ranges are the compatibility contract. Registry metadata describes the
 source lifecycle; it does not replace package dependency resolution.
 
-Foundation primitive items target `^0.0.3-rc.0`, so installations select the
-foundation RC rather than incompatible pre-foundation packages. Validation
-preserves those declared ranges while temporary workspace overrides resolve
-them to the local packed tarballs under test.
+Foundation primitive items target `>=0.0.1 <0.1.0`, beginning with the first
+stable release in the `@tuiparts` scope and accepting compatible foundation
+patches. Validation preserves those declared ranges while temporary workspace
+overrides resolve them to the local packed tarballs under test.
 
 ## Install
 

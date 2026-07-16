@@ -115,7 +115,7 @@ typechecks every exported subpath, and executes representative runtime imports.
 1. Add changesets for publishable changes.
 2. Merge the generated version PR after CI passes.
 3. Publish with npm provenance through the release workflow.
-4. Validate prereleases in clean consumers before promoting a stable tag.
+4. Validate packed packages in clean consumers before publishing.
 
 ## Attribution
 

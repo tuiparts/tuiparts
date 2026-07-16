@@ -1,5 +1,5 @@
 ---
-status: accepted
+status: superseded by ADR-0004
 ---
 
 # Keep companion reconciliation outside the foundation RC

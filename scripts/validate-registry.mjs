@@ -65,6 +65,8 @@ const recipes = [
   "radio-group",
   "input",
   "dialog",
+  "toggle",
+  "toggle-group",
 ];
 const foundationCatalogRecipes = [
   "checkbox",
@@ -73,6 +75,8 @@ const foundationCatalogRecipes = [
   "badge",
   "radio-group",
   "input",
+  "toggle",
+  "toggle-group",
 ];
 const expectedCatalogDependencyNames = {
   core: {

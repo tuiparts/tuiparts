@@ -20,6 +20,8 @@ Each foundation recipe is available as `core/<name>`, `react/<name>`, and
 | RadioGroup/Radio | Radio collection and selectable parts | `RadioGroup`, `RadioGroupItem` |
 | Input | Native OpenTUI input behavior | `Input` |
 | Badge | None; presentation-only recipe | `Badge` |
+| Toggle | Standalone pressed-state primitive | `Toggle` |
+| ToggleGroup/Toggle | Single or multiple selection and roving focus | `ToggleGroup`, `ToggleGroupItem` |
 
 React and Solid recipes expose the same installed names and props where their
 runtime semantics permit. Core recipes expose equivalent imperative factory
@@ -112,7 +114,7 @@ not package APIs or dependencies on a hidden theme runtime.
 
 `pnpm validate:registry` verifies the catalog's dependencies, lifecycle
 metadata, and matching React/Solid vocabulary. It builds every registry item
-with the pinned official shadcn CLI, installs all 21 items into isolated strict
+with the pinned official shadcn CLI, installs all 27 items into isolated strict
 consumers with bounded concurrency, type-checks them, and runs their runtime
 smokes. React Checkbox additionally applies a local edit, creates a newer
 upstream payload, verifies `--diff` shows both changes, and proves ordinary

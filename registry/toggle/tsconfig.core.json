@@ -1,0 +1,11 @@
+{
+  "extends": "../../examples/core/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "../../examples/core",
+    "paths": {
+      "@tuiparts/core/*": ["../../packages/core/src/*/index.ts"],
+      "*": ["node_modules/*"]
+    }
+  },
+  "include": ["core.ts"]
+}

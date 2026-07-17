@@ -18,7 +18,7 @@ Peer requirements are `@opentui/core` and `@opentui/react` `^0.4.3`, React
 ## Foundation Example
 
 ```tsx
-import { Button, Checkbox, Input, Radio, RadioGroup, Switch } from "@tuiparts/react";
+import { Button, Checkbox, Input, Radio, RadioGroup, Switch, Toggle, ToggleGroup } from "@tuiparts/react";
 import { useState } from "react";
 
 export function Settings() {
@@ -43,6 +43,13 @@ export function Settings() {
           <text content="Stable" />
         </Radio.Root>
       </RadioGroup>
+      <Toggle defaultPressed>
+        {(state) => <text content={state.pressed ? "Pinned" : "Unpinned"} />}
+      </Toggle>
+      <ToggleGroup defaultValue={["bold"]} multiple>
+        <Toggle value="bold"><text content="Bold" /></Toggle>
+        <Toggle value="italic"><text content="Italic" /></Toggle>
+      </ToggleGroup>
     </box>
   );
 }
@@ -61,6 +68,8 @@ import { Radio } from "@tuiparts/react/radio";
 import { RadioGroup } from "@tuiparts/react/radio-group";
 import { Switch } from "@tuiparts/react/switch";
 import { Dialog } from "@tuiparts/react/dialog";
+import { Toggle } from "@tuiparts/react/toggle";
+import { ToggleGroup } from "@tuiparts/react/toggle-group";
 ```
 
 ## Dialog

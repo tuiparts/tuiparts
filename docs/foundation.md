@@ -79,11 +79,13 @@ root.add(indicator);
 | Button | `Button` | disabled, focused, pressed | `press()`; Enter/Return, Space, primary pointer | `ButtonRenderable` |
 | Checkbox | `Checkbox.Root`, `Checkbox.Indicator` | checked, disabled, focused | `press()`; Enter/Return, Space, primary pointer | matching Root or Indicator Renderable |
 | Switch | `Switch.Root`, `Switch.Thumb` | checked, disabled, focused | `press()`; Enter/Return, Space, primary pointer | matching Root or Thumb Renderable |
+| Toggle | `Toggle` | pressed, disabled, focused | `press()`; Enter/Return, Space, primary pointer | `ToggleRenderable` |
+| ToggleGroup | `ToggleGroup` containing `Toggle` | value, disabled, multiple, orientation | arrows and Home/End move focus; Toggle activation changes value | matching Group or Toggle Renderable |
 | RadioGroup/Radio | `RadioGroup`, `Radio.Root`, `Radio.Indicator` | group value/disabled; radio checked/focused/availability | Radio `press()`; arrows, Home/End, Enter/Return/Space | matching Group, Radio, or Indicator Renderable |
 | Input | `Input` | OpenTUI-owned mutable buffer | native editing; `onInput`, `onChange`, `onSubmit` | `InputRenderable` |
 | Dialog | `Dialog.Root`, Trigger, Portal, Backdrop, Popup, Title, Description, Close | open | Trigger/Close `press()`; Enter/Return/Space, Escape, Tab containment | matching Dialog part Renderable |
 
-Checkbox, Switch, RadioGroup, and Dialog support controlled and uncontrolled
+Checkbox, Switch, Toggle, ToggleGroup, RadioGroup, and Dialog support controlled and uncontrolled
 ownership. RadioGroup owns one collection value and every Radio must belong to
 a group.
 Input deliberately preserves OpenTUI's native mutable value and event order
@@ -114,6 +116,8 @@ The starter catalog provides `core/*`, `react/*`, and `solid/*` items for:
 - RadioGroup/Radio
 - Input
 - Badge
+- Toggle
+- ToggleGroup
 
 The copied file belongs to your application. Its palette, density, symbols,
 labels, intent variants, native OpenTUI properties, and component assembly are
@@ -139,8 +143,8 @@ when you deliberately want to discard local changes. See the
 Three Dialog surfaces currently have distinct roles:
 
 - `@tuiparts/{core,react,solid}/dialog` is the foundation compound primitive.
-- `registry/dialog` is a validated preview recipe, not part of the six-family
-  starter catalog.
+- `registry/dialog` is a validated preview recipe, not part of the starter
+  catalog.
 - `@tuiparts/dialog` is the adopted companion product with manager, provider,
   theme, and async prompt/confirm/alert/choice conveniences.
 

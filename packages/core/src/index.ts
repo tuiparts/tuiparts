@@ -67,3 +67,19 @@ export {
   type SwitchThumbOptions,
   SwitchThumbRenderable,
 } from "./switch";
+export {
+  type ToggleChangeDetails,
+  type ToggleOptions,
+  type TogglePressedChangeHandler,
+  ToggleRenderable,
+  type ToggleState,
+} from "./toggle";
+export {
+  type ToggleGroupChangeDetails,
+  type ToggleGroupOptions,
+  type ToggleGroupOrientation,
+  ToggleGroupRenderable,
+  type ToggleGroupState,
+  ToggleGroupStore,
+  type ToggleGroupValueChangeHandler,
+} from "./toggle-group";

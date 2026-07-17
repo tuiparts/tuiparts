@@ -51,7 +51,7 @@ version together.
 | [`@tuiparts/solid`](./packages/solid) | Solid compound-part Adapter |
 | [`registry`](./registry) | Consumer-owned Core, React, and Solid Recipes plus their install/update lifecycle |
 
-Button, Checkbox, Dialog, Input, RadioGroup, and Switch expose Foundation
+Button, Checkbox, Dialog, Input, RadioGroup, Switch, Toggle, and ToggleGroup expose Foundation
 behavior. Badge is distributed only as editable Recipe source because it has
 no reusable interaction behavior.
 
@@ -80,7 +80,7 @@ See the package READMEs for exact peer ranges and usage.
 
 Recipes are installed with the official shadcn CLI and become
 application-owned source. The Catalog contains Checkbox, Switch, Button,
-RadioGroup/Radio, Input, and Badge Recipes; every Recipe targets exactly one
+RadioGroup/Radio, Toggle, ToggleGroup, Input, and Badge Recipes; every Recipe targets exactly one
 Adapter, so choose the `core/*`, `react/*`, or `solid/*` item for your
 runtime:
 

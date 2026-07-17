@@ -506,6 +506,152 @@
         "framework": "solid",
         "primitiveStatus": "tracer"
       }
+    },
+    {
+      "name": "core/toggle",
+      "type": "registry:ui",
+      "title": "Toggle (Core)",
+      "description": "Editable imperative Toggle recipe built on the tuiparts.sh Foundation Primitive.",
+      "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0", "@opentui/core@^0.4.3"],
+      "files": [
+        {
+          "path": "registry/toggle/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/toggle.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "react/toggle",
+      "type": "registry:ui",
+      "title": "Toggle (React)",
+      "description": "Editable React Toggle recipe built on the tuiparts.sh Foundation Primitive.",
+      "dependencies": [
+        "@tuiparts/react@>=0.0.1 <0.1.0",
+        "@tuiparts/core@>=0.0.1 <0.1.0",
+        "@opentui/core@^0.4.3",
+        "@opentui/react@^0.4.3",
+        "react@^19.2.0"
+      ],
+      "devDependencies": ["@types/react@^19.2.0"],
+      "files": [
+        {
+          "path": "registry/toggle/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/toggle.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "solid/toggle",
+      "type": "registry:ui",
+      "title": "Toggle (Solid)",
+      "description": "Editable Solid Toggle recipe built on the tuiparts.sh Foundation Primitive.",
+      "dependencies": [
+        "@tuiparts/solid@>=0.0.1 <0.1.0",
+        "@tuiparts/core@>=0.0.1 <0.1.0",
+        "@opentui/core@^0.4.3",
+        "@opentui/solid@^0.4.3",
+        "solid-js@1.9.12"
+      ],
+      "files": [
+        {
+          "path": "registry/toggle/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/toggle.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "core/toggle-group",
+      "type": "registry:ui",
+      "title": "Toggle Group (Core)",
+      "description": "Editable imperative ToggleGroup recipe built on the tuiparts.sh Foundation Primitives.",
+      "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0", "@opentui/core@^0.4.3"],
+      "files": [
+        {
+          "path": "registry/toggle-group/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/toggle-group.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "react/toggle-group",
+      "type": "registry:ui",
+      "title": "Toggle Group (React)",
+      "description": "Editable React ToggleGroup recipe built on the tuiparts.sh Foundation Primitives.",
+      "dependencies": [
+        "@tuiparts/react@>=0.0.1 <0.1.0",
+        "@tuiparts/core@>=0.0.1 <0.1.0",
+        "@opentui/core@^0.4.3",
+        "@opentui/react@^0.4.3",
+        "react@^19.2.0"
+      ],
+      "devDependencies": ["@types/react@^19.2.0"],
+      "files": [
+        {
+          "path": "registry/toggle-group/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/toggle-group.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "solid/toggle-group",
+      "type": "registry:ui",
+      "title": "Toggle Group (Solid)",
+      "description": "Editable Solid ToggleGroup recipe built on the tuiparts.sh Foundation Primitives.",
+      "dependencies": [
+        "@tuiparts/solid@>=0.0.1 <0.1.0",
+        "@tuiparts/core@>=0.0.1 <0.1.0",
+        "@opentui/core@^0.4.3",
+        "@opentui/solid@^0.4.3",
+        "solid-js@1.9.12"
+      ],
+      "files": [
+        {
+          "path": "registry/toggle-group/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/toggle-group.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
     }
   ]
 }

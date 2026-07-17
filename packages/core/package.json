@@ -19,7 +19,9 @@
     "./input": "./src/input/index.ts",
     "./radio": "./src/radio/index.ts",
     "./radio-group": "./src/radio-group/index.ts",
-    "./switch": "./src/switch/index.ts"
+    "./switch": "./src/switch/index.ts",
+    "./toggle": "./src/toggle/index.ts",
+    "./toggle-group": "./src/toggle-group/index.ts"
   },
   "publishConfig": {
     "main": "./dist/index.mjs",
@@ -56,6 +58,14 @@
       "./switch": {
         "types": "./dist/switch/index.d.mts",
         "import": "./dist/switch/index.mjs"
+      },
+      "./toggle": {
+        "types": "./dist/toggle/index.d.mts",
+        "import": "./dist/toggle/index.mjs"
+      },
+      "./toggle-group": {
+        "types": "./dist/toggle-group/index.d.mts",
+        "import": "./dist/toggle-group/index.mjs"
       }
     }
   },

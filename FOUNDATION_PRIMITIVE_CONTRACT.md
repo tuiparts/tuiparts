@@ -238,7 +238,7 @@ public base class.
 
 ### Public Store Audit
 
-- Button, Checkbox, and Switch expose attachable Core Stores. Their React
+- Button, Checkbox, Switch, and Toggle expose attachable Core Stores. Their React
   adapters create Stores automatically and omit `store` from public framework
   Props. Passive Indicator and Thumb parts receive the owning Store in
   Core and use private context wiring in framework adapters.
@@ -247,6 +247,10 @@ public base class.
   roving focus, ordering, and registration independent of any one Renderable.
 - Dialog retains a public Store for portal, layer, dismissal, nesting, and
   focus-restoration coordination across renderer-root ownership.
+- ToggleGroup retains a public Store for optional single or multiple
+  selection, dynamic Toggle identity, rendered order, and roving focus. A
+  standalone Toggle owns pressed state; a grouped Toggle reads selection from
+  its group through the same Toggle Store before Renderable construction.
 
 React creates a component-specific Core Store before host construction so state
 callbacks and compound context are authoritative during the first render. The
@@ -376,6 +380,10 @@ The foundation primitives establish these precedents:
 - Dialog proves renderer-scoped portals, topmost layer arbitration, cancellable
   dismissal, nested stacking, focus containment and restoration, and cleanup.
   Companion manager and async APIs remain outside the primitive contract.
+- Toggle proves one single-part control can own standalone pressed state or
+  adopt explicit ToggleGroup selection without changing its public component
+  identity. ToggleGroup proves array-valued single/multiple selection and
+  roving focus that does not imply selection.
 
 Shared infrastructure may be extracted from these implementations only when
 another vertical primitive demonstrates genuine reuse. The contract does not

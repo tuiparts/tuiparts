@@ -39,11 +39,13 @@ change.
 | Button | `Button` | disabled, focused, pressed | `press()`; Enter/Return, Space, primary pointer |
 | Checkbox | `Checkbox.Root`, `Checkbox.Indicator` | checked, disabled, focused | `press()`; Enter/Return, Space, primary pointer |
 | Switch | `Switch.Root`, `Switch.Thumb` | checked, disabled, focused | `press()`; Enter/Return, Space, primary pointer |
+| Toggle | `Toggle` | pressed, disabled, focused | `press()`; Enter/Return, Space, primary pointer |
+| ToggleGroup | `ToggleGroup` containing `Toggle` | value, disabled, multiple, orientation | arrows and Home/End move focus; Toggle activation changes value |
 | RadioGroup/Radio | `RadioGroup`, `Radio.Root`, `Radio.Indicator` | group value/disabled; radio checked/focused/availability | Radio `press()`; arrows, Home/End, Enter/Return/Space |
 | Input | `Input` | OpenTUI-owned mutable buffer | native editing; `onInput`, `onChange`, `onSubmit` |
 | Dialog | `Dialog.Root`, Trigger, Portal, Backdrop, Popup, Title, Description, Close | open | Trigger/Close `press()`; Enter/Return/Space, Escape, Tab containment |
 
-Checkbox, Switch, RadioGroup, and Dialog support controlled and uncontrolled
+Checkbox, Switch, Toggle, ToggleGroup, RadioGroup, and Dialog support controlled and uncontrolled
 ownership. RadioGroup owns one collection value and every Radio must belong to
 a group. Input deliberately preserves OpenTUI's native mutable value and event
 order instead of inventing browser-style controlled rollback.
@@ -73,8 +75,8 @@ in the repository.
 Three Dialog surfaces currently have distinct roles:
 
 - `@tuiparts/{core,react,solid}/dialog` is the foundation compound primitive.
-- `registry/dialog` is a validated preview recipe, not part of the six-family
-  starter catalog.
+- `registry/dialog` is a validated preview recipe, not part of the starter
+  catalog.
 - `@tuiparts/dialog` is the adopted companion product with manager, provider,
   theme, and async prompt/confirm/alert/choice conveniences.
 

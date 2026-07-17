@@ -169,6 +169,93 @@ Reference implementations:
 - `registry/button/react.tsx`
 - `registry/button/solid.tsx`
 
+## Toggle And ToggleGroup Foundation Primitives
+
+Toggle is a single-part two-state button. It does not invent a `Root` or
+`Indicator`: arbitrary children and the readonly state callback are its
+presentation seam.
+
+- Standalone Toggle owns controlled or uncontrolled `pressed` state.
+- A Toggle inside ToggleGroup requires a unique `value` and adopts the
+  group's array-valued selection.
+- ToggleGroup supports single and multiple selection. Single selection may be
+  empty when the active Toggle is pressed again.
+- Arrow keys follow group orientation and Home/End move roving focus without
+  changing selection.
+- Enter, Return, Space, primary pointer release, and `press()` activate Toggle
+  through the same immutable terminal change details.
+- React creates the same Core Toggle Store used by the later Renderable, so
+  grouped pressed state is authoritative during the first render. Solid
+  constructs the retained Core Renderable directly.
+- Editable recipes own labels, density, layout, and colors. Their
+  `ToggleGroupItem` name is convenience presentation over the same Toggle
+  primitive, not another packaged component.
+
+Reference implementations:
+
+- `packages/core/src/toggle/primitive.ts`
+- `packages/core/src/toggle-group/primitive.ts`
+- `packages/react/src/toggle/primitive.ts`
+- `packages/react/src/toggle-group/primitive.ts`
+- `packages/solid/src/toggle/primitive.ts`
+- `packages/solid/src/toggle-group/primitive.ts`
+- `registry/toggle/`
+- `registry/toggle-group/`
+
+See ADR-0005 for why Toggle may optionally adopt group ownership while Radio
+always requires RadioGroup.
+
+Conformance evidence:
+
+| Surface | Evidence |
+| --- | --- |
+| Core | Toggle and ToggleGroup public Renderable tests cover ownership, activation details, disabled and unavailable requests, single/multiple selection, callback ordering, orientation, roving focus, Store attachment, and teardown-sensitive collection behavior. |
+| React | Real `testRender` coverage proves initial state, controlled updates, prop removal, callback replacement, actual refs, retained Renderable identity, and grouped interaction. |
+| Solid | The React adapter matrix is repeated through Solid signals and actual Core Renderables, including grouped focus and selection. |
+| Registry | Strict recipe TypeScript configs and installed runtime smokes cover Core, React, and Solid. |
+| Packed | `scripts/validate-packages.mjs` verifies all six new package subpaths from built tarballs alongside the existing Publint and declaration checks. |
+| Terminal | The runnable sequence below drives `examples/core` in a real pseudo-terminal and asserts rendered output. |
+
+Terminal conformance sequence (run from `examples/core`, driven here with
+[terminal-control](https://crates.io/crates/terminal-control); any PTY driver
+works):
+
+```bash
+termctrl start tg --host opentui -- bun run src/toggle-group-primitive-demo.ts
+termctrl wait tg "Core Toggle and ToggleGroup primitives"
+termctrl send tg "text: "   # Space on the focused standalone Toggle
+termctrl wait tg "Standalone: on (keyboard)"
+termctrl send tg tab        # Tab reaches the group's single roving stop
+termctrl send tg right      # focus moves Left -> Center; selection unchanged
+termctrl send tg "text: "
+termctrl wait tg "Alignment: center (keyboard)"
+termctrl send tg end        # jump to Right
+termctrl send tg right      # wraps to Left (default loopFocus)
+termctrl send tg down       # off-axis key ignored in a horizontal group
+termctrl send tg tab        # leave the group in one keystroke
+termctrl send tg tab        # re-enter: the roving stop is retained, not reset
+termctrl send tg right      # focus Center
+termctrl send tg "text: "   # re-press deselects in single mode
+termctrl wait tg "Alignment: none (keyboard)"
+termctrl stop tg
+
+termctrl start rg --host opentui -- bun run src/radio-group-primitive-demo.ts
+termctrl wait rg "Owner value: compact"
+termctrl send rg tab        # focusTabStop lands on checked Alpha
+termctrl send rg down       # skips disabled Beta; navigation selects Gamma
+termctrl send rg text:r     # removes Gamma; focus falls back to Delta
+termctrl wait rg "Removed gamma; focus fell back to delta."
+termctrl send rg tab
+termctrl send rg down       # controlled group echoes the requested value
+termctrl wait rg "Owner value: comfortable (navigation)"
+termctrl stop rg
+```
+
+Every `wait` above is an assertion against the rendered terminal, and the
+focus positions were additionally verified from rendered screenshots. This
+sequence was last executed against the shared roving-collection engine
+covering both ToggleGroup and RadioGroup.
+
 ## Badge Recipe
 
 Badge has no reusable interaction, state, focus, keyboard, pointer, collection,

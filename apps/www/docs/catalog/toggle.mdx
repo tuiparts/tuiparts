@@ -1,0 +1,105 @@
+---
+title: Toggle
+description: A two-state button that can be pressed or unpressed.
+---
+
+<Badge variant="accent">Foundation</Badge>
+
+A two-state button that can be pressed or unpressed. Pressed-state ownership,
+activation keys, and focus come from the packaged primitive; the label,
+colors, and spacing install as source you edit.
+
+## Usage guidelines
+
+- **Use `Toggle` for an action whose on/off state stays visible.** Prefer
+  `Switch` for a setting row with a label, and `Button` for actions without
+  retained state.
+- **Disabled Toggles reject focus and activation.** Focus skips them when it
+  moves through the screen.
+
+## Installation
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/toggle
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/toggle
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/toggle
+```
+
+</CodeGroup>
+
+The command above copies the recipe into `components/ui`. The file belongs to
+your application.
+
+## Anatomy
+
+Import the installed component and render it:
+
+```tsx
+import { Toggle } from "./components/ui/toggle";
+
+<Toggle label="Bold" defaultPressed />;
+```
+
+The package export is the direct single-part `Toggle`, not `Toggle.Root`. To
+place a Toggle inside a shared selection, see the
+[Toggle Group page](/catalog/toggle-group).
+
+## Keyboard interactions
+
+| Key | Behavior |
+| --- | --- |
+| `Enter` | Toggles the pressed state. |
+| `Space` | Toggles the pressed state. |
+
+The primary pointer button and the Renderable's `press()` action request the
+same state change.
+
+## API reference
+
+The installed recipe adds a label and passes ownership props through to the
+`Toggle` primitive:
+
+<TypeTable
+  type={{
+    label: {
+      type: "string",
+      required: true,
+      description: "Text rendered inside the toggle.",
+    },
+    pressed: {
+      type: "boolean",
+      description:
+        "Whether the toggle is pressed. Use with `onPressedChange` to control the state.",
+    },
+    defaultPressed: {
+      type: "boolean",
+      description:
+        "Whether the toggle is initially pressed. To control the state, use the `pressed` prop instead.",
+    },
+    onPressedChange: {
+      type: "(pressed: boolean, details: Toggle.ChangeDetails) => void",
+      description:
+        "Event handler called when the pressed state changes. `details` carries the frozen activation source.",
+    },
+    disabled: {
+      type: "boolean",
+      description:
+        "Whether the toggle is disabled. Disabled toggles reject focus and activation.",
+    },
+  }}
+/>
+
+The primitive's render callback receives readonly state: `pressed`,
+`focused`, `disabled`, and `tabbable`. `tabbable` marks the Toggle holding a
+group's single tab stop and is `true` for every enabled standalone Toggle.
+
+For the update workflow on installed recipes, see the
+[registry page](/registry).

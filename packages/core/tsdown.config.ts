@@ -10,6 +10,8 @@ export default defineConfig({
     "src/radio/index.ts",
     "src/radio-group/index.ts",
     "src/switch/index.ts",
+    "src/toggle/index.ts",
+    "src/toggle-group/index.ts",
   ],
   format: "esm",
   dts: true,

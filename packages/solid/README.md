@@ -18,7 +18,7 @@ Peer requirements are `@opentui/core` and `@opentui/solid` `^0.4.3`, with
 ## Foundation Example
 
 ```tsx
-import { Button, Checkbox, Input, Radio, RadioGroup, Switch } from "@tuiparts/solid";
+import { Button, Checkbox, Input, Radio, RadioGroup, Switch, Toggle, ToggleGroup } from "@tuiparts/solid";
 import { createSignal } from "solid-js";
 
 export function Settings() {
@@ -43,6 +43,13 @@ export function Settings() {
           <text content="Stable" />
         </Radio.Root>
       </RadioGroup>
+      <Toggle defaultPressed>
+        {(state) => <text content={state.pressed ? "Pinned" : "Unpinned"} />}
+      </Toggle>
+      <ToggleGroup defaultValue={["bold"]} multiple>
+        <Toggle value="bold"><text content="Bold" /></Toggle>
+        <Toggle value="italic"><text content="Italic" /></Toggle>
+      </ToggleGroup>
     </box>
   );
 }
@@ -61,6 +68,8 @@ import { Radio } from "@tuiparts/solid/radio";
 import { RadioGroup } from "@tuiparts/solid/radio-group";
 import { Switch } from "@tuiparts/solid/switch";
 import { Dialog } from "@tuiparts/solid/dialog";
+import { Toggle } from "@tuiparts/solid/toggle";
+import { ToggleGroup } from "@tuiparts/solid/toggle-group";
 ```
 
 All Primitives are also exported from `@tuiparts/solid`.

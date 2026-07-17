@@ -1,0 +1,155 @@
+---
+title: Toggle Group
+description: A group of two-state buttons that share pressed values and a single tab stop.
+---
+
+<Badge variant="accent">Foundation</Badge>
+
+A group of two-state buttons that share pressed values and a single tab stop.
+The recipe installs two components: `ToggleGroup`, which owns the array of
+pressed values, and `ToggleGroupItem`, which renders a labeled Toggle.
+Selection, roving focus, and orientation-aware navigation come from the
+packaged primitives.
+
+## Usage guidelines
+
+- **Use a toggle group when related on/off choices should share one keyboard
+  stop.** For a single independent action, use `Toggle` alone; for exactly one
+  required selection, use `RadioGroup`.
+- **Every grouped Toggle requires a unique string `value`.** The group
+  identifies items and reports selection by those values.
+
+## Installation
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/toggle-group
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/toggle-group
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/toggle-group
+```
+
+</CodeGroup>
+
+The command above copies the recipe into `components/ui`. The file belongs to
+your application.
+
+## Anatomy
+
+Import the installed components and nest items inside the group:
+
+```tsx
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "./components/ui/toggle-group";
+
+<ToggleGroup defaultValue={["left"]}>
+  <ToggleGroupItem value="left" label="Left" />
+  <ToggleGroupItem value="center" label="Center" />
+  <ToggleGroupItem value="right" label="Right" />
+</ToggleGroup>;
+```
+
+By default, one value may be pressed at a time. Set `multiple` to permit
+several pressed values.
+
+## Keyboard interactions
+
+| Key | Behavior |
+| --- | --- |
+| `←` `→` | Moves focus in a horizontal group. |
+| `↑` `↓` | Moves focus in a vertical group. |
+| `Home` | Moves focus to the first available Toggle. |
+| `End` | Moves focus to the last available Toggle. |
+| `Enter` | Changes the focused Toggle's pressed state. |
+| `Space` | Changes the focused Toggle's pressed state. |
+
+Focus navigation does not change selection. By default, arrow navigation
+wraps at the collection edges; set `loopFocus` to `false` to stop at the
+ends.
+
+## API reference
+
+### ToggleGroup
+
+<TypeTable
+  type={{
+    value: {
+      type: "readonly string[]",
+      description:
+        "Values of the pressed Toggles. Use with `onValueChange` to control the group.",
+    },
+    defaultValue: {
+      type: "readonly string[]",
+      description:
+        "Values pressed initially. To control the group, use the `value` prop instead.",
+    },
+    onValueChange: {
+      type: "(value: readonly string[]) => void",
+      description: "Event handler called when the pressed values change.",
+    },
+    multiple: {
+      type: "boolean",
+      default: "false",
+      description:
+        "Whether more than one Toggle may be pressed. In single mode, pressing the selected Toggle again clears the group.",
+    },
+    orientation: {
+      type: '"horizontal" | "vertical"',
+      default: '"horizontal"',
+      description:
+        "Which arrow-key axis moves focus. The recipe also uses it to set the flex direction.",
+    },
+    loopFocus: {
+      type: "boolean",
+      default: "true",
+      description: "Whether arrow navigation wraps at the collection edges.",
+    },
+    disabled: {
+      type: "boolean",
+      description:
+        "Whether the whole group is disabled. Disabled groups reject focus and activation.",
+    },
+  }}
+/>
+
+`value`, `defaultValue`, and `onValueChange` always use arrays, including
+single mode.
+
+### ToggleGroupItem
+
+<TypeTable
+  type={{
+    value: {
+      type: "string",
+      required: true,
+      description:
+        "Value this Toggle contributes to the group. Unique within the group.",
+    },
+    label: {
+      type: "string",
+      required: true,
+      description: "Text rendered inside the toggle.",
+    },
+    onPressedChange: {
+      type: "(pressed: boolean, details: Toggle.ChangeDetails) => void",
+      description:
+        "Event handler called when this Toggle requests a pressed change. Runs before the group's `onValueChange`.",
+    },
+    disabled: {
+      type: "boolean",
+      description:
+        "Whether the item is unavailable. Unavailable items are skipped during navigation.",
+    },
+  }}
+/>
+
+For the update workflow on installed recipes, see the
+[registry page](/registry).

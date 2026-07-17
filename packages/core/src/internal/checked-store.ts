@@ -1,25 +1,25 @@
-export interface ToggleState {
+export interface CheckedState {
   readonly checked: boolean;
   readonly disabled: boolean;
   readonly focused: boolean;
 }
 
-export interface ToggleStoreOptions {
+export interface CheckedStoreOptions {
   readonly checked?: boolean;
   readonly defaultChecked?: boolean;
   readonly disabled?: boolean;
   readonly onCheckedChange?: (checked: boolean) => void;
 }
 
-type ToggleStateListener = (state: ToggleState) => void;
+type ToggleStateListener = (state: CheckedState) => void;
 
-export class ToggleStoreState {
+export class CheckedStore {
   private controlled: boolean;
-  private snapshot: ToggleState;
+  private snapshot: CheckedState;
   private onCheckedChange?: (checked: boolean) => void;
   private readonly listeners = new Set<ToggleStateListener>();
 
-  constructor(options: ToggleStoreOptions = {}) {
+  constructor(options: CheckedStoreOptions = {}) {
     this.controlled = options.checked !== undefined;
     this.snapshot = Object.freeze({
       checked: options.checked ?? options.defaultChecked ?? false,
@@ -29,7 +29,7 @@ export class ToggleStoreState {
     this.onCheckedChange = options.onCheckedChange;
   }
 
-  get state(): ToggleState {
+  get state(): CheckedState {
     return this.snapshot;
   }
 
@@ -67,7 +67,7 @@ export class ToggleStoreState {
     this.onCheckedChange = callback;
   }
 
-  private update(next: Partial<ToggleState>): void {
+  private update(next: Partial<CheckedState>): void {
     const state = { ...this.snapshot, ...next };
     if (
       state.checked === this.snapshot.checked &&

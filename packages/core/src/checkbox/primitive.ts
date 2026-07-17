@@ -4,7 +4,7 @@ import {
   type KeyEvent,
   type RenderContext,
 } from "@opentui/core";
-import { ToggleStoreState } from "../internal/toggle-store";
+import { CheckedStore } from "../internal/checked-store";
 
 export interface CheckboxState {
   readonly checked: boolean;
@@ -22,42 +22,42 @@ export interface CheckboxStoreOptions {
 type CheckboxStateListener = (state: CheckboxState) => void;
 
 export class CheckboxStore {
-  private readonly toggleState: ToggleStoreState;
+  private readonly checkedStore: CheckedStore;
 
   constructor(options: CheckboxStoreOptions = {}) {
-    this.toggleState = new ToggleStoreState(options);
+    this.checkedStore = new CheckedStore(options);
   }
 
   get state(): CheckboxState {
-    return this.toggleState.state;
+    return this.checkedStore.state;
   }
 
   getState(): CheckboxState {
-    return this.toggleState.state;
+    return this.checkedStore.state;
   }
 
   subscribe(listener: CheckboxStateListener): () => void {
-    return this.toggleState.subscribe(listener);
+    return this.checkedStore.subscribe(listener);
   }
 
   requestToggle(): void {
-    this.toggleState.requestToggle();
+    this.checkedStore.requestToggle();
   }
 
   setChecked(checked: boolean | null | undefined): void {
-    this.toggleState.setChecked(checked);
+    this.checkedStore.setChecked(checked);
   }
 
   setDisabled(disabled: boolean): void {
-    this.toggleState.setDisabled(disabled);
+    this.checkedStore.setDisabled(disabled);
   }
 
   setFocused(focused: boolean): void {
-    this.toggleState.setFocused(focused);
+    this.checkedStore.setFocused(focused);
   }
 
   setOnCheckedChange(callback: ((checked: boolean) => void) | undefined): void {
-    this.toggleState.setOnCheckedChange(callback);
+    this.checkedStore.setOnCheckedChange(callback);
   }
 }
 

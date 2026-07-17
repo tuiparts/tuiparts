@@ -26,6 +26,8 @@ colors, spacing, glyphs, labels, or fixed visual trees.
 | Input | OpenTUI-native state | `InputRenderable` |
 | Radio / RadioGroup | `RadioGroupStore` | `RadioGroupRenderable`, `RadioRootRenderable`, `RadioIndicatorRenderable` |
 | Switch | `SwitchStore` | `SwitchRootRenderable`, `SwitchThumbRenderable` |
+| Toggle | `ToggleStore` | `ToggleRenderable` |
+| ToggleGroup | `ToggleGroupStore` | `ToggleGroupRenderable` containing ordinary `ToggleRenderable` children |
 
 Core callers pass the owning Store between compound parts. React and Solid hide
 the same wiring behind compound-component context.

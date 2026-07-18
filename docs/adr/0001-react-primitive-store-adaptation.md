@@ -213,9 +213,13 @@ carry visual policy.
 6. Store, React, and passive-part subscriptions are removed exactly once.
 7. Published React and Solid Props contain no `store` property.
 
-Tests must inspect initial state, every interaction frame, controlled updates,
-controlled-to-uncontrolled transitions, disablement, focus, retained identity,
-and Store identity. Waiting only for eventual state is insufficient.
+Adapter tests must inspect initial state during the first render, frame
+consistency for controlled updates (waiting only for eventual state is
+insufficient), retained identity, Store identity, and subscription teardown.
+Interaction semantics, including activation guards, disablement rules, and
+keyboard navigation, are owned and proven by Core test suites. Each adapter
+keeps exactly one interaction round-trip per primitive as wiring proof rather
+than re-proving the Core behavior matrix.
 
 ## Considered options
 

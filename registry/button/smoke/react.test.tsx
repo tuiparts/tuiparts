@@ -22,36 +22,22 @@ afterEach(async () => {
 test("installed React Button recipe runtime smoke", async () => {
   const presses: ButtonPressDetails[] = [];
   setup = await testRender(
-    <box flexDirection="column">
-      <Button
-        id="active"
-        intent="neutral"
-        label="Run"
-        onPress={(details) => presses.push(details)}
-      />
-      <Button
-        id="disabled"
-        disabled
-        label="Wait"
-        onPress={() => presses.push({ source: "imperative" })}
-      />
-    </box>,
-    { width: 30, height: 5 },
+    <Button
+      id="active"
+      intent="neutral"
+      label="Run"
+      onPress={(details) => presses.push(details)}
+    />,
+    { width: 30, height: 3 },
   );
   const active = setup.renderer.root.findDescendantById(
     "active",
-  ) as ButtonRenderable;
-  const disabled = setup.renderer.root.findDescendantById(
-    "disabled",
   ) as ButtonRenderable;
 
   await setup.renderOnce();
   expect(setup.captureCharFrame().split("\n")[0]?.includes("Run")).toBe(true);
   await act(async () => active.press());
-  disabled.focus();
-  disabled.press();
   expect(presses).toEqual([{ source: "imperative" }]);
-  expect(disabled.focused).toBe(false);
 });
 
 test("restyles rendered buttons on theme switch", async () => {

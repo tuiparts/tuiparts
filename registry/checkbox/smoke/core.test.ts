@@ -48,40 +48,6 @@ describe("installed Core Checkbox recipe", () => {
     expect(firstLine()).toBe("x Ready");
   });
 
-  it("reports controlled intent without owning the update", async () => {
-    const changes: boolean[] = [];
-    const checkbox = await render({
-      checked: false,
-      label: "Controlled",
-      mark: "x",
-      onCheckedChange: (checked) => changes.push(checked),
-    });
-
-    checkbox.press();
-    expect(changes).toEqual([true]);
-    expect(checkbox.checked).toBe(false);
-
-    checkbox.checked = true;
-    await setup?.renderOnce();
-    expect(firstLine()).toBe("x Controlled");
-  });
-
-  it("suppresses disabled interaction", async () => {
-    const changes: boolean[] = [];
-    const checkbox = await render({
-      disabled: true,
-      label: "Disabled",
-      onCheckedChange: (checked) => changes.push(checked),
-    });
-
-    checkbox.focus();
-    checkbox.press();
-
-    expect(checkbox.focused).toBe(false);
-    expect(checkbox.checked).toBe(false);
-    expect(changes).toEqual([]);
-  });
-
   it("renders a consumer-owned mark", async () => {
     await render({ defaultChecked: true, label: "Custom", mark: "*" });
     expect(firstLine()).toBe("* Custom");

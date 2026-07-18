@@ -80,24 +80,20 @@ describe("React Switch", () => {
   it("retains refs across controlled prop removal and callback replacement", async () => {
     const changes: string[] = [];
     let setControlled: (controlled: boolean) => void = () => {};
-    let setDisabled: (disabled: boolean) => void = () => {};
     let setVersion: (version: number) => void = () => {};
     let rootRef: SwitchRootRenderable | null = null;
     let thumbRef: SwitchThumbRenderable | null = null;
 
     function App() {
       const [controlled, updateControlled] = useState(true);
-      const [disabled, updateDisabled] = useState(false);
       const [version, updateVersion] = useState(1);
       setControlled = updateControlled;
-      setDisabled = updateDisabled;
       setVersion = updateVersion;
       return createElement(
         Switch.Root,
         {
           id: "reactive-root",
           checked: controlled ? false : undefined,
-          disabled: disabled || undefined,
           onCheckedChange: (checked) =>
             changes.push(`${version}:${String(checked)}`),
           ref: (value) => {
@@ -134,14 +130,6 @@ describe("React Switch", () => {
     await act(async () => root.press());
     expect(root.checked).toBe(true);
     expect(changes).toEqual(["1:true", "2:true"]);
-
-    await act(async () => {
-      root.focus();
-      setDisabled(true);
-    });
-    expect(root.focused).toBe(false);
-    await act(async () => root.press());
-    expect(changes).toHaveLength(2);
 
     expect(rootRef as unknown).toBe(root);
     expect(thumbRef as unknown).toBe(thumb);

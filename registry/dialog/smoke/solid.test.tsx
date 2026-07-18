@@ -13,7 +13,6 @@ import {
   type DialogRootRenderable,
   type DialogTriggerRenderable,
 } from "@tuiparts/core/dialog";
-import { createSignal } from "solid-js";
 import {
   Dialog,
   DialogClose,
@@ -30,64 +29,30 @@ afterEach(() => {
   setup = undefined;
 });
 
-test("installed Solid Dialog recipe delegates controlled intent once and retains parts", async () => {
+test("installed Solid Dialog recipe composes parts and delegates trigger and close", async () => {
   let root: DialogRootRenderable | undefined;
-  let controlledRoot: DialogRootRenderable | undefined;
-  let controlledChanges = 0;
   setup = await testRender(
-    () => {
-      const [controlledOpen, setControlledOpen] = createSignal(false);
-      return (
-        <box flexDirection="column">
-          <Dialog ref={(node) => (root = node)} defaultOpen={false}>
-            <DialogTrigger>
-              <text content="Open" />
-            </DialogTrigger>
-            <DialogContent>
-              <DialogTitle content="Delete file?" />
-              <text content="Body" />
-              <DialogClose>
-                <text content="Close" />
-              </DialogClose>
-            </DialogContent>
-          </Dialog>
-          <Dialog
-            ref={(node) => {
-              controlledRoot = node;
-            }}
-            open={controlledOpen()}
-            onOpenChange={(open) => {
-              controlledChanges++;
-              setControlledOpen(open);
-            }}
-          >
-            <DialogTrigger>
-              <text content="Controlled open" />
-            </DialogTrigger>
-            <DialogContent>
-              <DialogTitle content="Controlled" />
-            </DialogContent>
-          </Dialog>
-        </box>
-      );
-    },
+    () => (
+      <Dialog ref={(node) => (root = node)} defaultOpen={false}>
+        <DialogTrigger>
+          <text content="Open" />
+        </DialogTrigger>
+        <DialogContent>
+          <DialogTitle content="Delete file?" />
+          <text content="Body" />
+          <DialogClose>
+            <text content="Close" />
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
+    ),
     { width: 60, height: 16 },
   );
   const trigger = root?.getChildren()[0] as DialogTriggerRenderable;
-  const controlledTrigger =
-    controlledRoot?.getChildren()[0] as DialogTriggerRenderable;
   trigger.press();
   expect(root?.state.open).toBe(true);
-  const retainedRoot = root;
   findClose(setup.renderer.root).press();
   expect(root?.state.open).toBe(false);
-  trigger.press();
-  expect(root?.state.open).toBe(true);
-  expect(root).toBe(retainedRoot);
-
-  controlledTrigger.press();
-  await setup.waitFor(() => controlledRoot?.state.open === true);
-  expect(controlledChanges).toBe(1);
 });
 
 test("restyles rendered dialog parts on theme switch", async () => {

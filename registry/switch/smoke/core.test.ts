@@ -44,24 +44,6 @@ describe("installed Core Switch recipe", () => {
     expect(firstLine()).toBe("----*  Ready");
   });
 
-  it("reports controlled intent and suppresses disabled interaction", async () => {
-    const changes: boolean[] = [];
-    setup = await createTestRenderer({ width: 30, height: 3 });
-    const toggle = createSwitch(setup.renderer, {
-      checked: false,
-      disabled: true,
-      label: "Disabled",
-      onCheckedChange: (checked) => changes.push(checked),
-    });
-    setup.renderer.root.add(toggle);
-
-    toggle.focus();
-    toggle.press();
-    expect(toggle.focused).toBe(false);
-    expect(toggle.checked).toBe(false);
-    expect(changes).toEqual([]);
-  });
-
   it("restyles from the theme store on theme switch", async () => {
     theme.register("smoke", {
       tokens: {

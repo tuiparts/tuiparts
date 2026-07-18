@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from "bun:test";
+import type { TextRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
 import { RadioRootRenderable, type RadioState } from "@tuiparts/core/radio";
@@ -9,17 +10,22 @@ import { Radio } from "./index";
 
 let setup: TestRendererSetup | undefined;
 
+function textContent(id: string): string {
+  const text = setup?.renderer.root.findDescendantById(id) as TextRenderable;
+  return text.content.chunks.map((chunk) => chunk.text).join("");
+}
+
 afterEach(async () => {
   await act(async () => setup?.renderer.destroy());
   setup = undefined;
 });
 
 describe("React RadioGroup", () => {
-  it("composes parts and publishes Item-owned focus while navigating", async () => {
+  it("composes parts around a shared Store with authoritative first-render state", async () => {
     const renderState = (state: RadioState) =>
       createElement("text", {
         id: "alpha-state",
-        content: `${state.checked}:${state.focused}:${state.tabbable}`,
+        content: `${state.checked}`,
       });
     setup = await testRender(
       createElement(
@@ -54,16 +60,16 @@ describe("React RadioGroup", () => {
     expect(root.constructor).toBe(RadioGroupRenderable);
     expect(alpha.constructor).toBe(RadioRootRenderable);
     expect(alpha.store).toBe(root.store);
+    expect(beta.store).toBe(root.store);
+    expect(textContent("alpha-state")).toBe("true");
     expect(
       setup.renderer.root.findDescendantById("beta-indicator"),
     ).toMatchObject({ visible: false });
 
-    await act(async () => alpha.focus());
-    await act(async () => setup?.mockInput.pressArrow("down"));
-    await setup.waitFor(() => root.value === "beta" && beta.focused);
+    await act(async () => beta.press());
+    await setup.waitFor(() => textContent("alpha-state") === "false");
 
-    expect(alpha.store.getItemState(alpha.key)).not.toHaveProperty("focused");
-    expect(beta.getState()).toMatchObject({ focused: true, checked: true });
+    expect(root.value).toBe("beta");
     expect(
       setup.renderer.root.findDescendantById("beta-indicator"),
     ).toBeDefined();
@@ -104,7 +110,7 @@ describe("React RadioGroup", () => {
     expect(itemRef.current).toBe(item);
   });
 
-  it("removes focused dynamic Items without stale registration", async () => {
+  it("unmounts dynamic Items without stale registration", async () => {
     const rootRef = createRef<RadioGroupRenderable>();
     const fallbackRef = createRef<RadioRootRenderable>();
     const dynamicRef = createRef<RadioRootRenderable>();
@@ -129,12 +135,9 @@ describe("React RadioGroup", () => {
     }
     setup = await testRender(createElement(App), { width: 30, height: 5 });
     const key = dynamicRef.current?.key;
-    await act(async () => dynamicRef.current?.focus());
     await act(async () => show?.(false));
     await setup.waitFor(
-      () =>
-        rootRef.current?.store.getItemState(key as symbol) === undefined &&
-        fallbackRef.current?.focused === true,
+      () => rootRef.current?.store.getItemState(key as symbol) === undefined,
     );
 
     expect(dynamicRef.current).toBeNull();

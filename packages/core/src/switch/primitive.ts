@@ -1,10 +1,10 @@
 import {
   type BoxOptions,
   BoxRenderable,
-  type KeyEvent,
   type RenderContext,
 } from "@opentui/core";
 import { CheckedStore } from "../internal/checked-store";
+import { PressableRenderable } from "../internal/pressable";
 
 export interface SwitchState {
   readonly checked: boolean;
@@ -58,11 +58,8 @@ export interface SwitchRootOptions extends BoxOptions, SwitchStoreOptions {
   store?: SwitchStore;
 }
 
-export class SwitchRootRenderable extends BoxRenderable {
-  protected override _focusable = true;
-
+export class SwitchRootRenderable extends PressableRenderable {
   protected _store: SwitchStore;
-  private _unsubscribe: () => void;
 
   constructor(ctx: RenderContext, options: SwitchRootOptions = {}) {
     const {
@@ -73,20 +70,7 @@ export class SwitchRootRenderable extends BoxRenderable {
       store,
       ...boxOptions
     } = options;
-    super(ctx, {
-      ...boxOptions,
-      onMouseUp: (event) => {
-        boxOptions.onMouseUp?.call(this, event);
-        if (
-          event.defaultPrevented ||
-          event.button !== 0 ||
-          this._store.state.disabled
-        )
-          return;
-        this.press();
-        this.focus();
-      },
-    });
+    super(ctx, boxOptions);
     this._store =
       store ??
       new SwitchStore({
@@ -101,12 +85,11 @@ export class SwitchRootRenderable extends BoxRenderable {
       if (onCheckedChange !== undefined)
         store.setOnCheckedChange(onCheckedChange);
     }
-    this._focusable = !this._store.state.disabled;
-    this._unsubscribe = this._store.subscribe((state) => {
-      if (state.disabled && this._focused) this.blur();
-      this._focusable = !state.disabled;
-      this.requestRender();
-    });
+    this.attachPressable(this._store);
+  }
+
+  protected handlePress(): void {
+    this._store.requestToggle();
   }
 
   getState(): SwitchState {
@@ -123,31 +106,6 @@ export class SwitchRootRenderable extends BoxRenderable {
   set store(store: SwitchStore) {
     if (store !== this._store)
       throw new Error("Switch.Root store cannot be replaced");
-  }
-
-  press(): void {
-    if (this._isDestroyed) return;
-    this._store.requestToggle();
-  }
-
-  override handleKeyPress(key: KeyEvent): boolean {
-    if (this._isDestroyed || this._store.state.disabled) return false;
-    if (key.name === "space" || key.name === "return" || key.name === "enter") {
-      this.press();
-      return true;
-    }
-    return false;
-  }
-
-  override focus(): void {
-    if (this._store.state.disabled) return;
-    super.focus();
-    this._store.setFocused(this._focused);
-  }
-
-  override blur(): void {
-    super.blur();
-    this._store.setFocused(false);
   }
 
   get checked(): boolean {
@@ -168,11 +126,6 @@ export class SwitchRootRenderable extends BoxRenderable {
 
   set onCheckedChange(callback: ((checked: boolean) => void) | undefined) {
     this._store.setOnCheckedChange(callback);
-  }
-
-  override destroy(): void {
-    this._unsubscribe();
-    super.destroy();
   }
 }
 

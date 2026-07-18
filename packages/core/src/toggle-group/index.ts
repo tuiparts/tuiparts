@@ -1,4 +1,4 @@
-export type { ToggleChangeDetails as ToggleGroupChangeDetails } from "../internal/toggle-change-details";
+export type { PressDetails as ToggleGroupChangeDetails } from "../internal/pressable";
 export {
   type ToggleGroupFocusDirection,
   type ToggleGroupItemKey,

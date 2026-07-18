@@ -60,16 +60,10 @@ describe("React ToggleGroup", () => {
         return key ? group.store.getItemState(key)?.available === true : false;
       }),
     );
-    await act(async () => {
-      left.focus();
-      await setup?.mockInput.pressArrow("right");
-    });
-    expect(right.focused).toBe(true);
-    expect(group.value).toEqual(["left"]);
+
     await act(async () => right.press());
     await setup.waitFor(() => group.value[0] === "right");
-    expect(left.pressed).toBe(false);
-    expect(right.pressed).toBe(true);
+    expect(group.value).toEqual(["right"]);
   });
 
   it("updates controlled group props without replacing Renderables", async () => {
@@ -122,7 +116,7 @@ describe("React ToggleGroup", () => {
     expect(itemRefs.at(-1)).toBe(alpha);
   });
 
-  it("releases controlled group ownership at the observed value", async () => {
+  it("releases controlled ownership when the value prop is removed", async () => {
     const requests: Array<readonly string[]> = [];
     let setValue: (value: readonly string[] | undefined) => void = () => {};
     function App() {
@@ -144,78 +138,19 @@ describe("React ToggleGroup", () => {
 
     setup = await testRender(createElement(App), { width: 30, height: 4 });
     const group = setup.renderer.root.findDescendantById("ownership-group");
-    const alpha = setup.renderer.root.findDescendantById("ownership-alpha");
     const beta = setup.renderer.root.findDescendantById("ownership-beta");
     if (!(group instanceof ToggleGroupRenderable))
       throw new Error("Expected ToggleGroupRenderable ownership-group");
-    if (!(alpha instanceof ToggleRenderable))
-      throw new Error("Expected ToggleRenderable ownership-alpha");
     if (!(beta instanceof ToggleRenderable))
       throw new Error("Expected ToggleRenderable ownership-beta");
 
-    await act(async () => beta.press());
-    expect(requests).toEqual([["beta"]]);
     expect(group.value).toEqual(["alpha"]);
 
-    await act(async () => setValue(["beta"]));
-    expect(group.value).toEqual(["beta"]);
     await act(async () => setValue(undefined));
-    await act(async () => alpha.press());
-    expect(group.value).toEqual(["alpha"]);
-    expect(requests).toEqual([["beta"], ["alpha"]]);
-  });
-
-  it("reactively gates disabled and unavailable group interaction", async () => {
-    const requests: Array<readonly string[]> = [];
-    let enableGroup: () => void = () => {};
-    let hideBeta: () => void = () => {};
-    function App() {
-      const [disabled, setDisabled] = useState(true);
-      const [betaVisible, setBetaVisible] = useState(true);
-      enableGroup = () => setDisabled(false);
-      hideBeta = () => setBetaVisible(false);
-      return createElement(
-        ToggleGroup,
-        {
-          disabled,
-          id: "disabled-group",
-          onValueChange: (value) => requests.push(value),
-        },
-        createElement(Toggle, { id: "disabled-alpha", value: "alpha" }),
-        createElement(Toggle, {
-          id: "disabled-beta",
-          value: "beta",
-          visible: betaVisible,
-        }),
-      );
-    }
-
-    setup = await testRender(createElement(App), { width: 30, height: 4 });
-    const group = setup.renderer.root.findDescendantById("disabled-group");
-    const alpha = setup.renderer.root.findDescendantById("disabled-alpha");
-    const beta = setup.renderer.root.findDescendantById("disabled-beta");
-    if (!(group instanceof ToggleGroupRenderable))
-      throw new Error("Expected ToggleGroupRenderable disabled-group");
-    if (!(alpha instanceof ToggleRenderable))
-      throw new Error("Expected ToggleRenderable disabled-alpha");
-    if (!(beta instanceof ToggleRenderable))
-      throw new Error("Expected ToggleRenderable disabled-beta");
-
-    await act(async () => {
-      alpha.focus();
-      alpha.press();
-      beta.press();
-    });
-    expect(alpha.focused).toBe(false);
-    expect(requests).toEqual([]);
-
-    await act(async () => enableGroup());
-    await act(async () => hideBeta());
     await act(async () => beta.press());
-    expect(requests).toEqual([]);
-    await act(async () => alpha.press());
-    expect(group.value).toEqual(["alpha"]);
-    expect(requests).toEqual([["alpha"]]);
+    await setup.waitFor(() => group.value[0] === "beta");
+    expect(group.value).toEqual(["beta"]);
+    expect(requests).toEqual([["beta"]]);
   });
 
   it("replaces the group callback without replacing its Renderable", async () => {
@@ -250,11 +185,10 @@ describe("React ToggleGroup", () => {
     if (!(beta instanceof ToggleRenderable))
       throw new Error("Expected ToggleRenderable beta-callback");
 
-    await act(async () => beta.press());
     await act(async () => replaceCallback());
     await act(async () => alpha.press());
 
-    expect(calls).toEqual(["old", "new"]);
+    expect(calls).toEqual(["new"]);
     expect(groupRefs.at(-1)).toBe(group);
   });
 

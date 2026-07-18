@@ -30,51 +30,30 @@ afterEach(async () => {
   setup = undefined;
 });
 
-test("installed React Dialog recipe delegates controlled intent once and retains parts", async () => {
+test("installed React Dialog recipe composes parts and delegates trigger and close", async () => {
   const root = createRef<DialogRootRenderable>();
-  let changes = 0;
   setup = await testRender(
-    <box flexDirection="column">
-      <Dialog ref={root} defaultOpen={false}>
-        <DialogTrigger>
-          <text content="Open" />
-        </DialogTrigger>
-        <DialogContent>
-          <DialogTitle content="Delete file?" />
-          <text content="Body" />
-          <DialogClose>
-            <text content="Close" />
-          </DialogClose>
-        </DialogContent>
-      </Dialog>
-      <Dialog open={false} onOpenChange={() => changes++}>
-        <DialogTrigger>
-          <text content="Controlled open" />
-        </DialogTrigger>
-        <DialogContent>
-          <DialogTitle content="Controlled" />
-        </DialogContent>
-      </Dialog>
-    </box>,
+    <Dialog ref={root} defaultOpen={false}>
+      <DialogTrigger>
+        <text content="Open" />
+      </DialogTrigger>
+      <DialogContent>
+        <DialogTitle content="Delete file?" />
+        <text content="Body" />
+        <DialogClose>
+          <text content="Close" />
+        </DialogClose>
+      </DialogContent>
+    </Dialog>,
     { width: 60, height: 16 },
   );
   const recipeTrigger =
     root.current?.getChildren()[0] as DialogTriggerRenderable;
   await act(async () => recipeTrigger.press());
   expect(root.current?.state.open).toBe(true);
-  const retainedRoot = root.current;
   const recipeClose = findClose(setup.renderer.root);
   await act(async () => recipeClose.press());
   expect(root.current?.state.open).toBe(false);
-  await act(async () => recipeTrigger.press());
-  expect(root.current?.state.open).toBe(true);
-  expect(root.current).toBe(retainedRoot);
-  const controlledRoot =
-    root.current?.parent?.getChildren()[1] as DialogRootRenderable;
-  const controlledTrigger =
-    controlledRoot.getChildren()[0] as DialogTriggerRenderable;
-  await act(async () => controlledTrigger.press());
-  expect(changes).toBe(1);
 });
 
 test("restyles rendered dialog parts on theme switch", async () => {

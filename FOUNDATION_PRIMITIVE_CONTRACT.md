@@ -353,9 +353,9 @@ below. `N/A` requires a reason; it is not a silent omission.
 | Surface | Required evidence |
 | --- | --- |
 | Core | Public owner/Renderable tests for ownership, state snapshots, actions, key and pointer behavior, disabled behavior, dynamic lifecycle, teardown, and event details. Tests use the OpenTUI test renderer and public seams. |
-| React | `testRender` coverage using real Core Renderables for initial props, reactive updates, prop removal, callback replacement, actual ref targets, Renderable identity across retained updates, conditional-part ref lifecycle, context errors, and interaction parity. |
-| Solid | The React adapter matrix repeated through Solid's real rendering seam, including reactive getters, cleanup, prop removal, actual ref targets, retained Renderable identity, and interaction parity. |
-| Registry | Core, React, and Solid recipes compile under strict TypeScript in clean consumers, import only published primitive subpaths, keep visual ownership local, and pass runtime smoke coverage. Official shadcn validation and installation cover dependency metadata. |
+| React | `testRender` coverage using real Core Renderables for first-render authoritative state, frame consistency for controlled updates through the Store, initial props, reactive updates, prop removal, callback replacement, actual ref targets, Renderable identity across retained updates, Store identity, conditional-part ref lifecycle, StrictMode and lifecycle, subscription teardown, context errors, and one interaction wiring round-trip per primitive; behavior semantics are proven once in Core. |
+| Solid | The React adapter matrix repeated through Solid's real rendering seam, including reactive getters, cleanup, first-render authoritative state, frame consistency for controlled updates, prop removal, actual ref targets, retained Renderable identity, Store identity, subscription teardown, and one interaction wiring round-trip per primitive; behavior semantics are proven once in Core. |
+| Registry | Core, React, and Solid recipes compile under strict TypeScript in clean consumers, import only published primitive subpaths, keep visual ownership local, and pass runtime smoke coverage: mounts, one prop round-trip, recipe-owned presentation, and theme restyle. Registry/theme keeps its full suite per ADR-0006 because the registry is the lowest layer for the theme module. Official shadcn validation and installation cover dependency metadata. |
 | Packed | Built tarballs pass Publint, configured Are The Types Wrong checks, strict peer installation, declaration consumption, every documented subpath import, and runtime import smokes without workspace links. |
 | Terminal | A runnable terminal sequence proves user-visible focus, key ordering, pointer or dismissal behavior, and restoration where unit seams cannot establish the complete sequence. |
 
@@ -369,6 +369,11 @@ The minimum behavioral dimensions are:
 - Dynamic registration, mount, unmount, visibility, and teardown.
 - Ref targets and retained identity.
 - Recipe composition without primitive visual defaults.
+
+Core owns full coverage of these behavioral dimensions. React and Solid
+adapters cover only their adaptation concerns plus one interaction wiring
+round-trip per primitive; registry recipes cover only their smoke expectations.
+Neither adapter nor registry surfaces re-prove the Core behavior matrix.
 
 A primitive change is not complete until it passes every applicable surface,
 packed exports are proven, registry consumers are green, and any changed

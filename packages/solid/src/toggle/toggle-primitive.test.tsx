@@ -51,20 +51,17 @@ describe("Solid Toggle", () => {
     await setup.waitFor(() => textContent("state") === "off");
   });
 
-  it("reactively clears controlled and disabled props on a retained Toggle", async () => {
+  it("reactively clears disabled props on a retained Toggle", async () => {
     let release: () => void = () => {};
     let toggleRef: ToggleRenderable | undefined;
     setup = await testRender(
       () => {
         const [controlled, setControlled] = createSignal(true);
-        const [pressed, setPressed] = createSignal(true);
         release = () => setControlled(false);
         return (
           <Toggle
             disabled={controlled() || undefined}
             id="retained"
-            onPressedChange={setPressed}
-            pressed={controlled() ? pressed() : undefined}
             ref={(value) => {
               toggleRef = value;
             }}
@@ -77,8 +74,6 @@ describe("Solid Toggle", () => {
     expect(toggle).toBeDefined();
     release();
     await setup.waitFor(() => toggle?.disabled === false);
-    toggle?.press();
-    expect(toggle?.pressed).toBe(false);
     expect(toggleRef).toBe(toggle);
   });
 

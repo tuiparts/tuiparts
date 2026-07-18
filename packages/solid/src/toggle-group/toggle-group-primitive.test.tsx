@@ -25,7 +25,7 @@ afterEach(() => {
 });
 
 describe("Solid ToggleGroup", () => {
-  it("provides grouped state and keeps selection separate from focus movement", async () => {
+  it("provides grouped state with a single toggle round-trip", async () => {
     setup = await testRender(
       () => (
         <ToggleGroup defaultValue={["left"]} id="group">
@@ -43,22 +43,18 @@ describe("Solid ToggleGroup", () => {
       { width: 30, height: 4 },
     );
     const group = setup.renderer.root.findDescendantById("group");
-    const left = setup.renderer.root.findDescendantById("left");
     const right = setup.renderer.root.findDescendantById("right");
     if (!(group instanceof ToggleGroupRenderable))
       throw new Error("Expected ToggleGroupRenderable group");
-    if (!(left instanceof ToggleRenderable))
-      throw new Error("Expected ToggleRenderable left");
     if (!(right instanceof ToggleRenderable))
       throw new Error("Expected ToggleRenderable right");
 
     expect(textContent("left-state")).toBe("pressed");
-    left.focus();
-    await setup.mockInput.pressArrow("right");
-    expect(right.focused).toBe(true);
     expect(group.value).toEqual(["left"]);
+
     right.press();
     await setup.waitFor(() => group.value[0] === "right");
+    expect(group.value).toEqual(["right"]);
   });
 
   it("reactively updates controlled values without replacing Renderables", async () => {
@@ -140,12 +136,15 @@ describe("Solid ToggleGroup", () => {
     if (!(beta instanceof ToggleRenderable))
       throw new Error("Expected ToggleRenderable ownership-beta");
 
+    // The change callback fires while controlled.
     beta.press();
     expect(requests).toEqual([["beta"]]);
-    expect(group.value).toEqual(["alpha"]);
 
+    // Controlled prop commits through the Store.
     setValue(["beta"]);
     await setup.waitFor(() => group.value[0] === "beta");
+
+    // Prop removal: clearing the controlled value releases ownership.
     setValue(undefined);
     await Promise.resolve();
     alpha.press();
@@ -153,7 +152,7 @@ describe("Solid ToggleGroup", () => {
     expect(requests).toEqual([["beta"], ["alpha"]]);
   });
 
-  it("reactively gates disabled and unavailable group interaction", async () => {
+  it("reactively propagates disabled and visible props on a retained group", async () => {
     const requests: Array<readonly string[]> = [];
     let enableGroup: () => void = () => {};
     let hideBeta: () => void = () => {};
@@ -187,19 +186,15 @@ describe("Solid ToggleGroup", () => {
       throw new Error("Expected ToggleRenderable disabled-alpha");
     if (!(beta instanceof ToggleRenderable))
       throw new Error("Expected ToggleRenderable disabled-beta");
+    expect(group.disabled).toBe(true);
 
-    alpha.focus();
-    alpha.press();
-    beta.press();
-    expect(alpha.focused).toBe(false);
-    expect(requests).toEqual([]);
-
+    // Reactive disabled and visible prop propagation.
     enableGroup();
     await setup.waitFor(() => !group.disabled);
     hideBeta();
     await setup.waitFor(() => !beta.visible);
-    beta.press();
-    expect(requests).toEqual([]);
+
+    // One selection round-trip on the re-enabled group.
     alpha.press();
     expect(group.value).toEqual(["alpha"]);
     expect(requests).toEqual([["alpha"]]);

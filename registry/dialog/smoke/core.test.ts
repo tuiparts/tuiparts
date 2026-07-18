@@ -34,10 +34,6 @@ test("installed Core Dialog recipe composes and delegates trigger, close, and ba
   expect(dialog.portal.visible).toBe(true);
   close.press();
   expect(dialog.root.state.open).toBe(false);
-  dialog.trigger.press();
-  expect(dialog.popup.visible).toBe(true);
-  dialog.backdrop.processMouseEvent({ type: "up" } as never);
-  expect(dialog.root.state.open).toBe(false);
 });
 
 test("restyles from the theme store on theme switch", async () => {

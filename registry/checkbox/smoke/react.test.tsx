@@ -5,7 +5,7 @@ import { type BaseRenderable, TextRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
 import type { CheckboxRootRenderable } from "@tuiparts/core/checkbox";
-import { act, useState } from "react";
+import { act } from "react";
 import { Checkbox } from "./components/ui/checkbox";
 import { theme } from "./components/ui/theme";
 
@@ -29,33 +29,12 @@ afterEach(async () => {
 });
 
 test("installed React Checkbox recipe runtime smoke", async () => {
-  let disabledChanges = 0;
-
-  function Controlled() {
-    const [checked, setChecked] = useState(false);
-    return (
-      <Checkbox
-        id="controlled"
-        label="Controlled"
-        checked={checked}
-        onCheckedChange={setChecked}
-      />
-    );
-  }
-
   setup = await testRender(
     <box flexDirection="column">
       <Checkbox id="uncontrolled" label="Uncontrolled" />
-      <Controlled />
-      <Checkbox
-        id="disabled"
-        label="Disabled"
-        disabled
-        onCheckedChange={() => disabledChanges++}
-      />
       <Checkbox id="custom-mark" label="Custom mark" defaultChecked mark="x" />
     </box>,
-    { width: 40, height: 8 },
+    { width: 40, height: 4 },
   );
 
   const uncontrolled = root("uncontrolled");
@@ -64,18 +43,6 @@ test("installed React Checkbox recipe runtime smoke", async () => {
   await act(async () => uncontrolled.press());
   await setup.waitFor(() => uncontrolled.checked);
   expect(text(uncontrolled)).toEqual(["✓", "Uncontrolled"]);
-
-  const controlled = root("controlled");
-  await act(async () => controlled.press());
-  await setup.waitFor(() => controlled.checked);
-  expect(root("controlled")).toBe(controlled);
-
-  const disabled = root("disabled");
-  disabled.focus();
-  disabled.press();
-  expect(disabled.checked).toBe(false);
-  expect(disabled.focused).toBe(false);
-  expect(disabledChanges).toBe(0);
 
   expect(text(root("custom-mark"))).toEqual(["x", "Custom mark"]);
 });

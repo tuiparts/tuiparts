@@ -5,7 +5,7 @@ import { type BaseRenderable, TextRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
 import type { SwitchRootRenderable } from "@tuiparts/core/switch";
-import { act, useState } from "react";
+import { act } from "react";
 import { Switch } from "./components/ui/switch";
 import { theme } from "./components/ui/theme";
 
@@ -21,29 +21,9 @@ function root(id: string): SwitchRootRenderable {
 }
 
 test("installed React Switch recipe runtime smoke", async () => {
-  let disabledChanges = 0;
-  function Controlled() {
-    const [checked, setChecked] = useState(false);
-    return (
-      <Switch
-        id="controlled"
-        label="Controlled"
-        checked={checked}
-        onCheckedChange={setChecked}
-      />
-    );
-  }
-
   setup = await testRender(
     <box flexDirection="column">
       <Switch id="uncontrolled" label="Uncontrolled" />
-      <Controlled />
-      <Switch
-        id="disabled"
-        label="Disabled"
-        disabled
-        onCheckedChange={() => disabledChanges++}
-      />
       <Switch
         id="custom"
         label="Custom"
@@ -52,25 +32,13 @@ test("installed React Switch recipe runtime smoke", async () => {
         symbols="ascii"
       />
     </box>,
-    { width: 40, height: 8 },
+    { width: 40, height: 4 },
   );
 
   const uncontrolled = root("uncontrolled");
   await act(async () => uncontrolled.press());
   await setup.waitFor(() => uncontrolled.checked);
   expect(uncontrolled.checked).toBe(true);
-
-  const controlled = root("controlled");
-  await act(async () => controlled.press());
-  await setup.waitFor(() => controlled.checked);
-  expect(root("controlled")).toBe(controlled);
-
-  const disabled = root("disabled");
-  disabled.focus();
-  disabled.press();
-  expect(disabled.focused).toBe(false);
-  expect(disabled.checked).toBe(false);
-  expect(disabledChanges).toBe(0);
 
   expect(root("custom").checked).toBe(true);
 });

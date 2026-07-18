@@ -34,22 +34,6 @@ describe("installed Core Button recipe", () => {
     expect(presses).toEqual([{ source: "imperative" }]);
   });
 
-  it("suppresses disabled focus and activation", async () => {
-    let presses = 0;
-    setup = await createTestRenderer({ width: 30, height: 3 });
-    const button = createButton(setup.renderer, {
-      disabled: true,
-      label: "Wait",
-      onPress: () => presses++,
-    });
-    setup.renderer.root.add(button);
-
-    button.focus();
-    button.press();
-    expect(button.focused).toBe(false);
-    expect(presses).toBe(0);
-  });
-
   it("derives a pressed shade distinct from the focus color", async () => {
     theme.register("smoke-pressed", {
       tokens: { colors: { focus: "#0000FF", foreground: "#FFFFFF" } },

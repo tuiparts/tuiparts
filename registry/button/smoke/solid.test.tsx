@@ -23,37 +23,23 @@ describe("installed Solid Button recipe", () => {
     const presses: ButtonPressDetails[] = [];
     setup = await testRender(
       () => (
-        <box flexDirection="column">
-          <Button
-            id="active"
-            intent="neutral"
-            label="Run"
-            onPress={(details) => presses.push(details)}
-          />
-          <Button
-            id="disabled"
-            disabled
-            label="Wait"
-            onPress={(details) => presses.push(details)}
-          />
-        </box>
+        <Button
+          id="active"
+          intent="neutral"
+          label="Run"
+          onPress={(details) => presses.push(details)}
+        />
       ),
-      { width: 30, height: 5 },
+      { width: 30, height: 3 },
     );
     const active = setup.renderer.root.findDescendantById(
       "active",
-    ) as ButtonRenderable;
-    const disabled = setup.renderer.root.findDescendantById(
-      "disabled",
     ) as ButtonRenderable;
 
     await setup.renderOnce();
     expect(setup.captureCharFrame().split("\n")[0]?.includes("Run")).toBe(true);
     active.press();
-    disabled.focus();
-    disabled.press();
     expect(presses).toEqual([{ source: "imperative" }]);
-    expect(disabled.focused).toBe(false);
   });
 
   it("restyles rendered buttons on theme switch", async () => {

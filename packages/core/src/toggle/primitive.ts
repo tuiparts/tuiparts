@@ -1,10 +1,5 @@
-import {
-  type BoxOptions,
-  BoxRenderable,
-  type KeyEvent,
-  type RenderContext,
-} from "@opentui/core";
-import type { ToggleChangeDetails } from "../internal/toggle-change-details";
+import type { BoxOptions, KeyEvent, RenderContext } from "@opentui/core";
+import { PressableRenderable, type PressDetails } from "../internal/pressable";
 import {
   type ToggleGroupFocusDirection,
   type ToggleGroupItemKey,
@@ -13,6 +8,9 @@ import {
   ToggleGroupRenderable,
   type ToggleGroupStore,
 } from "../toggle-group/primitive";
+
+/** Gesture details for one semantic Toggle press. */
+export type ToggleChangeDetails = PressDetails;
 
 /** Readonly observable Toggle state. */
 export interface ToggleState {
@@ -265,12 +263,9 @@ export interface ToggleOptions extends BoxOptions, ToggleStoreOptions {
 }
 
 /** Focusable two-state Toggle Renderable. */
-export class ToggleRenderable extends BoxRenderable {
-  protected override _focusable = true;
-
+export class ToggleRenderable extends PressableRenderable {
   private readonly toggleStore: ToggleStore;
   private readonly detach: () => void;
-  private readonly unsubscribe: () => void;
 
   /** Creates a Toggle Renderable. */
   constructor(ctx: RenderContext, options: ToggleOptions = {}) {
@@ -284,20 +279,7 @@ export class ToggleRenderable extends BoxRenderable {
       value,
       ...boxOptions
     } = options;
-    super(ctx, {
-      ...boxOptions,
-      onMouseUp: (event) => {
-        boxOptions.onMouseUp?.call(this, event);
-        if (
-          event.defaultPrevented ||
-          event.button !== 0 ||
-          this.toggleStore.state.disabled
-        )
-          return;
-        this.activate(Object.freeze({ button: 0, source: "pointer" }));
-        this.focus();
-      },
-    });
+    super(ctx, boxOptions);
     this.toggleStore =
       store ??
       new ToggleStore({
@@ -319,12 +301,17 @@ export class ToggleRenderable extends BoxRenderable {
       focus: () => this.focus(),
       isAvailable: () => this.isAvailable(),
     });
-    this._focusable = this.canFocus();
-    this.unsubscribe = this.toggleStore.subscribe((state) => {
-      if (state.disabled && this._focused) super.blur();
-      this._focusable = this.canFocus();
-      this.requestRender();
-    });
+    this.attachPressable(this.toggleStore);
+  }
+
+  /** Grouped Toggles stay focusable only while they own the roving tab stop. */
+  protected override pressableFocusable(): boolean {
+    return this.canFocus();
+  }
+
+  /** Requests a Toggle activation for one semantic press. */
+  protected handlePress(details: PressDetails): void {
+    this.activate(details);
   }
 
   /** Store owned by this Toggle. */
@@ -358,37 +345,8 @@ export class ToggleRenderable extends BoxRenderable {
     return this.toggleStore.subscribe(listener);
   }
 
-  /** Requests a semantic Toggle activation. */
-  press(): void {
-    if (this._isDestroyed) return;
-    this.activate(Object.freeze({ source: "imperative" }));
-  }
-
-  /** Handles activation and grouped roving-focus keys. */
-  override handleKeyPress(key: KeyEvent): boolean {
-    if (
-      this._isDestroyed ||
-      key.defaultPrevented ||
-      this.toggleStore.state.disabled
-    )
-      return false;
-    if (
-      key.ctrl ||
-      key.meta ||
-      key.shift ||
-      key.option ||
-      key.super ||
-      key.hyper
-    )
-      return false;
-    if (key.name === "space") {
-      this.activate(Object.freeze({ key: "space", source: "keyboard" }));
-      return true;
-    }
-    if (key.name === "return" || key.name === "enter") {
-      this.activate(Object.freeze({ key: "enter", source: "keyboard" }));
-      return true;
-    }
+  /** Handles grouped roving-focus keys outside the shared activation map. */
+  protected override handleUnclaimedKey(key: KeyEvent): boolean {
     if (!this.group) return false;
     const orientation = this.group.state.orientation;
     if (
@@ -411,13 +369,6 @@ export class ToggleRenderable extends BoxRenderable {
     if (this.toggleStore.state.disabled || !this.refreshCollection()) return;
     this._focusable = true;
     super.focus();
-    this.toggleStore.setFocused(this._focused);
-  }
-
-  /** Blurs this Toggle and releases active collection ownership. */
-  override blur(): void {
-    super.blur();
-    this.toggleStore.setFocused(false);
   }
 
   /** Current pressed state. */
@@ -471,7 +422,7 @@ export class ToggleRenderable extends BoxRenderable {
 
   /** Releases Store and group registration ownership. */
   override destroy(): void {
-    this.unsubscribe();
+    this.detachPressable();
     this.detach();
     super.destroy();
     this.toggleStore.setFocused(false);
@@ -486,7 +437,7 @@ export class ToggleRenderable extends BoxRenderable {
     return true;
   }
 
-  private activate(details: ToggleChangeDetails): void {
+  private activate(details: PressDetails): void {
     if (this._isDestroyed) return;
     if (this.group && !this.refreshCollection()) return;
     this.toggleStore.requestToggle(details);
@@ -531,5 +482,3 @@ export class ToggleRenderable extends BoxRenderable {
     return false;
   }
 }
-
-export type { ToggleChangeDetails } from "../internal/toggle-change-details";

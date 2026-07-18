@@ -7,6 +7,7 @@ import {
   type TextOptions,
   TextRenderable,
 } from "@opentui/core";
+import { PressableRenderable } from "../internal/pressable";
 
 export type DialogOpenChangeReason =
   | "trigger"
@@ -381,24 +382,22 @@ interface DialogPartOptions {
 
 export interface DialogTriggerOptions extends BoxOptions, DialogPartOptions {}
 
-export class DialogTriggerRenderable extends BoxRenderable {
+export class DialogTriggerRenderable extends PressableRenderable {
   constructor(ctx: RenderContext, options: DialogTriggerOptions) {
     const { store, ...boxOptions } = options;
-    super(ctx, {
-      ...boxOptions,
-      focusable: boxOptions.focusable ?? true,
-      onMouseUp: (event) => {
-        boxOptions.onMouseUp?.call(this, event);
-        this.open();
-      },
-    });
+    super(ctx, boxOptions);
     this.store = store;
   }
 
   readonly store: DialogStore;
 
-  press(): boolean {
+  override press(): boolean {
     return this.open();
+  }
+
+  /** Requests dialog opening for one semantic press. */
+  protected handlePress(): void {
+    this.open();
   }
 
   private open(): boolean {
@@ -407,14 +406,6 @@ export class DialogTriggerRenderable extends BoxRenderable {
     // A canceled or controlled intent has not moved focus into a popup.
     if (!this.store.state.open) this.focus();
     return changed;
-  }
-
-  override handleKeyPress(key: KeyEvent): boolean {
-    if (key.name !== "space" && key.name !== "return" && key.name !== "enter") {
-      return false;
-    }
-    this.press();
-    return true;
   }
 }
 
@@ -580,20 +571,13 @@ export interface DialogCloseOptions extends BoxOptions, DialogPartOptions {
   reason?: "close" | "action";
 }
 
-export class DialogCloseRenderable extends BoxRenderable {
+export class DialogCloseRenderable extends PressableRenderable {
   readonly store: DialogStore;
   private closeReason: "close" | "action";
 
   constructor(ctx: RenderContext, options: DialogCloseOptions) {
     const { store, reason = "close", ...boxOptions } = options;
-    super(ctx, {
-      ...boxOptions,
-      focusable: boxOptions.focusable ?? true,
-      onMouseUp: (event) => {
-        boxOptions.onMouseUp?.call(this, event);
-        store.requestOpen(false, this.closeReason, true);
-      },
-    });
+    super(ctx, boxOptions);
     this.store = store;
     this.closeReason = reason;
   }
@@ -606,15 +590,13 @@ export class DialogCloseRenderable extends BoxRenderable {
     this.closeReason = reason;
   }
 
-  press(): boolean {
+  override press(): boolean {
     return this.store.requestOpen(false, this.closeReason, true);
   }
 
-  override handleKeyPress(key: KeyEvent): boolean {
-    if (key.name !== "space" && key.name !== "return" && key.name !== "enter")
-      return false;
+  /** Requests dialog dismissal for one semantic press. */
+  protected handlePress(): void {
     this.press();
-    return true;
   }
 }
 

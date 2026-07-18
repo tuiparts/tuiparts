@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "bun:test";
-import { BoxRenderable, type KeyEvent, TextRenderable } from "@opentui/core";
+import { type KeyEvent, TextRenderable } from "@opentui/core";
 import {
   createTestRenderer,
   type TestRendererSetup,
@@ -78,52 +78,33 @@ describe("Button primitive", () => {
     expect(presses.every(Object.isFrozen)).toBe(true);
   });
 
-  it("tracks primary-pointer press state and activates only on an uncancelled release", async () => {
+  // The shared activation matrix (guards, pointer model, disabled sync) is
+  // proven once in internal/pressable.test.ts; these cover the pressed-state
+  // wiring that is unique to the Button Store.
+  it("mirrors primary-pointer press state and presses on release", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
     const presses: ButtonPressDetails[] = [];
-    const active = new ButtonRenderable(setup.renderer, {
+    const root = new ButtonRenderable(setup.renderer, {
       height: 1,
       onPress: (details) => presses.push(details),
       width: 5,
     });
-    const cancelled = new ButtonRenderable(setup.renderer, {
-      height: 1,
-      onMouseUp: (event) => event.preventDefault(),
-      onPress: (details) => presses.push(details),
-      width: 5,
-    });
-    const row = new BoxRenderable(setup.renderer, {
-      flexDirection: "row",
-      height: 1,
-      width: 10,
-    });
-    row.add(active);
-    row.add(cancelled);
-    setup.renderer.root.add(row);
+    setup.renderer.root.add(root);
     await setup.renderOnce();
 
     await setup.mockMouse.pressDown(0, 0);
-    expect(active.getState().pressed).toBe(true);
+    expect(root.getState().pressed).toBe(true);
     await setup.mockMouse.release(0, 0);
-    expect(active.getState()).toEqual({
+    expect(root.getState()).toEqual({
       disabled: false,
       focused: true,
       pressed: false,
     });
     expect(presses).toEqual([{ button: 0, source: "pointer" }]);
     expect(Object.isFrozen(presses[0])).toBe(true);
-
-    await setup.mockMouse.pressDown(5, 0);
-    expect(cancelled.getState().pressed).toBe(true);
-    await setup.mockMouse.release(5, 0);
-    expect(cancelled.getState().pressed).toBe(false);
-    expect(presses).toHaveLength(1);
-
-    await setup.mockMouse.click(0, 0, 2);
-    expect(presses).toHaveLength(1);
   });
 
-  it("resets pressed state on disablement, blur, and teardown while disabled gates every activation seam", async () => {
+  it("resets pressed state on disablement, blur, and teardown", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
     const presses: ButtonPressDetails[] = [];
     const root = new ButtonRenderable(setup.renderer, {
@@ -143,21 +124,14 @@ describe("Button primitive", () => {
     });
 
     root.disabled = true;
-    expect(root.focusable).toBe(false);
     expect(root.getState()).toEqual({
       disabled: true,
       focused: false,
       pressed: false,
     });
-    root.focus();
-    root.press();
-    expect(root.handleKeyPress({ name: "space" } as KeyEvent)).toBe(false);
-    await setup.mockMouse.click(0, 0);
-    expect(root.focused).toBe(false);
     expect(presses).toEqual([]);
 
     root.disabled = undefined;
-    expect(root.focusable).toBe(true);
     root.focus();
     await setup.mockMouse.pressDown(0, 0);
     root.blur();

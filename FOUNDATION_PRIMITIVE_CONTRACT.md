@@ -271,10 +271,20 @@ itself.
 
 - Disabled behavior gates focus and semantic activation at every input seam,
   including imperative actions where applicable.
-- Keyboard handlers consume only keys they handle. Modifier handling and key
-  maps are primitive-specific and documented.
+- Keyboard handlers consume only keys they handle. Press-activated primitives
+  share one activation guard: an uncancelled, unmodified Space or Enter press.
+  Cancelled keys and modifier chords are never consumed. Additional
+  primitive-specific keys, such as roving-focus navigation, are documented per
+  primitive and observe the same cancellation and modifier guards.
 - Pointer handlers honor prior `defaultPrevented` state and supported button
-  semantics before activating.
+  semantics before activating. Press-activated primitives share one pointer
+  model: activation requires an uncancelled primary-button press that starts
+  and ends on the node; releasing elsewhere, dragging off, or cancelling
+  either half of the gesture abandons it.
+- The shared activation guard, pointer model, disabled-driven focusability,
+  and focus mirroring live in one internal Pressable behavior module
+  (`core/src/internal/pressable.ts`); press-activated Roots do not
+  re-implement them (ADR-0007).
 - Actual focus belongs to OpenTUI Renderables. Stores may coordinate eligible
   targets, roving tab stops, restoration targets, and topmost ownership, but
   they do not invent a second focused node.

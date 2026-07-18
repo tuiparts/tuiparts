@@ -38,6 +38,7 @@ export {
   type InputOptions,
   InputRenderable,
 } from "./input";
+export type { PressDetails } from "./internal/pressable";
 export {
   type RadioIndicatorOptions,
   RadioIndicatorRenderable,

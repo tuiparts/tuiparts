@@ -1,4 +1,5 @@
 import type { BaseRenderable, BoxOptions, RenderContext } from "@opentui/core";
+import type { PressDetails } from "../internal/pressable";
 import {
   type CollectionFocusDirection,
   type CollectionItemInput,
@@ -9,7 +10,6 @@ import {
   RovingCollectionRenderable,
   RovingCollectionStore,
 } from "../internal/roving-collection";
-import type { ToggleChangeDetails } from "../internal/toggle-change-details";
 import { ToggleRenderable } from "../toggle/primitive";
 
 /** Stable identity for a Toggle registered with a ToggleGroup. */
@@ -41,7 +41,7 @@ export interface ToggleGroupItemState {
 /** Callback invoked when a ToggleGroup requests a new value. */
 export type ToggleGroupValueChangeHandler = (
   value: readonly string[],
-  details: ToggleChangeDetails,
+  details: PressDetails,
 ) => void;
 
 /** Options used to construct a ToggleGroup Store. */
@@ -115,7 +115,7 @@ export class ToggleGroupStore extends RovingCollectionStore<
   requestToggle(
     key: ToggleGroupItemKey,
     pressed: boolean,
-    details: ToggleChangeDetails,
+    details: PressDetails,
     onAccepted?: () => void,
   ): void {
     this.runMutation(() => {

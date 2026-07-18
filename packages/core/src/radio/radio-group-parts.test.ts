@@ -5,6 +5,7 @@ import {
   type TestRendererSetup,
 } from "@opentui/core/testing";
 import {
+  type RadioGroupChangeDetails,
   RadioGroupRenderable,
   RadioGroupStore,
   RadioIndicatorRenderable,
@@ -160,37 +161,30 @@ describe("RadioGroup Core parts", () => {
     expect(root.store.getItemState(key)).toBeUndefined();
   });
 
-  it("activates only uncancelled primary-button releases", async () => {
+  // The shared activation matrix (guards, pointer model, disabled sync) is
+  // proven once in internal/pressable.test.ts; this is the wiring round-trip.
+  it("selects from a primary-button click with pointer-sourced details", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
+    const details: RadioGroupChangeDetails[] = [];
     const root = new RadioGroupRenderable(setup.renderer, {
       flexDirection: "row",
+      onValueChange: (_value, changeDetails) => details.push(changeDetails),
     });
-    const secondary = new RadioRootRenderable(setup.renderer, {
+    const item = new RadioRootRenderable(setup.renderer, {
       store: root.store,
-      value: "secondary",
+      value: "alpha",
       width: 5,
       height: 1,
     });
-    const cancelled = new RadioRootRenderable(setup.renderer, {
-      store: root.store,
-      value: "cancelled",
-      width: 5,
-      height: 1,
-      onMouseUp: (event) => event.preventDefault(),
-    });
-    root.add(secondary);
-    root.add(cancelled);
+    root.add(item);
     setup.renderer.root.add(root);
     await setup.renderOnce();
 
-    await setup.mockMouse.click(0, 0, 2);
-    expect(root.value).toBeNull();
-
-    await setup.mockMouse.click(5, 0);
-    expect(root.value).toBeNull();
-
     await setup.mockMouse.click(0, 0);
-    expect(root.value).toBe("secondary");
+
+    expect(root.value).toBe("alpha");
+    expect(item.focused).toBe(true);
+    expect(details).toEqual([{ reason: "activation", source: "pointer" }]);
   });
 
   it("moves roving focus, skips disabled Items, wraps, and handles Home/End", async () => {

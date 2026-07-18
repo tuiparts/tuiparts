@@ -5,6 +5,7 @@ import {
   type KeyEvent,
   type RenderContext,
 } from "@opentui/core";
+import { PressableRenderable, type PressDetails } from "../internal/pressable";
 import {
   type CollectionEntry,
   type CollectionFocusDirection,
@@ -22,7 +23,7 @@ export type RadioGroupItemKey = CollectionItemKey;
 
 export interface RadioGroupChangeDetails {
   readonly reason: "activation" | "navigation";
-  readonly source: "keyboard" | "pointer" | "programmatic";
+  readonly source: "imperative" | "keyboard" | "pointer";
 }
 
 export type RadioGroupFocusDirection = CollectionFocusDirection;
@@ -63,9 +64,9 @@ export type RadioGroupItemRegistration = CollectionItemRegistration;
 
 export type RadioGroupNavigationTarget = CollectionNavigationTarget;
 
-const PROGRAMMATIC_ACTIVATION_DETAILS: RadioGroupChangeDetails = Object.freeze({
+const IMPERATIVE_ACTIVATION_DETAILS: RadioGroupChangeDetails = Object.freeze({
   reason: "activation",
-  source: "programmatic",
+  source: "imperative",
 });
 
 export class RadioGroupStore extends RovingCollectionStore<
@@ -89,7 +90,7 @@ export class RadioGroupStore extends RovingCollectionStore<
 
   requestSelection(
     key: RadioGroupItemKey,
-    details: RadioGroupChangeDetails = PROGRAMMATIC_ACTIVATION_DETAILS,
+    details: RadioGroupChangeDetails = IMPERATIVE_ACTIVATION_DETAILS,
   ): void {
     this.runMutation(() => this.requestSelectionNow(key, details));
   }
@@ -253,9 +254,7 @@ export interface RadioRootOptions extends BoxOptions {
 
 type RadioGroupItemListener = (state: RadioState) => void;
 
-export class RadioRootRenderable extends BoxRenderable {
-  protected override _focusable = true;
-
+export class RadioRootRenderable extends PressableRenderable {
   private readonly _store: RadioGroupStore;
   private readonly _registration: RadioGroupItemRegistration;
   private _collectionState: RadioGroupCollectionItemState;
@@ -265,20 +264,7 @@ export class RadioRootRenderable extends BoxRenderable {
 
   constructor(ctx: RenderContext, options: RadioRootOptions) {
     const { store, value, disabled, ...boxOptions } = options;
-    super(ctx, {
-      ...boxOptions,
-      onMouseUp: (event) => {
-        boxOptions.onMouseUp?.call(this, event);
-        if (
-          event.defaultPrevented ||
-          event.button !== 0 ||
-          this._state.disabled
-        )
-          return;
-        this.focus();
-        this.press("pointer");
-      },
-    });
+    super(ctx, boxOptions);
     this._store = store;
     this._registration = store.registerItem(value, {
       disabled,
@@ -328,22 +314,25 @@ export class RadioRootRenderable extends BoxRenderable {
     return () => this._listeners.delete(listener);
   }
 
-  press(source: RadioGroupChangeDetails["source"] = "programmatic"): void {
+  override press(
+    source: RadioGroupChangeDetails["source"] = "imperative",
+  ): void {
     if (this._state.disabled || !this.refreshCollection()) return;
     this._store.requestSelection(this.key, { reason: "activation", source });
   }
 
-  override handleKeyPress(key: KeyEvent): boolean {
-    if (this._state.disabled) return false;
-    if (
-      key.ctrl ||
-      key.meta ||
-      key.shift ||
-      key.option ||
-      key.super ||
-      key.hyper
-    )
-      return false;
+  /** Selects this Radio for one semantic press. */
+  protected handlePress(details: PressDetails): void {
+    this.press(details.source);
+  }
+
+  /** Radio disablement lives on its collection item state, not an attached Store. */
+  protected override pressableDisabled(): boolean {
+    return this._state.disabled;
+  }
+
+  /** Handles roving-focus navigation keys outside the activation map. */
+  protected override handleUnclaimedKey(key: KeyEvent): boolean {
     if (key.name === "left" || key.name === "up") {
       return this.moveFocus("previous");
     }
@@ -352,10 +341,6 @@ export class RadioRootRenderable extends BoxRenderable {
     }
     if (key.name === "home") return this.moveFocus("first");
     if (key.name === "end") return this.moveFocus("last");
-    if (key.name === "space" || key.name === "return" || key.name === "enter") {
-      this.press("keyboard");
-      return true;
-    }
     return false;
   }
 

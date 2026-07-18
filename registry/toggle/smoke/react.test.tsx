@@ -1,10 +1,12 @@
 /** @jsxImportSource @opentui/react */
 
 import { afterEach, expect, test } from "bun:test";
+import { type BoxRenderable, parseColor } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
 import { ToggleRenderable } from "@tuiparts/core/toggle";
 import { act } from "react";
+import { theme } from "./components/ui/theme";
 import { Toggle } from "./components/ui/toggle";
 
 let setup: TestRendererSetup | undefined;
@@ -24,4 +26,28 @@ test("installed React Toggle recipe runtime smoke", async () => {
     throw new Error("Expected ToggleRenderable toggle");
   await act(async () => toggle.press());
   expect(toggle.pressed).toBe(true);
+});
+
+test("restyles rendered toggles on theme switch", async () => {
+  theme.register("smoke", { tokens: { colors: { primary: "#123456" } } });
+  setup = await testRender(
+    <Toggle id="themed" defaultPressed label="Theme" />,
+    { width: 20, height: 3 },
+  );
+  const themed = setup.renderer.root.findDescendantById(
+    "themed",
+  ) as ToggleRenderable;
+  const surface = themed.getChildren()[0] as BoxRenderable;
+
+  await act(async () => {
+    theme.setActive("smoke");
+  });
+  await setup.waitFor(() =>
+    surface.backgroundColor.equals(parseColor("#123456")),
+  );
+
+  expect(setup.renderer.root.findDescendantById("themed")).toBe(themed);
+  await act(async () => {
+    theme.setActive("terminal");
+  });
 });

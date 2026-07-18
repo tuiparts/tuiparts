@@ -7,6 +7,7 @@ import { testRender } from "@opentui/react/test-utils";
 import type { CheckboxRootRenderable } from "@tuiparts/core/checkbox";
 import { act, useState } from "react";
 import { Checkbox } from "./components/ui/checkbox";
+import { theme } from "./components/ui/theme";
 
 let setup: TestRendererSetup | undefined;
 
@@ -77,4 +78,26 @@ test("installed React Checkbox recipe runtime smoke", async () => {
   expect(disabledChanges).toBe(0);
 
   expect(text(root("custom-mark"))).toEqual(["x", "Custom mark"]);
+});
+
+test("restyles rendered checkboxes on theme switch", async () => {
+  theme.register("smoke", {
+    tokens: { colors: { primary: "#123456" }, glyphs: { check: "x" } },
+  });
+  setup = await testRender(
+    <Checkbox id="themed" label="Theme" defaultChecked />,
+    { width: 30, height: 3 },
+  );
+  const themed = root("themed");
+  expect(text(themed)).toEqual(["✓", "Theme"]);
+
+  await act(async () => {
+    theme.setActive("smoke");
+  });
+  await setup.waitFor(() => text(themed).join(" ") === "x Theme");
+
+  expect(setup.renderer.root.findDescendantById("themed")).toBe(themed);
+  await act(async () => {
+    theme.setActive("terminal");
+  });
 });

@@ -1,0 +1,10 @@
+{
+  "extends": "../../examples/core/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "../../examples/core",
+    "paths": {
+      "*": ["node_modules/*"]
+    }
+  },
+  "include": ["theme.ts"]
+}

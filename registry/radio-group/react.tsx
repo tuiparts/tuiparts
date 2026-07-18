@@ -1,7 +1,9 @@
 /** @jsxImportSource @opentui/react */
 
+import { RGBA } from "@opentui/core";
 import { Radio as RadioPrimitive } from "@tuiparts/react/radio";
 import { RadioGroup as RadioGroupPrimitive } from "@tuiparts/react/radio-group";
+import { useTheme } from "./use-theme";
 
 export interface RadioGroupProps extends RadioGroupPrimitive.Props {}
 
@@ -34,7 +36,9 @@ export function RadioGroupItem({
   disabled,
   ...props
 }: RadioGroupItemProps) {
-  const markColor = tone === "success" ? "#10B981" : "#3B82F6";
+  const tokens = useTheme();
+  const markColor =
+    tone === "success" ? RGBA.fromIndex(2) : tokens.colors.primary;
 
   return (
     <RadioPrimitive.Root
@@ -55,7 +59,11 @@ export function RadioGroupItem({
           <text
             content={label}
             fg={
-              state.disabled ? "#737373" : state.focused ? "#FFFFFF" : "#E5E5E5"
+              state.disabled
+                ? tokens.colors.disabledForeground
+                : state.focused
+                  ? tokens.colors.focus
+                  : tokens.colors.foreground
             }
           />
         </>

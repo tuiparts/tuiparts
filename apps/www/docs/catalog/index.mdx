@@ -36,6 +36,10 @@ becomes source your application owns.
   <Card title="Badge" href="/catalog/badge" icon="tag">
     Presentation-only status label composed from ordinary OpenTUI elements.
   </Card>
+  <Card title="Theme" href="/theming" icon="palette">
+    The consumer-owned token contract, store, and preset themes every recipe
+    reads from.
+  </Card>
 </CardGroup>
 
 ## Preview and companions
@@ -49,6 +53,7 @@ becomes source your application owns.
   </Card>
 </CardGroup>
 
-**Recipes are starting points.** The palette, density, symbols, labels, and
-intent variants in each installed file are examples for you to edit, not
-package APIs.
+**Recipes are starting points.** Colors, density, and symbols resolve from
+the consumer-owned [theme file](/theming) installed alongside every recipe;
+labels and intent variants live directly in each installed file. All of it is
+example source for you to edit, not package APIs.

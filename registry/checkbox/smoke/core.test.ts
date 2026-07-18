@@ -1,9 +1,15 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import {
+  type BoxRenderable,
+  parseColor,
+  type TextRenderable,
+} from "@opentui/core";
+import {
   createTestRenderer,
   type TestRendererSetup,
 } from "@opentui/core/testing";
 import { createCheckbox } from "./components/ui/checkbox";
+import { theme } from "./components/ui/theme";
 
 let setup: TestRendererSetup | undefined;
 
@@ -79,5 +85,25 @@ describe("installed Core Checkbox recipe", () => {
   it("renders a consumer-owned mark", async () => {
     await render({ defaultChecked: true, label: "Custom", mark: "*" });
     expect(firstLine()).toBe("* Custom");
+  });
+
+  it("restyles from the theme store on theme switch", async () => {
+    theme.register("smoke", {
+      tokens: { colors: { primary: "#123456" }, glyphs: { check: "x" } },
+    });
+    const checkbox = await render({ defaultChecked: true, label: "Theme" });
+    expect(firstLine()).toBe("✓ Theme");
+
+    theme.setActive("smoke");
+    await setup?.renderOnce();
+    expect(firstLine()).toBe("x Theme");
+    const markCell = checkbox.getChildren()[0] as BoxRenderable;
+    const indicator = markCell.getChildren()[0] as BoxRenderable;
+    const mark = indicator.getChildren()[0] as TextRenderable;
+    expect(mark.fg.equals(parseColor("#123456"))).toBe(true);
+
+    theme.setActive("terminal");
+    await setup?.renderOnce();
+    expect(firstLine()).toBe("✓ Theme");
   });
 });

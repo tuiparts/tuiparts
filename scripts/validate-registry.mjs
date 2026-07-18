@@ -67,6 +67,7 @@ const recipes = [
   "dialog",
   "toggle",
   "toggle-group",
+  "theme",
 ];
 const foundationCatalogRecipes = [
   "checkbox",
@@ -77,6 +78,35 @@ const foundationCatalogRecipes = [
   "input",
   "toggle",
   "toggle-group",
+  "theme",
+];
+const primitivelessRecipes = ["badge", "theme"];
+const themePresets = [
+  {
+    item: "theme-cobalt-deep",
+    source: "registry/theme/themes/cobalt-deep.ts",
+    target: "themes/cobalt-deep.ts",
+  },
+  {
+    item: "theme-ascii",
+    source: "registry/theme/themes/ascii.ts",
+    target: "themes/ascii.ts",
+  },
+  {
+    item: "theme-catppuccin",
+    source: "registry/theme/themes/catppuccin.ts",
+    target: "themes/catppuccin.ts",
+  },
+  {
+    item: "theme-gruvbox",
+    source: "registry/theme/themes/gruvbox.ts",
+    target: "themes/gruvbox.ts",
+  },
+  {
+    item: "theme-rosepine",
+    source: "registry/theme/themes/rosepine.ts",
+    target: "themes/rosepine.ts",
+  },
 ];
 const expectedCatalogDependencyNames = {
   core: {
@@ -104,14 +134,32 @@ const expectedCatalogDependencyNames = {
     recipe: ["@opentui/core", "@opentui/solid", "solid-js"],
   },
 };
+function consumerFiles(recipe, framework, extension) {
+  if (recipe !== "theme") {
+    return [
+      {
+        source: `registry/${recipe}/${framework}.${extension}`,
+        target: `components/ui/${recipe}.${extension}`,
+      },
+    ];
+  }
+  const themeSource = { source: "registry/theme/theme.ts", target: "components/ui/theme.ts" };
+  if (framework === "core") return [themeSource];
+  return [
+    themeSource,
+    {
+      source: `registry/theme/${framework}.${extension}`,
+      target: "components/ui/use-theme.tsx",
+    },
+  ];
+}
 const consumers = recipes.flatMap((recipe) =>
   Object.entries(frameworks).map(([framework, config]) => ({
     ...config,
     localPackages: config.localPackages,
     framework,
     recipe,
-    source: `registry/${recipe}/${framework}.${config.extension}`,
-    target: `components/ui/${recipe}.${config.extension}`,
+    files: consumerFiles(recipe, framework, config.extension),
     smoke: `registry/${recipe}/smoke/${framework}.test.${config.extension}`,
   })),
 );
@@ -241,6 +289,15 @@ function consumersAffectedBy(paths) {
       selected.add(`${recipeMatch[2]}/${recipeMatch[1]}`);
       continue;
     }
+    if (
+      path.startsWith("registry/theme/") &&
+      !path.startsWith("registry/theme/smoke/")
+    ) {
+      selected.add("core/theme");
+      selected.add("react/theme");
+      selected.add("solid/theme");
+      continue;
+    }
     if (path.startsWith("packages/core/")) {
       exhaustive = true;
       continue;
@@ -298,13 +355,31 @@ try {
     const item = registry.items.find((candidate) => candidate.name === itemName);
     assert(item, `Missing registry item ${itemName}`);
     assert(
-      item.files.length === 1 &&
-        item.files[0]?.path === consumer.source &&
-        item.files[0]?.target === consumer.target,
+      item.files.length === consumer.files.length &&
+        consumer.files.every(
+          (file, index) =>
+            item.files[index]?.path === file.source &&
+            item.files[index]?.target === file.target,
+        ),
       `${itemName} must map its recipe source to the expected consumer target`,
     );
-    assert(existsSync(join(root, consumer.source)), `Missing ${consumer.source}`);
+    for (const file of consumer.files) {
+      assert(existsSync(join(root, file.source)), `Missing ${file.source}`);
+    }
     assert(existsSync(join(root, consumer.smoke)), `Missing ${consumer.smoke}`);
+  }
+  for (const preset of themePresets) {
+    const item = registry.items.find(
+      (candidate) => candidate.name === preset.item,
+    );
+    assert(item, `Missing registry item ${preset.item}`);
+    assert(
+      item.files.length === 1 &&
+        item.files[0]?.path === preset.source &&
+        item.files[0]?.target === preset.target,
+      `${preset.item} must map its preset source to the expected consumer target`,
+    );
+    assert(existsSync(join(root, preset.source)), `Missing ${preset.source}`);
   }
   for (const item of registry.items) {
     if (item.meta?.framework === "react") {
@@ -348,7 +423,9 @@ try {
         item.meta?.updateStrategy === "shadcn-diff",
         `${itemName} must declare the shadcn diff update strategy`,
       );
-      const recipeKind = recipe === "badge" ? "recipe" : "primitive";
+      const recipeKind = primitivelessRecipes.includes(recipe)
+        ? "recipe"
+        : "primitive";
       const actualDependencies = item.dependencies.map(packageName).sort();
       const expectedDependencies = expectedCatalogDependencyNames[framework][
         recipeKind
@@ -480,6 +557,9 @@ try {
       const tarball = tarballs.get(name);
       return tarball ? `${name}@file:${tarball}` : dependency;
     });
+    installItem.registryDependencies = installItem.registryDependencies?.map(
+      (address) => address.replace("https://tuiparts.sh/r/", `${registryDir}/`),
+    );
     const installItemPath = join(
       workDir,
       `${consumer.framework}-${consumer.recipe}-install.json`,
@@ -505,7 +585,7 @@ try {
       .join("\n");
     writeFileSync(
       join(consumerDir, "pnpm-workspace.yaml"),
-      `packages:\n  - "."\n\noverrides:\n${overrides}\n`,
+      `packages:\n  - "."\n${overrides ? `\noverrides:\n${overrides}\n` : ""}`,
     );
     writeJson(join(consumerDir, "tsconfig.json"), {
       compilerOptions: {
@@ -521,7 +601,10 @@ try {
         types: ["bun", "node"],
         ...consumer.compilerOptions,
       },
-      include: [consumer.target, ...(consumer.smoke ? [consumer.smokeFile] : [])],
+      include: [
+        ...consumer.files.map((file) => file.target),
+        ...(consumer.smoke ? [consumer.smokeFile] : []),
+      ],
     });
     writeJson(join(consumerDir, "components.json"), {
       $schema: "https://ui.shadcn.com/schema.json",
@@ -559,13 +642,15 @@ try {
       "--yes",
     ]);
 
-    assert(
-      readFileSync(join(consumerDir, consumer.target), "utf8") ===
-        readFileSync(join(root, consumer.source), "utf8"),
-      `Installed ${itemName} recipe differs from its registry source`,
-    );
+    for (const file of consumer.files) {
+      assert(
+        readFileSync(join(consumerDir, file.target), "utf8") ===
+          readFileSync(join(root, file.source), "utf8"),
+        `Installed ${itemName} recipe differs from its registry source`,
+      );
+    }
     if (itemName === "react/checkbox") {
-      const targetPath = join(consumerDir, consumer.target);
+      const targetPath = join(consumerDir, consumer.files[0].target);
       const localMarker = `// consumer-owned edit for ${itemName}`;
       const upstreamMarker = `// upstream recipe change for ${itemName}`;
       writeFileSync(
@@ -624,8 +709,14 @@ try {
     const allowedChanges = new Set([
       "package.json",
       "pnpm-lock.yaml",
-      consumer.target,
+      ...consumer.files.map((file) => file.target),
     ]);
+    if (registryItem.registryDependencies?.length) {
+      allowedChanges.add("components/ui/theme.ts");
+      if (consumer.framework === "react" || consumer.framework === "solid") {
+        allowedChanges.add("components/ui/use-theme.tsx");
+      }
+    }
     for (const [path, content] of afterInstall) {
       if (allowedChanges.has(path)) continue;
       assert(
@@ -666,6 +757,35 @@ try {
         localLockfile.includes(`file:${tarballs.get(name)}`),
         `${itemName} lockfile did not resolve ${name} locally`,
       );
+    }
+
+    if (consumer.recipe === "theme") {
+      for (const preset of themePresets) {
+        const presetInstallPath = join(
+          workDir,
+          `${consumer.framework}-${preset.item}-install.json`,
+        );
+        writeJson(
+          presetInstallPath,
+          JSON.parse(
+            readFileSync(join(registryDir, `${preset.item}.json`), "utf8"),
+          ),
+        );
+        await capture("pnpm", [
+          "exec",
+          "shadcn",
+          "add",
+          presetInstallPath,
+          "--cwd",
+          consumerDir,
+          "--yes",
+        ]);
+        assert(
+          readFileSync(join(consumerDir, preset.target), "utf8") ===
+            readFileSync(join(root, preset.source), "utf8"),
+          `Installed ${preset.item} preset differs from its registry source`,
+        );
+      }
     }
 
     if (consumer.smoke) {

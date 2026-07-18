@@ -7,6 +7,7 @@ import { testRender } from "@opentui/solid";
 import type { CheckboxRootRenderable } from "@tuiparts/core/checkbox";
 import { createSignal } from "solid-js";
 import { Checkbox } from "./components/ui/checkbox";
+import { theme } from "./components/ui/theme";
 
 let setup: TestRendererSetup | undefined;
 
@@ -106,5 +107,25 @@ describe("installed Solid Checkbox recipe", () => {
       "custom-mark",
     ) as CheckboxRootRenderable;
     expect(text(root)).toEqual(["x", "Custom mark"]);
+  });
+
+  it("restyles rendered checkboxes on theme switch", async () => {
+    theme.register("smoke", {
+      tokens: { colors: { primary: "#123456" }, glyphs: { check: "x" } },
+    });
+    setup = await testRender(
+      () => <Checkbox id="themed" label="Theme" defaultChecked />,
+      { width: 30, height: 3 },
+    );
+    const root = setup.renderer.root.findDescendantById(
+      "themed",
+    ) as CheckboxRootRenderable;
+    expect(text(root)).toEqual(["✓", "Theme"]);
+
+    theme.setActive("smoke");
+    await setup.waitFor(() => text(root).join(" ") === "x Theme");
+
+    expect(setup.renderer.root.findDescendantById("themed")).toBe(root);
+    theme.setActive("terminal");
   });
 });

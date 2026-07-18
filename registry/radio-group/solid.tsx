@@ -1,8 +1,10 @@
 /** @jsxImportSource @opentui/solid */
 
+import { RGBA } from "@opentui/core";
 import { Radio as RadioPrimitive } from "@tuiparts/solid/radio";
 import { RadioGroup as RadioGroupPrimitive } from "@tuiparts/solid/radio-group";
 import { splitProps } from "solid-js";
+import { useTheme } from "./use-theme";
 
 export interface RadioGroupProps extends RadioGroupPrimitive.Props {}
 
@@ -33,7 +35,9 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
     "tone",
     "disabled",
   ]);
-  const markColor = () => (recipe.tone === "success" ? "#10B981" : "#3B82F6");
+  const tokens = useTheme();
+  const markColor = () =>
+    recipe.tone === "success" ? RGBA.fromIndex(2) : tokens().colors.primary;
 
   return (
     <RadioPrimitive.Root
@@ -48,13 +52,20 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
         <>
           <box width={1}>
             <RadioPrimitive.Indicator>
-              <text content={recipe.mark ?? "o"} fg={markColor()} />
+              <text
+                content={recipe.mark ?? tokens().glyphs.radio}
+                fg={markColor()}
+              />
             </RadioPrimitive.Indicator>
           </box>
           <text
             content={recipe.label}
             fg={
-              state.disabled ? "#737373" : state.focused ? "#FFFFFF" : "#E5E5E5"
+              state.disabled
+                ? tokens().colors.disabledForeground
+                : state.focused
+                  ? tokens().colors.focus
+                  : tokens().colors.foreground
             }
           />
         </>

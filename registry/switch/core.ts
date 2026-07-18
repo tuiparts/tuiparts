@@ -7,6 +7,7 @@ import {
   SwitchRootRenderable,
   SwitchThumbRenderable,
 } from "@tuiparts/core/switch";
+import { type Tokens, theme } from "./theme";
 
 export interface SwitchOptions {
   checked?: boolean;
@@ -25,10 +26,16 @@ const symbolSets = {
 
 class SwitchRecipeRenderable extends SwitchRootRenderable {
   private readonly unsubscribeRecipe: () => void;
+  private readonly unsubscribeTheme: () => void;
 
   constructor(ctx: RenderContext, options: SwitchOptions) {
+    const tokens = theme.get();
     const trackWidth = options.density === "comfortable" ? 5 : 3;
-    const symbols = symbolSets[options.symbols ?? "round"];
+    const resolveSymbols = (tokens: Readonly<Tokens>) =>
+      options.symbols
+        ? symbolSets[options.symbols]
+        : { thumb: tokens.glyphs.thumb, track: tokens.glyphs.track };
+    const symbols = resolveSymbols(tokens);
     super(ctx, {
       backgroundColor: "transparent",
       checked: options.checked,
@@ -45,12 +52,11 @@ class SwitchRecipeRenderable extends SwitchRootRenderable {
       position: "relative",
       width: trackWidth,
     });
-    track.add(
-      new TextRenderable(ctx, {
-        content: symbols.track.repeat(trackWidth),
-        fg: "#525252",
-      }),
-    );
+    const trackText = new TextRenderable(ctx, {
+      content: symbols.track.repeat(trackWidth),
+      fg: tokens.colors.border,
+    });
+    track.add(trackText);
     const thumb = new SwitchThumbRenderable(ctx, {
       height: 1,
       left: this.getState().checked ? trackWidth - 1 : 0,
@@ -58,26 +64,40 @@ class SwitchRecipeRenderable extends SwitchRootRenderable {
       store: this.store,
       width: 1,
     });
-    thumb.add(
-      new TextRenderable(ctx, {
-        content: symbols.thumb,
-        fg: "#3B82F6",
-      }),
-    );
+    const thumbText = new TextRenderable(ctx, {
+      content: symbols.thumb,
+      fg: tokens.colors.primary,
+    });
+    thumb.add(thumbText);
     track.add(thumb);
     this.add(track);
-    this.add(
-      new TextRenderable(ctx, {
-        content: options.label,
-        fg: options.disabled ? "#737373" : "#E5E5E5",
-      }),
-    );
+    const label = new TextRenderable(ctx, {
+      content: options.label,
+      fg: options.disabled
+        ? tokens.colors.disabledForeground
+        : tokens.colors.foreground,
+    });
+    this.add(label);
+
+    const applyStyle = (tokens: Readonly<Tokens>) => {
+      const symbols = resolveSymbols(tokens);
+      trackText.content = symbols.track.repeat(trackWidth);
+      trackText.fg = tokens.colors.border;
+      thumbText.content = symbols.thumb;
+      thumbText.fg = tokens.colors.primary;
+      label.fg = options.disabled
+        ? tokens.colors.disabledForeground
+        : tokens.colors.foreground;
+    };
+    applyStyle(tokens);
+    this.unsubscribeTheme = theme.subscribe(() => applyStyle(theme.get()));
     this.unsubscribeRecipe = this.subscribe((state) => {
       thumb.left = state.checked ? trackWidth - 1 : 0;
     });
   }
 
   override destroy(): void {
+    this.unsubscribeTheme();
     this.unsubscribeRecipe();
     super.destroy();
   }

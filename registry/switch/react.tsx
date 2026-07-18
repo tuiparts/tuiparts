@@ -1,6 +1,7 @@
 /** @jsxImportSource @opentui/react */
 
 import { Switch as SwitchPrimitive } from "@tuiparts/react/switch";
+import { useTheme } from "./use-theme";
 
 export interface SwitchProps
   extends Omit<SwitchPrimitive.Root.Props, "children"> {
@@ -18,12 +19,15 @@ const symbolSets = {
 export function Switch({
   density = "compact",
   label,
-  symbols = "round",
+  symbols,
   disabled,
   ...props
 }: SwitchProps) {
+  const tokens = useTheme();
   const trackWidth = density === "comfortable" ? 5 : 3;
-  const glyphs = symbolSets[symbols];
+  const glyphs = symbols
+    ? symbolSets[symbols]
+    : { thumb: tokens.glyphs.thumb, track: tokens.glyphs.track };
 
   return (
     <SwitchPrimitive.Root
@@ -41,20 +45,27 @@ export function Switch({
             position="relative"
             backgroundColor="transparent"
           >
-            <text content={glyphs.track.repeat(trackWidth)} fg="#525252" />
+            <text
+              content={glyphs.track.repeat(trackWidth)}
+              fg={tokens.colors.border}
+            />
             <SwitchPrimitive.Thumb
               width={1}
               height={1}
               position="absolute"
               left={state.checked ? trackWidth - 1 : 0}
             >
-              <text content={glyphs.thumb} fg="#3B82F6" />
+              <text content={glyphs.thumb} fg={tokens.colors.primary} />
             </SwitchPrimitive.Thumb>
           </box>
           <text
             content={label}
             fg={
-              state.disabled ? "#737373" : state.focused ? "#FFFFFF" : "#E5E5E5"
+              state.disabled
+                ? tokens.colors.disabledForeground
+                : state.focused
+                  ? tokens.colors.focus
+                  : tokens.colors.foreground
             }
           />
         </>

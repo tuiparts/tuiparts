@@ -80,7 +80,7 @@ The installed recipe adds presentation props on top of the primitive's
       type: '"neutral" | "primary"',
       default: '"primary"',
       description:
-        "Which starter palette to apply. Edit or extend the palette map in the installed file.",
+        "Which theme tokens the resting state uses: primary or surface. Edit or extend the mapping in the installed file.",
     },
     size: {
       type: '"compact" | "comfortable"',
@@ -98,7 +98,9 @@ The installed recipe adds presentation props on top of the primitive's
 All remaining primitive props — layout, colors, and event callbacks — pass
 through to `ButtonPrimitive`. The render callback receives readonly
 `pressed`, `focused`, and `disabled` state, which the starter recipe maps to
-background colors.
+[theme tokens](/theming): `focus` for the focused background, a
+`tint`-derived shade of it for the pressed flash, and the `disabled` pair for
+disabled controls.
 
 For the split between packaged behavior and installed presentation, see the
 [architecture page](/architecture).

@@ -22,6 +22,12 @@ Each foundation recipe is available as `core/<name>`, `react/<name>`, and
 | Badge | None; presentation-only recipe | `Badge` |
 | Toggle | Standalone pressed-state primitive | `Toggle` |
 | ToggleGroup/Toggle | Single or multiple selection and roving focus | `ToggleGroup`, `ToggleGroupItem` |
+| Theme | None; consumer-owned token contract and store | `Tokens`, `theme`, `createThemeStore`, `tint` (+ `useTheme` in React/Solid) |
+
+Framework-neutral preset themes are additionally available as `theme-<name>`
+(currently `theme-cobalt-deep`, `theme-ascii`, `theme-catppuccin`,
+`theme-gruvbox`, and `theme-rosepine`); they install to `themes/<name>.ts`
+and serve one file to all three adapters.
 
 React and Solid recipes expose the same installed names and props where their
 runtime semantics permit. Core recipes expose equivalent imperative factory
@@ -93,6 +99,36 @@ Review the diff and merge useful upstream changes into the consumer-owned file.
 Use `--overwrite` only when intentionally discarding local edits. Ordinary
 updates must never rely on unattended overwrite.
 
+## Theming
+
+Every recipe reads its colors, glyphs, and density from the consumer-owned
+theme file rather than hard-coding literals. Recipe items declare their
+adapter's `theme` item in `registryDependencies`, so installing any recipe
+also installs `components/ui/theme.ts` (plus a small
+`components/ui/use-theme.tsx` binding in React and Solid) — the terminal
+analog of `globals.css` plus `lib/utils.ts`.
+
+The installed theme file contains the whole mechanism: the `Tokens` contract,
+a small subscription store, and a default theme built from ANSI-indexed
+colors so apps inherit the terminal user's own palette and transparency.
+There is no packaged theme runtime (see ADR 0006). The lifecycle is:
+
+- **Customize** by editing the file: change default tokens, or extend the
+  `Tokens` interface with app-specific tokens that flow through the same
+  pipeline.
+- **Add presets** with `shadcn add theme-<name>`, then register them in one
+  line (`themes: { "cobalt-deep": cobaltDeep }`). Presets are
+  `DeepPartial<Tokens>` overrides merged over the consumer's base: missing
+  keys fall back, and consumer token extensions never break a preset install.
+- **Switch and adapt** at runtime with `theme.setActive(name)` and
+  `theme.setMode("system" | "dark" | "light")`; `theme.follow(renderer)`
+  keeps system mode in sync with the terminal's live light/dark signal.
+  Persisting the choice or discovering user-supplied theme files are
+  consumer-side patterns built on `theme.subscribe` and `theme.register`;
+  the registry ships neither.
+- **Update** the theme file like any recipe, through the shadcn diff
+  workflow.
+
 ## Primitive Upgrades Versus Recipe Updates
 
 Primitive packages own behavior, state, focus, keyboard and pointer handling,
@@ -106,17 +142,22 @@ shadcn's diff workflow.
 
 ## Consumer-Owned Presentation
 
-Starter palettes, density choices, labels, marks, and symbol sets live directly
-in the installed files. They are examples that consumers can edit or replace,
-not package APIs or dependencies on a hidden theme runtime.
+Starter palettes, density choices, and symbol sets live in the consumer-owned
+theme file; recipes read them as tokens from that sibling installed source,
+and labels plus per-instance marks stay directly in each recipe. All of it is
+example source that consumers edit or replace, not package APIs or
+dependencies on a hidden theme runtime.
 
 ## Verification
 
 `pnpm validate:registry` verifies the catalog's dependencies, lifecycle
 metadata, and matching React/Solid vocabulary. It builds every registry item
-with the pinned official shadcn CLI, installs all 27 items into isolated strict
-consumers with bounded concurrency, type-checks them, and runs their runtime
-smokes. React Checkbox additionally applies a local edit, creates a newer
+with the pinned official shadcn CLI, installs every adapter item into an
+isolated strict consumer with bounded concurrency (30 consumers; the
+framework-neutral preset items install and byte-compare inside the three
+theme consumers, whose smokes exercise them), resolves each recipe's theme
+`registryDependencies` from the locally built registry, type-checks
+everything, and runs the runtime smokes. React Checkbox additionally applies a local edit, creates a newer
 upstream payload, verifies `--diff` shows both changes, and proves ordinary
 `add` does not overwrite the local source; that installer behavior is
 framework-independent.

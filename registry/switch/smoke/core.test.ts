@@ -1,9 +1,15 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import {
+  type BoxRenderable,
+  parseColor,
+  type TextRenderable,
+} from "@opentui/core";
+import {
   createTestRenderer,
   type TestRendererSetup,
 } from "@opentui/core/testing";
 import { createSwitch } from "./components/ui/switch";
+import { theme } from "./components/ui/theme";
 
 let setup: TestRendererSetup | undefined;
 
@@ -54,5 +60,31 @@ describe("installed Core Switch recipe", () => {
     expect(toggle.focused).toBe(false);
     expect(toggle.checked).toBe(false);
     expect(changes).toEqual([]);
+  });
+
+  it("restyles from the theme store on theme switch", async () => {
+    theme.register("smoke", {
+      tokens: {
+        colors: { primary: "#123456" },
+        glyphs: { thumb: "@", track: "=" },
+      },
+    });
+    setup = await createTestRenderer({ width: 30, height: 3 });
+    const toggle = createSwitch(setup.renderer, { label: "Theme" });
+    setup.renderer.root.add(toggle);
+    await setup.renderOnce();
+    expect(firstLine()).toBe("●── Theme");
+
+    theme.setActive("smoke");
+    await setup.renderOnce();
+    expect(firstLine()).toBe("@== Theme");
+    const track = toggle.getChildren()[0] as BoxRenderable;
+    const thumb = track.getChildren()[1] as BoxRenderable;
+    const thumbText = thumb.getChildren()[0] as TextRenderable;
+    expect(thumbText.fg.equals(parseColor("#123456"))).toBe(true);
+
+    theme.setActive("terminal");
+    await setup.renderOnce();
+    expect(firstLine()).toBe("●── Theme");
   });
 });

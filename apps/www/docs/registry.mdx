@@ -2,7 +2,7 @@
 title: Registry
 description: The shadcn-compatible registry hosted on this site — configuration, the install lifecycle, and consumer-owned updates.
 sidebar:
-  order: 4
+  order: 5
 ---
 
 The tuiparts.sh registry distributes editable recipe source through the
@@ -57,10 +57,22 @@ Each foundation recipe is available as `core/<name>`, `react/<name>`, and
 | RadioGroup/Radio | Radio collection and selectable parts | `RadioGroup`, `RadioGroupItem` |
 | Input | Native OpenTUI input behavior | `Input` |
 | Badge | None; presentation-only recipe | `Badge` |
+| Toggle | Standalone pressed-state primitive | `Toggle` |
+| ToggleGroup/Toggle | Single or multiple selection and roving focus | `ToggleGroup`, `ToggleGroupItem` |
+| Theme | None; consumer-owned token contract and store | `Tokens`, `theme`, `createThemeStore`, `tint` (+ `useTheme` in React/Solid) |
+
+Framework-neutral preset themes are additionally available as
+`theme-<name>` — currently `theme-cobalt-deep`, `theme-ascii`,
+`theme-catppuccin`, `theme-gruvbox`, and `theme-rosepine`. They install to
+`themes/<name>.ts` and serve one file to all three runtimes; see
+[Theming](/theming).
 
 React and Solid recipes expose the same installed names and props where their
 runtime semantics permit. Core recipes expose equivalent imperative factory
-functions and install ordinary `.ts` source rather than framework JSX.
+functions and install ordinary `.ts` source rather than framework JSX. Every
+recipe declares its runtime's `theme` item in `registryDependencies`, so
+installing any recipe also installs the consumer-owned
+`components/ui/theme.ts`.
 
 The registry also contains a validated preview Dialog recipe, but it is not
 part of this starter catalog. The already-adopted `@tuiparts/dialog` and

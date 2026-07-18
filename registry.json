@@ -21,7 +21,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
     {
       "name": "react/checkbox",
@@ -48,7 +49,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
     {
       "name": "solid/checkbox",
@@ -74,7 +76,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
       "name": "core/switch",
@@ -94,7 +97,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
     {
       "name": "react/switch",
@@ -121,7 +125,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
     {
       "name": "solid/switch",
@@ -147,7 +152,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
       "name": "core/button",
@@ -167,7 +173,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
     {
       "name": "react/button",
@@ -194,7 +201,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
     {
       "name": "solid/button",
@@ -220,7 +228,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
       "name": "core/badge",
@@ -240,7 +249,8 @@
         "primitiveStatus": "recipe",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
     {
       "name": "react/badge",
@@ -265,7 +275,8 @@
         "primitiveStatus": "recipe",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
     {
       "name": "solid/badge",
@@ -289,7 +300,8 @@
         "primitiveStatus": "recipe",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
       "name": "core/radio-group",
@@ -309,7 +321,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
     {
       "name": "react/radio-group",
@@ -336,7 +349,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
     {
       "name": "solid/radio-group",
@@ -362,7 +376,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
       "name": "core/input",
@@ -383,7 +398,8 @@
         "primitiveStatus": "tracer",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
     {
       "name": "react/input",
@@ -411,7 +427,8 @@
         "primitiveStatus": "tracer",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
     {
       "name": "solid/input",
@@ -438,7 +455,8 @@
         "primitiveStatus": "tracer",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
       "name": "core/dialog",
@@ -456,7 +474,8 @@
       "meta": {
         "framework": "core",
         "primitiveStatus": "tracer"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
     {
       "name": "react/dialog",
@@ -481,7 +500,8 @@
       "meta": {
         "framework": "react",
         "primitiveStatus": "tracer"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
     {
       "name": "solid/dialog",
@@ -505,7 +525,8 @@
       "meta": {
         "framework": "solid",
         "primitiveStatus": "tracer"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
       "name": "core/toggle",
@@ -525,7 +546,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
     {
       "name": "react/toggle",
@@ -552,7 +574,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
     {
       "name": "solid/toggle",
@@ -578,7 +601,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
       "name": "core/toggle-group",
@@ -598,7 +622,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
     {
       "name": "react/toggle-group",
@@ -625,7 +650,8 @@
         "primitiveStatus": "foundation",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
-      }
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
     {
       "name": "solid/toggle-group",
@@ -649,6 +675,186 @@
       "meta": {
         "framework": "solid",
         "primitiveStatus": "foundation",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
+    },
+    {
+      "name": "core/theme",
+      "type": "registry:ui",
+      "title": "Theme (Core)",
+      "description": "Editable imperative theme contract, store, and terminal default read by every tuiparts.sh recipe.",
+      "dependencies": ["@opentui/core@^0.4.3"],
+      "files": [
+        {
+          "path": "registry/theme/theme.ts",
+          "type": "registry:file",
+          "target": "components/ui/theme.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "react/theme",
+      "type": "registry:ui",
+      "title": "Theme (React)",
+      "description": "Editable React theme contract, store, and terminal default read by every tuiparts.sh recipe.",
+      "dependencies": [
+        "@opentui/core@^0.4.3",
+        "@opentui/react@^0.4.3",
+        "react@^19.2.0"
+      ],
+      "devDependencies": ["@types/react@^19.2.0"],
+      "files": [
+        {
+          "path": "registry/theme/theme.ts",
+          "type": "registry:file",
+          "target": "components/ui/theme.ts"
+        },
+        {
+          "path": "registry/theme/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/use-theme.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "solid/theme",
+      "type": "registry:ui",
+      "title": "Theme (Solid)",
+      "description": "Editable Solid theme contract, store, and terminal default read by every tuiparts.sh recipe.",
+      "dependencies": [
+        "@opentui/core@^0.4.3",
+        "@opentui/solid@^0.4.3",
+        "solid-js@1.9.12"
+      ],
+      "files": [
+        {
+          "path": "registry/theme/theme.ts",
+          "type": "registry:file",
+          "target": "components/ui/theme.ts"
+        },
+        {
+          "path": "registry/theme/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/use-theme.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "theme-cobalt-deep",
+      "type": "registry:ui",
+      "title": "Cobalt Deep Theme",
+      "description": "Truecolor tuiparts.sh brand preset applied as a partial override of the installed theme contract.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/theme/themes/cobalt-deep.ts",
+          "type": "registry:file",
+          "target": "themes/cobalt-deep.ts"
+        }
+      ],
+      "meta": {
+        "framework": "neutral",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "theme-ascii",
+      "type": "registry:ui",
+      "title": "ASCII Theme",
+      "description": "ASCII-glyph preset for fonts and terminals without Unicode coverage, applied as a partial override.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/theme/themes/ascii.ts",
+          "type": "registry:file",
+          "target": "themes/ascii.ts"
+        }
+      ],
+      "meta": {
+        "framework": "neutral",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "theme-catppuccin",
+      "type": "registry:ui",
+      "title": "Catppuccin Theme",
+      "description": "Catppuccin Mocha/Latte.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/theme/themes/catppuccin.ts",
+          "type": "registry:file",
+          "target": "themes/catppuccin.ts"
+        }
+      ],
+      "meta": {
+        "framework": "neutral",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "theme-gruvbox",
+      "type": "registry:ui",
+      "title": "Gruvbox Theme",
+      "description": "Gruvbox dark/light.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/theme/themes/gruvbox.ts",
+          "type": "registry:file",
+          "target": "themes/gruvbox.ts"
+        }
+      ],
+      "meta": {
+        "framework": "neutral",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      }
+    },
+    {
+      "name": "theme-rosepine",
+      "type": "registry:ui",
+      "title": "Rosé Pine Theme",
+      "description": "Rosé Pine/Dawn.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/theme/themes/rosepine.ts",
+          "type": "registry:file",
+          "target": "themes/rosepine.ts"
+        }
+      ],
+      "meta": {
+        "framework": "neutral",
+        "primitiveStatus": "recipe",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       }

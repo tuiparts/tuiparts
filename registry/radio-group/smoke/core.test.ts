@@ -1,5 +1,10 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import {
+  type BoxRenderable,
+  parseColor,
+  type TextRenderable,
+} from "@opentui/core";
+import {
   createTestRenderer,
   type TestRendererSetup,
 } from "@opentui/core/testing";
@@ -9,6 +14,7 @@ import {
   type RadioGroupItemOptions,
   type RadioGroupOptions,
 } from "./components/ui/radio-group";
+import { theme } from "./components/ui/theme";
 
 let setup: TestRendererSetup | undefined;
 
@@ -145,5 +151,27 @@ describe("installed Core RadioGroup recipe", () => {
     expect(gamma?.focused).toBe(true);
     expect(frameLines()).not.toContain("  Beta");
     expect(frameLines()[1]).toBe("  Gamma");
+  });
+
+  it("restyles from the theme store on theme switch", async () => {
+    theme.register("smoke", {
+      tokens: { colors: { primary: "#123456" }, glyphs: { radio: "*" } },
+    });
+    const { items } = await renderGroup({ defaultValue: "alpha" }, [
+      { value: "alpha", label: "Alpha" },
+    ]);
+    expect(frameLines()[0]).toBe("o Alpha");
+
+    theme.setActive("smoke");
+    await setup?.renderOnce();
+    expect(frameLines()[0]).toBe("* Alpha");
+    const markCell = items[0]?.getChildren()[0] as BoxRenderable;
+    const indicator = markCell.getChildren()[0] as BoxRenderable;
+    const mark = indicator.getChildren()[0] as TextRenderable;
+    expect(mark.fg.equals(parseColor("#123456"))).toBe(true);
+
+    theme.setActive("terminal");
+    await setup?.renderOnce();
+    expect(frameLines()[0]).toBe("o Alpha");
   });
 });

@@ -5,6 +5,7 @@ import {
   type TextOptions,
   TextRenderable,
 } from "@opentui/core";
+import { type Tokens, theme } from "./theme";
 
 export type BadgeIntent = "danger" | "neutral" | "success" | "warning";
 export type BadgeSize = "compact" | "comfortable";
@@ -16,37 +17,64 @@ export interface BadgeOptions extends BoxOptions {
   size?: BadgeSize;
 }
 
-const palettes = {
-  danger: { background: "#991B1B", foreground: "#FEF2F2" },
-  neutral: { background: "#404040", foreground: "#F5F5F5" },
-  success: { background: "#166534", foreground: "#F0FDF4" },
-  warning: { background: "#854D0E", foreground: "#FFFBEB" },
-} as const;
+const palettes = (colors: Tokens["colors"]) => ({
+  danger: {
+    background: colors.destructive,
+    foreground: colors.destructiveForeground,
+  },
+  neutral: { background: colors.surface, foreground: colors.foreground },
+  success: { background: colors.success, foreground: colors.successForeground },
+  warning: {
+    background: colors.warning,
+    foreground: colors.warningForeground,
+  },
+});
+
+class BadgeRecipeRenderable extends BoxRenderable {
+  private readonly unsubscribeTheme: () => void;
+
+  constructor(ctx: RenderContext, options: BadgeOptions) {
+    const {
+      intent = "neutral",
+      label,
+      labelOptions,
+      size = "compact",
+      ...rootOptions
+    } = options;
+    const tokens = theme.get();
+    super(ctx, {
+      paddingX:
+        size === "comfortable"
+          ? tokens.density.comfortablePaddingX
+          : tokens.density.paddingX,
+      ...rootOptions,
+    });
+    const text = new TextRenderable(ctx, {
+      content: label,
+      ...labelOptions,
+    });
+    this.add(text);
+
+    const applyStyle = (tokens: Readonly<Tokens>) => {
+      const palette = palettes(tokens.colors)[intent];
+      if (rootOptions.backgroundColor === undefined)
+        this.backgroundColor = palette.background;
+      if (labelOptions?.fg === undefined) text.fg = palette.foreground;
+    };
+    applyStyle(tokens);
+    this.unsubscribeTheme = theme.subscribe(() => applyStyle(theme.get()));
+  }
+
+  override destroy(): void {
+    this.unsubscribeTheme();
+    super.destroy();
+  }
+}
 
 /** Consumer-owned imperative recipe composed from ordinary OpenTUI Renderables. */
 export function createBadge(
   ctx: RenderContext,
   options: BadgeOptions,
 ): BoxRenderable {
-  const {
-    intent = "neutral",
-    label,
-    labelOptions,
-    size = "compact",
-    ...rootOptions
-  } = options;
-  const palette = palettes[intent];
-  const root = new BoxRenderable(ctx, {
-    backgroundColor: palette.background,
-    paddingX: size === "comfortable" ? 2 : 1,
-    ...rootOptions,
-  });
-  root.add(
-    new TextRenderable(ctx, {
-      content: label,
-      fg: palette.foreground,
-      ...labelOptions,
-    }),
-  );
-  return root;
+  return new BadgeRecipeRenderable(ctx, options);
 }

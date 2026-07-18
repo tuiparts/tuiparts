@@ -1,6 +1,8 @@
 /** @jsxImportSource @opentui/react */
 
 import type { BoxOptions, TextOptions } from "@opentui/core";
+import type { Tokens } from "./theme";
+import { useTheme } from "./use-theme";
 
 export type BadgeIntent = "danger" | "neutral" | "success" | "warning";
 export type BadgeSize = "compact" | "comfortable";
@@ -12,12 +14,18 @@ export interface BadgeProps extends BoxOptions {
   size?: BadgeSize;
 }
 
-const palettes = {
-  danger: { background: "#991B1B", foreground: "#FEF2F2" },
-  neutral: { background: "#404040", foreground: "#F5F5F5" },
-  success: { background: "#166534", foreground: "#F0FDF4" },
-  warning: { background: "#854D0E", foreground: "#FFFBEB" },
-} as const;
+const palettes = (colors: Tokens["colors"]) => ({
+  danger: {
+    background: colors.destructive,
+    foreground: colors.destructiveForeground,
+  },
+  neutral: { background: colors.surface, foreground: colors.foreground },
+  success: { background: colors.success, foreground: colors.successForeground },
+  warning: {
+    background: colors.warning,
+    foreground: colors.warningForeground,
+  },
+});
 
 /** Consumer-owned React recipe composed from ordinary OpenTUI elements. */
 export function Badge({
@@ -27,12 +35,17 @@ export function Badge({
   size = "compact",
   ...root
 }: BadgeProps) {
-  const palette = palettes[intent];
+  const tokens = useTheme();
+  const palette = palettes(tokens.colors)[intent];
 
   return (
     <box
       backgroundColor={palette.background}
-      paddingX={size === "comfortable" ? 2 : 1}
+      paddingX={
+        size === "comfortable"
+          ? tokens.density.comfortablePaddingX
+          : tokens.density.paddingX
+      }
       {...root}
     >
       <text content={label} fg={palette.foreground} {...labelOptions} />

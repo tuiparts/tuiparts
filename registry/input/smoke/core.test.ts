@@ -1,9 +1,11 @@
 import { afterEach, describe, expect, it } from "bun:test";
+import { parseColor } from "@opentui/core";
 import {
   createTestRenderer,
   type TestRendererSetup,
 } from "@opentui/core/testing";
 import { createInput } from "./components/ui/input";
+import { theme } from "./components/ui/theme";
 
 let setup: TestRendererSetup | undefined;
 
@@ -30,5 +32,24 @@ describe("installed Core Input recipe", () => {
 
     expect(input.value).toBe("AB");
     expect(events).toEqual(["input:AB", "change:AB", "submit:AB"]);
+  });
+
+  it("restyles from the theme store on theme switch", async () => {
+    theme.register("smoke", {
+      tokens: {
+        colors: { foreground: "#123456", mutedForeground: "#654321" },
+      },
+    });
+    setup = await createTestRenderer({ width: 30, height: 5 });
+    const input = createInput(setup.renderer, { placeholder: "Theme" });
+    setup.renderer.root.add(input);
+    await setup.renderOnce();
+
+    theme.setActive("smoke");
+    expect(input.textColor.equals(parseColor("#123456"))).toBe(true);
+    expect(input.placeholderColor.equals(parseColor("#654321"))).toBe(true);
+
+    theme.setActive("terminal");
+    expect(input.textColor.equals(parseColor("#123456"))).toBe(false);
   });
 });

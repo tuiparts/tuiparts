@@ -1,17 +1,14 @@
 /** @jsxImportSource @opentui/react */
 
 import { Button as ButtonPrimitive } from "@tuiparts/react/button";
+import { tint } from "./theme";
+import { useTheme } from "./use-theme";
 
 export interface ButtonProps extends Omit<ButtonPrimitive.Props, "children"> {
   intent?: "neutral" | "primary";
   label: string;
   size?: "compact" | "comfortable";
 }
-
-const backgrounds = {
-  neutral: "#404040",
-  primary: "#2563EB",
-} as const;
 
 /** Consumer-owned React recipe installed on packaged Button behavior. */
 export function Button({
@@ -21,6 +18,7 @@ export function Button({
   disabled,
   ...props
 }: ButtonProps) {
+  const tokens = useTheme();
   return (
     <ButtonPrimitive
       backgroundColor="transparent"
@@ -31,16 +29,31 @@ export function Button({
         <box
           backgroundColor={
             state.disabled
-              ? "#262626"
+              ? tokens.colors.disabled
               : state.pressed
-                ? "#1D4ED8"
+                ? tint(tokens.colors.focus, tokens.colors.foreground, 0.3)
                 : state.focused
-                  ? "#3B82F6"
-                  : backgrounds[intent]
+                  ? tokens.colors.focus
+                  : intent === "primary"
+                    ? tokens.colors.primary
+                    : tokens.colors.surface
           }
-          paddingX={size === "comfortable" ? 2 : 1}
+          paddingX={
+            size === "comfortable"
+              ? tokens.density.comfortablePaddingX
+              : tokens.density.paddingX
+          }
         >
-          <text content={label} fg={state.disabled ? "#737373" : "#F5F5F5"} />
+          <text
+            content={label}
+            fg={
+              state.disabled
+                ? tokens.colors.disabledForeground
+                : intent === "primary"
+                  ? tokens.colors.primaryForeground
+                  : tokens.colors.foreground
+            }
+          />
         </box>
       )}
     </ButtonPrimitive>

@@ -6,7 +6,8 @@ description: A presentation-only status label composed from ordinary OpenTUI ele
 <Badge>Recipe only</Badge>
 
 A presentation-only status label composed from ordinary OpenTUI elements — a
-`box` and a `text` — with a starter intent palette. Badge is not interactive:
+`box` and a `text` — with intents mapped to [theme tokens](/theming). Badge
+is not interactive:
 it renders no focus, keyboard, or pointer behavior, so it is distributed only
 as editable registry source.
 
@@ -14,8 +15,8 @@ as editable registry source.
 
 - **Use `Badge` for status, not actions.** For anything the user activates,
   use `Button`.
-- **The recipe is the entire implementation.** Edit the palette map directly;
-  there is no package behind it.
+- **The recipe is the entire implementation.** Edit the intent-to-token map
+  directly; there is no package behind it.
 
 ## Installation
 
@@ -62,7 +63,7 @@ import { Badge } from "./components/ui/badge";
       type: '"danger" | "neutral" | "success" | "warning"',
       default: '"neutral"',
       description:
-        "Which starter background and foreground palette pair to apply.",
+        "Which theme token pair to apply: success, warning, destructive, or surface/foreground for neutral.",
     },
     size: {
       type: '"compact" | "comfortable"',

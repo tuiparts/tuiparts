@@ -4,6 +4,7 @@ import {
   ToggleRenderable,
   type ToggleState,
 } from "@tuiparts/core/toggle";
+import { type Tokens, theme } from "./theme";
 
 /** Options for the consumer-owned imperative Toggle recipe. */
 export interface ToggleOptions {
@@ -16,6 +17,7 @@ export interface ToggleOptions {
 
 class ToggleRecipeRenderable extends ToggleRenderable {
   private readonly unsubscribeRecipe: () => void;
+  private readonly unsubscribeTheme: () => void;
 
   constructor(ctx: RenderContext, options: ToggleOptions) {
     super(ctx, {
@@ -28,19 +30,29 @@ class ToggleRecipeRenderable extends ToggleRenderable {
     });
     const label = new TextRenderable(ctx, { content: options.label });
     this.add(label);
-    const applyState = (state: ToggleState) => {
+    const applyStyle = (tokens: Readonly<Tokens>, state: ToggleState) => {
       this.backgroundColor = state.pressed
-        ? "#2563EB"
+        ? tokens.colors.primary
         : state.focused
-          ? "#404040"
+          ? tokens.colors.surface
           : "transparent";
-      label.fg = state.disabled ? "#737373" : "#F5F5F5";
+      label.fg = state.disabled
+        ? tokens.colors.disabledForeground
+        : state.pressed
+          ? tokens.colors.primaryForeground
+          : tokens.colors.foreground;
     };
-    applyState(this.getState());
-    this.unsubscribeRecipe = this.subscribe(applyState);
+    applyStyle(theme.get(), this.getState());
+    this.unsubscribeTheme = theme.subscribe(() =>
+      applyStyle(theme.get(), this.getState()),
+    );
+    this.unsubscribeRecipe = this.subscribe((state) =>
+      applyStyle(theme.get(), state),
+    );
   }
 
   override destroy(): void {
+    this.unsubscribeTheme();
     this.unsubscribeRecipe();
     super.destroy();
   }

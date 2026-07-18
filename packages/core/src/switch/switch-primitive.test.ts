@@ -1,5 +1,4 @@
 import { afterEach, describe, expect, it } from "bun:test";
-import type { KeyEvent } from "@opentui/core";
 import {
   createTestRenderer,
   type TestRendererSetup,
@@ -11,139 +10,60 @@ import {
 } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
-
 afterEach(() => {
   setup?.renderer.destroy();
   setup = undefined;
 });
 
 describe("Switch primitive", () => {
-  it("accepts an externally owned Store without replacing it", async () => {
+  it("wires a press through the Root to its Store", async () => {
+    setup = await createTestRenderer({ width: 30, height: 5 });
+    const root = new SwitchRootRenderable(setup.renderer);
+    root.press();
+    expect(root.checked).toBe(true);
+  });
+
+  it("adopts a Store and rejects replacement", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
     const store = new SwitchStore({ defaultChecked: true });
     const root = new SwitchRootRenderable(setup.renderer, { store });
-
     expect(root.store).toBe(store);
-    expect(root.getState()).toBe(store.state);
-    root.press();
-    expect(store.state.checked).toBe(false);
+    expect(() => {
+      root.store = new SwitchStore();
+    }).toThrow("Switch.Root store cannot be replaced");
   });
 
-  it("leaves visual assembly to the caller while sharing readonly state with Thumb", async () => {
-    setup = await createTestRenderer({ width: 30, height: 5 });
-    const root = new SwitchRootRenderable(setup.renderer, {
-      defaultChecked: false,
-      id: "switch-root",
-    });
-    const thumb = new SwitchThumbRenderable(setup.renderer, {
-      id: "switch-thumb",
-      store: root.store,
-    });
-
-    expect(root.getChildren()).toEqual([]);
-    root.add(thumb);
-    setup.renderer.root.add(root);
-
-    expect(root.checked).toBe(false);
-    expect(thumb.store).toBe(root.store);
-    expect(thumb.getState()).toEqual({
-      checked: false,
-      disabled: false,
-      focused: false,
-    });
-    expect(Object.isFrozen(thumb.getState())).toBe(true);
-
-    root.press();
-
-    expect(root.checked).toBe(true);
-    expect(thumb.getState().checked).toBe(true);
-    expect(thumb.visible).toBe(true);
-    expect(root.getChildren()[0]).toBe(thumb);
-  });
-
-  it("reports controlled requests and resumes ownership when checked is removed", async () => {
+  it("applies explicit behavior props to a supplied Store", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
     const changes: boolean[] = [];
+    const store = new SwitchStore({ defaultChecked: false });
     const root = new SwitchRootRenderable(setup.renderer, {
-      checked: false,
-      onCheckedChange: (checked) => changes.push(checked),
-    });
-    setup.renderer.root.add(root);
-
-    root.press();
-    expect(changes).toEqual([true]);
-    expect(root.checked).toBe(false);
-
-    root.checked = true;
-    expect(root.checked).toBe(true);
-
-    root.checked = undefined;
-    root.press();
-    expect(root.checked).toBe(false);
-    expect(changes).toEqual([true, false]);
-  });
-
-  it("shares activation across press, Enter, and Space while disabled gates focus", async () => {
-    setup = await createTestRenderer({ width: 30, height: 5 });
-    const changes: boolean[] = [];
-    const root = new SwitchRootRenderable(setup.renderer, {
+      checked: true,
       disabled: true,
       onCheckedChange: (checked) => changes.push(checked),
+      store,
     });
-    setup.renderer.root.add(root);
-
-    expect(root.focusable).toBe(false);
-    root.focus();
+    expect(root.getState()).toEqual({
+      checked: true,
+      disabled: true,
+      focused: false,
+    });
+    root.disabled = false;
     root.press();
-    expect(root.handleKeyPress({ name: "space" } as KeyEvent)).toBe(false);
-    expect(root.focused).toBe(false);
-    expect(changes).toEqual([]);
-
-    root.disabled = undefined;
-    expect(root.focusable).toBe(true);
-    expect(root.handleKeyPress({ name: "enter" } as KeyEvent)).toBe(true);
+    expect(changes).toEqual([false]);
     expect(root.checked).toBe(true);
-    expect(root.handleKeyPress({ name: "return" } as KeyEvent)).toBe(true);
-    expect(root.checked).toBe(false);
-    expect(root.handleKeyPress({ name: "space" } as KeyEvent)).toBe(true);
-    expect(root.checked).toBe(true);
-    expect(root.handleKeyPress({ name: "a" } as KeyEvent)).toBe(false);
-    expect(changes).toEqual([true, false, true]);
   });
 
-  // The shared activation matrix (guards, pointer model, disabled sync) is
-  // proven once in internal/pressable.test.ts; this is the wiring round-trip.
-  it("toggles from a primary-button click", async () => {
+  it("requests renders from Store changes and unsubscribes on destroy", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
-    const changes: boolean[] = [];
-    const root = new SwitchRootRenderable(setup.renderer, {
-      width: 5,
-      height: 1,
-      onCheckedChange: (checked) => changes.push(checked),
-    });
-    setup.renderer.root.add(root);
-    await setup.renderOnce();
-
-    await setup.mockMouse.click(0, 0);
-
-    expect(root.checked).toBe(true);
-    expect(root.focused).toBe(true);
-    expect(changes).toEqual([true]);
-  });
-
-  it("stops accepting semantic actions after destruction", async () => {
-    setup = await createTestRenderer({ width: 30, height: 5 });
-    const changes: boolean[] = [];
-    const root = new SwitchRootRenderable(setup.renderer, {
-      onCheckedChange: (checked) => changes.push(checked),
-    });
-    setup.renderer.root.add(root);
-
-    root.destroy();
-
-    root.press();
-    expect(root.handleKeyPress({ name: "space" } as KeyEvent)).toBe(false);
-    expect(root.checked).toBe(false);
-    expect(changes).toEqual([]);
+    const store = new SwitchStore();
+    const thumb = new SwitchThumbRenderable(setup.renderer, { store });
+    let renders = 0;
+    thumb.requestRender = () => renders++;
+    store.setChecked(true);
+    expect(renders).toBe(1);
+    thumb.destroy();
+    store.setChecked(false);
+    expect(renders).toBe(1);
   });
 });

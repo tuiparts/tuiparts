@@ -46,7 +46,8 @@ tuiparts/
 | Symbol | Type | Location | Role |
 |--------|------|----------|------|
 | `PressableRenderable` | Class | `packages/core/src/internal/pressable.ts` | Shared activation behavior (guards, pointer model, focus sync) for all press-activated Roots (ADR-0007) |
-| `CheckboxRootRenderable` | Class | `packages/core/src/checkbox/primitive.ts` | Checkbox state, activation, and Indicator owner |
+| `CheckboxRootRenderable` | Class | `packages/core/src/checkbox/primitive.ts` | Checkbox Root adapter over shared checked state and activation |
+| `CheckedStore` | Class | `packages/core/src/internal/checked-store.ts` | Shared checked-state behavior for Checkbox and Switch |
 | `toast` | Object | `packages/toast/src/state.ts` | Global toast API (toast.success, toast.error, etc.) |
 | `ToasterRenderable` | Class | `packages/toast/src/renderables/toaster.ts` | Container that manages toast notifications |
 | `DialogStore` | Class | `packages/core/src/dialog/index.ts` | Foundation Dialog state and layer coordination |

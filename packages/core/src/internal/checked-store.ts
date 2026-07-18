@@ -13,7 +13,8 @@ export interface CheckedStoreOptions {
 
 type ToggleStateListener = (state: CheckedState) => void;
 
-export class CheckedStore {
+export class CheckedStore<Brand extends string = string> {
+  private declare readonly __brand?: Brand;
   private controlled: boolean;
   private snapshot: CheckedState;
   private onCheckedChange?: (checked: boolean) => void;
@@ -30,6 +31,10 @@ export class CheckedStore {
   }
 
   get state(): CheckedState {
+    return this.snapshot;
+  }
+
+  getState(): CheckedState {
     return this.snapshot;
   }
 

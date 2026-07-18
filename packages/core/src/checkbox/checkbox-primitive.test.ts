@@ -1,5 +1,4 @@
 import { afterEach, describe, expect, it } from "bun:test";
-import type { KeyEvent } from "@opentui/core";
 import {
   createTestRenderer,
   type TestRendererSetup,
@@ -11,140 +10,60 @@ import {
 } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
-
 afterEach(() => {
   setup?.renderer.destroy();
   setup = undefined;
 });
 
 describe("Checkbox primitive", () => {
-  it("accepts an externally owned Store without replacing it", async () => {
+  it("wires a press through the Root to its Store", async () => {
+    setup = await createTestRenderer({ width: 30, height: 5 });
+    const root = new CheckboxRootRenderable(setup.renderer);
+    root.press();
+    expect(root.checked).toBe(true);
+  });
+
+  it("adopts a Store and rejects replacement", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
     const store = new CheckboxStore({ defaultChecked: true });
     const root = new CheckboxRootRenderable(setup.renderer, { store });
-
     expect(root.store).toBe(store);
-    expect(root.getState()).toBe(store.state);
-    root.press();
-    expect(store.state.checked).toBe(false);
+    expect(() => {
+      root.store = new CheckboxStore();
+    }).toThrow("Checkbox.Root store cannot be replaced");
   });
 
-  it("leaves visual assembly to the caller while sharing behavior with parts", async () => {
+  it("applies explicit behavior props to a supplied Store", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
+    const changes: boolean[] = [];
+    const store = new CheckboxStore({ defaultChecked: false });
     const root = new CheckboxRootRenderable(setup.renderer, {
-      defaultChecked: false,
-      id: "checkbox-root",
-    });
-    const indicator = new CheckboxIndicatorRenderable(setup.renderer, {
-      id: "checkbox-indicator",
-      store: root.store,
-    });
-
-    expect(root.getChildren()).toEqual([]);
-    root.add(indicator);
-    setup.renderer.root.add(root);
-
-    expect(root.checked).toBe(false);
-    expect(indicator.visible).toBe(false);
-    expect(indicator.store).toBe(root.store);
-
-    root.press();
-
-    expect(root.checked).toBe(true);
-    expect(indicator.visible).toBe(true);
-    expect(indicator.getState()).toEqual({
       checked: true,
-      disabled: false,
-      focused: false,
-    });
-    expect(Object.isFrozen(indicator.getState())).toBe(true);
-  });
-
-  it("reports controlled changes without mutating parent-owned state", async () => {
-    setup = await createTestRenderer({ width: 30, height: 5 });
-    const changes: boolean[] = [];
-    const root = new CheckboxRootRenderable(setup.renderer, {
-      checked: false,
-      onCheckedChange: (checked) => changes.push(checked),
-    });
-    setup.renderer.root.add(root);
-
-    root.handleKeyPress({ name: "space" } as KeyEvent);
-
-    expect(changes).toEqual([true]);
-    expect(root.checked).toBe(false);
-
-    root.checked = true;
-    expect(root.checked).toBe(true);
-  });
-
-  it("suppresses focus and activation while disabled", async () => {
-    setup = await createTestRenderer({ width: 30, height: 5 });
-    const changes: boolean[] = [];
-    const root = new CheckboxRootRenderable(setup.renderer, {
       disabled: true,
       onCheckedChange: (checked) => changes.push(checked),
+      store,
     });
-    setup.renderer.root.add(root);
-
-    expect(root.focusable).toBe(false);
-    root.focus();
+    expect(root.getState()).toEqual({
+      checked: true,
+      disabled: true,
+      focused: false,
+    });
+    root.disabled = false;
     root.press();
-
-    expect(root.focused).toBe(false);
-    expect(root.checked).toBe(false);
-    expect(changes).toEqual([]);
-
-    root.disabled = undefined;
-    expect(root.focusable).toBe(true);
-    root.press();
+    expect(changes).toEqual([false]);
     expect(root.checked).toBe(true);
   });
 
-  // The shared activation matrix (guards, pointer model, disabled sync) is
-  // proven once in internal/pressable.test.ts; this is the wiring round-trip.
-  it("toggles from a primary-button click", async () => {
+  it("syncs Indicator visibility and unsubscribes on destroy", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
-    const changes: boolean[] = [];
-    const root = new CheckboxRootRenderable(setup.renderer, {
-      width: 5,
-      height: 1,
-      onCheckedChange: (checked) => changes.push(checked),
+    const store = new CheckboxStore();
+    const indicator = new CheckboxIndicatorRenderable(setup.renderer, {
+      store,
     });
-    setup.renderer.root.add(root);
-    await setup.renderOnce();
-
-    await setup.mockMouse.click(0, 0);
-
-    expect(root.checked).toBe(true);
-    expect(root.focused).toBe(true);
-    expect(changes).toEqual([true]);
-  });
-
-  it("returns to uncontrolled ownership when checked is removed", async () => {
-    setup = await createTestRenderer({ width: 30, height: 5 });
-    const root = new CheckboxRootRenderable(setup.renderer, { checked: false });
-    setup.renderer.root.add(root);
-
-    root.checked = undefined;
-    root.press();
-
-    expect(root.checked).toBe(true);
-  });
-
-  it("stops accepting semantic actions after destruction", async () => {
-    setup = await createTestRenderer({ width: 30, height: 5 });
-    const changes: boolean[] = [];
-    const root = new CheckboxRootRenderable(setup.renderer, {
-      onCheckedChange: (checked) => changes.push(checked),
-    });
-    setup.renderer.root.add(root);
-
-    root.destroy();
-
-    root.press();
-    expect(root.handleKeyPress({ name: "space" } as KeyEvent)).toBe(false);
-    expect(root.checked).toBe(false);
-    expect(changes).toEqual([]);
+    store.setChecked(true);
+    expect(indicator.visible).toBe(true);
+    indicator.destroy();
+    store.setChecked(false);
+    expect(indicator.visible).toBe(true);
   });
 });

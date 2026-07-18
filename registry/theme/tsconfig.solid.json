@@ -1,0 +1,10 @@
+{
+  "extends": "../../examples/solid/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "../../examples/solid",
+    "paths": {
+      "*": ["node_modules/*"]
+    }
+  },
+  "include": ["solid.tsx"]
+}

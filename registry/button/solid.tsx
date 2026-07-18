@@ -2,17 +2,14 @@
 
 import { Button as ButtonPrimitive } from "@tuiparts/solid/button";
 import { splitProps } from "solid-js";
+import { tint } from "./theme";
+import { useTheme } from "./use-theme";
 
 export interface ButtonProps extends Omit<ButtonPrimitive.Props, "children"> {
   intent?: "neutral" | "primary";
   label: string;
   size?: "compact" | "comfortable";
 }
-
-const backgrounds = {
-  neutral: "#404040",
-  primary: "#2563EB",
-} as const;
 
 /** Consumer-owned Solid recipe installed on packaged Button behavior. */
 export function Button(props: ButtonProps) {
@@ -22,6 +19,7 @@ export function Button(props: ButtonProps) {
     "label",
     "size",
   ]);
+  const tokens = useTheme();
 
   return (
     <ButtonPrimitive
@@ -33,18 +31,30 @@ export function Button(props: ButtonProps) {
         <box
           backgroundColor={
             state.disabled
-              ? "#262626"
+              ? tokens().colors.disabled
               : state.pressed
-                ? "#1D4ED8"
+                ? tint(tokens().colors.focus, tokens().colors.foreground, 0.3)
                 : state.focused
-                  ? "#3B82F6"
-                  : backgrounds[recipe.intent ?? "primary"]
+                  ? tokens().colors.focus
+                  : (recipe.intent ?? "primary") === "primary"
+                    ? tokens().colors.primary
+                    : tokens().colors.surface
           }
-          paddingX={recipe.size === "comfortable" ? 2 : 1}
+          paddingX={
+            recipe.size === "comfortable"
+              ? tokens().density.comfortablePaddingX
+              : tokens().density.paddingX
+          }
         >
           <text
             content={recipe.label}
-            fg={state.disabled ? "#737373" : "#F5F5F5"}
+            fg={
+              state.disabled
+                ? tokens().colors.disabledForeground
+                : (recipe.intent ?? "primary") === "primary"
+                  ? tokens().colors.primaryForeground
+                  : tokens().colors.foreground
+            }
           />
         </box>
       )}

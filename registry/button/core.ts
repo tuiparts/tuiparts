@@ -4,6 +4,7 @@ import {
   ButtonRenderable,
   type ButtonState,
 } from "@tuiparts/core/button";
+import { type Tokens, theme, tint } from "./theme";
 
 export interface ButtonOptions {
   disabled?: boolean;
@@ -13,43 +14,51 @@ export interface ButtonOptions {
   size?: "compact" | "comfortable";
 }
 
-const backgrounds = {
-  neutral: "#404040",
-  primary: "#2563EB",
-} as const;
-
 class ButtonRecipeRenderable extends ButtonRenderable {
   private readonly unsubscribeRecipe: () => void;
+  private readonly unsubscribeTheme: () => void;
 
   constructor(ctx: RenderContext, options: ButtonOptions) {
+    const tokens = theme.get();
     const intent = options.intent ?? "primary";
     super(ctx, {
-      backgroundColor: backgrounds[intent],
       disabled: options.disabled,
       onPress: options.onPress,
-      paddingX: options.size === "comfortable" ? 2 : 1,
+      paddingX:
+        options.size === "comfortable"
+          ? tokens.density.comfortablePaddingX
+          : tokens.density.paddingX,
     });
-    const label = new TextRenderable(ctx, {
-      content: options.label,
-      fg: "#F5F5F5",
-    });
+    const label = new TextRenderable(ctx, { content: options.label });
     this.add(label);
 
-    const applyState = (state: ButtonState) => {
+    const applyStyle = (tokens: Readonly<Tokens>, state: ButtonState) => {
       this.backgroundColor = state.disabled
-        ? "#262626"
+        ? tokens.colors.disabled
         : state.pressed
-          ? "#1D4ED8"
+          ? tint(tokens.colors.focus, tokens.colors.foreground, 0.3)
           : state.focused
-            ? "#3B82F6"
-            : backgrounds[intent];
-      label.fg = state.disabled ? "#737373" : "#F5F5F5";
+            ? tokens.colors.focus
+            : intent === "primary"
+              ? tokens.colors.primary
+              : tokens.colors.surface;
+      label.fg = state.disabled
+        ? tokens.colors.disabledForeground
+        : intent === "primary"
+          ? tokens.colors.primaryForeground
+          : tokens.colors.foreground;
     };
-    applyState(this.getState());
-    this.unsubscribeRecipe = this.subscribe(applyState);
+    applyStyle(tokens, this.getState());
+    this.unsubscribeTheme = theme.subscribe(() =>
+      applyStyle(theme.get(), this.getState()),
+    );
+    this.unsubscribeRecipe = this.subscribe((state) =>
+      applyStyle(theme.get(), state),
+    );
   }
 
   override destroy(): void {
+    this.unsubscribeTheme();
     this.unsubscribeRecipe();
     super.destroy();
   }

@@ -2,6 +2,7 @@
 
 import { Checkbox as CheckboxPrimitive } from "@tuiparts/solid/checkbox";
 import { splitProps } from "solid-js";
+import { useTheme } from "./use-theme";
 
 export interface CheckboxProps
   extends Omit<CheckboxPrimitive.Root.Props, "children"> {
@@ -19,7 +20,11 @@ export function Checkbox(props: CheckboxProps) {
     "tone",
     "disabled",
   ]);
-  const markColor = () => (recipe.tone === "success" ? "#10B981" : "#3B82F6");
+  const tokens = useTheme();
+  const markColor = () =>
+    recipe.tone === "success"
+      ? tokens().colors.success
+      : tokens().colors.primary;
 
   return (
     <CheckboxPrimitive.Root
@@ -33,13 +38,20 @@ export function Checkbox(props: CheckboxProps) {
         <>
           <box width={1}>
             <CheckboxPrimitive.Indicator>
-              <text content={recipe.mark ?? "✓"} fg={markColor()} />
+              <text
+                content={recipe.mark ?? tokens().glyphs.check}
+                fg={markColor()}
+              />
             </CheckboxPrimitive.Indicator>
           </box>
           <text
             content={recipe.label}
             fg={
-              state.disabled ? "#737373" : state.focused ? "#FFFFFF" : "#E5E5E5"
+              state.disabled
+                ? tokens().colors.disabledForeground
+                : state.focused
+                  ? tokens().colors.focus
+                  : tokens().colors.foreground
             }
           />
         </>

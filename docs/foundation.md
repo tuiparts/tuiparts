@@ -118,11 +118,20 @@ The starter catalog provides `core/*`, `react/*`, and `solid/*` items for:
 - Badge
 - Toggle
 - ToggleGroup
+- Theme (token contract, store, and terminal default read by every recipe)
 
-The copied file belongs to your application. Its palette, density, symbols,
-labels, intent variants, native OpenTUI properties, and component assembly are
-starter choices rather than package APIs. Edit them directly or use them as
-the basis of another registry.
+Framework-neutral preset themes (`theme-cobalt-deep`, `theme-ascii`,
+`theme-catppuccin`, `theme-gruvbox`, `theme-rosepine`) install as
+`themes/<name>.ts` partial overrides of your theme file.
+
+The copied file belongs to your application. Recipes read palette, density,
+and symbol choices as tokens from the consumer-owned theme file installed
+beside them (every recipe declares the theme item in `registryDependencies`);
+labels, intent variants, native OpenTUI properties, and component assembly
+live in each recipe. All of it is starter source rather than package API —
+edit it directly or use it as the basis of another registry. There is no
+packaged theme runtime; see ADR
+[0006](adr/0006-theming-ships-as-registry-source.md).
 
 Primitive package upgrades deliver behavior fixes. Recipe updates are optional
 source integrations. Review upstream recipe changes without discarding local

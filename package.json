@@ -28,7 +28,9 @@
     "changeset:status": "changeset status",
     "validate:release-scope": "node scripts/validate-foundation-release.mjs",
     "validate:foundation": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm validate:packages:built && pnpm validate:registry:built && pnpm validate:release-scope",
-    "create": "./scripts/create-package.sh"
+    "create": "./scripts/create-package.sh",
+    "fixtures:setup": "node fixtures/setup.mjs",
+    "fixtures:dev": "pnpm --dir fixtures/demo dev"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",

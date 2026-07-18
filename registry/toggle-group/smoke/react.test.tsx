@@ -1,11 +1,13 @@
 /** @jsxImportSource @opentui/react */
 
 import { afterEach, expect, test } from "bun:test";
+import { type BoxRenderable, parseColor } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
 import { ToggleRenderable } from "@tuiparts/core/toggle";
 import { ToggleGroupRenderable } from "@tuiparts/core/toggle-group";
 import { act } from "react";
+import { theme } from "./components/ui/theme";
 import { ToggleGroup, ToggleGroupItem } from "./components/ui/toggle-group";
 
 let setup: TestRendererSetup | undefined;
@@ -34,4 +36,30 @@ test("installed React ToggleGroup recipe runtime smoke", async () => {
   });
   await act(async () => left.press());
   expect(group.value).toEqual(["left"]);
+});
+
+test("restyles rendered items on theme switch", async () => {
+  theme.register("smoke", { tokens: { colors: { primary: "#123456" } } });
+  setup = await testRender(
+    <ToggleGroup id="themed" defaultValue={["left"]}>
+      <ToggleGroupItem id="themed-left" label="Left" value="left" />
+    </ToggleGroup>,
+    { width: 30, height: 3 },
+  );
+  const left = setup.renderer.root.findDescendantById(
+    "themed-left",
+  ) as ToggleRenderable;
+  const surface = left.getChildren()[0] as BoxRenderable;
+
+  await act(async () => {
+    theme.setActive("smoke");
+  });
+  await setup.waitFor(() =>
+    surface.backgroundColor.equals(parseColor("#123456")),
+  );
+
+  expect(setup.renderer.root.findDescendantById("themed-left")).toBe(left);
+  await act(async () => {
+    theme.setActive("terminal");
+  });
 });

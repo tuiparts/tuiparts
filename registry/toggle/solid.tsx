@@ -2,6 +2,7 @@
 
 import { Toggle as TogglePrimitive } from "@tuiparts/solid/toggle";
 import { splitProps } from "solid-js";
+import { useTheme } from "./use-theme";
 
 /** Props for the consumer-owned Solid Toggle recipe. */
 export interface ToggleProps extends Omit<TogglePrimitive.Props, "children"> {
@@ -11,23 +12,30 @@ export interface ToggleProps extends Omit<TogglePrimitive.Props, "children"> {
 /** Consumer-owned Solid Toggle recipe. */
 export function Toggle(props: ToggleProps) {
   const [recipe, toggle] = splitProps(props, ["label"]);
+  const tokens = useTheme();
   return (
     <TogglePrimitive backgroundColor="transparent" {...toggle}>
       {(state: TogglePrimitive.State) => (
         <box
           backgroundColor={
             state.pressed
-              ? "#2563EB"
+              ? tokens().colors.primary
               : state.focused
-                ? "#404040"
+                ? tokens().colors.surface
                 : "transparent"
           }
           height={1}
-          paddingX={1}
+          paddingX={tokens().density.paddingX}
         >
           <text
             content={recipe.label}
-            fg={state.disabled ? "#737373" : "#F5F5F5"}
+            fg={
+              state.disabled
+                ? tokens().colors.disabledForeground
+                : state.pressed
+                  ? tokens().colors.primaryForeground
+                  : tokens().colors.foreground
+            }
           />
         </box>
       )}

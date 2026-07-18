@@ -1,7 +1,11 @@
 /** @jsxImportSource @opentui/react */
 
 import { afterEach, expect, test } from "bun:test";
-import type { BaseRenderable } from "@opentui/core";
+import {
+  type BaseRenderable,
+  type BoxRenderable,
+  parseColor,
+} from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
 import {
@@ -17,6 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./components/ui/dialog";
+import { theme } from "./components/ui/theme";
 
 let setup: TestRendererSetup | undefined;
 
@@ -70,6 +75,36 @@ test("installed React Dialog recipe delegates controlled intent once and retains
     controlledRoot.getChildren()[0] as DialogTriggerRenderable;
   await act(async () => controlledTrigger.press());
   expect(changes).toBe(1);
+});
+
+test("restyles rendered dialog parts on theme switch", async () => {
+  theme.register("smoke", { tokens: { colors: { surface: "#123456" } } });
+  setup = await testRender(
+    <Dialog defaultOpen>
+      <DialogTrigger>
+        <text content="Open" />
+      </DialogTrigger>
+      <DialogContent id="themed-popup">
+        <DialogTitle content="Theme" />
+      </DialogContent>
+    </Dialog>,
+    { width: 60, height: 16 },
+  );
+  const popup = setup.renderer.root.findDescendantById(
+    "themed-popup",
+  ) as BoxRenderable;
+
+  await act(async () => {
+    theme.setActive("smoke");
+  });
+  await setup.waitFor(() =>
+    popup.backgroundColor.equals(parseColor("#123456")),
+  );
+
+  expect(setup.renderer.root.findDescendantById("themed-popup")).toBe(popup);
+  await act(async () => {
+    theme.setActive("terminal");
+  });
 });
 
 function findClose(node: BaseRenderable): DialogCloseRenderable {

@@ -111,15 +111,20 @@ application owns.
     <Checkbox label="Enable notifications" defaultChecked />;
     ```
 
-**The installed file belongs to your application.** The palette, glyphs,
-labels, and variants inside it are starter choices, not package APIs — edit
-them directly or use them as the basis of your own registry.
+**The installed files belong to your application.** Installing any recipe
+also installs the consumer-owned [theme file](/theming) it reads its colors
+and glyphs from. Labels and variants live in the recipe itself. All of it is
+starter source, not package APIs — edit it directly or use it as the basis
+of your own registry.
 
 ## Next steps
 
 <CardGroup cols={2}>
   <Card title="Catalog" href="/catalog" icon="layout-grid">
     The starter catalog: Button, Checkbox, Switch, Toggle, Toggle Group, Radio Group, Input, Badge.
+  </Card>
+  <Card title="Theming" href="/theming" icon="palette">
+    Tokens, live theme switching, and the out-of-the-box preset themes.
   </Card>
   <Card title="Registry lifecycle" href="/registry" icon="git-compare">
     Review upstream recipe changes without discarding local edits.

@@ -1,4 +1,5 @@
 import { afterEach, expect, test } from "bun:test";
+import { parseColor } from "@opentui/core";
 import {
   createTestRenderer,
   type TestRendererSetup,
@@ -9,6 +10,7 @@ import {
   addDialogTitle,
   createDialog,
 } from "./components/ui/dialog";
+import { theme, tint } from "./components/ui/theme";
 
 let setup: TestRendererSetup | undefined;
 
@@ -36,4 +38,38 @@ test("installed Core Dialog recipe composes and delegates trigger, close, and ba
   expect(dialog.popup.visible).toBe(true);
   dialog.backdrop.processMouseEvent({ type: "up" } as never);
   expect(dialog.root.state.open).toBe(false);
+});
+
+test("restyles from the theme store on theme switch", async () => {
+  theme.register("smoke", {
+    tokens: {
+      colors: {
+        surface: "#123456",
+        background: "#654321",
+        foreground: "#FEDCBA",
+      },
+    },
+  });
+  setup = await createTestRenderer({ width: 60, height: 16 });
+  const dialog = createDialog(setup.renderer);
+  setup.renderer.root.add(dialog.root);
+  setup.renderer.root.add(dialog.portal);
+  await setup.renderOnce();
+
+  theme.setActive("smoke");
+  expect(dialog.popup.backgroundColor.equals(parseColor("#123456"))).toBe(true);
+  expect(dialog.trigger.backgroundColor.equals(parseColor("#123456"))).toBe(
+    true,
+  );
+  expect(
+    dialog.backdrop.backgroundColor.equals(tint("#654321", "#FEDCBA", 0.25)),
+  ).toBe(true);
+  expect(dialog.backdrop.backgroundColor.equals(parseColor("#654321"))).toBe(
+    false,
+  );
+
+  theme.setActive("terminal");
+  expect(dialog.popup.backgroundColor.equals(parseColor("#123456"))).toBe(
+    false,
+  );
 });

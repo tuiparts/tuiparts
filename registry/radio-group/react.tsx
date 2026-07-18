@@ -2,6 +2,7 @@
 
 import { Radio as RadioPrimitive } from "@tuiparts/react/radio";
 import { RadioGroup as RadioGroupPrimitive } from "@tuiparts/react/radio-group";
+import { useTheme } from "./use-theme";
 
 export interface RadioGroupProps extends RadioGroupPrimitive.Props {}
 
@@ -29,12 +30,14 @@ export function RadioGroup({ children, ...props }: RadioGroupProps) {
 /** Consumer-owned Item layout, label, mark, and colors. */
 export function RadioGroupItem({
   label,
-  mark = "●",
+  mark,
   tone = "accent",
   disabled,
   ...props
 }: RadioGroupItemProps) {
-  const markColor = tone === "success" ? "#10B981" : "#3B82F6";
+  const tokens = useTheme();
+  const markColor =
+    tone === "success" ? tokens.colors.success : tokens.colors.primary;
 
   return (
     <RadioPrimitive.Root
@@ -49,13 +52,17 @@ export function RadioGroupItem({
         <>
           <box width={1}>
             <RadioPrimitive.Indicator>
-              <text content={mark} fg={markColor} />
+              <text content={mark ?? tokens.glyphs.radio} fg={markColor} />
             </RadioPrimitive.Indicator>
           </box>
           <text
             content={label}
             fg={
-              state.disabled ? "#737373" : state.focused ? "#FFFFFF" : "#E5E5E5"
+              state.disabled
+                ? tokens.colors.disabledForeground
+                : state.focused
+                  ? tokens.colors.focus
+                  : tokens.colors.foreground
             }
           />
         </>

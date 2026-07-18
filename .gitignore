@@ -53,3 +53,12 @@ benchmarks
 # throwaway prototypes (local only, per decree)
 prototypes/
 assets/
+
+# fixtures (regenerated from registry source, not tracked)
+fixtures/
+fixtures/.registry/
+fixtures/.tarballs/
+fixtures/demo/node_modules/
+fixtures/demo/components/
+fixtures/demo/themes/
+fixtures/demo/pnpm-lock.yaml

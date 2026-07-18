@@ -14,6 +14,7 @@ import {
   DialogTitleRenderable,
   DialogTriggerRenderable,
 } from "@tuiparts/core/dialog";
+import { type Tokens, theme, tint } from "./theme";
 
 /** Visual defaults only; the Dialog primitive retains all layer behavior. */
 export interface DialogOptions extends DialogRootOptions {
@@ -28,17 +29,31 @@ export interface DialogRecipe {
   popup: DialogPopupRenderable;
 }
 
+/** Applies themed styling now and on every change until `renderable` is destroyed. */
+function bindThemeStyle(
+  renderable: { destroy(): void },
+  applyStyle: (tokens: Readonly<Tokens>) => void,
+): void {
+  applyStyle(theme.get());
+  const unsubscribeTheme = theme.subscribe(() => applyStyle(theme.get()));
+  const destroy = renderable.destroy.bind(renderable);
+  renderable.destroy = () => {
+    unsubscribeTheme();
+    destroy();
+  };
+}
+
 /** Assemble an editable, terminal-wide Dialog layer from packaged Core parts. */
 export function createDialog(
   ctx: RenderContext,
   { width = "80%", ...options }: DialogOptions = {},
 ): DialogRecipe {
+  const tokens = theme.get();
   const root = new DialogRootRenderable(ctx, options);
   const trigger = new DialogTriggerRenderable(ctx, {
     store: root.store,
-    backgroundColor: "#262626",
-    paddingLeft: 1,
-    paddingRight: 1,
+    paddingLeft: tokens.density.paddingX,
+    paddingRight: tokens.density.paddingX,
   });
   const portal = new DialogPortalRenderable(ctx, {
     store: root.store,
@@ -53,22 +68,30 @@ export function createDialog(
     position: "absolute",
     width: "100%",
     height: "100%",
-    backgroundColor: "#000000",
   });
   const popup = new DialogPopupRenderable(ctx, {
     store: root.store,
     width,
     maxWidth: 56,
     flexDirection: "column",
-    backgroundColor: "#171717",
     border: true,
-    borderColor: "#737373",
-    paddingLeft: 1,
-    paddingRight: 1,
+    paddingLeft: tokens.density.paddingX,
+    paddingRight: tokens.density.paddingX,
   });
   portal.add(backdrop);
   portal.add(popup);
   root.add(trigger);
+  bindThemeStyle(root, (tokens) => {
+    trigger.backgroundColor = tokens.colors.surface;
+    backdrop.backgroundColor = tint(
+      tokens.colors.background,
+      tokens.colors.foreground,
+      0.25,
+    );
+    popup.backgroundColor = tokens.colors.surface;
+    popup.borderColor = tokens.colors.border;
+    popup.borderStyle = tokens.borders.style;
+  });
   return { root, trigger, portal, backdrop, popup };
 }
 
@@ -80,7 +103,9 @@ export function addDialogTitle(
   const title = new DialogTitleRenderable(ctx, {
     store: dialog.root.store,
     content,
-    fg: "#FFFFFF",
+  });
+  bindThemeStyle(title, (tokens) => {
+    title.fg = tokens.colors.foreground;
   });
   dialog.popup.add(title);
   return title;
@@ -94,7 +119,9 @@ export function addDialogDescription(
   const description = new DialogDescriptionRenderable(ctx, {
     store: dialog.root.store,
     content,
-    fg: "#A3A3A3",
+  });
+  bindThemeStyle(description, (tokens) => {
+    description.fg = tokens.colors.mutedForeground;
   });
   dialog.popup.add(description);
   return description;
@@ -106,13 +133,18 @@ export function addDialogClose(
   dialog: DialogRecipe,
   label = "× Close",
 ): DialogCloseRenderable {
+  const tokens = theme.get();
   const close = new DialogCloseRenderable(ctx, {
     store: dialog.root.store,
-    backgroundColor: "#262626",
-    paddingLeft: 1,
-    paddingRight: 1,
+    paddingLeft: tokens.density.paddingX,
+    paddingRight: tokens.density.paddingX,
   });
-  close.add(new TextRenderable(ctx, { content: label, fg: "#E5E5E5" }));
+  const text = new TextRenderable(ctx, { content: label });
+  close.add(text);
+  bindThemeStyle(close, (tokens) => {
+    close.backgroundColor = tokens.colors.surface;
+    text.fg = tokens.colors.foreground;
+  });
   dialog.popup.add(close);
   return close;
 }

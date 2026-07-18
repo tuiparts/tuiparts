@@ -1,7 +1,11 @@
 /** @jsxImportSource @opentui/solid */
 
 import { afterEach, expect, test } from "bun:test";
-import type { BaseRenderable } from "@opentui/core";
+import {
+  type BaseRenderable,
+  type BoxRenderable,
+  parseColor,
+} from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
 import {
@@ -17,6 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./components/ui/dialog";
+import { theme } from "./components/ui/theme";
 
 let setup: TestRendererSetup | undefined;
 
@@ -83,6 +88,34 @@ test("installed Solid Dialog recipe delegates controlled intent once and retains
   controlledTrigger.press();
   await setup.waitFor(() => controlledRoot?.state.open === true);
   expect(controlledChanges).toBe(1);
+});
+
+test("restyles rendered dialog parts on theme switch", async () => {
+  theme.register("smoke", { tokens: { colors: { surface: "#123456" } } });
+  setup = await testRender(
+    () => (
+      <Dialog defaultOpen>
+        <DialogTrigger>
+          <text content="Open" />
+        </DialogTrigger>
+        <DialogContent id="themed-popup">
+          <DialogTitle content="Theme" />
+        </DialogContent>
+      </Dialog>
+    ),
+    { width: 60, height: 16 },
+  );
+  const popup = setup.renderer.root.findDescendantById(
+    "themed-popup",
+  ) as BoxRenderable;
+
+  theme.setActive("smoke");
+  await setup.waitFor(() =>
+    popup.backgroundColor.equals(parseColor("#123456")),
+  );
+
+  expect(setup.renderer.root.findDescendantById("themed-popup")).toBe(popup);
+  theme.setActive("terminal");
 });
 
 function findClose(node: BaseRenderable): DialogCloseRenderable {

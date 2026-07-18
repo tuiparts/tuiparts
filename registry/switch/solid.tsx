@@ -2,6 +2,7 @@
 
 import { Switch as SwitchPrimitive } from "@tuiparts/solid/switch";
 import { splitProps } from "solid-js";
+import { useTheme } from "./use-theme";
 
 export interface SwitchProps
   extends Omit<SwitchPrimitive.Root.Props, "children"> {
@@ -23,8 +24,12 @@ export function Switch(props: SwitchProps) {
     "label",
     "symbols",
   ]);
+  const tokens = useTheme();
   const trackWidth = () => (recipe.density === "comfortable" ? 5 : 3);
-  const glyphs = () => symbolSets[recipe.symbols ?? "round"];
+  const glyphs = () =>
+    recipe.symbols
+      ? symbolSets[recipe.symbols]
+      : { thumb: tokens().glyphs.thumb, track: tokens().glyphs.track };
 
   return (
     <SwitchPrimitive.Root
@@ -42,20 +47,27 @@ export function Switch(props: SwitchProps) {
             position="relative"
             backgroundColor="transparent"
           >
-            <text content={glyphs().track.repeat(trackWidth())} fg="#525252" />
+            <text
+              content={glyphs().track.repeat(trackWidth())}
+              fg={tokens().colors.border}
+            />
             <SwitchPrimitive.Thumb
               width={1}
               height={1}
               position="absolute"
               left={state.checked ? trackWidth() - 1 : 0}
             >
-              <text content={glyphs().thumb} fg="#3B82F6" />
+              <text content={glyphs().thumb} fg={tokens().colors.primary} />
             </SwitchPrimitive.Thumb>
           </box>
           <text
             content={recipe.label}
             fg={
-              state.disabled ? "#737373" : state.focused ? "#FFFFFF" : "#E5E5E5"
+              state.disabled
+                ? tokens().colors.disabledForeground
+                : state.focused
+                  ? tokens().colors.focus
+                  : tokens().colors.foreground
             }
           />
         </>

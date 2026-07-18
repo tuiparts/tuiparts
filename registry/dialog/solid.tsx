@@ -2,6 +2,8 @@
 
 import { Dialog as DialogPrimitive } from "@tuiparts/solid/dialog";
 import { splitProps } from "solid-js";
+import { tint } from "./theme";
+import { useTheme } from "./use-theme";
 
 /** Props for the consumer-owned Dialog root. */
 export interface DialogProps extends DialogPrimitive.Root.Props {}
@@ -18,11 +20,12 @@ export function Dialog(props: DialogProps) {
 
 /** Editable trigger presentation that retains the primitive Trigger ref. */
 export function DialogTrigger(props: DialogPrimitive.Trigger.Props) {
+  const tokens = useTheme();
   return (
     <DialogPrimitive.Trigger
-      backgroundColor="#262626"
-      paddingLeft={1}
-      paddingRight={1}
+      backgroundColor={tokens().colors.surface}
+      paddingLeft={tokens().density.paddingX}
+      paddingRight={tokens().density.paddingX}
       {...props}
     />
   );
@@ -31,6 +34,7 @@ export function DialogTrigger(props: DialogPrimitive.Trigger.Props) {
 /** Responsive Portal, Backdrop, and Popup composition for Dialog content. */
 export function DialogContent(props: DialogContentProps) {
   const [recipe, popup] = splitProps(props, ["backdropColor", "children"]);
+  const tokens = useTheme();
   return (
     <DialogPrimitive.Portal
       position="absolute"
@@ -43,17 +47,21 @@ export function DialogContent(props: DialogContentProps) {
         position="absolute"
         width="100%"
         height="100%"
-        backgroundColor={recipe.backdropColor ?? "#000000"}
+        backgroundColor={
+          recipe.backdropColor ??
+          tint(tokens().colors.background, tokens().colors.foreground, 0.25)
+        }
       />
       <DialogPrimitive.Popup
         width="80%"
         maxWidth={56}
         flexDirection="column"
-        backgroundColor="#171717"
+        backgroundColor={tokens().colors.surface}
         border
-        borderColor="#737373"
-        paddingLeft={1}
-        paddingRight={1}
+        borderColor={tokens().colors.border}
+        borderStyle={tokens().borders.style}
+        paddingLeft={tokens().density.paddingX}
+        paddingRight={tokens().density.paddingX}
         {...popup}
       >
         {recipe.children}
@@ -64,21 +72,29 @@ export function DialogContent(props: DialogContentProps) {
 
 /** Editable semantic Dialog title. */
 export function DialogTitle(props: DialogPrimitive.Title.Props) {
-  return <DialogPrimitive.Title fg="#FFFFFF" {...props} />;
+  const tokens = useTheme();
+  return <DialogPrimitive.Title fg={tokens().colors.foreground} {...props} />;
 }
 
 /** Editable semantic Dialog description. */
 export function DialogDescription(props: DialogPrimitive.Description.Props) {
-  return <DialogPrimitive.Description fg="#A3A3A3" {...props} />;
+  const tokens = useTheme();
+  return (
+    <DialogPrimitive.Description
+      fg={tokens().colors.mutedForeground}
+      {...props}
+    />
+  );
 }
 
 /** Editable Dialog dismissal or action control. */
 export function DialogClose(props: DialogPrimitive.Close.Props) {
+  const tokens = useTheme();
   return (
     <DialogPrimitive.Close
-      backgroundColor="#262626"
-      paddingLeft={1}
-      paddingRight={1}
+      backgroundColor={tokens().colors.surface}
+      paddingLeft={tokens().density.paddingX}
+      paddingRight={tokens().density.paddingX}
       {...props}
     />
   );

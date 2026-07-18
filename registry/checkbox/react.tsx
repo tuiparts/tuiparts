@@ -1,6 +1,7 @@
 /** @jsxImportSource @opentui/react */
 
 import { Checkbox as CheckboxPrimitive } from "@tuiparts/react/checkbox";
+import { useTheme } from "./use-theme";
 
 export interface CheckboxProps
   extends Omit<CheckboxPrimitive.Root.Props, "children"> {
@@ -13,12 +14,14 @@ export interface CheckboxProps
 /** Consumer-owned recipe installed on top of packaged primitive behavior. */
 export function Checkbox({
   label,
-  mark = "✓",
+  mark,
   tone = "accent",
   disabled,
   ...props
 }: CheckboxProps) {
-  const markColor = tone === "success" ? "#10B981" : "#3B82F6";
+  const tokens = useTheme();
+  const markColor =
+    tone === "success" ? tokens.colors.success : tokens.colors.primary;
 
   return (
     <CheckboxPrimitive.Root
@@ -32,13 +35,17 @@ export function Checkbox({
         <>
           <box width={1}>
             <CheckboxPrimitive.Indicator>
-              <text content={mark} fg={markColor} />
+              <text content={mark ?? tokens.glyphs.check} fg={markColor} />
             </CheckboxPrimitive.Indicator>
           </box>
           <text
             content={label}
             fg={
-              state.disabled ? "#737373" : state.focused ? "#FFFFFF" : "#E5E5E5"
+              state.disabled
+                ? tokens.colors.disabledForeground
+                : state.focused
+                  ? tokens.colors.focus
+                  : tokens.colors.foreground
             }
           />
         </>

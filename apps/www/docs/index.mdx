@@ -28,9 +28,10 @@ package delivers behavior fixes without touching your presentation code.
 ## Recipes install as source you own
 
 Glyphs, palettes, layout, semantic variants, and convenience assembly install
-as plain TypeScript through the official shadcn CLI. The installed file lands
-in your project and belongs to your application — edit the palette map
-directly; there is no hidden theme runtime.
+as plain TypeScript through the official shadcn CLI. The installed files land
+in your project and belong to your application — every recipe reads its
+colors and glyphs from a consumer-owned [theme file](/theming) installed
+alongside it; there is no hidden theme runtime.
 
 ## One vocabulary, three runtimes
 
@@ -82,6 +83,9 @@ file.
   </Card>
   <Card title="Architecture" href="/architecture" icon="blocks">
     Understand primitives, recipes, and who owns what.
+  </Card>
+  <Card title="Theming" href="/theming" icon="palette">
+    The token contract, live theme switching, and preset themes.
   </Card>
   <Card title="Registry" href="/registry" icon="package">
     Configure shadcn and manage consumer-owned updates.

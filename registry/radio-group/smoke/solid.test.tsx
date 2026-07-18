@@ -8,6 +8,7 @@ import type { RadioRootRenderable } from "@tuiparts/core/radio";
 import type { RadioGroupRenderable } from "@tuiparts/core/radio-group";
 import { createSignal } from "solid-js";
 import { RadioGroup, RadioGroupItem } from "./components/ui/radio-group";
+import { theme } from "./components/ui/theme";
 
 let setup: TestRendererSetup | undefined;
 
@@ -165,4 +166,27 @@ test("installed Solid RadioGroup recipe runtime smoke", async () => {
     controlledRoot,
   );
   expect(item("controlled-b")).toBe(controlledBeta);
+});
+
+test("restyles rendered items on theme switch", async () => {
+  theme.register("smoke", {
+    tokens: { colors: { primary: "#123456" }, glyphs: { radio: "*" } },
+  });
+  setup = await testRender(
+    () => (
+      <RadioGroup id="themed" defaultValue="alpha">
+        <RadioGroupItem id="themed-alpha" value="alpha" label="Alpha" />
+      </RadioGroup>
+    ),
+    { width: 30, height: 3 },
+  );
+  await setup.renderOnce();
+  const alpha = item("themed-alpha");
+  expect(text(alpha)).toEqual(["●", "Alpha"]);
+
+  theme.setActive("smoke");
+  await setup.waitFor(() => text(alpha).join(" ") === "* Alpha");
+
+  expect(setup.renderer.root.findDescendantById("themed-alpha")).toBe(alpha);
+  theme.setActive("terminal");
 });

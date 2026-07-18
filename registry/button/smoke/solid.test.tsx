@@ -1,6 +1,7 @@
 /** @jsxImportSource @opentui/solid */
 
 import { afterEach, describe, expect, it } from "bun:test";
+import { type BoxRenderable, parseColor } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
 import type {
@@ -8,6 +9,7 @@ import type {
   ButtonRenderable,
 } from "@tuiparts/core/button";
 import { Button } from "./components/ui/button";
+import { theme } from "./components/ui/theme";
 
 let setup: TestRendererSetup | undefined;
 
@@ -52,5 +54,25 @@ describe("installed Solid Button recipe", () => {
     disabled.press();
     expect(presses).toEqual([{ source: "imperative" }]);
     expect(disabled.focused).toBe(false);
+  });
+
+  it("restyles rendered buttons on theme switch", async () => {
+    theme.register("smoke", { tokens: { colors: { primary: "#123456" } } });
+    setup = await testRender(() => <Button id="themed" label="Theme" />, {
+      width: 30,
+      height: 3,
+    });
+    const root = setup.renderer.root.findDescendantById(
+      "themed",
+    ) as ButtonRenderable;
+    const surface = root.getChildren()[0] as BoxRenderable;
+
+    theme.setActive("smoke");
+    await setup.waitFor(() =>
+      surface.backgroundColor.equals(parseColor("#123456")),
+    );
+
+    expect(setup.renderer.root.findDescendantById("themed")).toBe(root);
+    theme.setActive("terminal");
   });
 });

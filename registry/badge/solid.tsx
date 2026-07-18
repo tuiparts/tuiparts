@@ -2,6 +2,8 @@
 
 import type { BoxOptions, TextOptions } from "@opentui/core";
 import { splitProps } from "solid-js";
+import type { Tokens } from "./theme";
+import { useTheme } from "./use-theme";
 
 export type BadgeIntent = "danger" | "neutral" | "success" | "warning";
 export type BadgeSize = "compact" | "comfortable";
@@ -13,12 +15,18 @@ export interface BadgeProps extends BoxOptions {
   size?: BadgeSize;
 }
 
-const palettes = {
-  danger: { background: "#991B1B", foreground: "#FEF2F2" },
-  neutral: { background: "#404040", foreground: "#F5F5F5" },
-  success: { background: "#166534", foreground: "#F0FDF4" },
-  warning: { background: "#854D0E", foreground: "#FFFBEB" },
-} as const;
+const paletteFor = (colors: Tokens["colors"]) => ({
+  danger: {
+    background: colors.destructive,
+    foreground: colors.destructiveForeground,
+  },
+  neutral: { background: colors.surface, foreground: colors.foreground },
+  success: { background: colors.success, foreground: colors.successForeground },
+  warning: {
+    background: colors.warning,
+    foreground: colors.warningForeground,
+  },
+});
 
 /** Consumer-owned Solid recipe composed from ordinary OpenTUI elements. */
 export function Badge(props: BadgeProps) {
@@ -28,12 +36,17 @@ export function Badge(props: BadgeProps) {
     "labelOptions",
     "size",
   ]);
-  const palette = () => palettes[recipe.intent ?? "neutral"];
+  const tokens = useTheme();
+  const palette = () => paletteFor(tokens().colors)[recipe.intent ?? "neutral"];
 
   return (
     <box
       backgroundColor={palette().background}
-      paddingX={recipe.size === "comfortable" ? 2 : 1}
+      paddingX={
+        recipe.size === "comfortable"
+          ? tokens().density.comfortablePaddingX
+          : tokens().density.paddingX
+      }
       {...root}
     >
       <text

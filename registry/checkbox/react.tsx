@@ -1,6 +1,5 @@
 /** @jsxImportSource @opentui/react */
 
-import { RGBA } from "@opentui/core";
 import { Checkbox as CheckboxPrimitive } from "@tuiparts/react/checkbox";
 import { useTheme } from "./use-theme";
 
@@ -22,7 +21,7 @@ export function Checkbox({
 }: CheckboxProps) {
   const tokens = useTheme();
   const markColor =
-    tone === "success" ? RGBA.fromIndex(2) : tokens.colors.primary;
+    tone === "success" ? tokens.colors.success : tokens.colors.primary;
 
   return (
     <CheckboxPrimitive.Root

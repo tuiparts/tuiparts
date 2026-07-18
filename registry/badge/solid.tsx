@@ -15,7 +15,7 @@ export interface BadgeProps extends BoxOptions {
   size?: BadgeSize;
 }
 
-const palettes = (colors: Tokens["colors"]) => ({
+const paletteFor = (colors: Tokens["colors"]) => ({
   danger: {
     background: colors.destructive,
     foreground: colors.destructiveForeground,
@@ -37,7 +37,7 @@ export function Badge(props: BadgeProps) {
     "size",
   ]);
   const tokens = useTheme();
-  const palette = () => palettes(tokens().colors)[recipe.intent ?? "neutral"];
+  const palette = () => paletteFor(tokens().colors)[recipe.intent ?? "neutral"];
 
   return (
     <box

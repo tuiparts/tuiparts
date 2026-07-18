@@ -22,8 +22,6 @@ class ButtonRecipeRenderable extends ButtonRenderable {
     const tokens = theme.get();
     const intent = options.intent ?? "primary";
     super(ctx, {
-      backgroundColor:
-        intent === "primary" ? tokens.colors.primary : tokens.colors.surface,
       disabled: options.disabled,
       onPress: options.onPress,
       paddingX:
@@ -31,10 +29,7 @@ class ButtonRecipeRenderable extends ButtonRenderable {
           ? tokens.density.comfortablePaddingX
           : tokens.density.paddingX,
     });
-    const label = new TextRenderable(ctx, {
-      content: options.label,
-      fg: tokens.colors.primaryForeground,
-    });
+    const label = new TextRenderable(ctx, { content: options.label });
     this.add(label);
 
     const applyStyle = (tokens: Readonly<Tokens>, state: ButtonState) => {

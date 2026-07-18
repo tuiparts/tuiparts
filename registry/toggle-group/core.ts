@@ -26,11 +26,12 @@ class ToggleGroupItemRecipeRenderable extends ToggleRenderable {
     store: ToggleGroupStore,
     options: ToggleGroupItemOptions,
   ) {
+    const tokens = theme.get();
     super(ctx, {
       disabled: options.disabled,
       group: store,
       height: 1,
-      paddingX: 1,
+      paddingX: tokens.density.paddingX,
       value: options.value,
     });
     const label = new TextRenderable(ctx, { content: options.label });

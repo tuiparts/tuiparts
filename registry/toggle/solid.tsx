@@ -25,7 +25,7 @@ export function Toggle(props: ToggleProps) {
                 : "transparent"
           }
           height={1}
-          paddingX={1}
+          paddingX={tokens().density.paddingX}
         >
           <text
             content={recipe.label}

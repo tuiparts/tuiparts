@@ -41,7 +41,7 @@ export function ToggleGroupItem({ label, ...props }: ToggleGroupItemProps) {
                 : "transparent"
           }
           height={1}
-          paddingX={1}
+          paddingX={tokens.density.paddingX}
         >
           <text
             content={label}

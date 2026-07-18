@@ -45,7 +45,15 @@ The entire theming system is consumer-owned Registry source. There is no
   `registryDependencies`, so installing any recipe guarantees the theme file
   exists; recipes read tokens instead of literals and derive interaction
   states from few tokens plus structural affordances rather than per-intent
-  ramps.
+  ramps. Preset items declare the Core theme item for the same reason: a
+  preset installed on its own imports a `ThemeDefinition` that must exist.
+- The glyph tokens are `check`, `radio`, `thumb`, and `track` rather than the
+  `radioOn`/`radioOff`/`thumbOn`/`thumbOff` pairs the design sketch proposed.
+  Off-states are structural in every recipe — an Indicator part renders only
+  when its store reports checked, and the Switch thumb moves rather than
+  swapping symbol — so an off-glyph token would have had no reader. Switch
+  needs a `track` fill the pairs did not cover. Each token names the glyph
+  the recipe actually draws.
 
 Rejected alternatives: a packaged core theme primitive with a
 `createThemeContext` factory (a pub-sub plus deep-merge is not difficult

@@ -1,6 +1,5 @@
 /** @jsxImportSource @opentui/react */
 
-import { RGBA } from "@opentui/core";
 import { Radio as RadioPrimitive } from "@tuiparts/react/radio";
 import { RadioGroup as RadioGroupPrimitive } from "@tuiparts/react/radio-group";
 import { useTheme } from "./use-theme";
@@ -31,14 +30,14 @@ export function RadioGroup({ children, ...props }: RadioGroupProps) {
 /** Consumer-owned Item layout, label, mark, and colors. */
 export function RadioGroupItem({
   label,
-  mark = "●",
+  mark,
   tone = "accent",
   disabled,
   ...props
 }: RadioGroupItemProps) {
   const tokens = useTheme();
   const markColor =
-    tone === "success" ? RGBA.fromIndex(2) : tokens.colors.primary;
+    tone === "success" ? tokens.colors.success : tokens.colors.primary;
 
   return (
     <RadioPrimitive.Root
@@ -53,7 +52,7 @@ export function RadioGroupItem({
         <>
           <box width={1}>
             <RadioPrimitive.Indicator>
-              <text content={mark} fg={markColor} />
+              <text content={mark ?? tokens.glyphs.radio} fg={markColor} />
             </RadioPrimitive.Indicator>
           </box>
           <text

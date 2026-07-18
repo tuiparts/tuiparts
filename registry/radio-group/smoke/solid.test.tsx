@@ -182,7 +182,7 @@ test("restyles rendered items on theme switch", async () => {
   );
   await setup.renderOnce();
   const alpha = item("themed-alpha");
-  expect(text(alpha)).toEqual(["o", "Alpha"]);
+  expect(text(alpha)).toEqual(["●", "Alpha"]);
 
   theme.setActive("smoke");
   await setup.waitFor(() => text(alpha).join(" ") === "* Alpha");

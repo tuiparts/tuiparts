@@ -1,6 +1,5 @@
 /** @jsxImportSource @opentui/solid */
 
-import { RGBA } from "@opentui/core";
 import { Checkbox as CheckboxPrimitive } from "@tuiparts/solid/checkbox";
 import { splitProps } from "solid-js";
 import { useTheme } from "./use-theme";
@@ -23,7 +22,9 @@ export function Checkbox(props: CheckboxProps) {
   ]);
   const tokens = useTheme();
   const markColor = () =>
-    recipe.tone === "success" ? RGBA.fromIndex(2) : tokens().colors.primary;
+    recipe.tone === "success"
+      ? tokens().colors.success
+      : tokens().colors.primary;
 
   return (
     <CheckboxPrimitive.Root

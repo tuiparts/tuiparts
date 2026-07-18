@@ -765,6 +765,7 @@
       "title": "Cobalt Deep Theme",
       "description": "Truecolor tuiparts.sh brand preset applied as a partial override of the installed theme contract.",
       "dependencies": [],
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"],
       "files": [
         {
           "path": "registry/theme/themes/cobalt-deep.ts",
@@ -785,6 +786,7 @@
       "title": "ASCII Theme",
       "description": "ASCII-glyph preset for fonts and terminals without Unicode coverage, applied as a partial override.",
       "dependencies": [],
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"],
       "files": [
         {
           "path": "registry/theme/themes/ascii.ts",
@@ -805,6 +807,7 @@
       "title": "Catppuccin Theme",
       "description": "Catppuccin Mocha/Latte.",
       "dependencies": [],
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"],
       "files": [
         {
           "path": "registry/theme/themes/catppuccin.ts",
@@ -825,6 +828,7 @@
       "title": "Gruvbox Theme",
       "description": "Gruvbox dark/light.",
       "dependencies": [],
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"],
       "files": [
         {
           "path": "registry/theme/themes/gruvbox.ts",
@@ -845,6 +849,7 @@
       "title": "Rosé Pine Theme",
       "description": "Rosé Pine/Dawn.",
       "dependencies": [],
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"],
       "files": [
         {
           "path": "registry/theme/themes/rosepine.ts",

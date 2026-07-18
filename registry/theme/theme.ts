@@ -102,12 +102,13 @@ function deepMerge<T>(base: T, layer: DeepPartial<T>): T {
   return merged as T;
 }
 
-function deepFreeze<T>(value: T): Readonly<T> {
-  if (isPlainObject(value)) {
-    for (const child of Object.values(value)) deepFreeze(child);
-    Object.freeze(value);
-  }
-  return value;
+/** Frozen deep copy; never freezes the caller's object, so `base` stays writable. */
+function deepFrozen<T>(value: T): Readonly<T> {
+  if (!isPlainObject(value)) return value;
+  const copy: Record<string, unknown> = {};
+  for (const [key, child] of Object.entries(value))
+    copy[key] = deepFrozen(child);
+  return Object.freeze(copy) as Readonly<T>;
 }
 
 /**
@@ -133,7 +134,7 @@ export function createThemeStore(config: ThemeStoreConfig): ThemeStore {
       definition?.[resolvedMode()],
       overrides,
     ];
-    snapshot = deepFreeze(
+    snapshot = deepFrozen(
       layers.reduce<Tokens>(
         (tokens, layer) => (layer ? deepMerge(tokens, layer) : tokens),
         config.base,
@@ -245,7 +246,7 @@ export const terminal: Tokens = {
   },
   glyphs: {
     check: "✓",
-    radio: "o",
+    radio: "●",
     thumb: "●",
     track: "─",
   },

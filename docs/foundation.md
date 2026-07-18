@@ -120,8 +120,9 @@ The starter catalog provides `core/*`, `react/*`, and `solid/*` items for:
 - ToggleGroup
 - Theme (token contract, store, and terminal default read by every recipe)
 
-Framework-neutral preset themes (`theme-cobalt-deep`, `theme-ascii`) install
-as `themes/<name>.ts` partial overrides of your theme file.
+Framework-neutral preset themes (`theme-cobalt-deep`, `theme-ascii`,
+`theme-catppuccin`, `theme-gruvbox`, `theme-rosepine`) install as
+`themes/<name>.ts` partial overrides of your theme file.
 
 The copied file belongs to your application. Recipes read palette, density,
 and symbol choices as tokens from the consumer-owned theme file installed

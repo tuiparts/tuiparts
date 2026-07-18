@@ -42,7 +42,7 @@ export function ToggleGroupItem(props: ToggleGroupItemProps) {
                 : "transparent"
           }
           height={1}
-          paddingX={1}
+          paddingX={tokens().density.paddingX}
         >
           <text
             content={recipe.label}

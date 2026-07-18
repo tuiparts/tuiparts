@@ -17,7 +17,7 @@ export interface BadgeOptions extends BoxOptions {
   size?: BadgeSize;
 }
 
-const palettes = (colors: Tokens["colors"]) => ({
+const paletteFor = (colors: Tokens["colors"]) => ({
   danger: {
     background: colors.destructive,
     foreground: colors.destructiveForeground,
@@ -56,7 +56,7 @@ class BadgeRecipeRenderable extends BoxRenderable {
     this.add(text);
 
     const applyStyle = (tokens: Readonly<Tokens>) => {
-      const palette = palettes(tokens.colors)[intent];
+      const palette = paletteFor(tokens.colors)[intent];
       if (rootOptions.backgroundColor === undefined)
         this.backgroundColor = palette.background;
       if (labelOptions?.fg === undefined) text.fg = palette.foreground;

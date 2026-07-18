@@ -1,6 +1,6 @@
 ---
 title: Theming
-description: The consumer-owned token contract, the theme store API, the out-of-the-box themes, and how to build your own.
+description: A guide to theming recipes with the consumer-owned token contract.
 sidebar:
   order: 4
 ---
@@ -44,7 +44,7 @@ export interface Tokens {
   };
   glyphs: {
     check: string; // "✓"
-    radio: string; // "o"
+    radio: string; // "●"
     thumb: string; // "●"
     track: string; // "─"
   };
@@ -79,7 +79,7 @@ remount:
 | `theme.register(name, definition)` | Adds or replaces a named theme at runtime. |
 | `theme.override(partial)` | Applies a top-priority partial overlay (or clears it with `undefined`). |
 | `theme.follow(renderer)` | Keeps `"system"` mode in sync with the terminal's live light/dark signal. |
-| `tint(base, overlay, alpha)` | Blends two colors; the blessed way to derive interaction-state shades. |
+| `tint(base, overlay, alpha)` | Blends two colors to derive interaction-state shades. |
 
 Snapshots resolve eagerly as `base ⊕ theme.tokens ⊕ theme[mode] ⊕ override`:
 missing keys at any layer fall through to the layer below.
@@ -119,7 +119,7 @@ const unsubscribe = theme.subscribe(() => {
 
 ## Modes and `"system"`
 
-`"system"` follows your **terminal's** colors, not the operating system's
+`"system"` follows your terminal's colors, not the operating system's
 appearance setting. OpenTUI queries the terminal for its background color,
 derives dark or light from its luminance, and emits a live `theme_mode` event
 when the terminal reports a change. Wire it up once at startup:
@@ -165,7 +165,7 @@ theme.register("catppuccin", catppuccin);
 theme.setActive("catppuccin");
 ```
 
-Presets are `DeepPartial` overrides merged over **your** base theme, not
+Presets are `DeepPartial` overrides merged over your base theme, not
 full token sets: anything a preset does not define falls back to your
 defaults, so a glyph-only preset like ASCII changes no colors, and your own
 token extensions never break a preset install.

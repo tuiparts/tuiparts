@@ -20,13 +20,14 @@ class ToggleRecipeRenderable extends ToggleRenderable {
   private readonly unsubscribeTheme: () => void;
 
   constructor(ctx: RenderContext, options: ToggleOptions) {
+    const tokens = theme.get();
     super(ctx, {
       defaultPressed: options.defaultPressed,
       disabled: options.disabled,
       onPressedChange: options.onPressedChange,
       pressed: options.pressed,
       height: 1,
-      paddingX: 1,
+      paddingX: tokens.density.paddingX,
     });
     const label = new TextRenderable(ctx, { content: options.label });
     this.add(label);

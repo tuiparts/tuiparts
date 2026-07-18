@@ -30,6 +30,17 @@ describe("installed Core theme recipe", () => {
     expect(first.glyphs.check).toBe("✓");
   });
 
+  it("leaves the base tokens writable so the installed file stays editable", () => {
+    const base = structuredClone(terminal);
+    const store = createThemeStore({ base, themes: { terminal: {} } });
+
+    expect(Object.isFrozen(store.get())).toBe(true);
+    expect(Object.isFrozen(base)).toBe(false);
+    expect(Object.isFrozen(base.colors)).toBe(false);
+
+    expect(Object.isFrozen(terminal.colors)).toBe(false);
+  });
+
   it("merges the active definition over the base and notifies", () => {
     const store = createThemeStore({
       base: terminal,

@@ -23,7 +23,7 @@ export function Toggle({ label, ...props }: ToggleProps) {
                 : "transparent"
           }
           height={1}
-          paddingX={1}
+          paddingX={tokens.density.paddingX}
         >
           <text
             content={label}

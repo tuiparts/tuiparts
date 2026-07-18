@@ -143,7 +143,10 @@ function consumerFiles(recipe, framework, extension) {
       },
     ];
   }
-  const themeSource = { source: "registry/theme/theme.ts", target: "components/ui/theme.ts" };
+  const themeSource = {
+    source: "registry/theme/theme.ts",
+    target: "components/ui/theme.ts",
+  };
   if (framework === "core") return [themeSource];
   return [
     themeSource,
@@ -233,6 +236,14 @@ function assert(condition, message) {
 
 function writeJson(path, value) {
   writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
+}
+
+/** Points an item's registry dependencies at the locally built registry. */
+function localizeRegistryDependencies(item) {
+  item.registryDependencies = item.registryDependencies?.map((address) =>
+    address.replace("https://tuiparts.sh/r/", `${registryDir}/`),
+  );
+  return item;
 }
 
 function packageName(specifier) {
@@ -557,9 +568,7 @@ try {
       const tarball = tarballs.get(name);
       return tarball ? `${name}@file:${tarball}` : dependency;
     });
-    installItem.registryDependencies = installItem.registryDependencies?.map(
-      (address) => address.replace("https://tuiparts.sh/r/", `${registryDir}/`),
-    );
+    localizeRegistryDependencies(installItem);
     const installItemPath = join(
       workDir,
       `${consumer.framework}-${consumer.recipe}-install.json`,
@@ -712,10 +721,12 @@ try {
       ...consumer.files.map((file) => file.target),
     ]);
     if (registryItem.registryDependencies?.length) {
-      allowedChanges.add("components/ui/theme.ts");
-      if (consumer.framework === "react" || consumer.framework === "solid") {
-        allowedChanges.add("components/ui/use-theme.tsx");
-      }
+      const themeFiles = consumerFiles(
+        "theme",
+        consumer.framework,
+        consumer.extension,
+      );
+      for (const file of themeFiles) allowedChanges.add(file.target);
     }
     for (const [path, content] of afterInstall) {
       if (allowedChanges.has(path)) continue;
@@ -767,8 +778,10 @@ try {
         );
         writeJson(
           presetInstallPath,
-          JSON.parse(
-            readFileSync(join(registryDir, `${preset.item}.json`), "utf8"),
+          localizeRegistryDependencies(
+            JSON.parse(
+              readFileSync(join(registryDir, `${preset.item}.json`), "utf8"),
+            ),
           ),
         );
         await capture("pnpm", [

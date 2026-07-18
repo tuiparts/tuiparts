@@ -1,6 +1,5 @@
 /** @jsxImportSource @opentui/solid */
 
-import { RGBA } from "@opentui/core";
 import { Radio as RadioPrimitive } from "@tuiparts/solid/radio";
 import { RadioGroup as RadioGroupPrimitive } from "@tuiparts/solid/radio-group";
 import { splitProps } from "solid-js";
@@ -37,7 +36,9 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
   ]);
   const tokens = useTheme();
   const markColor = () =>
-    recipe.tone === "success" ? RGBA.fromIndex(2) : tokens().colors.primary;
+    recipe.tone === "success"
+      ? tokens().colors.success
+      : tokens().colors.primary;
 
   return (
     <RadioPrimitive.Root

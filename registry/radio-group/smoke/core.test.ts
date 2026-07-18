@@ -128,7 +128,7 @@ describe("installed Core RadioGroup recipe", () => {
     expect(gamma?.focused).toBe(true);
     await setup?.mockInput.pressKey("HOME");
     expect(alpha?.focused).toBe(true);
-    expect(frameLines()[0]).toBe("o Alpha");
+    expect(frameLines()[0]).toBe("● Alpha");
     expect(frameLines()[1]).toBe("  Beta");
   });
 
@@ -160,7 +160,7 @@ describe("installed Core RadioGroup recipe", () => {
     const { items } = await renderGroup({ defaultValue: "alpha" }, [
       { value: "alpha", label: "Alpha" },
     ]);
-    expect(frameLines()[0]).toBe("o Alpha");
+    expect(frameLines()[0]).toBe("● Alpha");
 
     theme.setActive("smoke");
     await setup?.renderOnce();
@@ -172,6 +172,6 @@ describe("installed Core RadioGroup recipe", () => {
 
     theme.setActive("terminal");
     await setup?.renderOnce();
-    expect(frameLines()[0]).toBe("o Alpha");
+    expect(frameLines()[0]).toBe("● Alpha");
   });
 });

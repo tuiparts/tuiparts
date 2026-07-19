@@ -19,6 +19,7 @@ Each foundation recipe is available as `core/<name>`, `react/<name>`, and
 | Button | Button activation primitive | `Button` |
 | RadioGroup/Radio | Radio collection and selectable parts | `RadioGroup`, `RadioGroupItem` |
 | Input | Native OpenTUI input behavior | `Input` |
+| Dialog | Overlay layers, focus containment, and dismissal | `Dialog`, `DialogTrigger`, `DialogContent`, `DialogTitle`, `DialogDescription`, `DialogClose` |
 | Badge | None; presentation-only recipe | `Badge` |
 | Toggle | Standalone pressed-state primitive | `Toggle` |
 | ToggleGroup/Toggle | Single or multiple selection and roving focus | `ToggleGroup`, `ToggleGroupItem` |
@@ -33,11 +34,6 @@ React and Solid recipes expose the same installed names and props where their
 runtime semantics permit. Core recipes expose equivalent imperative factory
 functions. Core installation uses the same shadcn item lifecycle; it installs
 ordinary `.ts` source rather than framework JSX.
-
-The registry also contains a validated preview Dialog recipe, but it is not
-part of this starter catalog. The already-adopted `@tuiparts/dialog` and
-`@tuiparts/toast` packages remain the production companion paths. The preview
-recipe does not replace either package.
 
 ## Compatibility
 

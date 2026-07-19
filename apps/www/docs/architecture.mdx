@@ -70,23 +70,7 @@ in the repository.
 - **No Store passing** — framework consumers configure controlled props and
   callbacks; only Core callers construct Stores directly.
 
-## Dialog and Toast companions
-
-Three Dialog surfaces currently have distinct roles:
-
-- `@tuiparts/{core,react,solid}/dialog` is the foundation compound primitive.
-- `registry/dialog` is a validated preview recipe, not part of the starter
-  catalog.
-- `@tuiparts/dialog` is the adopted companion product with manager, provider,
-  theme, and async prompt/confirm/alert/choice conveniences.
-
-`@tuiparts/toast` is also an adopted companion product with notification,
-theme, icon, React, and Solid APIs. Neither companion is re-exported by the
-foundation packages, and installing a foundation recipe does not replace
-either companion. Companions are independently versioned and supported.
-
 ## Versioning
 
 `@tuiparts/core`, `@tuiparts/react`, and `@tuiparts/solid` version
-together as a linked foundation release line, managed with Changesets. The
-Dialog and Toast companion packages version independently.
+together as a linked foundation release line, managed with Changesets.

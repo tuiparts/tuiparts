@@ -1,4 +1,4 @@
-# Dialog Preview Recipe
+# Dialog recipe
 
 The root registry exposes `core/dialog`, `react/dialog`, and `solid/dialog`.
 Each item copies an editable composition into `components/ui/dialog.*`; it does
@@ -29,10 +29,6 @@ restores focus to its parent or original trigger.
 the primitive Popup props, so callers can set `initialFocus`, dimensions, and
 native OpenTUI presentation without replacing the layer behavior. A
 `DialogClose` with `reason="action"` reports an accepted action dismissal.
-
-This recipe is validated preview catalog evidence rather than part of the
-six-family starter catalog. The adopted `@tuiparts/dialog` manager, provider,
-and async APIs stay separate and unchanged.
 
 The `tsconfig.*.json` fixtures compile copied recipes against each supported
 surface. `pnpm validate:registry` builds and installs every registry item in

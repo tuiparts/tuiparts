@@ -115,6 +115,7 @@ The starter catalog provides `core/*`, `react/*`, and `solid/*` items for:
 - Button
 - RadioGroup/Radio
 - Input
+- Dialog
 - Badge
 - Toggle
 - ToggleGroup
@@ -146,24 +147,6 @@ pnpm dlx shadcn@4.13.0 add <item-address> --dry-run
 Ordinary `add` asks before replacing an existing file. Use `--overwrite` only
 when you deliberately want to discard local changes. See the
 [`registry` catalog](../registry/README.md) for the complete lifecycle.
-
-## Dialog And Toast Companions
-
-Three Dialog surfaces currently have distinct roles:
-
-- `@tuiparts/{core,react,solid}/dialog` is the foundation compound primitive.
-- `registry/dialog` is a validated preview recipe, not part of the starter
-  catalog.
-- `@tuiparts/dialog` is the adopted companion product with manager, provider,
-  theme, and async prompt/confirm/alert/choice conveniences.
-
-`@tuiparts/toast` is also an adopted companion product. It retains its
-current notification, theme, icon, React, and Solid APIs. Neither companion is
-re-exported by the foundation packages, and installing a foundation recipe
-does not replace either companion.
-
-Companion packages remain independently versioned and supported. Their internal
-reconciliation is separate work and does not determine foundation versions.
 
 ## Release Gates
 

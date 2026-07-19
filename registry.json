@@ -462,7 +462,7 @@
       "name": "core/dialog",
       "type": "registry:ui",
       "title": "Dialog (Core)",
-      "description": "Editable imperative Dialog Recipe built on the tuiparts.sh overlay Primitive tracer.",
+      "description": "Editable imperative Dialog recipe built on the tuiparts.sh foundation primitive.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0", "@opentui/core@^0.4.3"],
       "files": [
         {
@@ -473,7 +473,9 @@
       ],
       "meta": {
         "framework": "core",
-        "primitiveStatus": "tracer"
+        "primitiveStatus": "tracer",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       },
       "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
@@ -481,7 +483,7 @@
       "name": "react/dialog",
       "type": "registry:ui",
       "title": "Dialog (React)",
-      "description": "Editable React Dialog Recipe built on the tuiparts.sh overlay Primitive tracer.",
+      "description": "Editable React Dialog recipe built on the tuiparts.sh foundation primitive.",
       "dependencies": [
         "@tuiparts/react@>=0.0.1 <0.1.0",
         "@tuiparts/core@>=0.0.1 <0.1.0",
@@ -499,7 +501,9 @@
       ],
       "meta": {
         "framework": "react",
-        "primitiveStatus": "tracer"
+        "primitiveStatus": "tracer",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       },
       "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
@@ -507,7 +511,7 @@
       "name": "solid/dialog",
       "type": "registry:ui",
       "title": "Dialog (Solid)",
-      "description": "Editable Solid Dialog Recipe built on the tuiparts.sh overlay Primitive tracer.",
+      "description": "Editable Solid Dialog recipe built on the tuiparts.sh foundation primitive.",
       "dependencies": [
         "@tuiparts/solid@>=0.0.1 <0.1.0",
         "@tuiparts/core@>=0.0.1 <0.1.0",
@@ -524,7 +528,9 @@
       ],
       "meta": {
         "framework": "solid",
-        "primitiveStatus": "tracer"
+        "primitiveStatus": "tracer",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
       },
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },

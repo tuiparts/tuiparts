@@ -56,6 +56,7 @@ Each foundation recipe is available as `core/<name>`, `react/<name>`, and
 | Button | Button activation primitive | `Button` |
 | RadioGroup/Radio | Radio collection and selectable parts | `RadioGroup`, `RadioGroupItem` |
 | Input | Native OpenTUI input behavior | `Input` |
+| Dialog | Overlay layers, focus containment, and dismissal | `Dialog`, `DialogTrigger`, `DialogContent`, `DialogTitle`, `DialogDescription`, `DialogClose` |
 | Badge | None; presentation-only recipe | `Badge` |
 | Toggle | Standalone pressed-state primitive | `Toggle` |
 | ToggleGroup/Toggle | Single or multiple selection and roving focus | `ToggleGroup`, `ToggleGroupItem` |
@@ -73,10 +74,6 @@ functions and install ordinary `.ts` source rather than framework JSX. Every
 recipe declares its runtime's `theme` item in `registryDependencies`, so
 installing any recipe also installs the consumer-owned
 `components/ui/theme.ts`.
-
-The registry also contains a validated preview Dialog recipe, but it is not
-part of this starter catalog. The already-adopted `@tuiparts/dialog` and
-`@tuiparts/toast` packages remain the production companion paths.
 
 ## Compatibility
 

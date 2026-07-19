@@ -76,6 +76,7 @@ const foundationCatalogRecipes = [
   "badge",
   "radio-group",
   "input",
+  "dialog",
   "toggle",
   "toggle-group",
   "theme",

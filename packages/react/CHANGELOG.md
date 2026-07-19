@@ -1,5 +1,30 @@
 # @tuiparts/react
 
+## 0.0.2
+
+### Patch Changes
+
+- [#41](https://github.com/tuiparts/tuiparts/pull/41) [`76c96b2`](https://github.com/tuiparts/tuiparts/commit/76c96b2ed275df772814e3de1061ebdcb6ecc092) Thanks [@msmps](https://github.com/msmps)! - Add Toggle and ToggleGroup foundation primitives, framework adapters, and
+  editable registry recipes with controlled and uncontrolled pressed state,
+  single or multiple group selection, orientation-aware roving focus, and
+  immutable terminal activation details.
+
+- [#47](https://github.com/tuiparts/tuiparts/pull/47) [`54514d2`](https://github.com/tuiparts/tuiparts/commit/54514d2e48647d174ddd553c9aa276488c10a1a1) Thanks [@msmps](https://github.com/msmps)! - De-slop pass across the foundation surface:
+
+  - Stores expose state through the `state` getter only; the duplicate
+    `getState()` methods on ButtonStore, ToggleStore, and the shared
+    checked-state implementation are removed (Renderables keep `getState()` —
+    that is the adapter seam).
+  - Dialog Title and Description no longer take or hold a `store`; the field
+    was write-only.
+  - The core root barrel now exports all seven primitive Stores and their
+    options types.
+  - Listener notification uses one re-entrancy posture everywhere: iterate a
+    copy, skip listeners that unsubscribed mid-notification.
+
+- Updated dependencies [[`76c96b2`](https://github.com/tuiparts/tuiparts/commit/76c96b2ed275df772814e3de1061ebdcb6ecc092), [`9a281e8`](https://github.com/tuiparts/tuiparts/commit/9a281e8f2b942cc5267578133f289a1d4801c626), [`54514d2`](https://github.com/tuiparts/tuiparts/commit/54514d2e48647d174ddd553c9aa276488c10a1a1), [`efc8768`](https://github.com/tuiparts/tuiparts/commit/efc8768104834a3171dbbc89707812d7ef405471), [`76c96b2`](https://github.com/tuiparts/tuiparts/commit/76c96b2ed275df772814e3de1061ebdcb6ecc092)]:
+  - @tuiparts/core@0.0.2
+
 ## 0.0.1
 
 ### Patch Changes

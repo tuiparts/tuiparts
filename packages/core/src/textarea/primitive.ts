@@ -161,11 +161,9 @@ export class TextareaRenderable extends OpenTuiTextareaRenderable {
 
   /** Clears the native tab glyph as well as the public option value. */
   override set tabIndicator(value: OpenTuiTextareaOptions["tabIndicator"]) {
-    if (value === undefined) {
+    if (value == null) {
       this._tabIndicator = undefined;
-      this._tabIndicatorColor = undefined;
       this.editorView.setTabIndicator(0);
-      this.editorView.setTabIndicatorColor(this._defaultOptions.cursorColor);
       this.requestRender();
       return;
     }
@@ -181,7 +179,7 @@ export class TextareaRenderable extends OpenTuiTextareaRenderable {
   }
 
   override set tabIndicatorColor(value: RGBA | string | undefined) {
-    if (value === undefined) {
+    if (value == null) {
       this._tabIndicatorColor = undefined;
       this.editorView.setTabIndicatorColor(this._defaultOptions.cursorColor);
       this.requestRender();

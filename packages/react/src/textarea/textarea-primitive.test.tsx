@@ -100,8 +100,6 @@ describe("React Textarea", () => {
         scrollSpeed: custom ? 4 : undefined,
         selectable: custom ? false : undefined,
         showCursor: custom ? false : undefined,
-        tabIndicator: custom ? ">" : undefined,
-        tabIndicatorColor: custom ? "#00FF00" : undefined,
         wrapMode: custom ? "none" : undefined,
         onSubmit: () => submissions.push("submit"),
       });
@@ -133,9 +131,78 @@ describe("React Textarea", () => {
     expect(ref.current?.scrollSpeed).toBe(16);
     expect(ref.current?.selectable).toBe(true);
     expect(ref.current?.showCursor).toBe(true);
-    expect(ref.current?.tabIndicator).toBeUndefined();
-    expect(ref.current?.tabIndicatorColor).toBeUndefined();
     expect(ref.current?.wrapMode).toBe("word");
+  });
+
+  it("restores the public and native tab indicator when its key is omitted", async () => {
+    const ref = createRef<TextareaRenderable>();
+    let omitTabIndicator: (() => void) | undefined;
+    function App() {
+      const [custom, setCustom] = useState(true);
+      omitTabIndicator = () => setCustom(false);
+      return createElement(Textarea, {
+        ref,
+        height: 1,
+        initialValue: "\t",
+        tabIndicatorColor: "#00FF00",
+        width: 8,
+        ...(custom ? { tabIndicator: ">" } : {}),
+      });
+    }
+    setup = await testRender(createElement(App), { width: 8, height: 1 });
+    const retained = ref.current;
+    const editBuffer = ref.current?.editBuffer;
+    await setup.renderOnce();
+    expect(setup.captureCharFrame().startsWith(">")).toBe(true);
+
+    await act(async () => omitTabIndicator?.());
+    await setup.waitFor(() => ref.current?.tabIndicator === undefined);
+    await setup.renderOnce();
+
+    expect(ref.current).toBe(retained);
+    expect(ref.current?.editBuffer).toBe(editBuffer);
+    expect(ref.current?.tabIndicator).toBeUndefined();
+    expect(ref.current?.tabIndicatorColor?.toInts()).toEqual([0, 255, 0, 255]);
+    expect(setup.captureCharFrame().startsWith(" ")).toBe(true);
+  });
+
+  it("restores the public and native tab indicator color when its key is omitted", async () => {
+    const ref = createRef<TextareaRenderable>();
+    let omitTabIndicatorColor: (() => void) | undefined;
+    function App() {
+      const [custom, setCustom] = useState(true);
+      omitTabIndicatorColor = () => setCustom(false);
+      return createElement(Textarea, {
+        ref,
+        height: 1,
+        initialValue: "\t",
+        tabIndicator: ">",
+        width: 8,
+        ...(custom ? { tabIndicatorColor: "#00FF00" } : {}),
+      });
+    }
+    setup = await testRender(createElement(App), { width: 8, height: 1 });
+    const retained = ref.current;
+    const editBuffer = ref.current?.editBuffer;
+    await setup.renderOnce();
+    const customIndicatorSpan = setup
+      .captureSpans()
+      .lines[0]?.spans.find(({ text }) => text.includes(">"));
+    expect(ref.current?.tabIndicatorColor?.toInts()).toEqual([0, 255, 0, 255]);
+    expect(customIndicatorSpan?.fg.toInts()).toEqual([0, 255, 0, 255]);
+
+    await act(async () => omitTabIndicatorColor?.());
+    await setup.waitFor(() => ref.current?.tabIndicatorColor === undefined);
+    await setup.renderOnce();
+    const indicatorSpan = setup
+      .captureSpans()
+      .lines[0]?.spans.find(({ text }) => text.includes(">"));
+
+    expect(ref.current).toBe(retained);
+    expect(ref.current?.editBuffer).toBe(editBuffer);
+    expect(ref.current?.tabIndicator).toBe(">");
+    expect(ref.current?.tabIndicatorColor).toBeUndefined();
+    expect(indicatorSpan?.fg.toInts()).toEqual([255, 255, 255, 255]);
   });
 
   it("restores boolean disabled when the prop is omitted", async () => {

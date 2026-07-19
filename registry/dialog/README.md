@@ -2,7 +2,7 @@
 
 The root registry exposes `core/dialog`, `react/dialog`, and `solid/dialog`.
 Each item copies an editable composition into `components/ui/dialog.*`; it does
-not replace the foundation Dialog primitive exported by `@tuiparts/core`,
+not replace the packaged Dialog primitive exported by `@tuiparts/core`,
 `@tuiparts/react`, and `@tuiparts/solid`.
 
 The recipe owns the terminal-wide black backdrop, responsive centered popup,

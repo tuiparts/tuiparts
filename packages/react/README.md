@@ -1,9 +1,9 @@
 # @tuiparts/react
 
-The React Adapter for the tuiparts.sh Foundation.
+The React Adapter for tuiparts.sh Primitives.
 
 New to package primitives and editable recipes? Start with the
-[foundation guide](https://github.com/tuiparts/tuiparts/blob/main/docs/foundation.md).
+[primitive and recipe guide](https://github.com/tuiparts/tuiparts/blob/main/docs/primitives-and-recipes.md).
 
 ## Installation
 
@@ -15,7 +15,7 @@ pnpm add @tuiparts/react @tuiparts/core \
 Peer requirements are `@opentui/core` and `@opentui/react` `^0.4.3`, React
 `>=19.2.0 <20`.
 
-## Foundation Example
+## Primitive example
 
 ```tsx
 import { Button, Checkbox, Input, Radio, RadioGroup, Switch, Toggle, ToggleGroup } from "@tuiparts/react";
@@ -74,7 +74,7 @@ import { ToggleGroup } from "@tuiparts/react/toggle-group";
 
 ## Dialog
 
-`Dialog` is the React compound adapter for the foundation Dialog
+`Dialog` is the React compound adapter for the packaged Dialog
 behavior in `@tuiparts/core/dialog`. Compose its Root, Trigger, Portal,
 Backdrop, Popup, Title, Description, and Close parts, or install the editable
 `react/dialog` registry recipe for an opinionated visual assembly. The adapter
@@ -82,7 +82,7 @@ preserves coordinator-owned visibility and z-index plus portal, focus, and
 controlled-state lifecycle behavior.
 
 The existing `@tuiparts/dialog/react` provider, hooks, and async APIs remain
-the companion convenience surface; they are not re-exported by the foundation
+the companion convenience surface; they are not re-exported by the React
 adapter.
 
 ## Input
@@ -104,7 +104,7 @@ import { Input } from "@tuiparts/react/input";
 
 `onInput` reports mutations, `onChange` reports commits on blur or submit, and
 `onSubmit` reports Enter after any changed-value `onChange`. Visual defaults
-belong in editable recipes. This is the canonical foundation contract.
+belong in editable recipes. This is the canonical primitive contract.
 
 ## Recipes
 

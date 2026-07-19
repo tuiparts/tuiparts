@@ -14,7 +14,7 @@ respect the terminal user's palette or light/dark preference even though
 OpenTUI reports both (`renderer.themeMode`, the `theme_mode` event, indexed
 colors via `RGBA.fromIndex`).
 
-The Foundation Primitive Contract already assigns presentation to recipes:
+The Primitive Contract already assigns presentation to recipes:
 primitives must not choose colors, glyphs, or themes. Any theming design
 therefore had to live on the recipe side of that boundary.
 
@@ -72,7 +72,7 @@ that never answer the theme-mode query.
 
 ## Consequences
 
-- The Foundation Primitive Contract is untouched; that the design required
+- The Primitive Contract is untouched; that the design required
   zero contract changes is evidence it sits at the right layer.
 - Customization is editing an owned file, not configuring a hidden runtime;
   adding a ThemeProvider, subtree scoping, persistence, or theme-file

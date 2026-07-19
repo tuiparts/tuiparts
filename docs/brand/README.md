@@ -29,8 +29,10 @@ STYLE:    yours.
 Rules:
 
 - Vocabulary is canonical: Primitive, Part, Recipe, Adapter, Catalog,
-  Registry, Foundation, Companion package, Renderer, Figure, Kit. Never call
+  Registry, Foundation release, Companion package, Renderer, Figure, Kit. Never call
   a packaged Primitive a "component" in brand copy.
+- Foundation names the linked Core, React, and Solid release line. Never use
+  it as a modifier for a Primitive, Recipe, module, export, or behavior.
 - Catalog is the user-facing word; Registry is the serving layer and URL
   vocabulary. Do not mix the two registers in one sentence.
 - No emojis in any brand asset.

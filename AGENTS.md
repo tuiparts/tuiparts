@@ -31,10 +31,10 @@ tuiparts/
 
 | Task | Location | Notes |
 |------|----------|-------|
-| Add/change primitive | `FOUNDATION_PRIMITIVE_CONTRACT.md` | Start with the public contract and applicable conformance rows |
+| Add/change primitive | `PRIMITIVE_CONTRACT.md` | Start with the public contract and applicable conformance rows |
 | Primitive architecture | `PRIMITIVES_AND_RECIPES.md` | Package behavior; copy opinionated recipes |
 | Architecture decisions | `docs/adr/` | Read accepted ADRs before changing public APIs, ownership, package boundaries, or adapter state flow |
-| Foundation usage | `docs/foundation.md` | Package versus registry choice and public component matrix |
+| Primitive and recipe usage | `docs/primitives-and-recipes.md` | Package versus registry choice and public component matrix |
 | Brand rules & tokens | `docs/brand/` | Figure style guide, logomark, Kit sheet, design tokens (web + terminal) |
 | Editable recipes | `registry/` | Framework-specific source built on packaged primitives |
 | React binding | `packages/react/src/` | Mirrors core structure |
@@ -49,7 +49,7 @@ tuiparts/
 | `CheckedStore` | Class | `packages/core/src/internal/checked-store.ts` | Shared checked-state behavior for Checkbox and Switch |
 | `toast` | Object | `packages/toast/src/state.ts` | Global toast API (toast.success, toast.error, etc.) |
 | `ToasterRenderable` | Class | `packages/toast/src/renderables/toaster.ts` | Container that manages toast notifications |
-| `DialogStore` | Class | `packages/core/src/dialog/primitive.ts` | Foundation Dialog state and layer coordination |
+| `DialogStore` | Class | `packages/core/src/dialog/primitive.ts` | Dialog state and layer coordination |
 | `DialogManager` | Class | `packages/dialog/src/manager.ts` | Production convenience state with prompt/confirm/alert/choice |
 | `DialogContainerRenderable` | Class | `packages/dialog/src/renderables/dialog-container.ts` | Container that renders dialogs with backdrop |
 
@@ -79,7 +79,7 @@ tuiparts/
 - **Passive part ownership** - State-reflecting parts consume their Core Store directly; do not fake a Root or subclass a part just to adapt Store ownership
 - **Framework adapters** - Put same-instance Store setters on Core Renderables; do not subclass solely to make reconciler prop assignment legal
 - **Recipe styling** - Consumer-owned recipes use ordinary TypeScript and native OpenTUI properties
-- **Primitive implementation** - New behavior follows the foundation contract; recipes do not create behaviorless package components
+- **Primitive implementation** - New behavior follows the primitive contract; recipes do not create behaviorless package components
 
 ## COMMANDS
 

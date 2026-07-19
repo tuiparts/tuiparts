@@ -55,7 +55,7 @@ source teardown. Subclasses supply:
 
 The base consumes a `PressableStore` — `state.disabled`, `subscribe()`,
 optional `setFocused()` — attached by the subclass constructor through
-`attachPressable(store)` after its Store exists. Every foundation Store
+`attachPressable(store)` after its Store exists. Every pressable Store
 satisfies the interface structurally, so Roots attach their Store directly
 with no adapter object. Radio keeps its custom collection subscription and
 only overrides the hooks; Dialog Trigger/Close attach nothing and stay
@@ -84,7 +84,7 @@ genuinely unique behavior, and does not re-prove the matrix.
 - Guard and pointer fixes land once and apply to every press-activated Root.
 - New press-activated primitives implement `handlePress` and adapt a source;
   they do not copy plumbing.
-- The interaction rules in `FOUNDATION_PRIMITIVE_CONTRACT.md` now state the
+- The interaction rules in `PRIMITIVE_CONTRACT.md` now state the
   shared guard and pointer model; per-primitive drift from them is a
   conformance failure, not a documented idiosyncrasy.
 - Behavior changes shipped with this decision: modifier chords and cancelled

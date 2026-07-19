@@ -69,7 +69,7 @@ const recipes = [
   "toggle-group",
   "theme",
 ];
-const foundationCatalogRecipes = [
+const catalogRecipes = [
   "checkbox",
   "switch",
   "button",
@@ -408,7 +408,7 @@ try {
       );
     }
   }
-  for (const recipe of foundationCatalogRecipes) {
+  for (const recipe of catalogRecipes) {
     const reactSource = readFileSync(
       join(root, `registry/${recipe}/react.tsx`),
       "utf8",
@@ -426,7 +426,7 @@ try {
     for (const framework of Object.keys(frameworks)) {
       const itemName = `${framework}/${recipe}`;
       const item = registry.items.find((candidate) => candidate.name === itemName);
-      assert(item, `Missing foundation catalog item ${itemName}`);
+      assert(item, `Missing catalog item ${itemName}`);
       assert(
         item.meta?.sourceOwnership === "consumer",
         `${itemName} must declare consumer-owned recipe source`,
@@ -536,7 +536,7 @@ try {
       (item) => item.name === itemName,
     );
     assert(registryItem, `Missing ${itemName} registry item`);
-    if (foundationCatalogRecipes.includes(consumer.recipe)) {
+    if (catalogRecipes.includes(consumer.recipe)) {
       assert(
         registryItem.meta?.sourceOwnership === "consumer",
         `${itemName} must declare consumer-owned recipe source`,

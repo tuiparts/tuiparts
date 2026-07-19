@@ -1,4 +1,4 @@
-# Foundation Recipe Catalog
+# Recipe catalog
 
 The tuiparts.sh registry distributes editable recipe source through the shadcn
 CLI. Installed files belong to the consuming project. The registry does not
@@ -9,7 +9,7 @@ example `r/react/checkbox.json`), which lets consumers register the
 
 ## Catalog
 
-Each foundation recipe is available as `core/<name>`, `react/<name>`, and
+Each catalog recipe is available as `core/<name>`, `react/<name>`, and
 `solid/<name>`:
 
 | Recipe | Packaged behavior | Installed vocabulary |
@@ -46,8 +46,8 @@ the supported update workflow.
 Package ranges are the compatibility contract. Registry metadata describes the
 source lifecycle; it does not replace package dependency resolution.
 
-Foundation primitive items target `>=0.0.1 <0.1.0`, beginning with the first
-stable release in the `@tuiparts` scope and accepting compatible foundation
+Primitive-backed items target `>=0.0.1 <0.1.0`, beginning with the first
+stable release in the `@tuiparts` scope and accepting compatible package
 patches. Validation preserves those declared ranges while temporary workspace
 overrides resolve them to the local packed tarballs under test.
 

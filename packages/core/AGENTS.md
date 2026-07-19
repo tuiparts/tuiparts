@@ -7,11 +7,11 @@ wrap. This package owns interaction and lifecycle, not recipe presentation.
 
 | Task | File(s) | Notes |
 |------|---------|-------|
-| Add/change primitive | `../../FOUNDATION_PRIMITIVE_CONTRACT.md` | Apply the public contract and conformance matrix |
+| Add/change primitive | `../../PRIMITIVE_CONTRACT.md` | Apply the public contract and conformance matrix |
 | Primitive architecture | `../../PRIMITIVES_AND_RECIPES.md` | Store, public parts, state, events, refs, actions |
 | Compound primitive pattern | `src/checkbox/primitive.ts` | Store + public Root/Indicator behavior pattern |
 | Barrel export | `src/<name>/index.ts` | Re-exports the component's public API |
-| Root exports | `src/index.ts` | Re-exports foundation components |
+| Root exports | `src/index.ts` | Re-exports packaged primitives |
 
 ## ANTI-PATTERNS
 

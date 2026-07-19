@@ -7,7 +7,7 @@
       "name": "core/checkbox",
       "type": "registry:ui",
       "title": "Checkbox (Core)",
-      "description": "Editable imperative Checkbox Recipe built on the tuiparts.sh Foundation Primitive.",
+      "description": "Editable imperative Checkbox recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0", "@opentui/core@^0.4.3"],
       "files": [
         {
@@ -18,7 +18,7 @@
       ],
       "meta": {
         "framework": "core",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -28,7 +28,7 @@
       "name": "react/checkbox",
       "type": "registry:ui",
       "title": "Checkbox (React)",
-      "description": "Editable React Checkbox Recipe built on the tuiparts.sh Foundation Primitive.",
+      "description": "Editable React Checkbox recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": [
         "@tuiparts/react@>=0.0.1 <0.1.0",
         "@tuiparts/core@>=0.0.1 <0.1.0",
@@ -46,7 +46,7 @@
       ],
       "meta": {
         "framework": "react",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -56,7 +56,7 @@
       "name": "solid/checkbox",
       "type": "registry:ui",
       "title": "Checkbox (Solid)",
-      "description": "Editable Solid Checkbox Recipe built on the tuiparts.sh Foundation Primitive.",
+      "description": "Editable Solid Checkbox recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": [
         "@tuiparts/solid@>=0.0.1 <0.1.0",
         "@tuiparts/core@>=0.0.1 <0.1.0",
@@ -73,7 +73,7 @@
       ],
       "meta": {
         "framework": "solid",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -83,7 +83,7 @@
       "name": "core/switch",
       "type": "registry:ui",
       "title": "Switch (Core)",
-      "description": "Editable imperative Switch Recipe built on the tuiparts.sh Foundation Primitive.",
+      "description": "Editable imperative Switch recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0", "@opentui/core@^0.4.3"],
       "files": [
         {
@@ -94,7 +94,7 @@
       ],
       "meta": {
         "framework": "core",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -104,7 +104,7 @@
       "name": "react/switch",
       "type": "registry:ui",
       "title": "Switch (React)",
-      "description": "Editable React Switch Recipe built on the tuiparts.sh Foundation Primitive.",
+      "description": "Editable React Switch recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": [
         "@tuiparts/react@>=0.0.1 <0.1.0",
         "@tuiparts/core@>=0.0.1 <0.1.0",
@@ -122,7 +122,7 @@
       ],
       "meta": {
         "framework": "react",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -132,7 +132,7 @@
       "name": "solid/switch",
       "type": "registry:ui",
       "title": "Switch (Solid)",
-      "description": "Editable Solid Switch Recipe built on the tuiparts.sh Foundation Primitive.",
+      "description": "Editable Solid Switch recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": [
         "@tuiparts/solid@>=0.0.1 <0.1.0",
         "@tuiparts/core@>=0.0.1 <0.1.0",
@@ -149,7 +149,7 @@
       ],
       "meta": {
         "framework": "solid",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -159,7 +159,7 @@
       "name": "core/button",
       "type": "registry:ui",
       "title": "Button (Core)",
-      "description": "Editable imperative Button Recipe built on the tuiparts.sh Foundation Primitive.",
+      "description": "Editable imperative Button recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0", "@opentui/core@^0.4.3"],
       "files": [
         {
@@ -170,7 +170,7 @@
       ],
       "meta": {
         "framework": "core",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -180,7 +180,7 @@
       "name": "react/button",
       "type": "registry:ui",
       "title": "Button (React)",
-      "description": "Editable React Button Recipe built on the tuiparts.sh Foundation Primitive.",
+      "description": "Editable React Button recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": [
         "@tuiparts/react@>=0.0.1 <0.1.0",
         "@tuiparts/core@>=0.0.1 <0.1.0",
@@ -198,7 +198,7 @@
       ],
       "meta": {
         "framework": "react",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -208,7 +208,7 @@
       "name": "solid/button",
       "type": "registry:ui",
       "title": "Button (Solid)",
-      "description": "Editable Solid Button Recipe built on the tuiparts.sh Foundation Primitive.",
+      "description": "Editable Solid Button recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": [
         "@tuiparts/solid@>=0.0.1 <0.1.0",
         "@tuiparts/core@>=0.0.1 <0.1.0",
@@ -225,7 +225,7 @@
       ],
       "meta": {
         "framework": "solid",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -307,7 +307,7 @@
       "name": "core/radio-group",
       "type": "registry:ui",
       "title": "Radio Group (Core)",
-      "description": "Editable imperative Radio and Radio Group Recipe built on the tuiparts.sh collection Primitive.",
+      "description": "Editable imperative Radio and Radio Group recipe built on the tuiparts.sh collection Primitive.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0", "@opentui/core@^0.4.3"],
       "files": [
         {
@@ -318,7 +318,7 @@
       ],
       "meta": {
         "framework": "core",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -328,7 +328,7 @@
       "name": "react/radio-group",
       "type": "registry:ui",
       "title": "Radio Group (React)",
-      "description": "Editable React Radio and Radio Group Recipe built on the tuiparts.sh collection Primitive.",
+      "description": "Editable React Radio and Radio Group recipe built on the tuiparts.sh collection Primitive.",
       "dependencies": [
         "@tuiparts/react@>=0.0.1 <0.1.0",
         "@tuiparts/core@>=0.0.1 <0.1.0",
@@ -346,7 +346,7 @@
       ],
       "meta": {
         "framework": "react",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -356,7 +356,7 @@
       "name": "solid/radio-group",
       "type": "registry:ui",
       "title": "Radio Group (Solid)",
-      "description": "Editable Solid Radio and Radio Group Recipe built on the tuiparts.sh collection Primitive.",
+      "description": "Editable Solid Radio and Radio Group recipe built on the tuiparts.sh collection Primitive.",
       "dependencies": [
         "@tuiparts/solid@>=0.0.1 <0.1.0",
         "@tuiparts/core@>=0.0.1 <0.1.0",
@@ -373,7 +373,7 @@
       ],
       "meta": {
         "framework": "solid",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -462,7 +462,7 @@
       "name": "core/dialog",
       "type": "registry:ui",
       "title": "Dialog (Core)",
-      "description": "Editable imperative Dialog recipe built on the tuiparts.sh foundation primitive.",
+      "description": "Editable imperative Dialog recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0", "@opentui/core@^0.4.3"],
       "files": [
         {
@@ -483,7 +483,7 @@
       "name": "react/dialog",
       "type": "registry:ui",
       "title": "Dialog (React)",
-      "description": "Editable React Dialog recipe built on the tuiparts.sh foundation primitive.",
+      "description": "Editable React Dialog recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": [
         "@tuiparts/react@>=0.0.1 <0.1.0",
         "@tuiparts/core@>=0.0.1 <0.1.0",
@@ -511,7 +511,7 @@
       "name": "solid/dialog",
       "type": "registry:ui",
       "title": "Dialog (Solid)",
-      "description": "Editable Solid Dialog recipe built on the tuiparts.sh foundation primitive.",
+      "description": "Editable Solid Dialog recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": [
         "@tuiparts/solid@>=0.0.1 <0.1.0",
         "@tuiparts/core@>=0.0.1 <0.1.0",
@@ -538,7 +538,7 @@
       "name": "core/toggle",
       "type": "registry:ui",
       "title": "Toggle (Core)",
-      "description": "Editable imperative Toggle recipe built on the tuiparts.sh Foundation Primitive.",
+      "description": "Editable imperative Toggle recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0", "@opentui/core@^0.4.3"],
       "files": [
         {
@@ -549,7 +549,7 @@
       ],
       "meta": {
         "framework": "core",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -559,7 +559,7 @@
       "name": "react/toggle",
       "type": "registry:ui",
       "title": "Toggle (React)",
-      "description": "Editable React Toggle recipe built on the tuiparts.sh Foundation Primitive.",
+      "description": "Editable React Toggle recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": [
         "@tuiparts/react@>=0.0.1 <0.1.0",
         "@tuiparts/core@>=0.0.1 <0.1.0",
@@ -577,7 +577,7 @@
       ],
       "meta": {
         "framework": "react",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -587,7 +587,7 @@
       "name": "solid/toggle",
       "type": "registry:ui",
       "title": "Toggle (Solid)",
-      "description": "Editable Solid Toggle recipe built on the tuiparts.sh Foundation Primitive.",
+      "description": "Editable Solid Toggle recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": [
         "@tuiparts/solid@>=0.0.1 <0.1.0",
         "@tuiparts/core@>=0.0.1 <0.1.0",
@@ -604,7 +604,7 @@
       ],
       "meta": {
         "framework": "solid",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -614,7 +614,7 @@
       "name": "core/toggle-group",
       "type": "registry:ui",
       "title": "Toggle Group (Core)",
-      "description": "Editable imperative ToggleGroup recipe built on the tuiparts.sh Foundation Primitives.",
+      "description": "Editable imperative ToggleGroup recipe built on the tuiparts.sh packaged primitives.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0", "@opentui/core@^0.4.3"],
       "files": [
         {
@@ -625,7 +625,7 @@
       ],
       "meta": {
         "framework": "core",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -635,7 +635,7 @@
       "name": "react/toggle-group",
       "type": "registry:ui",
       "title": "Toggle Group (React)",
-      "description": "Editable React ToggleGroup recipe built on the tuiparts.sh Foundation Primitives.",
+      "description": "Editable React ToggleGroup recipe built on the tuiparts.sh packaged primitives.",
       "dependencies": [
         "@tuiparts/react@>=0.0.1 <0.1.0",
         "@tuiparts/core@>=0.0.1 <0.1.0",
@@ -653,7 +653,7 @@
       ],
       "meta": {
         "framework": "react",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },
@@ -663,7 +663,7 @@
       "name": "solid/toggle-group",
       "type": "registry:ui",
       "title": "Toggle Group (Solid)",
-      "description": "Editable Solid ToggleGroup recipe built on the tuiparts.sh Foundation Primitives.",
+      "description": "Editable Solid ToggleGroup recipe built on the tuiparts.sh packaged primitives.",
       "dependencies": [
         "@tuiparts/solid@>=0.0.1 <0.1.0",
         "@tuiparts/core@>=0.0.1 <0.1.0",
@@ -680,7 +680,7 @@
       ],
       "meta": {
         "framework": "solid",
-        "primitiveStatus": "foundation",
+        "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
         "updateStrategy": "shadcn-diff"
       },

@@ -1,10 +1,10 @@
-# Foundation Primitive Contract
+# Primitive Contract
 
 ## Status
 
-This document defines the shared contract for foundation v1 primitives. It is
-grounded in the shipped Checkbox, RadioGroup, Input, and Dialog behavior. New
-primitives and changes to existing primitives must conform to it.
+This document defines the shared contract for v1 primitives. It is grounded in
+the shipped Checkbox, RadioGroup, Input, and Dialog behavior. New primitives
+and changes to existing primitives must conform to it.
 
 The contract describes public behavior, not a required internal class layout.
 Primitive-specific behavior still belongs in that primitive's public API and
@@ -12,9 +12,9 @@ tests.
 
 ## Boundary
 
-A foundation primitive packages reusable terminal interaction behavior. It may
-own state, keyboard and pointer handling, focus, collection coordination,
-overlay coordination, disabled behavior, lifecycle, and semantic actions.
+A primitive packages reusable terminal interaction behavior. It may own state,
+keyboard and pointer handling, focus, collection coordination, overlay
+coordination, disabled behavior, lifecycle, and semantic actions.
 
 A primitive must not choose:
 
@@ -180,7 +180,8 @@ For Input this means:
 
 ## Composition And Replacement
 
-Foundation v1 supports explicit composition, not arbitrary part replacement.
+The v1 primitive contract supports explicit composition, not arbitrary part
+replacement.
 
 The supported seam is:
 
@@ -199,8 +200,9 @@ RadioGroup, Radio.Indicator belongs to Radio.Root, and Dialog Popup and
 Backdrop belong to the same Dialog Store and Portal layer. Portal is a real
 renderer-root ownership host, not an ordinary in-tree visual wrapper.
 
-Foundation v1 does not support a Base UI-style `render`, `asChild`, or
-polymorphic `as` prop for replacing the underlying behavior-bearing Renderable.
+The v1 primitive contract does not support a Base UI-style `render`, `asChild`,
+or polymorphic `as` prop for replacing the underlying behavior-bearing
+Renderable.
 It also does not infer behavior by cloning arbitrary children. A recipe that
 needs different presentation composes content inside public parts. A genuinely
 different behavior-bearing Renderable requires a new evidenced primitive seam,
@@ -233,7 +235,7 @@ Store interfaces remain component-specific. Public Stores must support a
 coherent Core composition workflow rather than exist only for framework
 adapter plumbing. Shared machinery should be extracted through private
 composition only when multiple Stores demonstrate the same lifecycle and
-notification semantics; foundation Stores do not inherit from a generic
+notification semantics; primitive Stores do not inherit from a generic
 public base class.
 
 ### Public Store Audit
@@ -320,14 +322,14 @@ not reach into private Store fields, coordinator maps, reconciler internals, or
 private Renderable fields. A style slot is recipe convenience and is never a
 substitute for a required public primitive part.
 
-Recipes depend on foundation package subpaths, not compatibility packages that
+Recipes depend on primitive package subpaths, not compatibility packages that
 duplicate primitive behavior. They express presentation with ordinary
 TypeScript and native OpenTUI properties.
 
 ## Unsupported Base UI Capabilities
 
-Foundation v1 does not claim browser or Base UI parity. In particular, it does
-not provide:
+The v1 primitive contract does not claim browser or Base UI parity. In
+particular, it does not provide:
 
 - DOM elements, ARIA attributes, HTML form participation, or browser label
   association.
@@ -379,9 +381,9 @@ A primitive change is not complete until it passes every applicable surface,
 packed exports are proven, registry consumers are green, and any changed
 architectural decision is recorded.
 
-## Foundation Evidence
+## Contract evidence
 
-The foundation primitives establish these precedents:
+The shipped primitives establish these precedents:
 
 - Checkbox proves primitive-owned toggle state, Root activation, a
   retained state-reflecting Indicator, equivalent activation paths, and

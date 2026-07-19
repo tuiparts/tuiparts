@@ -1,9 +1,9 @@
 # @tuiparts/core
 
-Framework-neutral OpenTUI behavior for the tuiparts.sh Foundation.
+Framework-neutral OpenTUI Primitives for tuiparts.sh.
 
 New to the package/recipe split? Start with the
-[foundation guide](https://github.com/tuiparts/tuiparts/blob/main/docs/foundation.md).
+[primitive and recipe guide](https://github.com/tuiparts/tuiparts/blob/main/docs/primitives-and-recipes.md).
 
 ## Installation
 
@@ -13,9 +13,9 @@ pnpm add @tuiparts/core @opentui/core
 
 The package supports `@opentui/core` `^0.4.3`.
 
-## Foundation Modules
+## Primitive modules
 
-Foundation modules own terminal interaction and coordination without choosing
+Primitive modules own terminal interaction and coordination without choosing
 colors, spacing, glyphs, labels, or fixed visual trees.
 
 | Module | Core interface | Public parts |
@@ -70,13 +70,13 @@ const input = new InputRenderable(ctx, {
 `onInput` reports buffer mutations, `onChange` reports a changed blur or submit
 commit, and `onSubmit` reports successful Enter submission.
 
-## Recipe Boundary
+## Recipe boundary
 
 Behaviorless presentation such as Badge is distributed as editable registry
 source rather than a Core package module. Recipes use ordinary TypeScript and
-native OpenTUI properties; foundation behavior owns no styling infrastructure.
+native OpenTUI properties; primitive behavior owns no styling infrastructure.
 
-See [`FOUNDATION_PRIMITIVE_CONTRACT.md`](../../FOUNDATION_PRIMITIVE_CONTRACT.md)
+See [`PRIMITIVE_CONTRACT.md`](../../PRIMITIVE_CONTRACT.md)
 and [`PRIMITIVES_AND_RECIPES.md`](../../PRIMITIVES_AND_RECIPES.md) for the
 ownership and composition contract.
 

@@ -33,8 +33,8 @@ tuiparts.sh ships in two halves:
 > Package the difficult behavior. Copy the opinionated layer.
 
 Architecture references: [`PRIMITIVES_AND_RECIPES.md`](./PRIMITIVES_AND_RECIPES.md)
-for the product architecture, [`FOUNDATION_PRIMITIVE_CONTRACT.md`](./FOUNDATION_PRIMITIVE_CONTRACT.md)
-for the primitive contract, and the [foundation guide](./docs/foundation.md)
+for the product architecture, [`PRIMITIVE_CONTRACT.md`](./PRIMITIVE_CONTRACT.md)
+for the primitive contract, and the [primitive and recipe guide](./docs/primitives-and-recipes.md)
 to choose packaged Primitives or editable Recipes.
 
 (Pronounced "too-ee parts." That is the only time we will bring it up.)
@@ -49,11 +49,13 @@ version together.
 | [`@tuiparts/core`](./packages/core) | Framework-neutral Primitive state and Renderables |
 | [`@tuiparts/react`](./packages/react) | React compound-part Adapter |
 | [`@tuiparts/solid`](./packages/solid) | Solid compound-part Adapter |
-| [`registry`](./registry) | Consumer-owned Core, React, and Solid Recipes plus their install/update lifecycle |
 
-Button, Checkbox, Dialog, Input, RadioGroup, Switch, Toggle, and ToggleGroup expose Foundation
+Button, Checkbox, Dialog, Input, RadioGroup, Switch, Toggle, and ToggleGroup expose Primitive
 behavior. Badge is distributed only as editable Recipe source because it has
 no reusable interaction behavior.
+
+The [Catalog](./registry) distributes consumer-owned Core, React, and Solid
+Recipes with their install and update lifecycle.
 
 [`@tuiparts/dialog`](./packages/dialog) and
 [`@tuiparts/toast`](./packages/toast) are Companion packages: independently
@@ -80,7 +82,7 @@ See the package READMEs for exact peer ranges and usage.
 
 Recipes are installed with the official shadcn CLI and become
 application-owned source. The Catalog contains Checkbox, Switch, Button,
-RadioGroup/Radio, Toggle, ToggleGroup, Input, and Badge Recipes; every Recipe targets exactly one
+RadioGroup/Radio, Toggle, ToggleGroup, Input, Dialog, and Badge Recipes; every Recipe targets exactly one
 Adapter, so choose the `core/*`, `react/*`, or `solid/*` item for your
 runtime:
 
@@ -89,7 +91,7 @@ pnpm dlx shadcn@4.13.0 add <item-address>
 ```
 
 Editing the copied source is not a workaround — it is the intended
-maintenance model. See the [foundation guide](./docs/foundation.md) for the
+maintenance model. See the [primitive and recipe guide](./docs/primitives-and-recipes.md) for the
 starter Catalog and the [Catalog lifecycle](./registry/README.md) for safe
 update commands.
 

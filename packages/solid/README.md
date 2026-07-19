@@ -1,9 +1,9 @@
 # @tuiparts/solid
 
-The Solid Adapter for the tuiparts.sh Foundation.
+The Solid Adapter for tuiparts.sh Primitives.
 
 New to package primitives and editable recipes? Start with the
-[foundation guide](https://github.com/tuiparts/tuiparts/blob/main/docs/foundation.md).
+[primitive and recipe guide](https://github.com/tuiparts/tuiparts/blob/main/docs/primitives-and-recipes.md).
 
 ## Installation
 
@@ -15,7 +15,7 @@ pnpm add @tuiparts/solid @tuiparts/core \
 Peer requirements are `@opentui/core` and `@opentui/solid` `^0.4.3`, with
 `solid-js` pinned to `1.9.12` for OpenTUI compatibility.
 
-## Foundation Example
+## Primitive example
 
 ```tsx
 import { Button, Checkbox, Input, Radio, RadioGroup, Switch, Toggle, ToggleGroup } from "@tuiparts/solid";
@@ -76,7 +76,7 @@ All Primitives are also exported from `@tuiparts/solid`.
 
 ## Dialog
 
-`Dialog` is the Solid compound adapter for the foundation Dialog
+`Dialog` is the Solid compound adapter for the packaged Dialog
 behavior in `@tuiparts/core/dialog`. Compose its Root, Trigger, Portal,
 Backdrop, Popup, Title, Description, and Close parts, or install the editable
 `solid/dialog` registry recipe for visual assembly. Its reactive props and
@@ -84,7 +84,7 @@ portal lifecycle preserve coordinator-owned visibility/z-index, focus
 containment, detached restoration, and reverse Tab behavior.
 
 The existing `@tuiparts/dialog/solid` provider, hooks, and async APIs remain
-the companion convenience surface; they are not re-exported by the foundation
+the companion convenience surface; they are not re-exported by the Solid
 adapter.
 
 ## Input
@@ -106,7 +106,7 @@ import { Input } from "@tuiparts/solid/input";
 
 `onInput` reports mutations, `onChange` reports commits on blur or submit, and
 `onSubmit` reports Enter after any changed-value `onChange`. Visual defaults
-belong in editable recipes. This is the canonical foundation contract.
+belong in editable recipes. This is the canonical primitive contract.
 
 ## Recipes
 

@@ -1,6 +1,6 @@
-# tuiparts.sh Foundation
+# Primitives and recipes
 
-tuiparts.sh has two Foundation layers:
+tuiparts.sh has two architecture layers:
 
 1. Versioned packages provide reusable terminal behavior.
 2. Registry recipes copy editable presentation into your application.
@@ -9,7 +9,7 @@ Use a package primitive when you are building a component or design system.
 Install a registry recipe when you want a useful starting component whose
 layout, glyphs, colors, and convenience props you can edit.
 
-## Choose A Runtime
+## Choose a runtime
 
 Install one framework adapter and its peers:
 
@@ -29,7 +29,7 @@ pnpm add @tuiparts/core @opentui/core
 The React and Solid packages expose the same primitive vocabulary where their
 runtimes permit it. Core exposes the same behavior as Stores and Renderables.
 
-## Compose A Primitive
+## Compose a primitive
 
 Compound framework primitives use Base UI-style module namespaces. Package
 exports stay clean; recipes conventionally alias them locally with a
@@ -72,7 +72,7 @@ const indicator = new CheckboxIndicatorRenderable(ctx, { store: root.store });
 root.add(indicator);
 ```
 
-## Primitive Reference
+## Primitive reference
 
 | Primitive | Framework shape | Readonly state | Actions and keys | Ref target |
 | --- | --- | --- | --- | --- |
@@ -96,9 +96,9 @@ unavailable items. Dialog coordinates renderer-scoped layers, topmost
 dismissal, focus containment, and restoration.
 
 The complete ownership, event, part, lifecycle, and conformance rules are in
-[`FOUNDATION_PRIMITIVE_CONTRACT.md`](../FOUNDATION_PRIMITIVE_CONTRACT.md).
+[`PRIMITIVE_CONTRACT.md`](../PRIMITIVE_CONTRACT.md).
 
-## Install A Recipe
+## Install a recipe
 
 Install the item for your runtime by its `@tuiparts` address. If the shadcn
 Registry Directory does not resolve the namespace, configure its URL in
@@ -148,7 +148,7 @@ Ordinary `add` asks before replacing an existing file. Use `--overwrite` only
 when you deliberately want to discard local changes. See the
 [`registry` catalog](../registry/README.md) for the complete lifecycle.
 
-## Release Gates
+## Release gates
 
 `pnpm validate:foundation` runs the local release-readiness sequence: lint,
 typecheck, tests, build, packed-package validation, registry validation, and

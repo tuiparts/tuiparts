@@ -82,7 +82,7 @@ deprecated aliases because the project is pre-release.
 | `Radio.symbols` | Consumer `Radio.Indicator` and unselected content |
 | `Radio.styles`, `styleResolver` | Edit/style the registry recipe |
 | Radio native Box props and ref | `Radio.Root` props and `RadioRootRenderable` ref |
-| layout-only legacy `RadioGroup` | Direct foundation `RadioGroup` |
+| layout-only legacy `RadioGroup` | Direct primitive `RadioGroup` |
 
 ## Rejected alternatives
 

@@ -5,8 +5,8 @@
 tuiparts.sh separates difficult packaged behavior from opinionated,
 consumer-owned presentation.
 
-This is the formal product architecture for foundation v1.
-`FOUNDATION_PRIMITIVE_CONTRACT.md` defines the public vocabulary, ownership,
+This is the formal product architecture for the v1 primitive contract.
+`PRIMITIVE_CONTRACT.md` defines the public vocabulary, ownership,
 composition, adapter, lifecycle, and conformance rules that primitive
 implementations must follow.
 
@@ -57,9 +57,9 @@ A part is a public node that consumers can render, omit when optional, reorder
 within its structural constraints, wrap, reference, and compose. A style slot
 only changes a private node's properties. Primitives require parts; recipes may
 additionally expose style slots for convenient whole-component customization.
-Foundation v1 deliberately supports explicit parts, children, state callbacks,
-native OpenTUI properties, and Renderable refs rather than a Base UI-style
-`render`, `asChild`, or polymorphic replacement seam.
+The v1 primitive contract deliberately supports explicit parts, children,
+state callbacks, native OpenTUI properties, and Renderable refs rather than a
+Base UI-style `render`, `asChild`, or polymorphic replacement seam.
 
 For example, the Checkbox primitive is assembled explicitly:
 
@@ -77,9 +77,9 @@ For example, the Checkbox primitive is assembled explicitly:
 The primitive owns checked state and activation. The caller owns the check
 glyph, label, layout, and appearance.
 
-## Checkbox Foundation Primitive
+## Checkbox primitive
 
-Checkbox follows the foundation contract:
+Checkbox follows the primitive contract:
 
 - `CheckboxRootRenderable` owns state, subscriptions, focus, and activation.
 - `CheckboxIndicatorRenderable` reflects shared state without choosing content.
@@ -108,11 +108,11 @@ Reference implementations:
 - `registry/checkbox/react.tsx`
 - `registry/checkbox/solid.tsx`
 
-`Checkbox` is the canonical React and Solid foundation export. Editable starter
+`Checkbox` is the canonical React and Solid primitive export. Editable starter
 recipes reserve one terminal cell for `mark`; applications that need a wide
 mark own the corresponding recipe layout change.
 
-## Switch Foundation Primitive
+## Switch primitive
 
 Switch follows the same frozen ownership and activation rules without treating
 its Thumb like Checkbox's conditional Indicator:
@@ -141,7 +141,7 @@ Reference implementations:
 - `registry/switch/react.tsx`
 - `registry/switch/solid.tsx`
 
-## Button Foundation Primitive
+## Button primitive
 
 Button packages activation without imposing a label or visual child tree:
 
@@ -169,7 +169,7 @@ Reference implementations:
 - `registry/button/react.tsx`
 - `registry/button/solid.tsx`
 
-## Toggle And ToggleGroup Foundation Primitives
+## Toggle and ToggleGroup primitives
 
 Toggle is a single-part two-state button. It does not invent a `Root` or
 `Indicator`: arbitrary children and the readonly state callback are its
@@ -275,7 +275,7 @@ Reference implementations:
 
 ## Radio And RadioGroup
 
-Radio behavior has one foundation model:
+Radio behavior has one primitive model:
 
 - `RadioGroup` owns the collection Store and controlled/uncontrolled
   value.
@@ -313,17 +313,17 @@ framework, compatible primitive versions, themes, and documentation.
 The project uses the official shadcn registry schema and CLI. A proprietary
 installer is out of scope until an evidenced incompatibility requires one.
 
-## Companion Package Boundary
+## Companion package boundary
 
-Foundation primitive behavior belongs in `@tuiparts/core`, with matching
+Primitive behavior belongs in `@tuiparts/core`, with matching
 compound adapters in `@tuiparts/react` and `@tuiparts/solid`. Dialog is the
 overlay evidence for that boundary: its store and coordinator live at the
-foundation Dialog subpaths.
+Dialog primitive subpaths.
 
 The already-adopted `@tuiparts/dialog` and `@tuiparts/toast` packages are
 independently versioned companion products. Their existing manager, provider,
 async, theme, and notification APIs remain supported on their current import
-paths. Reconciling their internals with foundation behavior is separate work
-and does not determine Core, React, Solid, or registry versions. A foundation
-Dialog recipe does not replace the Dialog companion, and no Toast foundation
-destination is implied.
+paths. Reconciling their internals with primitive behavior is separate work
+and does not determine Core, React, Solid, or registry versions. A Dialog
+recipe does not replace the Dialog companion, and no Toast primitive is
+implied.

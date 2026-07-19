@@ -13,7 +13,7 @@ export type PressDetails =
   | Readonly<{ button: 0; source: "pointer" }>;
 
 /**
- * Minimal Store shape a Pressable consults. Every foundation Store satisfies
+ * Minimal Store shape a Pressable consults. Every pressable Store satisfies
  * it structurally, so Roots attach their Store directly; parts without
  * disabled or focused state simply never attach one and stay permanently
  * enabled. A diverging state shape can attach an inline adapter object.

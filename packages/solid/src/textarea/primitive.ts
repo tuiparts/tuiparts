@@ -38,6 +38,8 @@ export function Textarea(props: Textarea.Props): JSX.Element {
   setRenderableRef(local.ref, element);
   spreadRenderableProps(element, () => ({
     ...textareaProps,
+    // OpenTUI's setter rejects the undefined Solid uses for prop removal.
+    cursorColor: textareaProps.cursorColor ?? "#FFFFFF",
     disabled: local.disabled,
     initialValue: local.initialValue,
     onContentChange: local.onContentChange,

@@ -34,7 +34,13 @@ type TextareaProps = TextareaOptions & {
 
 /** React adapter for the OpenTUI-native Textarea Primitive. */
 export function Textarea(props: Textarea.Props): ReactElement {
-  return createElement(TEXTAREA_TAG, props);
+  // OpenTUI's cursorColor setter does not accept the undefined value React
+  // uses to remove an optional prop. Reset it to the native constructor
+  // default without replacing the Renderable or its EditBuffer.
+  return createElement(TEXTAREA_TAG, {
+    ...props,
+    cursorColor: props.cursorColor ?? "#FFFFFF",
+  });
 }
 
 Textarea.displayName = "Textarea";

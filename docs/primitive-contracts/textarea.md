@@ -48,11 +48,12 @@ Textarea is a named single-part Primitive:
   submit binding (Meta+Return by default) invokes `submit()`. Key aliases and
   consumer keybinding overrides retain their native behavior.
 - Native pointer selection, scrolling, paste, cursor movement, and editing are
-  preserved.
-- `disabled` gates focus, keyboard handling, paste, and `submit()` at every
-  public interaction seam. Disabling a focused Textarea blurs it, marks the
-  editor suspended, and removes it from focus traversal. Re-enabling restores
-  focusability without changing text, cursor, selection, or history.
+  preserved while enabled.
+- `disabled` gates focus, keyboard handling, paste, pointer drag selection,
+  wheel scrolling, and `submit()` at every public interaction seam. Disabling
+  a focused Textarea blurs it, marks the editor suspended, and removes it from
+  focus traversal. Re-enabling restores focusability without changing text,
+  cursor, selection, scroll position, or history.
 - Programmatic text and editing methods remain native operations while
   disabled. Disabled is an interaction gate, not a second state owner or a
   read-only buffer mode.
@@ -65,7 +66,7 @@ Textarea is a named single-part Primitive:
 
 | Surface | Evidence or N/A reason |
 | --- | --- |
-| Core | Public test-renderer coverage owns initialization, native content/cursor/submit order, newline versus submit keys, native programmatic editing, paste, disabled focus/edit/paste/submit gating, re-enable behavior, and teardown. A tuiparts pointer-action matrix is N/A because the wrapper neither intercepts nor changes OpenTUI's inherited pointer selection and scrolling. |
+| Core | Public test-renderer coverage owns initialization, native content/cursor/submit order, newline versus submit keys, native programmatic editing, paste, initially and dynamically disabled focus/edit/paste/submit/pointer-selection/wheel-scroll gating, re-enable behavior, and teardown. |
 | React | Real `testRender` coverage proves initial props, callback routing once, callback replacement/removal, retained Renderable and EditBuffer identity, actual ref lifecycle, StrictMode mounting, disabled updates, and one native interaction round-trip. Store, controlled-frame, state snapshot, context-error, and subscription rows are N/A because Textarea has no Store, controlled state, state callback, required context, or adapter subscription. |
 | Solid | Real rendering coverage proves reactive props, callback replacement/removal, retained Renderable and EditBuffer identity, actual ref target, disabled updates, cleanup, and one native interaction round-trip. Store, controlled-frame, state snapshot, context-error, and subscription rows are N/A for the same ownership reasons. |
 | Registry | Core, React, and Solid installed-consumer smokes prove mount, one native edit/submit round-trip, Recipe-owned visual defaults, and theme restyling through public properties. |
@@ -73,7 +74,6 @@ Textarea is a named single-part Primitive:
 | Terminal | N/A: OpenTUI's real test renderer drives the complete focus, multiline key, paste, and submission sequence through the public Renderable; tuiparts adds no renderer-global or platform-only coordination that requires a separate PTY claim. |
 
 Controlled/uncontrolled ownership, readonly snapshots, semantic change details,
-compound registration, conditional Parts, keyboard activation, and a tuiparts
-pointer action are N/A. Textarea deliberately preserves OpenTUI-native state,
-events, editing actions, and pointer behavior instead of inventing those
-surfaces.
+compound registration, conditional Parts, and keyboard activation are N/A.
+Textarea deliberately preserves OpenTUI-native state, events, editing actions,
+and enabled pointer behavior instead of inventing those surfaces.

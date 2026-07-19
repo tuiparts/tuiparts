@@ -82,6 +82,44 @@ describe("React Textarea", () => {
     expect(secondEvents).toEqual(["submit"]);
   });
 
+  it("safely removes optional native editor overrides", async () => {
+    const ref = createRef<TextareaRenderable>();
+    const submissions: string[] = [];
+    let removeOverrides: (() => void) | undefined;
+    function App() {
+      const [custom, setCustom] = useState(true);
+      removeOverrides = () => setCustom(false);
+      return createElement(Textarea, {
+        ref,
+        cursorColor: custom ? "#FF0000" : undefined,
+        cursorStyle: custom ? { style: "line", blinking: false } : undefined,
+        keyAliasMap: custom ? { accept: "return" } : undefined,
+        keyBindings: custom ? [{ name: "x", action: "submit" }] : undefined,
+        onSubmit: () => submissions.push("submit"),
+      });
+    }
+    setup = await testRender(createElement(App), { width: 30, height: 6 });
+    const retained = ref.current;
+    const editBuffer = ref.current?.editBuffer;
+    await act(async () => ref.current?.focus());
+    await act(async () => setup?.mockInput.typeText("x"));
+
+    expect(submissions).toEqual(["submit"]);
+    expect(ref.current?.plainText).toBe("");
+
+    await act(async () => removeOverrides?.());
+    await act(async () => setup?.mockInput.typeText("x"));
+
+    expect(ref.current).toBe(retained);
+    expect(ref.current?.editBuffer).toBe(editBuffer);
+    expect(ref.current?.plainText).toBe("x");
+    expect(submissions).toEqual(["submit"]);
+    expect(ref.current?.cursorStyle).toEqual({
+      style: "block",
+      blinking: true,
+    });
+  });
+
   it("sets and clears a ref to the actual Core Renderable", async () => {
     const ref: RefObject<TextareaRenderable | null> = createRef();
     setup = await testRender(createElement(Textarea, { ref }), {

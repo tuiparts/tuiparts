@@ -91,6 +91,52 @@ describe("Solid Textarea", () => {
     expect(secondEvents).toEqual(["submit"]);
   });
 
+  it("safely removes optional native editor overrides", async () => {
+    let textarea: TextareaRenderable | undefined;
+    const submissions: string[] = [];
+    let removeOverrides: () => void = () => {};
+    setup = await testRender(
+      () => {
+        const [custom, setCustom] = createSignal(true);
+        removeOverrides = () => setCustom(false);
+        return (
+          <Textarea
+            ref={(value) => {
+              textarea = value;
+            }}
+            cursorColor={custom() ? "#FF0000" : undefined}
+            cursorStyle={
+              custom() ? { style: "line", blinking: false } : undefined
+            }
+            keyAliasMap={custom() ? { accept: "return" } : undefined}
+            keyBindings={
+              custom() ? [{ name: "x", action: "submit" }] : undefined
+            }
+            onSubmit={() => submissions.push("submit")}
+          />
+        );
+      },
+      { width: 30, height: 6 },
+    );
+    const retained = textarea;
+    const editBuffer = textarea?.editBuffer;
+    textarea?.focus();
+    await setup.mockInput.typeText("x");
+
+    expect(submissions).toEqual(["submit"]);
+    expect(textarea?.plainText).toBe("");
+
+    removeOverrides();
+    await setup.waitFor(() => textarea?.cursorStyle.style === "block");
+    await setup.mockInput.typeText("x");
+
+    expect(textarea).toBe(retained);
+    expect(textarea?.editBuffer).toBe(editBuffer);
+    expect(textarea?.plainText).toBe("x");
+    expect(submissions).toEqual(["submit"]);
+    expect(textarea?.cursorStyle).toEqual({ style: "block", blinking: true });
+  });
+
   it("destroys the actual Core Renderable during cleanup", async () => {
     let textarea: TextareaRenderable | undefined;
     setup = await testRender(

@@ -117,6 +117,49 @@ describe("TextareaRenderable", () => {
     expect(textarea.plainText).toBe(" editprogrammatic");
   });
 
+  it("gates pointer selection and wheel scrolling when initially disabled", async () => {
+    const textarea = await createTextarea({
+      disabled: true,
+      height: 2,
+      initialValue: "first\nsecond\nthird\nfourth",
+      width: 12,
+    });
+    await setup?.renderOnce();
+    const cursor = textarea.cursorOffset;
+    const scrollY = textarea.scrollY;
+
+    await setup?.mockMouse.drag(0, 0, 6, 1);
+    await setup?.mockMouse.scroll(1, 1, "down");
+
+    expect(textarea.cursorOffset).toBe(cursor);
+    expect(textarea.getSelection()).toBeNull();
+    expect(textarea.scrollY).toBe(scrollY);
+  });
+
+  it("gates an active pointer drag and wheel scrolling after disabling", async () => {
+    const textarea = await createTextarea({
+      height: 2,
+      initialValue: "first\nsecond\nthird\nfourth",
+      width: 12,
+    });
+    await setup?.renderOnce();
+
+    await setup?.mockMouse.scroll(1, 1, "down");
+    expect(textarea.scrollY).toBeGreaterThan(0);
+    await setup?.mockMouse.pressDown(1, 0);
+    const cursor = textarea.cursorOffset;
+    const selection = textarea.getSelection();
+    const scrollY = textarea.scrollY;
+    textarea.disabled = true;
+    await setup?.mockMouse.moveTo(7, 1);
+    await setup?.mockMouse.release(7, 1);
+    await setup?.mockMouse.scroll(1, 1, "up");
+
+    expect(textarea.cursorOffset).toBe(cursor);
+    expect(textarea.getSelection()).toEqual(selection);
+    expect(textarea.scrollY).toBe(scrollY);
+  });
+
   it("uses native Renderable teardown", async () => {
     const textarea = await createTextarea({ initialValue: "cleanup" });
 

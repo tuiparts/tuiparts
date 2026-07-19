@@ -1,0 +1,24 @@
+{
+  "name": "@tuiparts/registry",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Consumer-owned recipe source. Never published; this manifest exists so the recipes typecheck in-repo against their real dependencies.",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.core.json && tsc -p tsconfig.react.json && tsc -p tsconfig.solid.json"
+  },
+  "devDependencies": {
+    "@opentui/core": "catalog:",
+    "@opentui/react": "catalog:",
+    "@opentui/solid": "catalog:",
+    "@tuiparts/core": "workspace:*",
+    "@tuiparts/react": "workspace:*",
+    "@tuiparts/solid": "workspace:*",
+    "@types/bun": "^1.3.14",
+    "@types/node": "catalog:",
+    "@types/react": "^19.2.17",
+    "react": "^19.2.7",
+    "solid-js": "1.9.12",
+    "typescript": "^5.9.3"
+  }
+}

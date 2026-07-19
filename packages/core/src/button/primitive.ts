@@ -33,9 +33,6 @@ export class ButtonStore {
   get state(): ButtonState {
     return this.snapshot;
   }
-  getState(): ButtonState {
-    return this.snapshot;
-  }
   subscribe(listener: ButtonStateListener): () => void {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);

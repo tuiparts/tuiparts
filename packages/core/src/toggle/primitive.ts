@@ -83,11 +83,6 @@ export class ToggleStore {
     return this.snapshot;
   }
 
-  /** Current immutable Toggle state. */
-  getState(): ToggleState {
-    return this.snapshot;
-  }
-
   /** Current group registration key, when mounted in a ToggleGroup. */
   get groupKey(): ToggleGroupItemKey | undefined {
     return this.registration?.key;
@@ -253,7 +248,9 @@ export class ToggleStore {
     )
       return;
     this.snapshot = Object.freeze(state);
-    for (const listener of [...this.listeners]) listener(this.snapshot);
+    for (const listener of [...this.listeners]) {
+      if (this.listeners.has(listener)) listener(this.snapshot);
+    }
   }
 }
 
@@ -264,7 +261,7 @@ export interface ToggleOptions extends BoxOptions, ToggleStoreOptions {
 
 /** Focusable two-state Toggle Renderable. */
 export class ToggleRenderable extends PressableRenderable {
-  private readonly toggleStore: ToggleStore;
+  private readonly _store: ToggleStore;
   private readonly detach: () => void;
 
   /** Creates a Toggle Renderable. */
@@ -280,7 +277,7 @@ export class ToggleRenderable extends PressableRenderable {
       ...boxOptions
     } = options;
     super(ctx, boxOptions);
-    this.toggleStore =
+    this._store =
       store ??
       new ToggleStore({
         defaultPressed,
@@ -297,11 +294,11 @@ export class ToggleRenderable extends PressableRenderable {
       if (onPressedChange !== undefined)
         store.setOnPressedChange(onPressedChange);
     }
-    this.detach = this.toggleStore.attach({
+    this.detach = this._store.attach({
       focus: () => this.focus(),
       isAvailable: () => this.isAvailable(),
     });
-    this.attachPressable(this.toggleStore);
+    this.attachPressable(this._store);
   }
 
   /** Grouped Toggles stay focusable only while they own the roving tab stop. */
@@ -316,33 +313,33 @@ export class ToggleRenderable extends PressableRenderable {
 
   /** Store owned by this Toggle. */
   get store(): ToggleStore {
-    return this.toggleStore;
+    return this._store;
   }
 
   /** Prevents replacement of a mounted Toggle Store. */
   set store(store: ToggleStore) {
-    if (store !== this.toggleStore)
+    if (store !== this._store)
       throw new Error("Toggle store cannot be replaced");
   }
 
   /** Optional ToggleGroup owner. */
   get group(): ToggleGroupStore | undefined {
-    return this.toggleStore.group;
+    return this._store.group;
   }
 
   /** Group registration key when this Toggle belongs to a group. */
   get groupKey(): ToggleGroupItemKey | undefined {
-    return this.toggleStore.groupKey;
+    return this._store.groupKey;
   }
 
   /** Current immutable Toggle state. */
   getState(): ToggleState {
-    return this.toggleStore.state;
+    return this._store.state;
   }
 
   /** Subscribes to Toggle state changes. */
   subscribe(listener: ToggleStateListener): () => void {
-    return this.toggleStore.subscribe(listener);
+    return this._store.subscribe(listener);
   }
 
   /** Handles grouped roving-focus keys outside the shared activation map. */
@@ -366,41 +363,41 @@ export class ToggleRenderable extends PressableRenderable {
 
   /** Focuses this Toggle when it is eligible. */
   override focus(): void {
-    if (this.toggleStore.state.disabled || !this.refreshCollection()) return;
+    if (this._store.state.disabled || !this.refreshCollection()) return;
     this._focusable = true;
     super.focus();
   }
 
   /** Current pressed state. */
   get pressed(): boolean {
-    return this.toggleStore.state.pressed;
+    return this._store.state.pressed;
   }
 
   set pressed(pressed: boolean | null | undefined) {
-    this.toggleStore.setPressed(pressed);
+    this._store.setPressed(pressed);
   }
 
   /** Current disabled state. */
   get disabled(): boolean {
-    return this.toggleStore.state.disabled;
+    return this._store.state.disabled;
   }
 
   set disabled(disabled: boolean | null | undefined) {
-    this.toggleStore.setDisabled(disabled ?? false);
+    this._store.setDisabled(disabled ?? false);
   }
 
   /** Group identity value. */
   get value(): string | undefined {
-    return this.toggleStore.value;
+    return this._store.value;
   }
 
   set value(value: string | undefined) {
-    this.toggleStore.setValue(value);
+    this._store.setValue(value);
   }
 
   /** Replaces the pressed-change callback. */
   set onPressedChange(callback: TogglePressedChangeHandler | undefined) {
-    this.toggleStore.setOnPressedChange(callback);
+    this._store.setOnPressedChange(callback);
   }
 
   override get visible(): boolean {
@@ -415,7 +412,7 @@ export class ToggleRenderable extends PressableRenderable {
         ? this.group?.getFallbackTarget(key)
         : undefined;
     super.visible = visible;
-    this.toggleStore.refreshAvailability();
+    this._store.refreshAvailability();
     this._focusable = this.canFocus();
     fallback?.focus();
   }
@@ -425,7 +422,7 @@ export class ToggleRenderable extends PressableRenderable {
     this.detachPressable();
     this.detach();
     super.destroy();
-    this.toggleStore.setFocused(false);
+    this._store.setFocused(false);
   }
 
   private moveFocus(direction: ToggleGroupFocusDirection): boolean {
@@ -440,11 +437,11 @@ export class ToggleRenderable extends PressableRenderable {
   private activate(details: PressDetails): void {
     if (this._isDestroyed) return;
     if (this.group && !this.refreshCollection()) return;
-    this.toggleStore.requestToggle(details);
+    this._store.requestToggle(details);
   }
 
   private canFocus(): boolean {
-    const state = this.toggleStore.state;
+    const state = this._store.state;
     if (state.disabled) return false;
     return state.tabbable || this._focused;
   }
@@ -474,7 +471,7 @@ export class ToggleRenderable extends PressableRenderable {
         ancestor.store === this.group
       ) {
         ancestor.refreshItems();
-        this.toggleStore.refreshAvailability();
+        this._store.refreshAvailability();
         return this.isAvailable();
       }
       ancestor = ancestor.parent;

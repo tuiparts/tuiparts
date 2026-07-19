@@ -64,15 +64,15 @@ describe("CheckedStore", () => {
     expect(store.state.focused).toBe(false);
   });
 
-  it("publishes frozen snapshots and getState returns the snapshot", () => {
+  it("publishes frozen snapshots through the state accessor", () => {
     const store = new CheckedStore();
-    const snapshot = store.getState();
+    const snapshot = store.state;
 
     expect(store.state).toBe(snapshot);
     expect(Object.isFrozen(snapshot)).toBe(true);
     store.setChecked(true);
-    expect(store.getState()).not.toBe(snapshot);
-    expect(Object.isFrozen(store.getState())).toBe(true);
+    expect(store.state).not.toBe(snapshot);
+    expect(Object.isFrozen(store.state)).toBe(true);
   });
 
   it("notifies only when state changes", () => {
@@ -98,6 +98,21 @@ describe("CheckedStore", () => {
     store.setChecked(false);
 
     expect(calls).toBe(1);
+  });
+
+  it("does not notify a listener unsubscribed during notification", () => {
+    const calls: string[] = [];
+    const store = new CheckedStore();
+    let unsubscribeSecond = () => {};
+    store.subscribe(() => {
+      calls.push("first");
+      unsubscribeSecond();
+    });
+    unsubscribeSecond = store.subscribe(() => calls.push("second"));
+
+    store.setChecked(true);
+
+    expect(calls).toEqual(["first"]);
   });
 
   it("replaces the checked-change callback", () => {

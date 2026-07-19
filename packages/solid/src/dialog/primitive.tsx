@@ -214,34 +214,32 @@ export function Popup(props: Popup.Props): JSX.Element {
 function TextPart(
   props: (TitleProps | DescriptionProps) & {
     tag: string;
-    store: DialogStore;
   },
 ): JSX.Element {
-  const { tag, store, ...rest } = props;
+  const { tag, ...rest } = props;
   const renderer = useRenderer();
   const [local, initial] = splitProps(rest, ["ref"]);
   const element =
     tag === tags.title
       ? new DialogTitleRenderable(
           renderer,
-          untrack(() => ({ ...initial, store })),
+          untrack(() => ({ ...initial })),
         )
       : new DialogDescriptionRenderable(
           renderer,
-          untrack(() => ({ ...initial, store })),
+          untrack(() => ({ ...initial })),
         );
   setRenderableRef(local.ref, element);
   spreadRenderableProps(element, () => ({ ...initial }));
   return element;
 }
 export function Title(props: Title.Props): JSX.Element {
-  return TextPart({ ...props, tag: tags.title, store: useStore("Title") });
+  return TextPart({ ...props, tag: tags.title });
 }
 export function Description(props: Description.Props): JSX.Element {
   return TextPart({
     ...props,
     tag: tags.description,
-    store: useStore("Description"),
   });
 }
 export function Close(props: Close.Props): JSX.Element {

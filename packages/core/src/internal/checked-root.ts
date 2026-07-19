@@ -57,7 +57,7 @@ export abstract class CheckedRootRenderable<
   }
 
   getState(): CheckedState {
-    return this._store.getState();
+    return this._store.state;
   }
 
   subscribe(listener: (state: CheckedState) => void): () => void {
@@ -74,7 +74,7 @@ export abstract class CheckedRootRenderable<
   }
 
   get checked(): boolean {
-    return this._store.getState().checked;
+    return this._store.state.checked;
   }
 
   set checked(checked: boolean | null | undefined) {
@@ -82,7 +82,7 @@ export abstract class CheckedRootRenderable<
   }
 
   get disabled(): boolean {
-    return this._store.getState().disabled;
+    return this._store.state.disabled;
   }
 
   set disabled(disabled: boolean | null | undefined) {

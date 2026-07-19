@@ -1,0 +1,22 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "@opentui/react",
+    "noEmit": true,
+    "rootDirs": [
+      "badge",
+      "button",
+      "checkbox",
+      "dialog",
+      "input",
+      "radio-group",
+      "switch",
+      "theme",
+      "toggle",
+      "toggle-group",
+      "shims/react"
+    ]
+  },
+  "include": ["*/react.tsx"]
+}

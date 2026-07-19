@@ -19,6 +19,8 @@ import {
   RovingCollectionStore,
 } from "../internal/roving-collection";
 
+// These public aliases deliberately insulate API vocabulary from the internal
+// roving-collection vocabulary, so internal names never leak into declarations.
 export type RadioGroupItemKey = CollectionItemKey;
 
 export interface RadioGroupChangeDetails {

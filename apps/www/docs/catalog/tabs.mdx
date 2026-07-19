@@ -27,15 +27,15 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/tabs
 ## Use
 
 ```tsx
-import { Tabs, TabsList, TabsPanel, TabsTab } from "./components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 
 <Tabs defaultValue="overview">
   <TabsList>
-    <TabsTab label="Overview" value="overview" />
-    <TabsTab label="Activity" value="activity" />
+    <TabsTrigger label="Overview" value="overview" />
+    <TabsTrigger label="Activity" value="activity" />
   </TabsList>
-  <TabsPanel value="overview"><text content="Summary" /></TabsPanel>
-  <TabsPanel value="activity"><text content="Recent activity" /></TabsPanel>
+  <TabsContent value="overview"><text content="Summary" /></TabsContent>
+  <TabsContent value="activity"><text content="Recent activity" /></TabsContent>
 </Tabs>;
 ```
 

@@ -4,7 +4,7 @@ import { type BoxRenderable, parseColor } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
 import { TabsRootRenderable, TabsTabRenderable } from "@tuiparts/core/tabs";
-import { Tabs, TabsList, TabsPanel, TabsTab } from "./components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { theme } from "./components/ui/theme";
 
 let setup: TestRendererSetup | undefined;
@@ -18,11 +18,11 @@ test("installed Solid Tabs Recipe runtime smoke", async () => {
     () => (
       <Tabs id="root">
         <TabsList>
-          <TabsTab id="alpha" label="Alpha" value="alpha" />
-          <TabsTab id="beta" label="Beta" value="beta" />
+          <TabsTrigger id="alpha" label="Alpha" value="alpha" />
+          <TabsTrigger id="beta" label="Beta" value="beta" />
         </TabsList>
-        <TabsPanel value="alpha" />
-        <TabsPanel value="beta" />
+        <TabsContent value="alpha" />
+        <TabsContent value="beta" />
       </Tabs>
     ),
     { width: 40, height: 6 },

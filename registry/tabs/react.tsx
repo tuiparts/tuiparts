@@ -7,13 +7,13 @@ import { useTheme } from "./use-theme";
 export type TabsProps = TabsPrimitive.Root.Props;
 /** Props for the consumer-owned React Tabs List. */
 export type TabsListProps = TabsPrimitive.List.Props;
-/** Props for one labeled consumer-owned React Tab. */
-export interface TabsTabProps
+/** Props for one labeled consumer-owned React Tabs Trigger. */
+export interface TabsTriggerProps
   extends Omit<TabsPrimitive.Tab.Props, "children"> {
   label: string;
 }
-/** Props for one consumer-owned React Tabs Panel. */
-export type TabsPanelProps = TabsPrimitive.Panel.Props;
+/** Props for one consumer-owned React Tabs Content region. */
+export type TabsContentProps = TabsPrimitive.Panel.Props;
 
 /** Consumer-owned React Tabs Root. */
 export function Tabs(props: TabsProps) {
@@ -25,8 +25,8 @@ export function TabsList(props: TabsListProps) {
   return <TabsPrimitive.List flexDirection="row" gap={1} {...props} />;
 }
 
-/** Consumer-owned labeled React Tab presentation. */
-export function TabsTab({ label, ...props }: TabsTabProps) {
+/** Consumer-owned labeled React Tabs Trigger presentation. */
+export function TabsTrigger({ label, ...props }: TabsTriggerProps) {
   const tokens = useTheme();
   return (
     <TabsPrimitive.Tab {...props}>
@@ -57,7 +57,7 @@ export function TabsTab({ label, ...props }: TabsTabProps) {
   );
 }
 
-/** Consumer-owned React Tabs Panel composition seam. */
-export function TabsPanel(props: TabsPanelProps) {
+/** Consumer-owned React Tabs Content composition seam. */
+export function TabsContent(props: TabsContentProps) {
   return <TabsPrimitive.Panel {...props} />;
 }

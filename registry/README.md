@@ -24,7 +24,7 @@ Each catalog recipe is available as `core/<name>`, `react/<name>`, and
 | Badge | None; presentation-only recipe | `Badge` |
 | Toggle | Standalone pressed-state primitive | `Toggle` |
 | ToggleGroup/Toggle | Single or multiple selection and roving focus | `ToggleGroup`, `ToggleGroupItem` |
-| Tabs | Selection, association, panel lifecycle, and roving focus | `Tabs`, `TabsList`, `TabsTab`, `TabsPanel` |
+| Tabs | Selection, association, panel lifecycle, and roving focus | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent` |
 | Theme | None; consumer-owned token contract and store | `Tokens`, `theme`, `createThemeStore`, `tint` (+ `useTheme` in React/Solid) |
 
 Framework-neutral preset themes are additionally available as `theme-<name>`

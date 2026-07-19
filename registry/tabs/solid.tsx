@@ -8,13 +8,13 @@ import { useTheme } from "./use-theme";
 export type TabsProps = TabsPrimitive.Root.Props;
 /** Props for the consumer-owned Solid Tabs List. */
 export type TabsListProps = TabsPrimitive.List.Props;
-/** Props for one labeled consumer-owned Solid Tab. */
-export interface TabsTabProps
+/** Props for one labeled consumer-owned Solid Tabs Trigger. */
+export interface TabsTriggerProps
   extends Omit<TabsPrimitive.Tab.Props, "children"> {
   label: string;
 }
-/** Props for one consumer-owned Solid Tabs Panel. */
-export type TabsPanelProps = TabsPrimitive.Panel.Props;
+/** Props for one consumer-owned Solid Tabs Content region. */
+export type TabsContentProps = TabsPrimitive.Panel.Props;
 
 /** Consumer-owned Solid Tabs Root. */
 export function Tabs(props: TabsProps) {
@@ -26,8 +26,8 @@ export function TabsList(props: TabsListProps) {
   return <TabsPrimitive.List flexDirection="row" gap={1} {...props} />;
 }
 
-/** Consumer-owned labeled Solid Tab presentation. */
-export function TabsTab(props: TabsTabProps) {
+/** Consumer-owned labeled Solid Tabs Trigger presentation. */
+export function TabsTrigger(props: TabsTriggerProps) {
   const [recipe, tab] = splitProps(props, ["label"]);
   const tokens = useTheme();
   return (
@@ -59,7 +59,7 @@ export function TabsTab(props: TabsTabProps) {
   );
 }
 
-/** Consumer-owned Solid Tabs Panel composition seam. */
-export function TabsPanel(props: TabsPanelProps) {
+/** Consumer-owned Solid Tabs Content composition seam. */
+export function TabsContent(props: TabsContentProps) {
   return <TabsPrimitive.Panel {...props} />;
 }

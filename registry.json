@@ -385,6 +385,72 @@
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
+      "name": "core/textarea",
+      "type": "registry:ui",
+      "title": "Textarea (Core)",
+      "description": "Editable imperative Textarea recipe preserving OpenTUI-native multiline editing.",
+      "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
+      "docs": "Textarea preserves OpenTUI's native EditBuffer, initialValue semantics, editing operations, and callback order while adding disabled interaction gating.",
+      "files": [
+        {
+          "path": "registry/textarea/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/textarea.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
+    },
+    {
+      "name": "react/textarea",
+      "type": "registry:ui",
+      "title": "Textarea (React)",
+      "description": "Editable React Textarea recipe preserving OpenTUI-native multiline editing.",
+      "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
+      "docs": "Textarea preserves OpenTUI's native EditBuffer, initialValue semantics, editing operations, and callback order while adding disabled interaction gating.",
+      "files": [
+        {
+          "path": "registry/textarea/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/textarea.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
+    },
+    {
+      "name": "solid/textarea",
+      "type": "registry:ui",
+      "title": "Textarea (Solid)",
+      "description": "Editable Solid Textarea recipe preserving OpenTUI-native multiline editing.",
+      "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
+      "docs": "Textarea preserves OpenTUI's native EditBuffer, initialValue semantics, editing operations, and callback order while adding disabled interaction gating.",
+      "files": [
+        {
+          "path": "registry/textarea/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/textarea.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-diff"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
+    },
+    {
       "name": "core/dialog",
       "type": "registry:ui",
       "title": "Dialog (Core)",

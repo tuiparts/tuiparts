@@ -249,7 +249,7 @@ public base class.
   adapters create Stores automatically and omit `store` from public framework
   Props. Passive Indicator and Thumb parts receive the owning Store in
   Core and use private context wiring in framework adapters.
-- Input preserves OpenTUI-owned state and has no Store.
+- Input and Textarea preserve OpenTUI-owned editing state and have no Store.
 - RadioGroup retains a public Store for dynamic item identity, selection,
   roving focus, ordering, and registration independent of any one Renderable.
 - Dialog retains a public Store for portal, layer, dismissal, nesting, and
@@ -399,6 +399,8 @@ The shipped primitives establish these precedents:
   and Radio-local state. Actual focus remains owned by RadioRootRenderable.
 - Input proves that preserving OpenTUI-native mutable state is more important
   than forcing controlled/uncontrolled symmetry.
+- Textarea extends that precedent to OpenTUI's multiline `EditBuffer`, native
+  cursor/content/submit callbacks, editing methods, paste, and keybindings.
 - Dialog proves renderer-scoped portals, topmost layer arbitration, cancellable
   dismissal, nested stacking, focus containment and restoration, and cleanup.
   Companion manager and async APIs remain outside the primitive contract.

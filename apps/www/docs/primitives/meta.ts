@@ -7,6 +7,7 @@ export default defineMeta({
     "index",
     "button",
     "input",
+    "textarea",
     "checkbox",
     "switch",
     "toggle",

@@ -12,6 +12,7 @@
     "./dist/radio/**",
     "./dist/radio-group/**",
     "./dist/switch/**",
+    "./dist/textarea/**",
     "./dist/toggle/**",
     "./dist/toggle-group/**"
   ],
@@ -30,6 +31,7 @@
     "./radio": "./src/radio/index.tsx",
     "./radio-group": "./src/radio-group/index.tsx",
     "./switch": "./src/switch/index.tsx",
+    "./textarea": "./src/textarea/index.tsx",
     "./toggle": "./src/toggle/index.tsx",
     "./toggle-group": "./src/toggle-group/index.tsx"
   },
@@ -68,6 +70,10 @@
       "./switch": {
         "types": "./dist/switch/index.d.mts",
         "import": "./dist/switch/index.mjs"
+      },
+      "./textarea": {
+        "types": "./dist/textarea/index.d.mts",
+        "import": "./dist/textarea/index.mjs"
       },
       "./toggle": {
         "types": "./dist/toggle/index.d.mts",

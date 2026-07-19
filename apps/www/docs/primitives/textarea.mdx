@@ -1,0 +1,104 @@
+---
+title: Textarea
+description: Use OpenTUI-native multiline editing through the thin Textarea Primitive.
+---
+
+Textarea preserves OpenTUI's `EditBuffer`, `EditorView`, editing methods,
+keybindings, paste, and native callback order while adding consistent disabled
+behavior across tuiparts runtimes. It does not add a second text owner.
+
+## Install
+
+Install the [package for your runtime](/primitives#install), then import the
+`textarea` subpath:
+
+```ts
+import { Textarea } from "@tuiparts/react/textarea";
+```
+
+Replace `react` with `solid`, or import `TextareaRenderable` from
+`@tuiparts/core/textarea`.
+
+## Anatomy
+
+| Part | Responsibility |
+| --- | --- |
+| `Textarea` | Owns one native OpenTUI multiline editing surface and its EditBuffer. |
+
+Textarea is a named single-Part Primitive because the native Renderable is
+already the honest behavior and composition boundary. There is no artificial
+Root, compound Part, or Store.
+
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { Textarea } from "@tuiparts/react/textarea";
+
+<Textarea
+  initialValue="Release notes"
+  placeholder="Describe this release…"
+  onSubmit={() => publish()}
+/>;
+```
+
+```tsx Solid
+import { Textarea } from "@tuiparts/solid/textarea";
+
+<Textarea
+  initialValue="Release notes"
+  placeholder="Describe this release…"
+  onSubmit={() => publish()}
+/>;
+```
+
+```ts Core
+import { TextareaRenderable } from "@tuiparts/core/textarea";
+
+const textarea = new TextareaRenderable(ctx, {
+  initialValue: "Release notes",
+  onSubmit: () => publish(textarea.plainText),
+});
+
+parent.add(textarea);
+```
+
+</CodeGroup>
+
+## State ownership
+
+OpenTUI owns the mutable text in `editBuffer`. `initialValue` retains its
+initialize-once semantics. Use native methods such as `setText`, `replaceText`,
+`insertText`, `clear`, selection operations, and undo/redo directly. There is
+no controlled `value`, synthetic `defaultValue`, rollback, or Store.
+
+## Events and interaction
+
+`onContentChange`, `onCursorChange`, and `onSubmit` retain OpenTUI's payloads
+and order. Return inserts a newline; Meta+Return submits by default. Consumers
+may use native keybinding and alias options. Pointer selection, scrolling, and
+paste remain native.
+
+Disabled gates focus, keyboard handling, paste, and `submit()`, and disabling
+a focused Textarea blurs it. Programmatic buffer methods remain available
+because disabled is an interaction gate, not a second read-only state model.
+
+## API reference
+
+| Surface | API |
+| --- | --- |
+| React and Solid | `Textarea.Props` |
+| Core | `TextareaRenderable`, `TextareaOptions` |
+| Added option | `disabled` |
+| Native state and actions | `editBuffer`, `editorView`, text, cursor, selection, highlight, undo/redo, and submit methods |
+| Native callbacks | `onContentChange`, `onCursorChange`, `onSubmit` |
+
+Framework refs target the actual Core `TextareaRenderable`. The complete
+ownership and conformance rationale is recorded in the focused
+[Textarea contract](https://github.com/tuiparts/tuiparts/blob/main/docs/primitive-contracts/textarea.md).
+
+## Start with the Recipe
+
+The editable [Textarea Recipe](/catalog/textarea) supplies useful dimensions,
+wrapping, and theme-derived visual defaults.

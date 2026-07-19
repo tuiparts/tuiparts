@@ -1,0 +1,81 @@
+---
+title: Textarea
+description: An editable multiline field backed by OpenTUI's native EditBuffer.
+---
+
+Textarea provides multiline text entry. The packaged Primitive preserves
+OpenTUI's mutable `EditBuffer`, editing methods, keybindings, and native event
+order. The Recipe adds editable height, wrapping, cursor, selection,
+placeholder, text, and focus defaults.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/textarea
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/textarea
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/textarea
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import { Textarea } from "./components/ui/textarea";
+
+<Textarea
+  initialValue="Release notes"
+  placeholder="Describe this release…"
+  onSubmit={() => publish()}
+/>;
+```
+
+### Core
+
+```ts
+import { createTextarea } from "./components/ui/textarea";
+
+const textarea = createTextarea(ctx, {
+  initialValue: "Release notes",
+  placeholder: "Describe this release…",
+  onSubmit: () => publish(textarea.plainText),
+});
+
+parent.add(textarea);
+```
+
+The returned `TextareaRenderable` exposes OpenTUI's native buffer, cursor,
+selection, undo/redo, and text-editing methods.
+
+## Customize the Recipe
+
+The copied source sets a five-row height, word wrapping, and theme-derived
+cursor, selection, placeholder, text, and focus colors. Instance properties
+are spread last, so native Textarea options override those defaults. Edit the
+source to change or remove any choice; shared colors belong in the
+[Theme Recipe](/theming).
+
+## Behavior
+
+`initialValue` initializes OpenTUI's buffer once. Return inserts a newline;
+Meta+Return uses OpenTUI's default submit binding. `onContentChange`,
+`onCursorChange`, `onSubmit`, custom keybindings, paste, and editing operations
+retain the installed OpenTUI version's meanings and order. Disabled Textareas
+reject focus, keyboard editing, paste, and submission.
+
+## Recipe API
+
+Textarea adds no Recipe-specific props. React and Solid forward
+`Textarea.Props`; Core forwards `TextareaOptions`. Use the packaged
+[Textarea Primitive](/primitives/textarea) when you do not want copied visual
+defaults.

@@ -6,5 +6,6 @@ export * from "./input";
 export * from "./radio";
 export * from "./radio-group";
 export * from "./switch";
+export * from "./textarea";
 export * from "./toggle";
 export * from "./toggle-group";

@@ -26,6 +26,7 @@ colors, spacing, glyphs, labels, or fixed visual trees.
 | Checkbox | `CheckboxStore` | `CheckboxRootRenderable`, `CheckboxIndicatorRenderable` |
 | Dialog | `DialogStore` | Root, Trigger, Portal, Backdrop, Popup, Title, Description, Close Renderables |
 | Input | OpenTUI-native state | `InputRenderable` |
+| Textarea | OpenTUI-native `EditBuffer` | `TextareaRenderable` |
 | Radio / RadioGroup | `RadioGroupStore` | `RadioGroupRenderable`, `RadioRootRenderable`, `RadioIndicatorRenderable` |
 | Switch | `SwitchStore` | `SwitchRootRenderable`, `SwitchThumbRenderable` |
 | Toggle | `ToggleStore` | `ToggleRenderable` |
@@ -71,6 +72,24 @@ const input = new InputRenderable(ctx, {
 
 `onInput` reports buffer mutations, `onChange` reports a changed blur or submit
 commit, and `onSubmit` reports successful Enter submission.
+
+## Textarea
+
+`TextareaRenderable` preserves OpenTUI's multiline `EditBuffer`, native
+editing methods, and cursor/content/submit callback order. `initialValue`
+initializes the native buffer once; no parallel `value` owner is added.
+
+```ts
+import { TextareaRenderable } from "@tuiparts/core/textarea";
+
+const textarea = new TextareaRenderable(ctx, {
+  initialValue: "Release notes",
+  onSubmit: publish,
+});
+```
+
+Disabled Textareas reject focus, keyboard editing, paste, and submission while
+programmatic EditBuffer methods retain their native behavior.
 
 ## Recipe boundary
 

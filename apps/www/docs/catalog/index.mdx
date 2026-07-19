@@ -9,14 +9,8 @@ The Catalog contains editable Recipes for Core, React, and Solid. Interactive
 Recipes build on packaged Primitives; presentation-only Recipes use OpenTUI
 directly.
 
-Install a runtime-specific item with the shadcn CLI:
-
-```bash
-pnpm dlx shadcn@4.13.0 add @tuiparts/react/button
-```
-
-Replace `react` with `solid` or `core` for the other runtimes. Installation
-copies source into `components/ui` and adds the shared consumer-owned theme.
+Choose a Recipe below. Its page provides the exact Core, React, and Solid
+install commands alongside usage and customization guidance.
 
 ## Choose a Recipe
 
@@ -32,18 +26,18 @@ copies source into `components/ui` and adds the shared consumer-owned theme.
 | [Dialog](/catalog/dialog) | A short modal task or decision | Layers, dismissal, and focus containment |
 | [Badge](/catalog/badge) | Non-interactive status text | None; Recipe only |
 
-## Recipes are starting points
+## Recipes are source you own
 
-Each installed file owns its convenience API and composition. React and Solid
-Recipes expose JSX functions; Core Recipes expose imperative factory
-functions. Catalog pages document that copied source: how to use it, what to
-customize, and which convenience API it provides.
+Use an installed Recipe directly, reshape it into your house style, or publish
+the adapted source through your own Registry. React and Solid Recipes expose
+JSX functions; Core Recipes expose imperative factory functions. Each file
+owns its convenience API and composition.
 
 Application-wide colors, glyphs, borders, and density resolve from the
 [Theme Recipe](/theming). Per-instance labels, marks, variants, and layout
 remain ordinary source in the installed Recipe.
 
-To build your own control or design system from packaged behavior, use the
-[Primitive documentation](/primitives). To understand the ownership boundary,
-read [Architecture](/architecture). To compare upstream source after
-installation, read [Registry](/registry#review-updates).
+When a Recipe's composition or public API does not fit, use the underlying
+[Primitive](/primitives) to assemble the behavior yourself. To understand the
+ownership boundary, read [Architecture](/architecture). To compare upstream
+source after installation, read [Registry](/registry#review-updates).

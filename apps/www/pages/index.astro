@@ -7,9 +7,9 @@ import PageLayout from "blume/components/layout/PageLayout.astro";
 const { config } = data;
 
 const runtimes = [
-  { label: "React", packageName: "@tuiparts/react", registryName: "react" },
-  { label: "Solid", packageName: "@tuiparts/solid", registryName: "solid" },
-  { label: "Core", packageName: "@tuiparts/core", registryName: "core" },
+  { label: "React", packageName: "@tuiparts/react" },
+  { label: "Solid", packageName: "@tuiparts/solid" },
+  { label: "Core", packageName: "@tuiparts/core" },
 ];
 
 const primitiveSource = `import { Checkbox as CheckboxPrimitive } from "@tuiparts/react/checkbox";
@@ -150,61 +150,22 @@ const pillars = [
         source you own.
       </p>
       <div class="mt-8 flex flex-wrap items-center gap-3">
-        <a class="btn-solid press rounded-blume px-5 py-2.5 text-sm font-medium" href="/docs"
-          >Read the docs</a
+        <a
+          class="btn-solid press rounded-blume px-5 py-2.5 text-sm font-medium"
+          href="/docs/catalog">Browse Recipes</a
         >
         <a
           class="btn-outline press rounded-blume border border-border px-5 py-2.5 text-sm font-medium text-foreground"
-          href="/docs/catalog">Browse the catalog</a
+          href="/docs/quickstart">Quick start</a
         >
       </div>
-      <div class="hero-runtime-tabs mt-8 max-w-lg">
-        <CodeGroup>
-          {
-            runtimes.map((runtime) => {
-              const command = `pnpm add ${runtime.packageName}`;
-              return (
-                <div class="runtime-command" data-blume-tab-panel data-title={runtime.label}>
-                  <code tabindex="0">{command}</code>
-                  <button
-                    type="button"
-                    class="copy-btn press relative shrink-0 rounded-[calc(var(--blume-radius)-0.25rem)] p-2.5 text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
-                    data-copy={command}
-                    aria-label={`Copy ${runtime.label} install command`}
-                  >
-                    <svg
-                      class="icon-copy size-4"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
-                      <rect width="14" height="14" x="8" y="8" rx="2" />
-                      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-                    </svg>
-                    <svg
-                      class="icon-check size-4 text-accent"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M20 6 9 17l-5-5" />
-                    </svg>
-                    <span class="sr-only" aria-live="polite" data-copy-live />
-                  </button>
-                </div>
-              );
-            })
-          }
-        </CodeGroup>
-      </div>
+      <a
+        class="link-arrow mt-5 inline-flex items-center gap-1.5 text-sm text-muted-foreground"
+        href="/docs/primitives"
+        >Need lower-level control? Explore Primitives <span class="arrow" aria-hidden="true"
+          >→</span
+        ></a
+      >
     </div>
 
     <figure
@@ -299,44 +260,6 @@ const pillars = [
     </div>
   </section>
 
-  {/* ── Primitives — for system builders ── */}
-  <section class="border-t border-border">
-    <div
-      class="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16 lg:py-24"
-    >
-      <div class="reveal">
-        <h2
-          class="text-balance font-display text-3xl font-semibold tracking-tight text-foreground"
-        >
-          When you're building a system.
-        </h2>
-        <p class="mt-4 text-pretty leading-7 text-muted-foreground">
-          Compound parts with readonly state callbacks and real Renderable
-          refs. Controlled or uncontrolled ownership, keyboard and pointer
-          activation, focus, and overlay layering — solved once, versioned,
-          and tested.
-        </p>
-        <ul class="mt-6 space-y-2.5">
-          <li class="flex items-baseline gap-2.5 font-mono text-xs text-muted-foreground">
-            <span class="text-accent" aria-hidden="true">▪</span> readonly state callbacks — no wrapper components
-          </li>
-          <li class="flex items-baseline gap-2.5 font-mono text-xs text-muted-foreground">
-            <span class="text-accent" aria-hidden="true">▪</span> real parts: Root, Indicator, Thumb, Popup
-          </li>
-          <li class="flex items-baseline gap-2.5 font-mono text-xs text-muted-foreground">
-            <span class="text-accent" aria-hidden="true">▪</span> controlled or uncontrolled — you decide
-          </li>
-        </ul>
-        <a class="link-arrow mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-accent" href="/docs/quickstart"
-          >Read the quick start <span class="arrow" aria-hidden="true">→</span></a
-        >
-      </div>
-      <div class="reveal" data-d="1">
-        <CodeBlock code={primitiveSource} lang="tsx" icons={false} />
-      </div>
-    </div>
-  </section>
-
   {/* ── Graphite band — recipes + the catalog index ── */}
   <section class="band">
     <div
@@ -344,67 +267,29 @@ const pillars = [
     >
       <div class="reveal">
         <h2 class="text-balance font-display text-3xl font-semibold tracking-tight">
-          When you want a head start.
+          Start with a Recipe.
         </h2>
         <p class="band-muted mt-4 text-pretty leading-7">
-          One command copies an editable Recipe into your project — built
-          on the packaged primitives, with a starter palette, glyphs, and
-          variants that are yours to change. Review upstream changes later
-          with shadcn's diff workflow; nothing overwrites your edits.
+          Choose the control you need, then copy its editable Core, React, or
+          Solid source into your project. Each Catalog page gives you the exact
+          install command and shows what you can customize.
         </p>
-        <div class="band-runtime-tabs mt-8">
-          <CodeGroup>
-            {
-              runtimes.map((runtime) => {
-                const command = `pnpm dlx shadcn@4.13.0 add @tuiparts/${runtime.registryName}/checkbox`;
-                return (
-                  <div class="band-cmd" data-blume-tab-panel data-title={runtime.label}>
-                    <span class="t-signal shrink-0" aria-hidden="true">
-                      ❯
-                    </span>
-                    <code tabindex="0">{command}</code>
-                    <button
-                      type="button"
-                      class="copy-btn copy-btn-band press relative shrink-0 rounded-[4px] p-2"
-                      data-copy={command}
-                      aria-label={`Copy ${runtime.label} Recipe install command`}
-                    >
-                      <svg
-                        class="icon-copy size-4"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                      >
-                        <rect width="14" height="14" x="8" y="8" rx="2" />
-                        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-                      </svg>
-                      <svg
-                        class="icon-check size-4"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                      >
-                        <path d="M20 6 9 17l-5-5" />
-                      </svg>
-                      <span class="sr-only" aria-live="polite" data-copy-live />
-                    </button>
-                  </div>
-                );
-              })
-            }
-          </CodeGroup>
+        <p class="band-muted mt-4 text-pretty leading-7">
+          Adopt the defaults, reshape a Recipe into your house style, or use it
+          as the foundation of your own Registry. The source is yours.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <a
+            class="band-link link-arrow inline-flex items-center gap-1.5 text-sm font-medium"
+            href="/docs/catalog"
+            >Browse all Recipes <span class="arrow" aria-hidden="true">→</span></a
+          >
+          <a
+            class="band-secondary-link link-arrow inline-flex items-center gap-1.5 text-sm"
+            href="/docs/quickstart"
+            >Follow the quick start <span class="arrow" aria-hidden="true">→</span></a
+          >
         </div>
-        <a class="band-link link-arrow mt-8 inline-flex items-center gap-1.5 text-sm font-medium" href="/docs/registry"
-          >How the registry works <span class="arrow" aria-hidden="true">→</span></a
-        >
       </div>
       <div class="reveal" data-d="1">
         <h3 class="font-display text-base font-semibold text-[var(--tp-graphite-ink)]">
@@ -429,6 +314,92 @@ const pillars = [
         <p class="band-muted mt-5 font-mono text-xs">
           Every recipe ships for Core, React, and Solid.
         </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ── Primitives — for system builders ── */}
+  <section class="border-t border-border">
+    <div
+      class="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16 lg:py-24"
+    >
+      <div class="reveal">
+        <h2
+          class="text-balance font-display text-3xl font-semibold tracking-tight text-foreground"
+        >
+          Compose the behavior yourself.
+        </h2>
+        <p class="mt-4 text-pretty leading-7 text-muted-foreground">
+          Start from a Primitive when you need tested interaction behavior
+          without adopting a Recipe's composition or public API. Arrange its
+          Parts into a control that belongs entirely to your system.
+        </p>
+        <ul class="mt-6 space-y-2.5">
+          <li class="flex items-baseline gap-2.5 font-mono text-xs text-muted-foreground">
+            <span class="text-accent" aria-hidden="true">▪</span> readonly state callbacks — no wrapper components
+          </li>
+          <li class="flex items-baseline gap-2.5 font-mono text-xs text-muted-foreground">
+            <span class="text-accent" aria-hidden="true">▪</span> real Parts: Root, Indicator, Thumb, Popup
+          </li>
+          <li class="flex items-baseline gap-2.5 font-mono text-xs text-muted-foreground">
+            <span class="text-accent" aria-hidden="true">▪</span> controlled or uncontrolled — you decide
+          </li>
+        </ul>
+        <div class="primitive-runtime-tabs mt-8">
+          <CodeGroup>
+            {
+              runtimes.map((runtime) => {
+                const command = `pnpm add ${runtime.packageName}`;
+                return (
+                  <div class="runtime-command" data-blume-tab-panel data-title={runtime.label}>
+                    <code tabindex="0">{command}</code>
+                    <button
+                      type="button"
+                      class="copy-btn press relative shrink-0 rounded-[calc(var(--blume-radius)-0.25rem)] p-2.5 text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
+                      data-copy={command}
+                      aria-label={`Copy ${runtime.label} install command`}
+                    >
+                      <svg
+                        class="icon-copy size-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <rect width="14" height="14" x="8" y="8" rx="2" />
+                        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                      </svg>
+                      <svg
+                        class="icon-check size-4 text-accent"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg>
+                      <span class="sr-only" aria-live="polite" data-copy-live />
+                    </button>
+                  </div>
+                );
+              })
+            }
+          </CodeGroup>
+        </div>
+        <a
+          class="link-arrow mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-accent"
+          href="/docs/primitives"
+          >Explore Primitives <span class="arrow" aria-hidden="true">→</span></a
+        >
+      </div>
+      <div class="reveal" data-d="1">
+        <CodeBlock code={primitiveSource} lang="tsx" icons={false} />
       </div>
     </div>
   </section>
@@ -623,10 +594,9 @@ const pillars = [
     color: var(--blume-accent);
   }
 
-  /* ── Runtime tabs — shared selection across package and Recipe commands ─ */
+  /* ── Primitive package tabs ────────────────────────────────────────── */
 
-  .hero-runtime-tabs :global(blume-tabs),
-  .band-runtime-tabs :global(blume-tabs) {
+  .primitive-runtime-tabs :global(blume-tabs) {
     margin-block: 0;
   }
 
@@ -638,13 +608,11 @@ const pillars = [
     background: color-mix(in oklch, var(--blume-muted) 60%, transparent);
   }
 
-  .runtime-command.hidden,
-  .band-cmd.hidden {
+  .runtime-command.hidden {
     display: none;
   }
 
-  .runtime-command code,
-  .band-cmd code {
+  .runtime-command code {
     min-width: 0;
     flex: 1;
     overflow-x: auto;
@@ -898,68 +866,16 @@ const pillars = [
     color: var(--tp-graphite-muted);
   }
 
-  .band-cmd {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    background: var(--tp-graphite-2);
-    border: 1px solid var(--tp-graphite-rule);
-    border-radius: 6px;
-    padding: 0.5rem 0.625rem 0.5rem 1rem;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--tp-graphite-ink);
-  }
-
-  .band-runtime-tabs :global(blume-tabs) {
-    border-color: var(--tp-graphite-rule);
-    background: var(--tp-graphite-2);
-  }
-
-  .band-runtime-tabs :global([data-blume-tablist]) {
-    border-color: var(--tp-graphite-rule);
-  }
-
-  .band-runtime-tabs :global([role="tab"]) {
-    color: var(--tp-graphite-muted);
-  }
-
-  .band-runtime-tabs :global([role="tab"]:hover),
-  .band-runtime-tabs :global([role="tab"][aria-selected="true"]) {
-    color: var(--tp-graphite-ink);
-  }
-
-  .band-runtime-tabs :global([role="tab"][aria-selected="true"]) {
-    border-color: var(--tp-signal);
-  }
-
-  .band-runtime-tabs .band-cmd {
-    border: 0;
-    border-radius: 0;
-  }
-
-  .copy-btn-band {
-    color: var(--tp-graphite-muted);
-    transition:
-      color 150ms ease,
-      background-color 150ms ease,
-      transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  .copy-btn-band:hover {
-    background: var(--tp-graphite-rule);
-    color: var(--tp-graphite-ink);
-  }
-
-  .copy-btn-band .icon-check {
-    color: var(--tp-signal);
-  }
-
   .band-link {
     color: var(--tp-signal);
   }
 
-  .band-link:hover {
+  .band-secondary-link {
+    color: var(--tp-graphite-muted);
+  }
+
+  .band-link:hover,
+  .band-secondary-link:hover {
     text-decoration: underline;
     text-underline-offset: 0.25em;
   }

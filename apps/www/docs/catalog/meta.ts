@@ -2,7 +2,7 @@ import { defineMeta } from "blume";
 
 export default defineMeta({
   title: "Catalog",
-  order: 5,
+  order: 4,
   pages: [
     "index",
     "button",

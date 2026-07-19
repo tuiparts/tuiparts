@@ -20,19 +20,8 @@ The project separates terminal UI work by ownership:
 Package the behavior you want to share and test centrally. Copy the
 presentation you expect to adapt.
 
-## Primitives and Parts
-
-A Primitive is a visually unstyled behavior unit. `@tuiparts/core` provides
-framework-neutral Stores and Renderables; `@tuiparts/react` and
-`@tuiparts/solid` adapt the same behavior to their runtimes.
-
-Primitives expose independently composable **Parts** where the interaction
-model needs them. For example, Checkbox exposes `Root` and `Indicator`.
-`Root` owns checked state and activation while `Indicator` reflects that
-state without choosing a mark, color, or layout.
-
-Parts are real OpenTUI nodes, not styling slots. You can arrange them, pass
-native properties, attach Renderable refs, and supply your own content.
+Most users should start with a Recipe. Use a Primitive directly when you need
+its behavior without adopting the Recipe's composition or public API.
 
 ## Recipes and the Catalog
 
@@ -48,12 +37,26 @@ Some Recipes have no Primitive behind them. Badge, for example, is only
 presentation, so it is composed directly from OpenTUI elements and distributed
 only as editable source.
 
+## Primitives and Parts
+
+A Primitive is a visually unstyled behavior unit. `@tuiparts/core` provides
+framework-neutral Stores and Renderables; `@tuiparts/react` and
+`@tuiparts/solid` adapt the same behavior to their runtimes.
+
+Primitives expose independently composable **Parts** where the interaction
+model needs them. For example, Checkbox exposes `Root` and `Indicator`.
+`Root` owns checked state and activation while `Indicator` reflects that
+state without choosing a mark, color, or layout.
+
+Parts are real OpenTUI nodes, not styling slots. You can arrange them, pass
+native properties, attach Renderable refs, and supply your own content.
+
 ## Choose a layer
 
 | Start with | Use it when | You own |
 | --- | --- | --- |
-| A packaged Primitive | You are building a custom control or design system and want tested interaction behavior. | Presentation and composition |
-| A Catalog Recipe | You want a useful starting point that already combines behavior and presentation. | The installed source and future merges |
+| A Catalog Recipe | You want a working control to use, customize, or reshape into your house style. | The installed source and future merges |
+| A packaged Primitive | You need tested behavior without adopting a Recipe's composition or public API. | Presentation and composition |
 
 You can start with a Recipe and later take it apart. The underlying Primitive
 remains available when the Recipe's structure no longer fits.
@@ -75,7 +78,7 @@ interaction rules remain aligned.
     Choose, install, and customize an editable Recipe.
   </Card>
   <Card title="Primitives" href="/primitives" icon="boxes">
-    Compose packaged behavior into your own controls and design system.
+    Compose packaged behavior when a Recipe's structure does not fit.
   </Card>
   <Card title="Architecture" href="/architecture" icon="blocks">
     Understand ownership, Parts, Stores, and runtime adapters.

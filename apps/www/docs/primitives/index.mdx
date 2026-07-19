@@ -1,17 +1,17 @@
 ---
 title: Overview
-description: Compose packaged OpenTUI behavior into custom controls and design systems.
+description: Compose packaged OpenTUI behavior without adopting a Recipe's structure.
 sidebar:
   order: 1
 ---
 
 Primitives are visually unstyled behavior units distributed through the
 `@tuiparts/core`, `@tuiparts/react`, and `@tuiparts/solid` packages. Use them
-when you want tested interaction behavior while retaining complete ownership
-of layout, content, glyphs, colors, and public convenience APIs.
+when you need tested interaction behavior without adopting a Recipe's
+composition or public API.
 
-If you want an editable starting point with presentation already assembled,
-choose a [Recipe from the Catalog](/catalog).
+If you want a working control to use, customize, or reshape into your house
+style, choose a [Recipe from the Catalog](/catalog).
 
 ## Install
 
@@ -67,7 +67,7 @@ Renderable when presentation needs to reflect state.
 ## Composition and ownership
 
 Primitives own behavior: state transitions, activation, focus, collections,
-overlays, and lifecycle. Your design system owns presentation and assembly.
+overlays, and lifecycle. Your application owns presentation and assembly.
 Parts are real OpenTUI nodes, so native properties, children, and Renderable
 refs remain available.
 

@@ -101,6 +101,7 @@ export class TabsStore extends RovingCollectionStore<
   private _loopFocus: boolean;
   private onValueChangeCallback?: TabsValueChangeHandler;
   private readonly panels = new Map<string, PanelRegistration>();
+  private rootOwner?: object;
   private rootAvailable = false;
 
   /** Creates a Tabs Store. */
@@ -122,6 +123,18 @@ export class TabsStore extends RovingCollectionStore<
   /** Whether keyboard navigation wraps at collection edges. */
   get loopFocus(): boolean {
     return this._loopFocus;
+  }
+
+  /** Claims this Store for one live Root coordination lifetime. */
+  attachRoot(owner: object): void {
+    if (this.rootOwner && this.rootOwner !== owner)
+      throw new Error("Tabs Store may be adopted by only one live Tabs.Root");
+    this.rootOwner = owner;
+  }
+
+  /** Releases a Root's claim without ending the externally owned Store. */
+  detachRoot(owner: object): void {
+    if (this.rootOwner === owner) this.rootOwner = undefined;
   }
 
   /** Registers the one List that owns rendered Tab order. */
@@ -307,6 +320,7 @@ export class TabsStore extends RovingCollectionStore<
     this.onValueChangeCallback = undefined;
     this.panels.clear();
     this.listOwner = undefined;
+    this.rootOwner = undefined;
     this.disposeCollection();
   }
 
@@ -467,6 +481,7 @@ export class TabsRootRenderable extends BoxRenderable {
         orientation,
         value,
       });
+    this._store.attachRoot(this);
     if (store) {
       if (activationMode !== undefined) store.setActivationMode(activationMode);
       if (disabled !== undefined) store.setDisabled(disabled);
@@ -500,6 +515,7 @@ export class TabsRootRenderable extends BoxRenderable {
   }
 
   set value(value: string | null | undefined) {
+    if (this.ownershipReleased) return;
     this._store.setValue(value);
   }
 
@@ -509,6 +525,7 @@ export class TabsRootRenderable extends BoxRenderable {
   }
 
   set disabled(disabled: boolean | null | undefined) {
+    if (this.ownershipReleased) return;
     this._store.setDisabled(disabled ?? false);
   }
 
@@ -518,6 +535,7 @@ export class TabsRootRenderable extends BoxRenderable {
   }
 
   set activationMode(mode: TabsActivationMode | null | undefined) {
+    if (this.ownershipReleased) return;
     this._store.setActivationMode(mode ?? "automatic");
   }
 
@@ -527,6 +545,7 @@ export class TabsRootRenderable extends BoxRenderable {
   }
 
   set orientation(orientation: TabsOrientation | null | undefined) {
+    if (this.ownershipReleased) return;
     this._store.setOrientation(orientation ?? "horizontal");
   }
 
@@ -536,11 +555,13 @@ export class TabsRootRenderable extends BoxRenderable {
   }
 
   set loopFocus(loopFocus: boolean | null | undefined) {
+    if (this.ownershipReleased) return;
     this._store.setLoopFocus(loopFocus ?? true);
   }
 
   /** Replaces the selection callback. */
   set onValueChange(callback: TabsValueChangeHandler | undefined) {
+    if (this.ownershipReleased) return;
     this._store.setOnValueChange(callback);
   }
 
@@ -551,11 +572,12 @@ export class TabsRootRenderable extends BoxRenderable {
   override set visible(visible: boolean) {
     if (super.visible === visible) return;
     super.visible = visible;
+    if (this.ownershipReleased) return;
     this.refreshAvailability();
   }
 
   protected override onUpdate(deltaTime: number): void {
-    this.refreshAvailability();
+    if (!this.ownershipReleased) this.refreshAvailability();
     super.onUpdate(deltaTime);
   }
 
@@ -570,16 +592,41 @@ export class TabsRootRenderable extends BoxRenderable {
     super.destroy();
   }
 
-  private releaseOwnership(): void {
+  /** Permanently ends this Root and every same-Store descendant Part. */
+  endCoordinationLifetime(): void {
     if (this.ownershipReleased) return;
     this.ownershipReleased = true;
     this._store.setRootAvailable(false);
+    const visit = (node: BaseRenderable): void => {
+      for (const child of node.getChildren()) {
+        if (child instanceof TabsListRenderable && child.store === this._store)
+          child.endCoordinationLifetime();
+        else if (
+          child instanceof TabsTabRenderable &&
+          child.store === this._store
+        )
+          child.endCoordinationLifetime();
+        else if (
+          child instanceof TabsPanelRenderable &&
+          child.store === this._store
+        )
+          child.endCoordinationLifetime();
+        visit(child);
+      }
+    };
+    visit(this);
     this.unsubscribe();
+    this._store.detachRoot(this);
     if (this.ownsStore) this._store.destroy();
+  }
+
+  private releaseOwnership(): void {
+    this.endCoordinationLifetime();
   }
 
   /** Reconciles owning-tree availability outside OpenTUI's hidden traversal. */
   refreshAvailability(): void {
+    if (this.ownershipReleased) return;
     const renderRoot = "root" in this._ctx ? this._ctx.root : undefined;
     this._store.setRootAvailable(isConnectedVisibleTree(this, renderRoot));
     const visit = (node: BaseRenderable): void => {
@@ -648,12 +695,25 @@ export class TabsListRenderable extends RovingCollectionRenderable<
     super.destroy();
   }
 
-  private releaseOwnership(): void {
+  /** Permanently releases this List and its same-Store descendant Tabs. */
+  endCoordinationLifetime(): void {
     if (this.ownershipReleased) return;
     this.ownershipReleased = true;
     this._store.setCollectionAvailable(false);
+    const visit = (node: BaseRenderable): void => {
+      for (const child of node.getChildren()) {
+        if (child instanceof TabsTabRenderable && child.store === this._store)
+          child.endCoordinationLifetime();
+        else visit(child);
+      }
+    };
+    visit(this);
     this._store.detachList(this);
     this.releaseCollectionOwnership();
+  }
+
+  private releaseOwnership(): void {
+    this.endCoordinationLifetime();
   }
 }
 
@@ -733,6 +793,7 @@ export class TabsTabRenderable extends PressableRenderable {
   }
 
   set value(value: string) {
+    if (this.registrationReleased) return;
     this.registration.setValue(value);
   }
 
@@ -742,6 +803,7 @@ export class TabsTabRenderable extends PressableRenderable {
   }
 
   set disabled(disabled: boolean | null | undefined) {
+    if (this.registrationReleased) return;
     this.registration.setDisabled(disabled ?? false);
   }
 
@@ -759,6 +821,7 @@ export class TabsTabRenderable extends PressableRenderable {
   }
 
   protected override handleUnclaimedKey(key: KeyEvent): boolean {
+    if (this.registrationReleased) return false;
     const orientation = this._store.state.orientation;
     if (
       (orientation === "horizontal" && key.name === "left") ||
@@ -776,7 +839,12 @@ export class TabsTabRenderable extends PressableRenderable {
   }
 
   override focus(): void {
-    if (this.pressableDisabled() || !this.refreshCollection()) return;
+    if (
+      this.registrationReleased ||
+      this.pressableDisabled() ||
+      !this.refreshCollection()
+    )
+      return;
     this._focusable = true;
     this.registration.setActive(true);
     super.focus();
@@ -815,15 +883,31 @@ export class TabsTabRenderable extends PressableRenderable {
     super.destroy();
   }
 
-  private releaseRegistration(): void {
+  /** Permanently unregisters this Tab and releases focus and subscriptions. */
+  endCoordinationLifetime(): void {
     if (this.registrationReleased) return;
     this.registrationReleased = true;
+    this._focusable = false;
     this.unsubscribe();
     this.registration.unregister();
+    if (this._focused) super.blur();
+    this.collectionState = Object.freeze({
+      ...this.collectionState,
+      associated: false,
+      available: false,
+      selected: false,
+      tabbable: false,
+    });
+    this.stateSnapshot = this.createState();
     this.stateListeners.clear();
   }
 
+  private releaseRegistration(): void {
+    this.endCoordinationLifetime();
+  }
+
   private moveFocus(direction: CollectionFocusDirection): boolean {
+    if (this.registrationReleased) return false;
     const target = this._store.getNavigationTarget(this.key, direction);
     if (!target) return false;
     target.focus();
@@ -861,6 +945,7 @@ export class TabsTabRenderable extends PressableRenderable {
   }
 
   private refreshCollection(): boolean {
+    if (this.registrationReleased) return false;
     let list: TabsListRenderable | undefined;
     let root: TabsRootRenderable | undefined;
     let ancestor = this.parent;
@@ -961,6 +1046,7 @@ export class TabsPanelRenderable extends BoxRenderable {
   }
 
   set value(value: string) {
+    if (this.registrationReleased) return;
     if (value === this.panelValue) return;
     this.registration.setValue(value, () => {
       this.panelValue = value;
@@ -984,13 +1070,14 @@ export class TabsPanelRenderable extends BoxRenderable {
   }
 
   override set visible(visible: boolean | null | undefined) {
+    if (this.registrationReleased) return;
     this.consumerVisible = visible ?? true;
     this.syncState();
     this.registration?.refresh();
   }
 
   protected override onUpdate(deltaTime: number): void {
-    this.registration.refresh();
+    if (!this.registrationReleased) this.registration.refresh();
     super.onUpdate(deltaTime);
   }
 
@@ -1005,12 +1092,23 @@ export class TabsPanelRenderable extends BoxRenderable {
     super.destroy();
   }
 
-  private releaseRegistration(): void {
+  /** Permanently unregisters this Panel and releases subscriptions. */
+  endCoordinationLifetime(): void {
     if (this.registrationReleased) return;
     this.registrationReleased = true;
     this.unsubscribe();
     this.registration.unregister();
+    this.stateSnapshot = Object.freeze({
+      active: false,
+      associated: false,
+      value: this.stateSnapshot.value,
+    });
+    super.visible = false;
     this.stateListeners.clear();
+  }
+
+  private releaseRegistration(): void {
+    this.endCoordinationLifetime();
   }
 
   private isAvailable(): boolean {
@@ -1038,6 +1136,7 @@ export class TabsPanelRenderable extends BoxRenderable {
   }
 
   private syncState(): void {
+    if (this.registrationReleased) return;
     const next = this.createState();
     const changed =
       next.active !== this.stateSnapshot.active ||

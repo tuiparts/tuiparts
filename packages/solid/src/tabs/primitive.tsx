@@ -108,6 +108,7 @@ export function Root(props: Root.Props): JSX.Element {
   const ref = untrack(() => local.ref);
   onCleanup(() => {
     setRenderableRef(ref, undefined);
+    element.endCoordinationLifetime();
     store.destroy();
   });
   setRenderableRef(ref, element);

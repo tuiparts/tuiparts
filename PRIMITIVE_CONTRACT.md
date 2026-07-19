@@ -127,7 +127,12 @@ cleared.
 ### Lifecycle
 
 Registration begins when a behavior-bearing part is mounted and ends when it
-is destroyed or unmounted. Teardown must unsubscribe listeners, unregister
+is destroyed or unmounted. That coordination lifetime is terminal: physically
+reattaching the removed Renderable must not register it again or restore its
+actions, focus, availability, subscriptions, or lifecycle effects. Because a
+platform removal hook may be nonrecursive, removing a coordinating Root or
+collection owner must also end the lifetimes of its registered descendant
+parts. Teardown must unsubscribe listeners, unregister
 collection or overlay membership, release renderer-level listeners when no
 longer needed, and repair focus or active ownership when required.
 

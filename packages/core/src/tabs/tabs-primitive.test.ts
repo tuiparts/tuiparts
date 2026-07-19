@@ -532,6 +532,132 @@ describe("Tabs primitive", () => {
     expect(alpha.focusable).toBe(false);
   });
 
+  it("keeps directly removed Parts inert when they are physically reattached", async () => {
+    const { alpha, alphaPanel, beta, list, root } = await renderTabs();
+    if (!setup) throw new Error("Expected Tabs test renderer");
+
+    list.remove(alpha);
+    list.add(alpha);
+    alpha.value = "detached-alpha";
+    alpha.disabled = false;
+    alpha.focus();
+    alpha.select();
+    expect(alpha.getState().available).toBe(false);
+    expect(alpha.focused).toBe(false);
+    expect(root.store.hasAvailableTab("detached-alpha")).toBe(false);
+
+    root.remove(alphaPanel);
+    root.add(alphaPanel);
+    alphaPanel.value = "detached-panel";
+    alphaPanel.visible = true;
+    expect(alphaPanel.getState().active).toBe(false);
+    expect(root.store.hasAvailablePanel("detached-panel")).toBe(false);
+
+    root.remove(list);
+    root.add(list);
+    list.refreshItems();
+    beta.focus();
+    beta.select();
+    await setup.renderOnce();
+    expect(beta.getState().available).toBe(false);
+    expect(beta.focused).toBe(false);
+
+    const replacementList = new TabsListRenderable(setup.renderer, {
+      store: root.store,
+    });
+    const replacementAlpha = new TabsTabRenderable(setup.renderer, {
+      store: root.store,
+      value: "alpha",
+    });
+    const replacementBeta = new TabsTabRenderable(setup.renderer, {
+      store: root.store,
+      value: "beta",
+    });
+    const replacementPanel = new TabsPanelRenderable(setup.renderer, {
+      store: root.store,
+      value: "alpha",
+    });
+    replacementList.add(replacementAlpha);
+    replacementList.add(replacementBeta);
+    root.add(replacementList);
+    root.add(replacementPanel);
+    await setup.renderOnce();
+    replacementAlpha.select();
+    expect(root.value).toBe("alpha");
+  });
+
+  it("ends a removed Root subtree and permits an immediate complete replacement", async () => {
+    setup = await createTestRenderer({ width: 30, height: 6 });
+    const store = new TabsStore({ defaultValue: "alpha" });
+    const root = new TabsRootRenderable(setup.renderer, { store });
+    const list = new TabsListRenderable(setup.renderer, { store });
+    const tab = new TabsTabRenderable(setup.renderer, {
+      store,
+      value: "alpha",
+    });
+    const panel = new TabsPanelRenderable(setup.renderer, {
+      store,
+      value: "alpha",
+    });
+    list.add(tab);
+    root.add(list);
+    root.add(panel);
+    setup.renderer.root.add(root);
+    await setup.renderOnce();
+    tab.focus();
+    expect(tab.focused).toBe(true);
+
+    setup.renderer.root.remove(root);
+
+    expect(tab.focused).toBe(false);
+    expect(tab.getState().available).toBe(false);
+    expect(panel.getState().active).toBe(false);
+
+    const nextRoot = new TabsRootRenderable(setup.renderer, { store });
+    const nextList = new TabsListRenderable(setup.renderer, { store });
+    const nextTab = new TabsTabRenderable(setup.renderer, {
+      store,
+      value: "alpha",
+    });
+    const nextPanel = new TabsPanelRenderable(setup.renderer, {
+      store,
+      value: "alpha",
+    });
+    nextList.add(nextTab);
+    nextRoot.add(nextList);
+    nextRoot.add(nextPanel);
+    setup.renderer.root.add(nextRoot);
+
+    // A physical reattachment cannot restart any old coordination lifetime.
+    setup.renderer.root.add(root);
+    root.orientation = "vertical";
+    root.value = "missing";
+    list.refreshItems();
+    tab.value = "old";
+    tab.focus();
+    tab.select();
+    panel.value = "old";
+    panel.visible = true;
+    await setup.renderOnce();
+
+    expect(store.state.orientation).toBe("horizontal");
+    expect(store.state.value).toBe("alpha");
+    expect(store.hasAvailableTab("old")).toBe(false);
+    expect(store.hasAvailablePanel("old")).toBe(false);
+    expect(tab.focused).toBe(false);
+    expect(panel.visible).toBe(false);
+    nextTab.focus();
+    expect(nextTab.focused).toBe(true);
+
+    root.destroy();
+    root.destroy();
+    list.destroy();
+    tab.destroy();
+    panel.destroy();
+    nextRoot.destroy();
+    nextRoot.destroy();
+  });
+
   it("tears down Root subscriptions without destroying an adopted Store", async () => {
     setup = await createTestRenderer({ width: 20, height: 4 });
     const store = new TabsStore();

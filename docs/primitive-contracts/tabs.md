@@ -94,11 +94,15 @@ property.
 Mount registers Tabs and Panels; destroy, framework unmount, or direct parent
 removal unregisters exactly once. OpenTUI removal has no matching reattachment
 hook, so a detached Tabs Part has permanently ended its coordination lifetime
-and must be replaced rather than reattached as the same Renderable. List
-teardown releases order/availability ownership. Root teardown releases
-subscriptions and an owned Store. Every Part tears down Store subscriptions,
-registration, focus ownership, callbacks, and refs. Reentrant callbacks and
-dynamic registration are serialized by Core.
+and must be replaced rather than reattached as the same Renderable. It remains
+inert even if physically reinserted into a live tree. List teardown recursively
+ends descendant Tab coordination and releases order/availability ownership.
+Root teardown recursively ends all same-Store descendant List, Tab, and Panel
+coordination before releasing its Store claim and subscriptions; an adopted
+Store remains reusable by an immediate complete replacement tree. Every Part
+tears down Store subscriptions, registration, focus ownership, callbacks, and
+refs exactly once. Reentrant callbacks and dynamic registration are serialized
+by Core.
 
 ## Conformance evidence plan
 

@@ -556,6 +556,7 @@ export abstract class RovingCollectionRenderable<
 
   /** Reconciles live collection availability and order. */
   refreshItems(): void {
+    if (this.collectionOwnershipReleased) return;
     this.collection.setCollectionAvailable(this.isTreeAvailable());
     this.collection.refreshItemOrder();
   }
@@ -567,17 +568,19 @@ export abstract class RovingCollectionRenderable<
   override set visible(visible: boolean) {
     if (super.visible === visible) return;
     super.visible = visible;
+    if (this.collectionOwnershipReleased) return;
     this.collection?.setCollectionAvailable(this.isTreeAvailable());
     this.collection?.refreshItemOrder();
   }
 
   protected override onUpdate(deltaTime: number): void {
-    this.refreshItems();
+    if (!this.collectionOwnershipReleased) this.refreshItems();
     super.onUpdate(deltaTime);
   }
 
   protected override onRemove(): void {
-    this.collection.setCollectionAvailable(false);
+    if (!this.collectionOwnershipReleased)
+      this.collection.setCollectionAvailable(false);
     super.onRemove();
   }
 

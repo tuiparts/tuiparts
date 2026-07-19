@@ -8,7 +8,10 @@ association, repair, and Panel lifecycle without choosing labels or styling.
 It does not wrap OpenTUI `TabSelect`: use that native fixed-tree control when
 its option-driven presentation is the desired interface.
 
-## Install and anatomy
+## Install
+
+Install the [package for your runtime](/primitives#install), then import the
+`tabs` subpath:
 
 ```ts
 import { Tabs } from "@tuiparts/react/tabs";
@@ -17,51 +20,158 @@ import { Tabs } from "@tuiparts/react/tabs";
 Replace `react` with `solid`. Core exports `TabsStore` and the four matching
 Renderables from `@tuiparts/core/tabs`.
 
+## Anatomy
+
 | Part | Responsibility |
 | --- | --- |
 | `Tabs.Root` | Owns selection, activation mode, orientation, and disabled state. |
 | `Tabs.List` | Determines live rendered Tab order and collection availability. |
 | `Tabs.Tab` | Focusable, pressable selection target associated by `value`. |
-| `Tabs.Panel` | Content region associated by `value`; visible only while active. |
+| `Tabs.Panel` | Content region associated by `value`; active only while selected. |
 
-## Compose
+One Root supports one live List. Tab and Panel values are unique within that
+Root, and framework Parts must be composed inside `Tabs.Root`.
 
-```tsx
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { Tabs } from "@tuiparts/react/tabs";
+
 <Tabs.Root defaultValue="overview">
   <Tabs.List flexDirection="row" gap={1}>
-    <Tabs.Tab value="overview"><text content="Overview" /></Tabs.Tab>
-    <Tabs.Tab value="activity"><text content="Activity" /></Tabs.Tab>
+    <Tabs.Tab value="overview">
+      {(state) => <text content={state.selected ? "[Overview]" : "Overview"} />}
+    </Tabs.Tab>
+    <Tabs.Tab value="activity">
+      {(state) => <text content={state.selected ? "[Activity]" : "Activity"} />}
+    </Tabs.Tab>
   </Tabs.List>
-  <Tabs.Panel value="overview"><text content="Summary" /></Tabs.Panel>
-  <Tabs.Panel value="activity"><text content="Recent activity" /></Tabs.Panel>
-</Tabs.Root>
+  <Tabs.Panel value="overview">
+    <text content="Summary" />
+  </Tabs.Panel>
+  <Tabs.Panel value="activity">
+    <text content="Recent activity" />
+  </Tabs.Panel>
+</Tabs.Root>;
 ```
 
-Core callers pass `root.store` to List, Tab, and Panel Renderables. Framework
-adapters provide it through Root context.
+```tsx Solid
+import { Tabs } from "@tuiparts/solid/tabs";
 
-## Ownership and interaction
+<Tabs.Root defaultValue="overview">
+  <Tabs.List flexDirection="row" gap={1}>
+    <Tabs.Tab value="overview">
+      {(state) => <text content={state.selected ? "[Overview]" : "Overview"} />}
+    </Tabs.Tab>
+    <Tabs.Tab value="activity">
+      {(state) => <text content={state.selected ? "[Activity]" : "Activity"} />}
+    </Tabs.Tab>
+  </Tabs.List>
+  <Tabs.Panel value="overview">
+    <text content="Summary" />
+  </Tabs.Panel>
+  <Tabs.Panel value="activity">
+    <text content="Recent activity" />
+  </Tabs.Panel>
+</Tabs.Root>;
+```
+
+```ts Core
+import { TextRenderable } from "@opentui/core";
+import {
+  TabsListRenderable,
+  TabsPanelRenderable,
+  TabsRootRenderable,
+  TabsTabRenderable,
+} from "@tuiparts/core/tabs";
+
+const root = new TabsRootRenderable(ctx, { defaultValue: "overview" });
+const list = new TabsListRenderable(ctx, {
+  store: root.store,
+  flexDirection: "row",
+  gap: 1,
+});
+
+for (const value of ["overview", "activity"]) {
+  const tab = new TabsTabRenderable(ctx, { store: root.store, value });
+  tab.add(new TextRenderable(ctx, { content: value }));
+  list.add(tab);
+}
+
+const overview = new TabsPanelRenderable(ctx, {
+  store: root.store,
+  value: "overview",
+});
+overview.add(new TextRenderable(ctx, { content: "Summary" }));
+const activity = new TabsPanelRenderable(ctx, {
+  store: root.store,
+  value: "activity",
+});
+activity.add(new TextRenderable(ctx, { content: "Recent activity" }));
+
+root.add(list);
+root.add(overview);
+root.add(activity);
+parent.add(root);
+```
+
+</CodeGroup>
+
+Framework adapters provide the Root Store through context. Core callers pass
+`root.store` to each List, Tab, and Panel Renderable.
+
+## State ownership
 
 Use `value` with `onValueChange` for controlled ownership or `defaultValue`
-for uncontrolled selection. Without a usable default, uncontrolled Tabs
-selects the first available Tab and repairs to the nearest available Tab after
-dynamic removal, hiding, or disablement.
-
-Left/Right navigate horizontal Lists; Up/Down navigate vertical Lists.
-Home/End move to collection edges. Navigation wraps unless `loopFocus={false}`.
-Automatic activation selects while keyboard focus moves. Set
-`activationMode="manual"` to move focus without selection until Enter, Return,
-Space, pointer activation, or `select()`.
-
-Inactive framework Panels unmount by default. `keepMounted` retains the actual
-Panel Renderable and reflects inactivity with `visible=false`. Core Panels are
-always retained once constructed.
-
-## API
+for uncontrolled selection. A controlled request reports intent without
+changing the selected value. Uncontrolled Tabs commits accepted requests and,
+without a usable default, selects the first available Tab.
 
 Root state contains `value`, `disabled`, `orientation`, and `activationMode`.
-Tab state adds `selected`, `focused`, `tabbable`, `available`, and `associated`.
-Panel state exposes `active`, `associated`, and `value`. Refs target the actual
-matching Core Renderable.
+Tab state contains `value`, `selected`, `focused`, `tabbable`, `disabled`,
+`available`, and `associated`. Panel state contains `value`, `active`, and
+`associated`.
 
-Start with the editable [Tabs Recipe](/catalog/tabs) for labeled themed Tabs.
+When an uncontrolled selected Tab becomes unavailable, selection repairs to
+the nearest available Tab in rendered order. Controlled selection is never
+rewritten by repair.
+
+## Interaction
+
+| Input | Behavior |
+| --- | --- |
+| `Left` / `Right` | Moves focus through a horizontal List. |
+| `Up` / `Down` | Moves focus through a vertical List. |
+| `Home` / `End` | Moves focus to the first or last available Tab. |
+| `Enter`, `Return`, or `Space` | Selects the focused Tab. |
+| Primary-pointer release | Focuses and selects the pressed Tab unless the gesture was cancelled. |
+
+Navigation wraps unless `loopFocus={false}`. Automatic activation selects as
+keyboard focus moves. Set `activationMode="manual"` to move focus without
+selection until explicit activation or `select()`.
+
+Inactive React and Solid Panels unmount by default. `keepMounted` retains the
+same Panel Renderable and reflects inactivity with `visible=false`. A Core
+Panel remains mounted once constructed and synchronizes its native visibility
+with active state.
+
+## API reference
+
+| Surface | API |
+| --- | --- |
+| React and Solid | `Tabs.Root`, `Tabs.List`, `Tabs.Tab`, `Tabs.Panel` and their scoped types |
+| Core | `TabsStore`, `TabsRootRenderable`, `TabsListRenderable`, `TabsTabRenderable`, `TabsPanelRenderable` and matching option/state types |
+| Root options | `value`, `defaultValue`, `onValueChange`, `activationMode`, `orientation`, `loopFocus`, `disabled` |
+| Tab options and actions | Required `value`, optional `disabled`, `select()`, and inherited press behavior |
+| Panel options | Required `value`; React and Solid additionally accept `keepMounted` |
+| Change details | `source` is `"imperative"`, `"keyboard"`, `"pointer"`, or `"focus"` |
+
+Framework refs target the actual matching Core Renderable. Core may adopt an
+external `TabsStore`; framework adapters create and retain it for the Root.
+
+## Start with the Recipe
+
+The editable [Tabs Recipe](/catalog/tabs) supplies labeled Trigger
+presentation, theme-derived colors, and starter Root and List spacing.

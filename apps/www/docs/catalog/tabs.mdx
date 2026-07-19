@@ -1,10 +1,11 @@
 ---
 title: Tabs
-description: Labeled themed Tabs with editable panel composition.
+description: Labeled themed Tabs with editable layout and presentation.
 ---
 
-The Tabs Recipe adds labeled Tab presentation and starter List layout to the
-packaged Root, List, Tab, and Panel behavior.
+Tabs switches between associated content panels. The packaged Primitive owns
+selection, association, keyboard navigation, and Panel lifecycle. The Recipe
+adds labeled Trigger presentation and starter Root and List layout.
 
 ## Install
 
@@ -24,7 +25,9 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/tabs
 
 </CodeGroup>
 
-## Use
+## Use the Recipe
+
+### React and Solid
 
 ```tsx
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
@@ -34,21 +37,77 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
     <TabsTrigger label="Overview" value="overview" />
     <TabsTrigger label="Activity" value="activity" />
   </TabsList>
-  <TabsContent value="overview"><text content="Summary" /></TabsContent>
-  <TabsContent value="activity"><text content="Recent activity" /></TabsContent>
+  <TabsContent value="overview">
+    <text content="Summary" />
+  </TabsContent>
+  <TabsContent value="activity">
+    <text content="Recent activity" />
+  </TabsContent>
 </Tabs>;
 ```
 
-Core uses `createTabs`, `createTabsList`, `createTabsTab`, and
-`createTabsPanel`, passing the created Root to each Part factory.
+### Core
 
-## Customize
+```ts
+import { TextRenderable } from "@opentui/core";
+import {
+  createTabs,
+  createTabsList,
+  createTabsPanel,
+  createTabsTab,
+} from "./components/ui/tabs";
 
-The installed source owns labels, selected/focused colors, spacing, List
-layout, and Panel content. Shared colors and density come from the editable
-[Theme Recipe](/theming). Change the source directly when your design system
-needs vertical layout, indicators, or a different convenience API.
+const tabs = createTabs(ctx, { defaultValue: "overview" });
+const list = createTabsList(ctx, tabs);
 
-Controlled/uncontrolled selection, automatic/manual activation, disabled and
-unavailable behavior, repair, Panel mounting, and keyboard interaction belong
-to the [Tabs Primitive](/primitives/tabs).
+list.add(createTabsTab(ctx, tabs, { label: "Overview", value: "overview" }));
+list.add(createTabsTab(ctx, tabs, { label: "Activity", value: "activity" }));
+
+const overview = createTabsPanel(ctx, tabs, { value: "overview" });
+overview.add(new TextRenderable(ctx, { content: "Summary" }));
+const activity = createTabsPanel(ctx, tabs, { value: "activity" });
+activity.add(new TextRenderable(ctx, { content: "Recent activity" }));
+
+tabs.add(list);
+tabs.add(overview);
+tabs.add(activity);
+parent.add(tabs);
+```
+
+Each Core Part factory receives the created Root so it can use the same Store.
+
+## Customize the Recipe
+
+The copied source owns Trigger labels and selected, focused, and disabled
+presentation. It also supplies starter spacing and a horizontal List layout.
+Your application owns the content rendered inside each Panel.
+
+Set `orientation="vertical"` on the Root and use a column List when an instance
+needs vertical Tabs. Edit the Recipe when vertical layout should be your
+default, or when your design system needs indicators, different Trigger
+content, or another convenience API. Shared colors and density come from the
+[Theme Recipe](/theming).
+
+## Behavior
+
+Tabs supports controlled or uncontrolled selection and automatic or manual
+activation. Arrow keys move through available Triggers according to the Root
+orientation; Home and End move to collection edges. Inactive framework Panels
+unmount by default, while `keepMounted` retains them and changes their native
+visibility. Selection repair, association, focus, and lifecycle belong to the
+[Tabs Primitive](/primitives/tabs).
+
+## Recipe API
+
+`Tabs` forwards Root props and adds a one-cell starter gap. `TabsList` forwards
+List props with horizontal layout and a one-cell gap by default.
+
+`TabsTrigger` requires `label` and forwards the remaining Tab props. Its
+children are owned by the Recipe's labeled presentation. `TabsContent`
+forwards Panel props without choosing its children.
+
+Core exposes `createTabs`, `createTabsList`, `createTabsTab`, and
+`createTabsPanel`. `createTabsTab` adds the required `label` option; the other
+factories preserve their Primitive options while supplying Store wiring and
+starter layout. Compose the packaged [Tabs Primitive](/primitives/tabs)
+directly when these names or presentation boundaries do not fit.

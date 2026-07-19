@@ -12,6 +12,7 @@ export default defineMeta({
     "switch",
     "toggle",
     "toggle-group",
+    "tabs",
     "radio-group",
     "dialog",
   ],

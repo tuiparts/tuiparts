@@ -84,6 +84,7 @@ const recipes = [
   "dialog",
   "toggle",
   "toggle-group",
+  "tabs",
   "theme",
 ];
 const catalogRecipes = [
@@ -97,6 +98,7 @@ const catalogRecipes = [
   "dialog",
   "toggle",
   "toggle-group",
+  "tabs",
   "theme",
 ];
 const primitivelessRecipes = ["badge", "theme"];

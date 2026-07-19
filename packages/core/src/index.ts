@@ -75,6 +75,25 @@ export {
   SwitchThumbRenderable,
 } from "./switch";
 export {
+  type TabsActivationMode,
+  type TabsChangeDetails,
+  type TabsListOptions,
+  TabsListRenderable,
+  type TabsOrientation,
+  type TabsPanelOptions,
+  TabsPanelRenderable,
+  type TabsPanelState,
+  type TabsRootOptions,
+  TabsRootRenderable,
+  type TabsState,
+  TabsStore,
+  type TabsStoreOptions,
+  type TabsTabOptions,
+  TabsTabRenderable,
+  type TabsTabState,
+  type TabsValueChangeHandler,
+} from "./tabs";
+export {
   type TextareaOptions,
   TextareaRenderable,
 } from "./textarea";

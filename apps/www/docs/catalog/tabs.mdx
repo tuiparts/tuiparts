@@ -1,0 +1,54 @@
+---
+title: Tabs
+description: Labeled themed Tabs with editable panel composition.
+---
+
+The Tabs Recipe adds labeled Tab presentation and starter List layout to the
+packaged Root, List, Tab, and Panel behavior.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/tabs
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/tabs
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/tabs
+```
+
+</CodeGroup>
+
+## Use
+
+```tsx
+import { Tabs, TabsList, TabsPanel, TabsTab } from "./components/ui/tabs";
+
+<Tabs defaultValue="overview">
+  <TabsList>
+    <TabsTab label="Overview" value="overview" />
+    <TabsTab label="Activity" value="activity" />
+  </TabsList>
+  <TabsPanel value="overview"><text content="Summary" /></TabsPanel>
+  <TabsPanel value="activity"><text content="Recent activity" /></TabsPanel>
+</Tabs>;
+```
+
+Core uses `createTabs`, `createTabsList`, `createTabsTab`, and
+`createTabsPanel`, passing the created Root to each Part factory.
+
+## Customize
+
+The installed source owns labels, selected/focused colors, spacing, List
+layout, and Panel content. Shared colors and density come from the editable
+[Theme Recipe](/theming). Change the source directly when your design system
+needs vertical layout, indicators, or a different convenience API.
+
+Controlled/uncontrolled selection, automatic/manual activation, disabled and
+unavailable behavior, repair, Panel mounting, and keyboard interaction belong
+to the [Tabs Primitive](/primitives/tabs).

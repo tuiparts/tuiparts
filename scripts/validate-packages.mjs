@@ -101,6 +101,7 @@ try {
     "@tuiparts/core/radio",
     "@tuiparts/core/radio-group",
     "@tuiparts/core/switch",
+    "@tuiparts/core/tabs",
     "@tuiparts/core/textarea",
     "@tuiparts/core/toggle",
     "@tuiparts/core/toggle-group",
@@ -112,6 +113,7 @@ try {
     "@tuiparts/react/radio",
     "@tuiparts/react/radio-group",
     "@tuiparts/react/switch",
+    "@tuiparts/react/tabs",
     "@tuiparts/react/textarea",
     "@tuiparts/react/toggle",
     "@tuiparts/react/toggle-group",
@@ -123,6 +125,7 @@ try {
     "@tuiparts/solid/radio",
     "@tuiparts/solid/radio-group",
     "@tuiparts/solid/switch",
+    "@tuiparts/solid/tabs",
     "@tuiparts/solid/textarea",
     "@tuiparts/solid/toggle",
     "@tuiparts/solid/toggle-group",
@@ -154,6 +157,12 @@ try {
     join(consumerDir, "executable.ts"),
     `import { createTestRenderer } from "@opentui/core/testing";
 import { CheckboxRootRenderable } from "@tuiparts/core/checkbox";
+import {
+  TabsListRenderable,
+  TabsPanelRenderable,
+  TabsRootRenderable,
+  TabsTabRenderable,
+} from "@tuiparts/core/tabs";
 
 const setup = await createTestRenderer({ width: 20, height: 3 });
 try {
@@ -161,6 +170,37 @@ try {
   setup.renderer.root.add(checkbox);
   checkbox.press();
   if (!checkbox.checked) throw new Error("Compiled Checkbox did not activate");
+
+  const root = new TabsRootRenderable(setup.renderer);
+  const list = new TabsListRenderable(setup.renderer, { store: root.store });
+  const alpha = new TabsTabRenderable(setup.renderer, {
+    store: root.store,
+    value: "alpha",
+  });
+  const beta = new TabsTabRenderable(setup.renderer, {
+    store: root.store,
+    value: "beta",
+  });
+  list.add(alpha);
+  list.add(beta);
+  root.add(list);
+  root.add(
+    new TabsPanelRenderable(setup.renderer, {
+      store: root.store,
+      value: "alpha",
+    }),
+  );
+  root.add(
+    new TabsPanelRenderable(setup.renderer, {
+      store: root.store,
+      value: "beta",
+    }),
+  );
+  setup.renderer.root.add(root);
+  await setup.renderOnce();
+  beta.press();
+  if (root.value !== "beta")
+    throw new Error("Compiled Tabs did not select the pressed Tab");
 } finally {
   setup.renderer.destroy();
 }

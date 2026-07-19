@@ -346,6 +346,7 @@ export abstract class RovingCollectionStore<
   /** Repairs selection after an item unregisters; true when state was updated. */
   protected onItemUnregistered(
     _item: RegisteredCollectionItem<TItemState>,
+    _fallback: RegisteredCollectionItem<TItemState> | undefined,
   ): boolean {
     return false;
   }
@@ -376,6 +377,16 @@ export abstract class RovingCollectionStore<
     } finally {
       this.mutating = false;
     }
+  }
+
+  /** Releases collection listeners and retained coordination state. */
+  protected disposeCollection(): void {
+    this.listeners.clear();
+    this.mutationQueue.length = 0;
+    this.itemOrderResolver = undefined;
+    this.items.clear();
+    this.activeKey = null;
+    this.tabStopKey = null;
   }
 
   protected isItemAvailable(
@@ -420,12 +431,12 @@ export abstract class RovingCollectionStore<
     key: CollectionItemKey,
     item: RegisteredCollectionItem<TItemState>,
   ): void {
-    const fallback =
-      this.activeKey === key ? this.getFocusFallback(key) : undefined;
+    const nearest = this.getFocusFallback(key);
+    const fallback = this.activeKey === key ? nearest : undefined;
     if (this.activeKey === key) this.activeKey = null;
     this.items.delete(key);
     this.reconcileTabStop();
-    if (!this.onItemUnregistered(item)) {
+    if (!this.onItemUnregistered(item, nearest)) {
       this.refreshItems();
       this.touch();
     }
@@ -448,7 +459,7 @@ export abstract class RovingCollectionStore<
   private getFocusFallback(
     key: CollectionItemKey,
   ): RegisteredCollectionItem<TItemState> | undefined {
-    const items = this.getOrderedItems(false);
+    const items = this.getOrderedItems();
     const index = items.findIndex(([itemKey]) => itemKey === key);
     if (index < 0) {
       const removed = this.items.get(key);
@@ -469,7 +480,8 @@ export abstract class RovingCollectionStore<
     return undefined;
   }
 
-  private getOrderedItems(
+  /** Returns registered members in current rendered order. */
+  protected getOrderedItems(
     updateOrder = true,
   ): Array<CollectionEntry<TItemState>> {
     if (!this.itemOrderResolver) return [...this.items];
@@ -512,6 +524,7 @@ export abstract class RovingCollectionRenderable<
   private readonly collection: RovingCollectionStore<TState, TItemState>;
   private readonly removeItemOrderResolver: () => void;
   private readonly unsubscribeCollection: () => void;
+  private collectionOwnershipReleased = false;
 
   protected constructor(
     ctx: RenderContext,
@@ -527,6 +540,9 @@ export abstract class RovingCollectionRenderable<
     this.unsubscribeCollection = collection.subscribe(() =>
       this.requestRender(),
     );
+    // Hidden subtrees are skipped by OpenTUI layout updates, but lifecycle
+    // passes still run and can repair collection availability.
+    this.onLifecyclePass = () => this.refreshItems();
   }
 
   /**
@@ -540,9 +556,8 @@ export abstract class RovingCollectionRenderable<
 
   /** Reconciles live collection availability and order. */
   refreshItems(): void {
-    this.collection.setCollectionAvailable(
-      this.visible && this.parent !== null,
-    );
+    if (this.collectionOwnershipReleased) return;
+    this.collection.setCollectionAvailable(this.isTreeAvailable());
     this.collection.refreshItemOrder();
   }
 
@@ -553,24 +568,33 @@ export abstract class RovingCollectionRenderable<
   override set visible(visible: boolean) {
     if (super.visible === visible) return;
     super.visible = visible;
-    this.collection?.setCollectionAvailable(visible && this.parent !== null);
+    if (this.collectionOwnershipReleased) return;
+    this.collection?.setCollectionAvailable(this.isTreeAvailable());
     this.collection?.refreshItemOrder();
   }
 
   protected override onUpdate(deltaTime: number): void {
-    this.refreshItems();
+    if (!this.collectionOwnershipReleased) this.refreshItems();
     super.onUpdate(deltaTime);
   }
 
   protected override onRemove(): void {
-    this.collection.setCollectionAvailable(false);
+    if (!this.collectionOwnershipReleased)
+      this.collection.setCollectionAvailable(false);
     super.onRemove();
+  }
+
+  /** Permanently releases resolver and subscription ownership once. */
+  protected releaseCollectionOwnership(): void {
+    if (this.collectionOwnershipReleased) return;
+    this.collectionOwnershipReleased = true;
+    this.removeItemOrderResolver();
+    this.unsubscribeCollection();
   }
 
   /** Releases collection subscriptions and ownership. */
   override destroy(): void {
-    this.removeItemOrderResolver();
-    this.unsubscribeCollection();
+    this.releaseCollectionOwnership();
     super.destroy();
   }
 
@@ -586,5 +610,16 @@ export abstract class RovingCollectionRenderable<
     };
     visit(this);
     return keys;
+  }
+
+  private isTreeAvailable(): boolean {
+    const renderRoot = "root" in this._ctx ? this._ctx.root : undefined;
+    let current: BaseRenderable | null = this;
+    while (current) {
+      if (!current.visible) return false;
+      if (current.parent === null) return current === renderRoot;
+      current = current.parent;
+    }
+    return false;
   }
 }

@@ -1,5 +1,5 @@
 ---
-"@tuiparts/core": minor
+"@tuiparts/core": patch
 ---
 
 Concentrate activation behavior in one internal Pressable base class

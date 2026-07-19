@@ -1,7 +1,7 @@
 ---
-"@tuiparts/core": minor
-"@tuiparts/react": minor
-"@tuiparts/solid": minor
+"@tuiparts/core": patch
+"@tuiparts/react": patch
+"@tuiparts/solid": patch
 ---
 
 De-slop pass across the foundation surface:

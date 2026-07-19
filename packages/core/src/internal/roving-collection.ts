@@ -538,6 +538,9 @@ export abstract class RovingCollectionRenderable<
     this.unsubscribeCollection = collection.subscribe(() =>
       this.requestRender(),
     );
+    // Hidden subtrees are skipped by OpenTUI layout updates, but lifecycle
+    // passes still run and can repair collection availability.
+    this.onLifecyclePass = () => this.refreshItems();
   }
 
   /**
@@ -551,9 +554,7 @@ export abstract class RovingCollectionRenderable<
 
   /** Reconciles live collection availability and order. */
   refreshItems(): void {
-    this.collection.setCollectionAvailable(
-      this.visible && this.parent !== null,
-    );
+    this.collection.setCollectionAvailable(this.isTreeAvailable());
     this.collection.refreshItemOrder();
   }
 
@@ -564,7 +565,7 @@ export abstract class RovingCollectionRenderable<
   override set visible(visible: boolean) {
     if (super.visible === visible) return;
     super.visible = visible;
-    this.collection?.setCollectionAvailable(visible && this.parent !== null);
+    this.collection?.setCollectionAvailable(this.isTreeAvailable());
     this.collection?.refreshItemOrder();
   }
 
@@ -597,5 +598,16 @@ export abstract class RovingCollectionRenderable<
     };
     visit(this);
     return keys;
+  }
+
+  private isTreeAvailable(): boolean {
+    const renderRoot = "root" in this._ctx ? this._ctx.root : undefined;
+    let current: BaseRenderable | null = this;
+    while (current) {
+      if (!current.visible) return false;
+      if (current.parent === null) return current === renderRoot;
+      current = current.parent;
+    }
+    return false;
   }
 }

@@ -76,16 +76,32 @@ interface PanelRegistration {
   readonly isAvailable: () => boolean;
 }
 
+function isConnectedVisibleTree(
+  renderable: BaseRenderable,
+  renderRoot: unknown,
+): boolean {
+  let current: BaseRenderable | null = renderable;
+  while (current) {
+    if (!current.visible) return false;
+    if (current.parent === null) return current === renderRoot;
+    current = current.parent;
+  }
+  return false;
+}
+
 /** Framework-neutral selection, association, and roving-focus owner for Tabs. */
 export class TabsStore extends RovingCollectionStore<
   TabsState,
   TabsTabCollectionState
 > {
   private controlled: boolean;
+  private availabilityEstablished = false;
   private listOwner?: object;
+  private listAvailable = false;
   private _loopFocus: boolean;
   private onValueChangeCallback?: TabsValueChangeHandler;
   private readonly panels = new Map<string, PanelRegistration>();
+  private rootAvailable = false;
 
   /** Creates a Tabs Store. */
   constructor(options: TabsStoreOptions = {}) {
@@ -162,7 +178,11 @@ export class TabsStore extends RovingCollectionStore<
   registerPanel(
     value: string,
     isAvailable: () => boolean,
-  ): { refresh(): void; setValue(value: string): void; unregister(): void } {
+  ): {
+    refresh(): void;
+    setValue(value: string, commit: () => void): void;
+    unregister(): void;
+  } {
     if (this.panels.has(value))
       throw new Error(`Tabs.Panel value "${value}" is already registered`);
     const panel: PanelRegistration = { isAvailable };
@@ -171,13 +191,14 @@ export class TabsStore extends RovingCollectionStore<
     let currentValue = value;
     return {
       refresh: () => this.refreshAssociations(),
-      setValue: (next) => {
+      setValue: (next, commit) => {
         if (next === currentValue) return;
         if (this.panels.has(next))
           throw new Error(`Tabs.Panel value "${next}" is already registered`);
         this.panels.delete(currentValue);
         currentValue = next;
         this.panels.set(next, panel);
+        commit();
         this.refreshAssociations();
       },
       unregister: () => {
@@ -203,14 +224,13 @@ export class TabsStore extends RovingCollectionStore<
         ([, item]) => item.value === value,
       );
       if (!entry) return;
-      const [key, item] = entry;
+      const [, item] = entry;
       if (!this.isItemAvailable(item) || this.state.value === value) return;
       if (!this.controlled) this.update({ value });
       const immutableDetails = Object.isFrozen(details)
         ? details
         : Object.freeze({ ...details });
       this.onValueChangeCallback?.(value, immutableDetails);
-      if (this.state.activationMode === "automatic") this.activeKey = key;
     });
   }
 
@@ -268,6 +288,20 @@ export class TabsStore extends RovingCollectionStore<
     return this.panels.get(value)?.isAvailable() ?? false;
   }
 
+  /** Returns authoritative association and activation for a Panel value. */
+  getPanelState(value: string, panelAvailable = true): TabsPanelState {
+    const associated = this.hasAvailableTab(value);
+    return Object.freeze({
+      active:
+        panelAvailable &&
+        associated &&
+        this.state.value === value &&
+        (this.panels.has(value) ? this.hasAvailablePanel(value) : true),
+      associated,
+      value,
+    });
+  }
+
   /** Releases callbacks and registrations owned by this Store. */
   destroy(): void {
     this.onValueChangeCallback = undefined;
@@ -282,8 +316,20 @@ export class TabsStore extends RovingCollectionStore<
   }
 
   override setCollectionAvailable(available: boolean): void {
-    super.setCollectionAvailable(available);
+    this.listAvailable = available;
+    const treeAvailable = this.rootAvailable && this.listAvailable;
+    if (treeAvailable) this.availabilityEstablished = true;
+    super.setCollectionAvailable(treeAvailable);
     this.reconcileSelection();
+  }
+
+  /** Marks whether the owning Root is connected through a visible tree. */
+  setRootAvailable(available: boolean): void {
+    this.rootAvailable = available;
+    const treeAvailable = this.rootAvailable && this.listAvailable;
+    if (treeAvailable) this.availabilityEstablished = true;
+    super.setCollectionAvailable(treeAvailable);
+    this.refreshAssociations();
   }
 
   protected createItemState(
@@ -325,8 +371,12 @@ export class TabsStore extends RovingCollectionStore<
     return true;
   }
 
-  protected override onItemUnregistered(): boolean {
-    return false;
+  protected override onItemUnregistered(
+    item: RegisteredCollectionItem<TabsTabCollectionState>,
+  ): boolean {
+    if (this.controlled || this.state.value !== item.value) return false;
+    this.update({ value: this.nearestEligibleValue(item.order) });
+    return true;
   }
 
   private refreshAssociations(): void {
@@ -339,7 +389,12 @@ export class TabsStore extends RovingCollectionStore<
   }
 
   private reconcileSelection(): void {
-    if (this.controlled || this.state.disabled) return;
+    if (
+      this.controlled ||
+      this.state.disabled ||
+      (!this.collectionAvailable && !this.availabilityEstablished)
+    )
+      return;
     const ordered = this.getOrderedItems();
     const eligible = ordered.filter(([, item]) => this.isItemAvailable(item));
     if (
@@ -347,16 +402,25 @@ export class TabsStore extends RovingCollectionStore<
       eligible.some(([, item]) => item.value === this.state.value)
     )
       return;
-    const selectedIndex = ordered.findIndex(
-      ([, item]) => item.value === this.state.value,
+    const selected = [...this.items.values()].find(
+      (item) => item.value === this.state.value,
     );
-    const next =
-      eligible.find((entry) => ordered.indexOf(entry) > selectedIndex) ??
-      [...eligible]
-        .reverse()
-        .find((entry) => ordered.indexOf(entry) < selectedIndex) ??
-      eligible[0];
-    this.update({ value: next?.[1].value ?? null });
+    this.update({
+      value: selected
+        ? this.nearestEligibleValue(selected.order)
+        : (eligible[0]?.[1].value ?? null),
+    });
+  }
+
+  private nearestEligibleValue(order: number): string | null {
+    const eligible = this.getOrderedItems().filter(([, item]) =>
+      this.isItemAvailable(item),
+    );
+    return (
+      eligible.find(([, item]) => item.order > order)?.[1].value ??
+      eligible.findLast(([, item]) => item.order < order)?.[1].value ??
+      null
+    );
   }
 }
 
@@ -407,6 +471,7 @@ export class TabsRootRenderable extends BoxRenderable {
       if (value !== undefined) store.setValue(value);
     }
     this.unsubscribe = this._store.subscribe(() => this.requestRender());
+    this.onLifecyclePass = () => this.refreshAvailability();
   }
 
   /** Store owned or adopted by this Root. */
@@ -474,16 +539,51 @@ export class TabsRootRenderable extends BoxRenderable {
     this._store.setOnValueChange(callback);
   }
 
+  override get visible(): boolean {
+    return super.visible;
+  }
+
+  override set visible(visible: boolean) {
+    if (super.visible === visible) return;
+    super.visible = visible;
+    this.refreshAvailability();
+  }
+
   protected override onUpdate(deltaTime: number): void {
-    this._store.refreshPanels();
+    this.refreshAvailability();
     super.onUpdate(deltaTime);
+  }
+
+  protected override onRemove(): void {
+    this._store.setRootAvailable(false);
+    super.onRemove();
   }
 
   /** Releases Root subscriptions and an internally owned Store. */
   override destroy(): void {
+    this._store.setRootAvailable(false);
     this.unsubscribe();
     if (this.ownsStore) this._store.destroy();
     super.destroy();
+  }
+
+  /** Reconciles owning-tree availability outside OpenTUI's hidden traversal. */
+  refreshAvailability(): void {
+    const renderRoot = "root" in this._ctx ? this._ctx.root : undefined;
+    this._store.setRootAvailable(isConnectedVisibleTree(this, renderRoot));
+    const visit = (node: BaseRenderable): void => {
+      for (const child of node.getChildren()) {
+        if (
+          child instanceof TabsListRenderable &&
+          child.store === this._store
+        ) {
+          child.refreshItems();
+          return;
+        }
+        visit(child);
+      }
+    };
+    visit(this);
   }
 }
 
@@ -700,6 +800,8 @@ export class TabsTabRenderable extends PressableRenderable {
 
   private isAvailable(): boolean {
     if (this._isDestroyed || !this.visible) return false;
+    let foundList = false;
+    let foundRoot = false;
     let ancestor = this.parent;
     while (ancestor) {
       if (!ancestor.visible) return false;
@@ -707,25 +809,41 @@ export class TabsTabRenderable extends PressableRenderable {
         ancestor instanceof TabsListRenderable &&
         ancestor.store === this._store
       )
-        return ancestor.parent !== null;
+        foundList = true;
+      if (
+        ancestor instanceof TabsRootRenderable &&
+        ancestor.store === this._store
+      )
+        foundRoot = true;
+      if (ancestor.parent === null) {
+        const renderRoot = "root" in this._ctx ? this._ctx.root : undefined;
+        return ancestor === renderRoot && foundList && foundRoot;
+      }
       ancestor = ancestor.parent;
     }
     return false;
   }
 
   private refreshCollection(): boolean {
+    let list: TabsListRenderable | undefined;
+    let root: TabsRootRenderable | undefined;
     let ancestor = this.parent;
     while (ancestor) {
       if (
         ancestor instanceof TabsListRenderable &&
         ancestor.store === this._store
-      ) {
-        ancestor.refreshItems();
-        return this.isAvailable();
-      }
+      )
+        list = ancestor;
+      if (
+        ancestor instanceof TabsRootRenderable &&
+        ancestor.store === this._store
+      )
+        root = ancestor;
       ancestor = ancestor.parent;
     }
-    return false;
+    root?.refreshAvailability();
+    list?.refreshItems();
+    return Boolean(root && list && this.isAvailable());
   }
 
   private syncState(): void {
@@ -807,8 +925,9 @@ export class TabsPanelRenderable extends BoxRenderable {
 
   set value(value: string) {
     if (value === this.panelValue) return;
-    this.registration.setValue(value);
-    this.panelValue = value;
+    this.registration.setValue(value, () => {
+      this.panelValue = value;
+    });
     this.syncState();
   }
 
@@ -848,6 +967,7 @@ export class TabsPanelRenderable extends BoxRenderable {
 
   private isAvailable(): boolean {
     if (this._isDestroyed || !this.consumerVisible) return false;
+    let foundRoot = false;
     let ancestor = this.parent;
     while (ancestor) {
       if (!ancestor.visible) return false;
@@ -855,22 +975,18 @@ export class TabsPanelRenderable extends BoxRenderable {
         ancestor instanceof TabsRootRenderable &&
         ancestor.store === this._store
       )
-        return ancestor.parent !== null;
+        foundRoot = true;
+      if (ancestor.parent === null) {
+        const renderRoot = "root" in this._ctx ? this._ctx.root : undefined;
+        return ancestor === renderRoot && foundRoot;
+      }
       ancestor = ancestor.parent;
     }
     return false;
   }
 
   private createState(): TabsPanelState {
-    return Object.freeze({
-      active:
-        this.consumerVisible &&
-        this._store.state.value === this.panelValue &&
-        this._store.hasAvailableTab(this.panelValue) &&
-        this._store.hasAvailablePanel(this.panelValue),
-      associated: this._store.hasAvailableTab(this.panelValue),
-      value: this.panelValue,
-    });
+    return this._store.getPanelState(this.panelValue, this.consumerVisible);
   }
 
   private syncState(): void {

@@ -5,7 +5,9 @@ import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
 import {
   TabsPanelRenderable,
+  type TabsPanelState,
   type TabsRootRenderable,
+  TabsStore,
   TabsTabRenderable,
 } from "@tuiparts/core/tabs";
 import { createSignal } from "solid-js";
@@ -105,10 +107,15 @@ describe("Solid Tabs", () => {
     expect(tab).toBe(retainedTab);
     expect(retainedPanel).toBe(retained);
     expect(retained?.visible).toBe(false);
+
+    setup.renderer.destroy();
+    setup = undefined;
+    expect(retainedPanel).toBeUndefined();
   });
 
   it("unmounts inactive Panels by default and rejects orphan Parts", async () => {
     let root: TabsRootRenderable | undefined;
+    let panelRef: TabsPanelRenderable | undefined;
     setup = await testRender(
       () => (
         <Tabs.Root ref={(value) => (root = value)} defaultValue="alpha">
@@ -116,7 +123,11 @@ describe("Solid Tabs", () => {
             <Tabs.Tab value="alpha" />
             <Tabs.Tab id="conditional-beta" value="beta" />
           </Tabs.List>
-          <Tabs.Panel id="conditional-alpha" value="alpha" />
+          <Tabs.Panel
+            id="conditional-alpha"
+            ref={(value) => (panelRef = value)}
+            value="alpha"
+          />
           <Tabs.Panel id="conditional-beta-panel" value="beta" />
         </Tabs.Root>
       ),
@@ -133,11 +144,88 @@ describe("Solid Tabs", () => {
     expect(
       setup.renderer.root.findDescendantById("conditional-alpha"),
     ).toBeUndefined();
+    expect(panelRef).toBeUndefined();
 
     setup.renderer.destroy();
     setup = undefined;
     await expect(
       testRender(() => <Tabs.List />, { width: 10, height: 2 }),
     ).rejects.toThrow("Tabs.List must be rendered inside Tabs.Root");
+    await expect(
+      testRender(() => <Tabs.Tab value="orphan" />, {
+        width: 10,
+        height: 2,
+      }),
+    ).rejects.toThrow("Tabs.Tab must be rendered inside Tabs.Root");
+    await expect(
+      testRender(() => <Tabs.Panel value="orphan" />, {
+        width: 10,
+        height: 2,
+      }),
+    ).rejects.toThrow("Tabs.Panel must be rendered inside Tabs.Root");
+  });
+
+  it("starts invalid controlled Panels from authoritative inactive state", async () => {
+    let firstState: { active: boolean; associated: boolean } | undefined;
+    setup = await testRender(
+      () => (
+        <Tabs.Root value="missing">
+          <Tabs.List>
+            <Tabs.Tab value="alpha" />
+          </Tabs.List>
+          <Tabs.Panel id="solid-invalid" value="missing" />
+          <Tabs.Panel keepMounted value="missing">
+            {(state: TabsPanelState) => {
+              firstState ??= {
+                active: state.active,
+                associated: state.associated,
+              };
+              return null;
+            }}
+          </Tabs.Panel>
+        </Tabs.Root>
+      ),
+      { width: 20, height: 4 },
+    );
+
+    expect(firstState).toEqual({ active: false, associated: false });
+    expect(
+      setup.renderer.root.findDescendantById("solid-invalid"),
+    ).toBeUndefined();
+  });
+
+  it("releases every Store subscription on cleanup", async () => {
+    const originalSubscribe = TabsStore.prototype.subscribe;
+    let activeSubscriptions = 0;
+    TabsStore.prototype.subscribe = function subscribe(listener) {
+      activeSubscriptions += 1;
+      const unsubscribe = originalSubscribe.call(this, listener);
+      let active = true;
+      return () => {
+        if (!active) return;
+        active = false;
+        activeSubscriptions -= 1;
+        unsubscribe();
+      };
+    };
+    try {
+      setup = await testRender(
+        () => (
+          <Tabs.Root>
+            <Tabs.List>
+              <Tabs.Tab value="alpha" />
+            </Tabs.List>
+            <Tabs.Panel keepMounted value="alpha" />
+          </Tabs.Root>
+        ),
+        { width: 20, height: 4 },
+      );
+      expect(activeSubscriptions).toBeGreaterThan(0);
+      setup.renderer.destroy();
+      setup = undefined;
+      expect(activeSubscriptions).toBe(0);
+    } finally {
+      TabsStore.prototype.subscribe = originalSubscribe;
+    }
   });
 });

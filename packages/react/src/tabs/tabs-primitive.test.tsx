@@ -1,19 +1,50 @@
-import { afterEach, describe, expect, it } from "bun:test";
-import type { TestRendererSetup } from "@opentui/core/testing";
+import { afterEach, describe, expect, it, spyOn } from "bun:test";
+import { TestRecorder, type TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
 import {
   TabsListRenderable,
   TabsPanelRenderable,
+  type TabsPanelState,
   TabsRootRenderable,
+  TabsStore,
   TabsTabRenderable,
 } from "@tuiparts/core/tabs";
-import { act, createElement, createRef, StrictMode, useState } from "react";
+import {
+  act,
+  createElement,
+  createRef,
+  Fragment,
+  type ReactNode,
+  StrictMode,
+  useState,
+} from "react";
 import { Tabs } from "./index";
 
 let setup: TestRendererSetup | undefined;
 
+async function destroySetup(): Promise<void> {
+  if (!setup) return;
+  const renderer = setup.renderer;
+  setup = undefined;
+  const key = "IS_REACT_ACT_ENVIRONMENT";
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, key);
+  // OpenTUI's test renderer resets this flag inside its onDestroy callback,
+  // before this outer act scope has finished flushing teardown subscriptions.
+  Object.defineProperty(globalThis, key, {
+    configurable: true,
+    get: () => true,
+    set: () => {},
+  });
+  try {
+    await act(async () => renderer.destroy());
+  } finally {
+    if (descriptor) Object.defineProperty(globalThis, key, descriptor);
+    else Reflect.deleteProperty(globalThis, key);
+  }
+}
+
 afterEach(async () => {
-  await act(async () => setup?.renderer.destroy());
+  await destroySetup();
   setup = undefined;
 });
 
@@ -47,16 +78,96 @@ describe("React Tabs", () => {
       throw new Error("Expected alpha Tab");
     if (!(beta instanceof TabsTabRenderable))
       throw new Error("Expected beta Tab");
-    await setup.waitFor(() => alpha.getState().available);
+    await act(async () => setup?.waitFor(() => alpha.getState().available));
 
     expect(list.store).toBe(root.store);
     expect(alpha.store).toBe(root.store);
     await act(async () => beta.press());
-    await setup.waitFor(() => root.value === "beta");
+    await act(async () => setup?.waitFor(() => root.value === "beta"));
     expect(root.value).toBe("beta");
     expect(setup.renderer.root.findDescendantById("beta-panel")).toBeInstanceOf(
       TabsPanelRenderable,
     );
+  });
+
+  it("starts an invalid controlled Panel from authoritative inactive state", async () => {
+    const observed: Array<{ active: boolean; associated: boolean }> = [];
+    setup = await testRender(
+      createElement(
+        Tabs.Root,
+        { value: "missing" },
+        createElement(
+          Tabs.List,
+          null,
+          createElement(Tabs.Tab, { value: "alpha" }),
+        ),
+        createElement(Tabs.Panel, {
+          id: "invalid-conditional",
+          value: "missing",
+        }),
+        createElement(Tabs.Panel, { keepMounted: true, value: "missing" }, ((
+          state: TabsPanelState,
+        ) => {
+          observed.push({
+            active: state.active,
+            associated: state.associated,
+          });
+          return null;
+        }) as unknown as ReactNode),
+      ),
+      { width: 20, height: 4 },
+    );
+
+    expect(observed[0]).toEqual({ active: false, associated: false });
+    expect(
+      setup.renderer.root.findDescendantById("invalid-conditional"),
+    ).toBeUndefined();
+  });
+
+  it("never renders a controlled frame with the wrong conditional Panel", async () => {
+    let setValue: (value: string) => void = () => {};
+    function App() {
+      const [value, updateValue] = useState("alpha");
+      setValue = updateValue;
+      return createElement(
+        Tabs.Root,
+        { value },
+        createElement(
+          Tabs.List,
+          null,
+          createElement(Tabs.Tab, { value: "alpha" }),
+          createElement(Tabs.Tab, { value: "beta" }),
+        ),
+        createElement(
+          Fragment,
+          null,
+          createElement(
+            Tabs.Panel,
+            { value: "alpha" },
+            createElement("text", { content: "A" }),
+          ),
+          createElement(
+            Tabs.Panel,
+            { value: "beta" },
+            createElement("text", { content: "B" }),
+          ),
+        ),
+      );
+    }
+    setup = await testRender(createElement(App), { width: 4, height: 2 });
+    await act(async () => setup?.renderOnce());
+    expect(setup.captureCharFrame().trim()).toBe("A");
+    const recorder = new TestRecorder(setup.renderer);
+
+    recorder.rec();
+    await act(async () => setValue("beta"));
+    await act(async () => setup?.waitForFrame((frame) => frame.trim() === "B"));
+    recorder.stop();
+
+    expect(recorder.recordedFrames.length).toBeGreaterThan(0);
+    expect(
+      recorder.recordedFrames.every(({ frame }) => frame.trim() === "B"),
+    ).toBe(true);
   });
 
   it("updates controlled props, callback replacement, and removal without remounting", async () => {
@@ -89,7 +200,9 @@ describe("React Tabs", () => {
       throw new Error("Expected Tabs");
 
     await act(async () => beta.press());
-    await setup.waitFor(() => rootRef.current?.value === "beta");
+    await act(async () =>
+      setup?.waitFor(() => rootRef.current?.value === "beta"),
+    );
     await act(async () => replace());
     await act(async () => release());
     await act(async () => alpha.select());
@@ -125,8 +238,10 @@ describe("React Tabs", () => {
       ),
       { width: 40, height: 6 },
     );
-    await setup.waitFor(() =>
-      panelRefs.some((value) => value instanceof TabsPanelRenderable),
+    await act(async () =>
+      setup?.waitFor(() =>
+        panelRefs.some((value) => value instanceof TabsPanelRenderable),
+      ),
     );
     const conditional = panelRefs.find(
       (value): value is TabsPanelRenderable =>
@@ -143,7 +258,7 @@ describe("React Tabs", () => {
     expect(tabRef.current).toBeInstanceOf(TabsTabRenderable);
 
     await act(async () => beta.select());
-    await setup.waitFor(() => retained.visible);
+    await act(async () => setup?.waitFor(() => retained.visible));
     expect(
       setup.renderer.root.findDescendantById("conditional-panel"),
     ).toBeUndefined();
@@ -161,16 +276,54 @@ describe("React Tabs", () => {
     expect(setup.renderer.root.findDescendantById("root")).toBeInstanceOf(
       TabsRootRenderable,
     );
-    await act(async () => setup?.renderer.destroy());
-    setup = undefined;
+    await destroySetup();
 
-    expect(() => createElement(Tabs.List)).not.toThrow();
-    setup = await testRender(createElement(Tabs.List, { id: "orphan-list" }), {
-      width: 10,
-      height: 2,
-    });
-    expect(
-      setup.renderer.root.findDescendantById("orphan-list"),
-    ).toBeUndefined();
+    const error = spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const orphans = [
+        ["List", createElement(Tabs.List, { id: "orphan-list" })],
+        ["Tab", createElement(Tabs.Tab, { value: "orphan" })],
+        ["Panel", createElement(Tabs.Panel, { value: "orphan" })],
+      ] as const;
+      for (const [part, orphan] of orphans) {
+        setup = await testRender(orphan, { width: 10, height: 2 });
+        expect(
+          error.mock.calls.some((call) =>
+            call.some((value) =>
+              String(value).includes(
+                `Tabs.${part} must be rendered inside Tabs.Root`,
+              ),
+            ),
+          ),
+        ).toBe(true);
+        await destroySetup();
+      }
+    } finally {
+      error.mockRestore();
+    }
+  });
+
+  it("releases every Store subscription on teardown", async () => {
+    const originalSubscribe = TabsStore.prototype.subscribe;
+    let activeSubscriptions = 0;
+    TabsStore.prototype.subscribe = function subscribe(listener) {
+      activeSubscriptions += 1;
+      const unsubscribe = originalSubscribe.call(this, listener);
+      let active = true;
+      return () => {
+        if (!active) return;
+        active = false;
+        activeSubscriptions -= 1;
+        unsubscribe();
+      };
+    };
+    try {
+      setup = await testRender(tree(), { width: 40, height: 6 });
+      expect(activeSubscriptions).toBeGreaterThan(0);
+      await destroySetup();
+      expect(activeSubscriptions).toBe(0);
+    } finally {
+      TabsStore.prototype.subscribe = originalSubscribe;
+    }
   });
 });

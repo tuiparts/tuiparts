@@ -26,7 +26,6 @@ import {
   useCallback,
   useContext,
   useImperativeHandle,
-  useMemo,
   useState,
   useSyncExternalStore,
 } from "react";
@@ -82,6 +81,7 @@ export function Root({ children, ref, ...props }: Root.Props): ReactElement {
   const handleRootRef = useCallback(
     (root: TabsRootRenderable | null) => {
       if (root) {
+        root.refreshAvailability();
         root.off("destroyed", destroyStore);
         root.once("destroyed", destroyStore);
       }
@@ -153,11 +153,14 @@ export function Panel({
     () => store.state,
     () => store.state,
   );
-  if (!keepMounted && rootState.value !== value) return null;
+  void rootState;
+  const initialState = store.getPanelState(value);
+  if (!keepMounted && !initialState.active) return null;
   return createElement(PanelHost, {
     ...props,
     children,
     panelRef: ref,
+    initialState,
     store,
     value,
   });
@@ -165,10 +168,12 @@ export function Panel({
 
 function PanelHost({
   children,
+  initialState,
   panelRef,
   store,
   ...props
 }: Omit<Panel.Props, "keepMounted" | "ref"> & {
+  initialState: TabsPanelState;
   panelRef: Ref<TabsPanelRenderable> | undefined;
   store: TabsStore;
 }): ReactElement {
@@ -181,20 +186,11 @@ function PanelHost({
     },
     [panelRef],
   );
-  const fallbackState = useMemo<TabsPanelState>(
-    () =>
-      Object.freeze({
-        active: store.state.value === props.value,
-        associated: store.hasAvailableTab(props.value),
-        value: props.value,
-      }),
-    [props.value, store],
-  );
   const state = useSyncExternalStore(
     (listener) =>
       panel ? panel.subscribe(listener) : store.subscribe(listener),
-    () => panel?.getState() ?? fallbackState,
-    () => panel?.getState() ?? fallbackState,
+    () => panel?.getState() ?? initialState,
+    () => panel?.getState() ?? initialState,
   );
   const content = typeof children === "function" ? children(state) : children;
   return createElement(

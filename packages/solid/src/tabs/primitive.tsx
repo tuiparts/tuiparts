@@ -207,7 +207,8 @@ export function Panel(props: Panel.Props): JSX.Element {
   return createComponent(Show, {
     keyed: true,
     get when() {
-      return local.keepMounted || rootState().value === local.value;
+      rootState();
+      return local.keepMounted || store.getPanelState(local.value).active;
     },
     get children() {
       const element = new TabsPanelRenderable(
@@ -233,7 +234,9 @@ export function Panel(props: Panel.Props): JSX.Element {
       createEffect(() => {
         element.value = local.value;
       });
-      setRenderableRef(local.ref, element);
+      const ref = untrack(() => local.ref);
+      setRenderableRef(ref, element);
+      onCleanup(() => setRenderableRef(ref, undefined));
       spreadRenderableProps(element, () => {
         const child = local.children;
         return {

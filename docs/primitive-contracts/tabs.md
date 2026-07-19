@@ -56,8 +56,10 @@ contract. Refs resolve to the actual Root, List, Tab, or Panel Core Renderable.
 Registration follows visible rendered List order. Disabled Tabs remain
 mounted but cannot focus, navigate, or select. Tabs are unavailable while
 their List or owning tree is hidden/detached, while they are hidden/detached,
-or after teardown. Panels are unavailable when hidden/detached for a reason
-other than Tabs' own inactive visibility.
+or after teardown. Owning-tree availability is reconciled by OpenTUI lifecycle
+passes as well as direct Root/List visibility and removal hooks because hidden
+subtrees do not receive ordinary layout updates. Panels are unavailable when
+hidden/detached for a reason other than Tabs' own inactive visibility.
 
 When the selected Tab becomes disabled, unavailable, detached, or destroyed,
 uncontrolled selection repairs to the nearest eligible Tab in rendered order
@@ -67,7 +69,10 @@ there was no usable default. Repair is internal lifecycle reconciliation and
 does not emit `onValueChange`. Controlled selection is never rewritten; its
 Panel remains inactive until the owner supplies an eligible associated value.
 If the focused Tab becomes ineligible, focus moves to the same nearest
-fallback independently of selection ownership.
+fallback independently of selection ownership. A rejected controlled
+automatic-selection request does not manufacture focus ownership: the actual
+focused Tab remains the roving tab stop even when the controlled selected Tab
+is different.
 
 ## Panels and lifecycle
 
@@ -77,8 +82,11 @@ its native `visible` property synchronized with active state. Its frozen state
 contains `active`, `associated`, and `value`.
 
 React and Solid Panels are conditional by default: an inactive Panel has no
-Renderable and its ref is cleared. `keepMounted` retains the same Panel
-Renderable and reflects inactivity through `visible=false`; reactive state or
+Renderable and its ref is cleared. Conditional mounting uses Core's
+authoritative active-and-associated state, not selected-value equality, so an
+invalid controlled value never fabricates an active first frame. `keepMounted`
+retains the same Panel Renderable and reflects inactivity through
+`visible=false`; reactive state or
 prop changes do not replace retained Root, List, Tab, Panel, or Store identity.
 `keepMounted` is adapter mounting policy and is not forwarded as an OpenTUI
 property.

@@ -70,23 +70,13 @@ density come from the [Theme Recipe](/theming).
 
 ## Behavior
 
-The package export is the single-part `Toggle`, not `Toggle.Root`. A
-standalone Toggle owns its pressed value. Inside a Toggle Group it requires a
-unique `value` and adopts the group's array-valued selection.
+A standalone Toggle supports controlled or uncontrolled pressed state. Inside
+a Toggle Group it requires a unique `value` and adopts the group's selection.
+Enter, Return, Space, primary-pointer release, and imperative `press()` request
+the opposite value. Disabled Toggles reject focus and activation.
 
 Use the [Toggle Group Recipe](/catalog/toggle-group) when related Toggles
-should share a single keyboard stop.
-
-| Key | Behavior |
-| --- | --- |
-| `Enter` or `Return` | Toggles pressed state. |
-| `Space` | Toggles pressed state. |
-
-An uncancelled primary-pointer release and `press()` request the same change.
-Disabled Toggles reject focus and activation.
-
-For standalone and grouped state ownership, change details, and raw
-composition, see the [Toggle Primitive](/primitives/toggle).
+should share selection and a single keyboard stop.
 
 ## Recipe API
 
@@ -97,29 +87,12 @@ composition, see the [Toggle Primitive](/primitives/toggle).
       required: true,
       description: "Text rendered inside the Toggle.",
     },
-    pressed: {
-      type: "boolean",
-      description: "Controlled pressed value for a standalone Toggle.",
-    },
-    defaultPressed: {
-      type: "boolean",
-      description: "Initial uncontrolled pressed value.",
-    },
-    onPressedChange: {
-      type: "(pressed: boolean, details: ToggleChangeDetails) => void",
-      description: "Called with the requested value and immutable activation source.",
-    },
-    disabled: {
-      type: "boolean",
-      description: "Prevents focus and activation.",
-    },
   }}
 />
 
-React and Solid extend `TogglePrimitive.Props` except for `children`. Core
-`ToggleOptions` exposes the fields above through `createToggle()`.
+`label` is the only Recipe-specific field. React and Solid forward the
+remaining Toggle props. Core's starter factory also accepts the standalone
+state and activation options needed to use the Recipe.
 
-## Build with the Primitive
-
-Use the packaged [Toggle Primitive](/primitives/toggle) when you want to own
-the pressed-state presentation rather than start from the labeled Recipe.
+To own pressed-state presentation rather than start from the labeled source,
+use the packaged [Toggle Primitive](/primitives/toggle).

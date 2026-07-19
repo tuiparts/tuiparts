@@ -66,6 +66,11 @@ size choices, and visual defaults. Edit it to add variants or different child
 content. Instance Box properties and `labelOptions` override starter values;
 shared colors and density come from the [Theme Recipe](/theming).
 
+## Behavior
+
+Badge is non-interactive presentation. It has no state, focus, keyboard,
+pointer, collection, or overlay behavior and therefore no packaged Primitive.
+
 ## Recipe API
 
 <TypeTable
@@ -94,9 +99,5 @@ shared colors and density come from the [Theme Recipe](/theming).
 
 The framework props and Core options also extend OpenTUI `BoxOptions`.
 Instance root properties and `labelOptions` are applied after starter defaults.
-
-## Why Badge is Recipe-only
-
-Primitives exist to version reusable behavior such as state, focus, keys,
-collections, and overlays. Badge has none of those responsibilities. Packaging
-it would hide presentation without centralizing any difficult behavior.
+Packaging Badge would hide presentation without centralizing difficult
+behavior, so the editable Recipe is its canonical surface.

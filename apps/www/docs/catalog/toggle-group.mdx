@@ -88,71 +88,21 @@ density come from the [Theme Recipe](/theming).
 
 ## Behavior
 
-`value`, `defaultValue`, and `onValueChange` always use arrays. In the default
-single-selection mode, only the first unique value is retained and pressing
-the active item can clear the group. With `multiple`, every unique active
-value is retained.
-
-Focus movement does not change selection.
-
-| Key | Behavior |
-| --- | --- |
-| `Left` / `Right` | Moves focus in a horizontal group. |
-| `Up` / `Down` | Moves focus in a vertical group. |
-| `Home` | Moves focus to the first available Toggle. |
-| `End` | Moves focus to the last available Toggle. |
-| `Enter`, `Return`, or `Space` | Changes the focused Toggle's pressed state. |
-
-Unavailable items are skipped. Navigation wraps by default; set
-`loopFocus={false}` to stop at the collection edges.
-
-For collection registration, group Store ownership, and raw composition with
-Toggle, see the [Toggle Group Primitive](/primitives/toggle-group).
+Toggle Group supports controlled or uncontrolled array-valued selection in
+single or multiple mode. Arrow keys, Home, and End move the roving focus
+without changing selection; activating the focused Toggle changes its pressed
+state. Unavailable items are skipped, and navigation can wrap at collection
+edges.
 
 ## Recipe API
 
-### ToggleGroup
+`ToggleGroup` introduces no convenience fields. It forwards Primitive group
+props while using `orientation` to choose a row or column starter layout.
 
-<TypeTable
-  type={{
-    value: {
-      type: "readonly string[]",
-      description: "Controlled pressed values.",
-    },
-    defaultValue: {
-      type: "readonly string[]",
-      description: "Initial uncontrolled pressed values.",
-    },
-    onValueChange: {
-      type: "(value: readonly string[], details: ToggleGroupChangeDetails) => void",
-      description: "Called when an item requests a selection change.",
-    },
-    multiple: {
-      type: "boolean",
-      default: "false",
-      description: "Allows more than one pressed value.",
-    },
-    orientation: {
-      type: '"horizontal" | "vertical"',
-      default: '"horizontal"',
-      description: "Sets the focus axis and the starter Recipe layout.",
-    },
-    loopFocus: {
-      type: "boolean",
-      default: "true",
-      description: "Controls whether navigation wraps at collection edges.",
-    },
-  }}
-/>
+`ToggleGroupItem` adds required `label` presentation and requires `value` for
+group identity. React and Solid forward the remaining Toggle props. Core also
+accepts `disabled`; edit the installed factory to expose additional item
+callbacks.
 
-### ToggleGroupItem
-
-React and Solid items require `value` and `label`, and otherwise extend Toggle
-Primitive props except for `children` and `value`. The Core
-`ToggleGroupItemOptions` starter surface contains `value`, `label`, and
-`disabled`; edit the installed factory to expose additional item callbacks.
-
-## Build with the Primitive
-
-Compose [Toggle Group and Toggle](/primitives/toggle-group) directly when you
-want a different item structure or design-system API.
+For a different item structure or design-system API, compose
+[Toggle Group and Toggle](/primitives/toggle-group) directly.

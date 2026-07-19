@@ -73,32 +73,16 @@ per instance to override those defaults. Shared values belong in the
 
 ## Behavior
 
-- `onInput(value)` reports buffer changes, including programmatic `value`
-  assignments that change the buffer.
-- `onChange(value)` reports commit-style changes on blur or submit.
-- `onSubmit(value)` reports an Enter submission.
-
-Editing, selection, cursor movement, insertion, and deletion follow the
-installed OpenTUI version. Use native Input props for those capabilities.
-
-`Enter` or `Return` submits the current value and fires `onSubmit`. Other
-editing keys use OpenTUI's native Input behavior. A disabled Input rejects
-focus, key handling, and submission.
-
-For the exact ownership and native editing boundary, see the
-[Input Primitive](/primitives/input).
+Input preserves OpenTUI's mutable editing model. `onInput` reports buffer
+changes, `onChange` reports commit-style changes, and `onSubmit` reports Enter
+submission. Other editing keys and cursor behavior follow the installed
+OpenTUI version. A disabled Input rejects focus, editing, and submission.
 
 ## Recipe API
 
-The React and Solid `InputProps` types extend their runtime Primitive props.
-Core `InputOptions` extends the packaged `InputOptions`. The Recipe does not
-add semantic convenience props; it only supplies visual defaults that callers
-can override.
+Input adds no Recipe-specific fields. React and Solid forward their Primitive
+props; Core forwards `InputOptions`. Native Input properties override the
+Recipe's visual defaults because instance options are applied last.
 
-For the exact native option surface, use the types from your installed
-`@opentui/core` package.
-
-## Build with the Primitive
-
-Use the packaged [Input Primitive](/primitives/input) when you want OpenTUI's
-editing behavior without the Recipe's visual defaults.
+For OpenTUI's editing surface without those visual defaults, use the packaged
+[Input Primitive](/primitives/input).

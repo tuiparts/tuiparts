@@ -72,16 +72,9 @@ defaults come from the [Theme Recipe](/theming).
 
 ## Behavior
 
-| Key | Behavior |
-| --- | --- |
-| `Enter` or `Return` | Toggles checked state. |
-| `Space` | Toggles checked state. |
-
-An uncancelled primary-pointer release and `press()` request the same change.
-Disabled Checkboxes reject focus and activation.
-
-For Part ownership and raw composition, see the
-[Checkbox Primitive](/primitives/checkbox).
+Checkbox supports controlled or uncontrolled checked state. Enter, Return,
+Space, primary-pointer release, and imperative `press()` request the opposite
+value. Disabled Checkboxes reject focus and activation.
 
 ## Recipe API
 
@@ -91,18 +84,6 @@ For Part ownership and raw composition, see the
       type: "string",
       required: true,
       description: "Text rendered next to the mark.",
-    },
-    checked: {
-      type: "boolean",
-      description: "Controlled checked value.",
-    },
-    defaultChecked: {
-      type: "boolean",
-      description: "Initial uncontrolled checked value.",
-    },
-    onCheckedChange: {
-      type: "(checked: boolean) => void",
-      description: "Called when the Primitive requests a checked-state change.",
     },
     mark: {
       type: "string",
@@ -116,11 +97,8 @@ For Part ownership and raw composition, see the
   }}
 />
 
-React and Solid extend `CheckboxPrimitive.Root.Props` except for `children`.
-Core `CheckboxOptions` exposes the same ownership fields, label, and mark, but
-does not currently expose the framework Recipe's `tone` convenience option.
+React and Solid add these fields while forwarding the remaining Root props.
+Core adds `label` and `mark`, but not the framework Recipe's `tone` field.
 
-## Build with the Primitive
-
-Compose the packaged [Checkbox Primitive](/primitives/checkbox) when the
-Recipe's mark-and-label structure does not fit your design system.
+When the mark-and-label structure does not fit, compose the packaged
+[Checkbox Primitive](/primitives/checkbox).

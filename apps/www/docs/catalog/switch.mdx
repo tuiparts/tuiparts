@@ -71,16 +71,9 @@ variants directly in the installed file. Shared defaults come from the
 
 ## Behavior
 
-| Key | Behavior |
-| --- | --- |
-| `Enter` or `Return` | Toggles checked state. |
-| `Space` | Toggles checked state. |
-
-An uncancelled primary-pointer release and `press()` request the same change.
-Disabled Switches reject focus and activation.
-
-For Root and Thumb ownership and raw composition, see the
-[Switch Primitive](/primitives/switch).
+Switch supports controlled or uncontrolled checked state. Enter, Return,
+Space, primary-pointer release, and imperative `press()` request the opposite
+value. Disabled Switches reject focus and activation.
 
 ## Recipe API
 
@@ -90,18 +83,6 @@ For Root and Thumb ownership and raw composition, see the
       type: "string",
       required: true,
       description: "Text rendered next to the track.",
-    },
-    checked: {
-      type: "boolean",
-      description: "Controlled checked value.",
-    },
-    defaultChecked: {
-      type: "boolean",
-      description: "Initial uncontrolled checked value.",
-    },
-    onCheckedChange: {
-      type: "(checked: boolean) => void",
-      description: "Called when the Primitive requests a checked-state change.",
     },
     density: {
       type: '"compact" | "comfortable"',
@@ -115,10 +96,8 @@ For Root and Thumb ownership and raw composition, see the
   }}
 />
 
-React and Solid extend `SwitchPrimitive.Root.Props` except for `children`.
-Core `SwitchOptions` exposes the same fields through `createSwitch()`.
+React and Solid add these fields while forwarding the remaining Root props.
+Core adds the same three Recipe fields through `createSwitch()`.
 
-## Build with the Primitive
-
-Compose the packaged [Switch Primitive](/primitives/switch) when you want to
-design your own track, Thumb position, or public API.
+To design a different track, Thumb position, or public API, compose the
+packaged [Switch Primitive](/primitives/switch).

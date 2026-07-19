@@ -97,54 +97,19 @@ convenience API. Shared colors and borders come from the
 
 ## Behavior
 
-Use `open` with `onOpenChange` for controlled ownership, or `defaultOpen` for
-uncontrolled initial state. Change details report whether a transition came
-from the Trigger, Escape, outside interaction, Close, an accepted action, or a
-programmatic request.
-
-Dismissal requests are cancelable where the Primitive can synchronously honor
-`details.preventDefault()`.
-
-When a Dialog opens, focus moves to `initialFocus`, the first focusable Popup
-descendant, or the Popup itself. Tab and Shift+Tab wrap within the topmost
-Popup. Closing restores focus to its Trigger or the appropriate parent Dialog.
-
-Only the topmost eligible layer handles Escape or Backdrop dismissal. Pointer
-interaction inside the Popup does not dismiss it.
-
-| Key | Behavior |
-| --- | --- |
-| `Escape` | Requests dismissal of the topmost Dialog. |
-| `Tab` | Moves to the next focusable Popup descendant. |
-| `Shift+Tab` | Moves to the previous focusable Popup descendant. |
-| `Enter`, `Return`, or `Space` | Activates a focused Trigger or Close Part. |
-
-For all eight Parts, cancelable transitions, and raw layer composition, see
-the [Dialog Primitive](/primitives/dialog).
+Dialog supports controlled or uncontrolled open state. It coordinates
+topmost Escape and Backdrop dismissal, contains Tab focus within the active
+Popup, and restores focus when the layer closes. Dismissal details report the
+reason and allow cancelable transitions to be prevented.
 
 ## Recipe API
 
-### Dialog
-
-`Dialog` retains the Primitive Root props: `open`, `defaultOpen`,
-`onOpenChange`, native Root properties, children, and the Renderable ref.
-
-### DialogContent
-
 React and Solid `DialogContent` accepts Primitive Popup props and adds
-`backdropColor?: ColorInput`. `initialFocus?: Renderable` selects a preferred
-focus target. The Recipe owns its Portal and Backdrop tree, so those Part props
-are changed by editing the installed source or composing the Primitive.
+`backdropColor?: ColorInput`. Other Recipe exports add no fields; they forward
+the props of their matching Primitive Parts.
 
-### DialogClose
+Core adds `width` to `DialogOptions`. Its helper functions assemble and append
+the Recipe's title, description, and close presentation.
 
-`reason` defaults to `"close"`. Set `reason="action"` when activation reports
-an accepted Dialog action through `onOpenChange`.
-
-Core `DialogOptions` extends `DialogRootOptions` and adds `width`; the Core
-helpers expose the assembled Parts instead of framework Recipe exports.
-
-## Build with the Primitive
-
-Compose the packaged [Dialog Primitive](/primitives/dialog) when you need a
-different Portal, Backdrop, or Popup structure than `DialogContent` provides.
+For a different Portal, Backdrop, or Popup structure, compose the packaged
+[Dialog Primitive](/primitives/dialog).

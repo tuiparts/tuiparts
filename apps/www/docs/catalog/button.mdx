@@ -76,20 +76,10 @@ from the [Theme Recipe](/theming).
 
 ## Behavior
 
-| Key | Behavior |
-| --- | --- |
-| `Enter` or `Return` | Activates the Button. |
-| `Space` | Activates the Button. |
-
-An uncancelled primary-pointer release and `press()` request the same action.
-Disabled Buttons reject focus and activation.
-
-For transient pressed state, activation details, imperative actions, and raw
-composition, see the [Button Primitive](/primitives/button).
+Button responds to Enter, Return, Space, primary-pointer release, and
+imperative `press()`. Disabled Buttons reject focus and activation.
 
 ## Recipe API
-
-### React and Solid props
 
 <TypeTable
   type={{
@@ -111,16 +101,9 @@ composition, see the [Button Primitive](/primitives/button).
   }}
 />
 
-The Recipe extends `ButtonPrimitive.Props` except for `children`, which the
-Recipe owns to render its label.
+React and Solid add these fields while forwarding the remaining Primitive
+props. Core adds the same fields; its starter factory also accepts `disabled`
+and `onPress`, but does not forward arbitrary presentation options.
 
-### Core options
-
-`ButtonOptions` exposes `label`, `intent`, `size`, `disabled`, and `onPress`.
-Native presentation options are not forwarded by this starter Core factory;
-edit the installed class when you want to expose more.
-
-## Build with the Primitive
-
-Use the packaged [Button Primitive](/primitives/button) when you want to own
-the child tree and visual API without starting from the Recipe.
+To own the child tree and visual API without starting from copied source, use
+the packaged [Button Primitive](/primitives/button).

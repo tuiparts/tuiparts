@@ -34,12 +34,37 @@ type TextareaProps = TextareaOptions & {
 
 /** React adapter for the OpenTUI-native Textarea Primitive. */
 export function Textarea(props: Textarea.Props): ReactElement {
-  // OpenTUI's cursorColor setter does not accept the undefined value React
-  // uses to remove an optional prop. Reset it to the native constructor
-  // default without replacing the Renderable or its EditBuffer.
+  // OpenTUI 0.4.3 setters do not all interpret React's removal value as the
+  // constructor default. Normalize only those concrete properties here; the
+  // remaining color, callback, event, and Yoga setters already clear safely.
   return createElement(TEXTAREA_TAG, {
     ...props,
+    attributes: props.attributes ?? 0,
+    buffered: props.buffered ?? false,
     cursorColor: props.cursorColor ?? "#FFFFFF",
+    cursorStyle: props.cursorStyle ?? { style: "block", blinking: true },
+    disabled: props.disabled ?? false,
+    flexShrink:
+      props.flexShrink ??
+      (typeof props.width === "number" || typeof props.height === "number"
+        ? 0
+        : 1),
+    height: props.height ?? "auto",
+    keyAliasMap: props.keyAliasMap ?? {},
+    keyBindings: props.keyBindings ?? [],
+    live: props.live ?? false,
+    opacity: props.opacity ?? 1,
+    overflow: props.overflow ?? "visible",
+    position: props.position ?? "relative",
+    scrollMargin: props.scrollMargin ?? 0.2,
+    scrollSpeed: props.scrollSpeed ?? 16,
+    selectable: props.selectable ?? true,
+    showCursor: props.showCursor ?? true,
+    syntaxStyle: props.syntaxStyle ?? null,
+    visible: props.visible ?? true,
+    width: props.width ?? "auto",
+    wrapMode: props.wrapMode ?? "word",
+    zIndex: props.zIndex ?? 0,
   });
 }
 

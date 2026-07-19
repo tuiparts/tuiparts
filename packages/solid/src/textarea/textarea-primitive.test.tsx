@@ -104,14 +104,22 @@ describe("Solid Textarea", () => {
             ref={(value) => {
               textarea = value;
             }}
+            attributes={custom() ? 1 : undefined}
             cursorColor={custom() ? "#FF0000" : undefined}
             cursorStyle={
               custom() ? { style: "line", blinking: false } : undefined
             }
-            keyAliasMap={custom() ? { accept: "return" } : undefined}
+            keyAliasMap={custom() ? { return: "x" } : undefined}
             keyBindings={
-              custom() ? [{ name: "x", action: "submit" }] : undefined
+              custom() ? [{ name: "q", action: "submit" }] : undefined
             }
+            scrollMargin={custom() ? 0.5 : undefined}
+            scrollSpeed={custom() ? 4 : undefined}
+            selectable={custom() ? false : undefined}
+            showCursor={custom() ? false : undefined}
+            tabIndicator={custom() ? ">" : undefined}
+            tabIndicatorColor={custom() ? "#00FF00" : undefined}
+            wrapMode={custom() ? "none" : undefined}
             onSubmit={() => submissions.push("submit")}
           />
         );
@@ -121,20 +129,60 @@ describe("Solid Textarea", () => {
     const retained = textarea;
     const editBuffer = textarea?.editBuffer;
     textarea?.focus();
+    await setup.mockInput.typeText("q");
     await setup.mockInput.typeText("x");
 
     expect(submissions).toEqual(["submit"]);
-    expect(textarea?.plainText).toBe("");
+    expect(textarea?.plainText).toBe("\n");
 
     removeOverrides();
     await setup.waitFor(() => textarea?.cursorStyle.style === "block");
-    await setup.mockInput.typeText("x");
+    await setup.mockInput.typeText("xq");
 
     expect(textarea).toBe(retained);
     expect(textarea?.editBuffer).toBe(editBuffer);
-    expect(textarea?.plainText).toBe("x");
+    expect(textarea?.plainText).toBe("\nxq");
     expect(submissions).toEqual(["submit"]);
+    expect(textarea?.attributes).toBe(0);
+    expect(textarea?.cursorColor.toInts()).toEqual([255, 255, 255, 255]);
     expect(textarea?.cursorStyle).toEqual({ style: "block", blinking: true });
+    expect(textarea?.scrollMargin).toBe(0.2);
+    expect(textarea?.scrollSpeed).toBe(16);
+    expect(textarea?.selectable).toBe(true);
+    expect(textarea?.showCursor).toBe(true);
+    expect(textarea?.tabIndicator).toBeUndefined();
+    expect(textarea?.tabIndicatorColor).toBeUndefined();
+    expect(textarea?.wrapMode).toBe("word");
+  });
+
+  it("restores boolean disabled when the prop is omitted", async () => {
+    let textarea: TextareaRenderable | undefined;
+    let omitDisabled: () => void = () => {};
+    setup = await testRender(
+      () => {
+        const [disabled, setDisabled] = createSignal(true);
+        omitDisabled = () => setDisabled(false);
+        return (
+          <Textarea
+            ref={(value) => {
+              textarea = value;
+            }}
+            {...(disabled() ? { disabled: true } : {})}
+          />
+        );
+      },
+      { width: 30, height: 6 },
+    );
+    const retained = textarea;
+    const editBuffer = textarea?.editBuffer;
+
+    omitDisabled();
+    await setup.waitFor(() => textarea?.disabled === false);
+
+    expect(textarea).toBe(retained);
+    expect(textarea?.editBuffer).toBe(editBuffer);
+    expect(textarea?.disabled).toBe(false);
+    expect(typeof textarea?.disabled).toBe("boolean");
   });
 
   it("destroys the actual Core Renderable during cleanup", async () => {

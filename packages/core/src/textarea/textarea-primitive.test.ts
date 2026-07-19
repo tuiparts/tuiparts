@@ -147,12 +147,21 @@ describe("TextareaRenderable", () => {
     await setup?.mockMouse.scroll(1, 1, "down");
     expect(textarea.scrollY).toBeGreaterThan(0);
     await setup?.mockMouse.pressDown(1, 0);
+    const rendererSelection = setup?.renderer.getSelection();
+    expect(rendererSelection?.isDragging).toBe(true);
+    expect(rendererSelection?.touchedRenderables).toContain(textarea);
     const cursor = textarea.cursorOffset;
     const selection = textarea.getSelection();
     const scrollY = textarea.scrollY;
     textarea.disabled = true;
+
+    expect(setup?.renderer.getSelection()).toBeNull();
+    expect(textarea.getSelection()).toEqual(selection);
+
     await setup?.mockMouse.moveTo(7, 1);
+    expect(setup?.renderer.getSelection()).toBeNull();
     await setup?.mockMouse.release(7, 1);
+    expect(setup?.renderer.getSelection()).toBeNull();
     await setup?.mockMouse.scroll(1, 1, "up");
 
     expect(textarea.cursorOffset).toBe(cursor);
@@ -167,5 +176,8 @@ describe("TextareaRenderable", () => {
 
     expect(textarea.isDestroyed).toBe(true);
     expect(textarea.parent).toBeNull();
+    expect(() => {
+      textarea.disabled = true;
+    }).not.toThrow();
   });
 });

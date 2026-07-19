@@ -91,10 +91,18 @@ describe("React Textarea", () => {
       removeOverrides = () => setCustom(false);
       return createElement(Textarea, {
         ref,
+        attributes: custom ? 1 : undefined,
         cursorColor: custom ? "#FF0000" : undefined,
         cursorStyle: custom ? { style: "line", blinking: false } : undefined,
-        keyAliasMap: custom ? { accept: "return" } : undefined,
-        keyBindings: custom ? [{ name: "x", action: "submit" }] : undefined,
+        keyAliasMap: custom ? { return: "x" } : undefined,
+        keyBindings: custom ? [{ name: "q", action: "submit" }] : undefined,
+        scrollMargin: custom ? 0.5 : undefined,
+        scrollSpeed: custom ? 4 : undefined,
+        selectable: custom ? false : undefined,
+        showCursor: custom ? false : undefined,
+        tabIndicator: custom ? ">" : undefined,
+        tabIndicatorColor: custom ? "#00FF00" : undefined,
+        wrapMode: custom ? "none" : undefined,
         onSubmit: () => submissions.push("submit"),
       });
     }
@@ -102,22 +110,56 @@ describe("React Textarea", () => {
     const retained = ref.current;
     const editBuffer = ref.current?.editBuffer;
     await act(async () => ref.current?.focus());
+    await act(async () => setup?.mockInput.typeText("q"));
     await act(async () => setup?.mockInput.typeText("x"));
 
     expect(submissions).toEqual(["submit"]);
-    expect(ref.current?.plainText).toBe("");
+    expect(ref.current?.plainText).toBe("\n");
 
     await act(async () => removeOverrides?.());
-    await act(async () => setup?.mockInput.typeText("x"));
+    await act(async () => setup?.mockInput.typeText("xq"));
 
     expect(ref.current).toBe(retained);
     expect(ref.current?.editBuffer).toBe(editBuffer);
-    expect(ref.current?.plainText).toBe("x");
+    expect(ref.current?.plainText).toBe("\nxq");
     expect(submissions).toEqual(["submit"]);
+    expect(ref.current?.attributes).toBe(0);
+    expect(ref.current?.cursorColor.toInts()).toEqual([255, 255, 255, 255]);
     expect(ref.current?.cursorStyle).toEqual({
       style: "block",
       blinking: true,
     });
+    expect(ref.current?.scrollMargin).toBe(0.2);
+    expect(ref.current?.scrollSpeed).toBe(16);
+    expect(ref.current?.selectable).toBe(true);
+    expect(ref.current?.showCursor).toBe(true);
+    expect(ref.current?.tabIndicator).toBeUndefined();
+    expect(ref.current?.tabIndicatorColor).toBeUndefined();
+    expect(ref.current?.wrapMode).toBe("word");
+  });
+
+  it("restores boolean disabled when the prop is omitted", async () => {
+    const ref = createRef<TextareaRenderable>();
+    let omitDisabled: (() => void) | undefined;
+    function App() {
+      const [disabled, setDisabled] = useState(true);
+      omitDisabled = () => setDisabled(false);
+      return createElement(Textarea, {
+        ref,
+        ...(disabled ? { disabled: true } : {}),
+      });
+    }
+    setup = await testRender(createElement(App), { width: 30, height: 6 });
+    const retained = ref.current;
+    const editBuffer = ref.current?.editBuffer;
+
+    await act(async () => omitDisabled?.());
+    await setup.waitFor(() => ref.current?.disabled === false);
+
+    expect(ref.current).toBe(retained);
+    expect(ref.current?.editBuffer).toBe(editBuffer);
+    expect(ref.current?.disabled).toBe(false);
+    expect(typeof ref.current?.disabled).toBe("boolean");
   });
 
   it("sets and clears a ref to the actual Core Renderable", async () => {

@@ -165,26 +165,24 @@ export function Popup({ children, ref, ...props }: Popup.Props) {
 function TextPart({
   tag,
   children,
-  store,
   ...props
 }: {
   tag: string;
   children?: ReactNode;
-  store: DialogStore;
   [key: string]: unknown;
 }) {
-  return createElement(tag, { ...props, store }, children);
+  return createElement(tag, props, children);
 }
 export function Title({ children, ...props }: Title.Props) {
   return (
-    <TextPart tag={tags.title} store={useStore("Title")} {...props}>
+    <TextPart tag={tags.title} {...props}>
       {children}
     </TextPart>
   );
 }
 export function Description({ children, ...props }: Description.Props) {
   return (
-    <TextPart tag={tags.description} store={useStore("Description")} {...props}>
+    <TextPart tag={tags.description} {...props}>
       {children}
     </TextPart>
   );

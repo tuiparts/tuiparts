@@ -56,7 +56,6 @@ describe("Dialog Core primitive", () => {
         store: root.store,
       });
       const title = new DialogTitleRenderable(setup.renderer, {
-        store: root.store,
         content: "caller text",
       });
       const layer = dialog(setup.renderer, root.store);

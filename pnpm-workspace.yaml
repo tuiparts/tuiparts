@@ -2,6 +2,7 @@ packages:
   - "packages/*"
   - "examples/*"
   - "apps/*"
+  - "registry"
 
 catalog:
   "@opentui/core": "^0.4.3"

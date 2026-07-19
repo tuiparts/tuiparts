@@ -4,7 +4,7 @@ import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
 import type { ButtonRenderable, ButtonState } from "@tuiparts/core/button";
 import { act, createElement, type ReactNode, useState } from "react";
-import { Button } from "./button";
+import { Button } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 

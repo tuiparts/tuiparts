@@ -10,7 +10,7 @@ import type {
   ButtonState,
 } from "@tuiparts/core/button";
 import { createSignal } from "solid-js";
-import { Button } from "./button";
+import { Button } from "./primitive";
 
 let setup: TestRendererSetup | undefined;
 

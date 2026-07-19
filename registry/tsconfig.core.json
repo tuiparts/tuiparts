@@ -1,0 +1,19 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "rootDirs": [
+      "badge",
+      "button",
+      "checkbox",
+      "dialog",
+      "input",
+      "radio-group",
+      "switch",
+      "theme",
+      "toggle",
+      "toggle-group"
+    ]
+  },
+  "include": ["*/core.ts", "theme/theme.ts", "theme/themes/*.ts"]
+}

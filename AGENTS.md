@@ -1,6 +1,6 @@
 # PROJECT KNOWLEDGE BASE
 
-**Updated:** 2026-07-15
+**Updated:** 2026-07-19
 ## OVERVIEW
 
 tuiparts.sh — the primitive and recipe ecosystem for OpenTUI (npm scope
@@ -24,7 +24,7 @@ tuiparts/
 │   ├── toast/        # Independently versioned Toast companion package
 │   └── utils/        # Shared utilities (padding resolution, etc.)
 ├── registry/         # Consumer-owned Core/React/Solid recipe source
-└── scripts/          # Package scaffolding
+└── scripts/          # Registry build and foundation validation scripts
 ```
 
 ## WHERE TO LOOK
@@ -39,7 +39,6 @@ tuiparts/
 | Editable recipes | `registry/` | Framework-specific source built on packaged primitives |
 | React binding | `packages/react/src/` | Mirrors core structure |
 | Solid binding | `packages/solid/src/` | Mirrors core structure |
-| New package | `./scripts/create-package.sh` | Scaffolds package structure |
 
 ## CODE MAP
 
@@ -50,7 +49,7 @@ tuiparts/
 | `CheckedStore` | Class | `packages/core/src/internal/checked-store.ts` | Shared checked-state behavior for Checkbox and Switch |
 | `toast` | Object | `packages/toast/src/state.ts` | Global toast API (toast.success, toast.error, etc.) |
 | `ToasterRenderable` | Class | `packages/toast/src/renderables/toaster.ts` | Container that manages toast notifications |
-| `DialogStore` | Class | `packages/core/src/dialog/index.ts` | Foundation Dialog state and layer coordination |
+| `DialogStore` | Class | `packages/core/src/dialog/primitive.ts` | Foundation Dialog state and layer coordination |
 | `DialogManager` | Class | `packages/dialog/src/manager.ts` | Production convenience state with prompt/confirm/alert/choice |
 | `DialogContainerRenderable` | Class | `packages/dialog/src/renderables/dialog-container.ts` | Container that renders dialogs with backdrop |
 
@@ -91,7 +90,6 @@ pnpm lint            # Lint with Biome
 pnpm format          # Format with Biome
 pnpm changeset       # Create a changeset
 pnpm release         # Build + publish
-pnpm create <name>   # Scaffold new package
 ```
 
 ## NOTES

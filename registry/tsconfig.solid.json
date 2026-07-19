@@ -1,0 +1,22 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "@opentui/solid",
+    "noEmit": true,
+    "rootDirs": [
+      "badge",
+      "button",
+      "checkbox",
+      "dialog",
+      "input",
+      "radio-group",
+      "switch",
+      "theme",
+      "toggle",
+      "toggle-group",
+      "shims/solid"
+    ]
+  },
+  "include": ["*/solid.tsx"]
+}

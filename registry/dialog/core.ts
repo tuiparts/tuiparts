@@ -101,7 +101,6 @@ export function addDialogTitle(
   content: string,
 ): DialogTitleRenderable {
   const title = new DialogTitleRenderable(ctx, {
-    store: dialog.root.store,
     content,
   });
   bindThemeStyle(title, (tokens) => {
@@ -117,7 +116,6 @@ export function addDialogDescription(
   content: string,
 ): DialogDescriptionRenderable {
   const description = new DialogDescriptionRenderable(ctx, {
-    store: dialog.root.store,
     content,
   });
   bindThemeStyle(description, (tokens) => {

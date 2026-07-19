@@ -12,6 +12,8 @@ import {
 } from "../internal/roving-collection";
 import { ToggleRenderable } from "../toggle/primitive";
 
+// These public aliases deliberately insulate API vocabulary from the internal
+// roving-collection vocabulary, so internal names never leak into declarations.
 /** Stable identity for a Toggle registered with a ToggleGroup. */
 export type ToggleGroupItemKey = CollectionItemKey;
 
@@ -239,7 +241,7 @@ export class ToggleGroupRenderable extends RovingCollectionRenderable<
   ToggleGroupState,
   ToggleGroupItemState
 > {
-  private readonly groupStore: ToggleGroupStore;
+  private readonly _store: ToggleGroupStore;
 
   /** Creates a ToggleGroup Renderable. */
   constructor(ctx: RenderContext, options: ToggleGroupOptions = {}) {
@@ -274,79 +276,79 @@ export class ToggleGroupRenderable extends RovingCollectionRenderable<
       if (onValueChange !== undefined) store.setOnValueChange(onValueChange);
     }
     super(ctx, boxOptions, groupStore);
-    this.groupStore = groupStore;
+    this._store = groupStore;
   }
 
   /** Store owned by this group. */
   get store(): ToggleGroupStore {
-    return this.groupStore;
+    return this._store;
   }
 
   /** Prevents replacement of a mounted group Store. */
   set store(store: ToggleGroupStore) {
-    if (store !== this.groupStore)
+    if (store !== this._store)
       throw new Error("ToggleGroup store cannot be replaced");
   }
 
   /** Current immutable group state. */
   getState(): ToggleGroupState {
-    return this.groupStore.state;
+    return this._store.state;
   }
 
   /** Current pressed Toggle values. */
   get value(): readonly string[] {
-    return this.groupStore.state.value;
+    return this._store.state.value;
   }
 
   set value(value: readonly string[] | undefined) {
-    this.groupStore.setValue(value);
+    this._store.setValue(value);
   }
 
   /** Whether the entire group is disabled. */
   get disabled(): boolean {
-    return this.groupStore.state.disabled;
+    return this._store.state.disabled;
   }
 
   set disabled(disabled: boolean | null | undefined) {
-    this.groupStore.setDisabled(disabled ?? false);
+    this._store.setDisabled(disabled ?? false);
   }
 
   /** Whether multiple Toggles may be pressed. */
   get multiple(): boolean {
-    return this.groupStore.state.multiple;
+    return this._store.state.multiple;
   }
 
   set multiple(multiple: boolean | null | undefined) {
-    this.groupStore.setMultiple(multiple ?? false);
+    this._store.setMultiple(multiple ?? false);
   }
 
   /** Keyboard-navigation orientation. */
   get orientation(): ToggleGroupOrientation {
-    return this.groupStore.state.orientation;
+    return this._store.state.orientation;
   }
 
   set orientation(orientation: ToggleGroupOrientation | null | undefined) {
-    this.groupStore.setOrientation(orientation ?? "horizontal");
+    this._store.setOrientation(orientation ?? "horizontal");
   }
 
   /** Whether keyboard navigation wraps at collection edges. */
   get loopFocus(): boolean {
-    return this.groupStore.loopFocus;
+    return this._store.loopFocus;
   }
 
   set loopFocus(loopFocus: boolean | null | undefined) {
-    this.groupStore.setLoopFocus(loopFocus ?? true);
+    this._store.setLoopFocus(loopFocus ?? true);
   }
 
   /** Replaces the value-change callback. */
   set onValueChange(callback: ToggleGroupValueChangeHandler | undefined) {
-    this.groupStore.setOnValueChange(callback);
+    this._store.setOnValueChange(callback);
   }
 
   protected itemKeyFor(
     child: BaseRenderable,
   ): ToggleGroupItemKey | null | undefined {
-    return child instanceof ToggleRenderable && child.group === this.groupStore
+    return child instanceof ToggleRenderable && child.group === this._store
       ? (child.groupKey ?? null)
       : undefined;
   }

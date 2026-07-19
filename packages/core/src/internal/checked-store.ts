@@ -34,10 +34,6 @@ export class CheckedStore<Brand extends string = string> {
     return this.snapshot;
   }
 
-  getState(): CheckedState {
-    return this.snapshot;
-  }
-
   subscribe(listener: ToggleStateListener): () => void {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
@@ -81,6 +77,8 @@ export class CheckedStore<Brand extends string = string> {
     )
       return;
     this.snapshot = Object.freeze(state);
-    for (const listener of this.listeners) listener(state);
+    for (const listener of [...this.listeners]) {
+      if (this.listeners.has(listener)) listener(state);
+    }
   }
 }

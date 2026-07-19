@@ -1,0 +1,103 @@
+---
+title: Toggle
+description: Compose a single-Part action with retained pressed state.
+---
+
+Toggle is a two-state action whose pressed state remains visible. It owns
+activation and standalone state, and it can adopt selection from a
+[Toggle Group](/primitives/toggle-group). Use [Button](/primitives/button) for
+an action without a retained value.
+
+## Install
+
+Install the [package for your runtime](/primitives#install), then import the
+`toggle` subpath:
+
+```ts
+import { Toggle } from "@tuiparts/react/toggle";
+```
+
+Replace `react` with `solid`, or import `ToggleRenderable` from
+`@tuiparts/core/toggle`.
+
+## Anatomy
+
+| Part | Responsibility |
+| --- | --- |
+| `Toggle` | Owns standalone pressed state, focus, disabled behavior, activation, and optional Toggle Group membership. |
+
+Toggle is deliberately a single-Part Primitive. Arbitrary children and the
+readonly state callback are its presentation seam.
+
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { Toggle } from "@tuiparts/react/toggle";
+
+<Toggle defaultPressed paddingLeft={1} paddingRight={1}>
+  {(state) => <text content={state.pressed ? "[x] Bold" : "[ ] Bold"} />}
+</Toggle>;
+```
+
+```tsx Solid
+import { Toggle } from "@tuiparts/solid/toggle";
+
+<Toggle defaultPressed paddingLeft={1} paddingRight={1}>
+  {(state) => <text content={state.pressed ? "[x] Bold" : "[ ] Bold"} />}
+</Toggle>;
+```
+
+```ts Core
+import { TextRenderable } from "@opentui/core";
+import { ToggleRenderable } from "@tuiparts/core/toggle";
+
+const toggle = new ToggleRenderable(ctx, {
+  defaultPressed: true,
+  onPressedChange: (pressed) => console.log({ pressed }),
+});
+
+toggle.add(new TextRenderable(ctx, { content: "Bold" }));
+parent.add(toggle);
+```
+
+</CodeGroup>
+
+## State ownership
+
+A standalone Toggle uses `pressed` with `onPressedChange` for controlled
+ownership, or `defaultPressed` for uncontrolled initial state. Readonly state
+contains `pressed`, `disabled`, `focused`, and `tabbable`.
+
+Inside Toggle Group, Toggle requires a unique `value` and adopts the group's
+array-valued selection. Standalone `pressed` and `defaultPressed` no longer
+own its state in that context.
+
+## Interaction
+
+| Input | Behavior |
+| --- | --- |
+| `Enter`, `Return`, or `Space` | Requests the opposite pressed value. |
+| Primary-pointer release | Requests the same change unless cancelled. |
+| `press()` | Requests the same change imperatively. |
+
+`onPressedChange` receives immutable details with an imperative, keyboard, or
+pointer source. Disabled Toggles reject focus and activation.
+
+## API reference
+
+| Surface | API |
+| --- | --- |
+| React and Solid | `Toggle.Props`, `Toggle.State`, `Toggle.ChangeDetails` |
+| Core | `ToggleRenderable`, `ToggleStore`, `ToggleOptions`, `ToggleState` |
+| Standalone options | `pressed`, `defaultPressed`, `onPressedChange`, `disabled` |
+| Group options | `value`; group Store wiring is automatic in React and Solid |
+
+All remaining props or options are native OpenTUI Box properties. Framework
+refs target the actual `ToggleRenderable`.
+
+## Start with the Recipe
+
+The editable [Toggle Recipe](/catalog/toggle) adds a label, spacing, and
+state-dependent colors.

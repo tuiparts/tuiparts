@@ -29,7 +29,9 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/toggle-group
 
 </CodeGroup>
 
-## React and Solid
+## Use the Recipe
+
+### React and Solid
 
 ```tsx
 import {
@@ -47,7 +49,7 @@ import {
 The Recipe uses a horizontal layout unless `orientation="vertical"` is set.
 Set `multiple` to allow more than one pressed value.
 
-## Core
+### Core
 
 ```ts
 import {
@@ -77,7 +79,14 @@ parent.add(alignment);
 
 Each Core item receives the group's Store explicitly.
 
-## Selection
+## Customize the Recipe
+
+The copied source owns group layout and its labeled `ToggleGroupItem`
+presentation. Edit it to change item content, selected styling, spacing, or
+the convenience props forwarded by the Core factories. Shared colors and
+density come from the [Theme Recipe](/theming).
+
+## Behavior
 
 `value`, `defaultValue`, and `onValueChange` always use arrays. In the default
 single-selection mode, only the first unique value is retained and pressing
@@ -85,8 +94,6 @@ the active item can clear the group. With `multiple`, every unique active
 value is retained.
 
 Focus movement does not change selection.
-
-## Keyboard interaction
 
 | Key | Behavior |
 | --- | --- |
@@ -98,6 +105,9 @@ Focus movement does not change selection.
 
 Unavailable items are skipped. Navigation wraps by default; set
 `loopFocus={false}` to stop at the collection edges.
+
+For collection registration, group Store ownership, and raw composition with
+Toggle, see the [Toggle Group Primitive](/primitives/toggle-group).
 
 ## Recipe API
 
@@ -141,3 +151,8 @@ React and Solid items require `value` and `label`, and otherwise extend Toggle
 Primitive props except for `children` and `value`. The Core
 `ToggleGroupItemOptions` starter surface contains `value`, `label`, and
 `disabled`; edit the installed factory to expose additional item callbacks.
+
+## Build with the Primitive
+
+Compose [Toggle Group and Toggle](/primitives/toggle-group) directly when you
+want a different item structure or design-system API.

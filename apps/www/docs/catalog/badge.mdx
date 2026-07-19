@@ -30,7 +30,9 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/badge
 
 </CodeGroup>
 
-## React and Solid
+## Use the Recipe
+
+### React and Solid
 
 ```tsx
 import { Badge } from "./components/ui/badge";
@@ -42,7 +44,7 @@ import { Badge } from "./components/ui/badge";
 Native Box properties apply to the root. `labelOptions` applies native Text
 properties to the label.
 
-## Core
+### Core
 
 ```ts
 import { createBadge } from "./components/ui/badge";
@@ -56,6 +58,13 @@ parent.add(status);
 ```
 
 The factory returns a `BoxRenderable` containing the Text label.
+
+## Customize the Recipe
+
+The copied source owns label assembly, intent palettes, horizontal padding,
+size choices, and visual defaults. Edit it to add variants or different child
+content. Instance Box properties and `labelOptions` override starter values;
+shared colors and density come from the [Theme Recipe](/theming).
 
 ## Recipe API
 

@@ -1,0 +1,75 @@
+---
+title: Overview
+description: Compose packaged OpenTUI behavior into custom controls and design systems.
+sidebar:
+  order: 1
+---
+
+Primitives are visually unstyled behavior units distributed through the
+`@tuiparts/core`, `@tuiparts/react`, and `@tuiparts/solid` packages. Use them
+when you want tested interaction behavior while retaining complete ownership
+of layout, content, glyphs, colors, and public convenience APIs.
+
+If you want an editable starting point with presentation already assembled,
+choose a [Recipe from the Catalog](/catalog).
+
+## Install
+
+Install the package for your runtime together with its peer dependencies:
+
+<CodeGroup>
+
+```bash React
+pnpm add @tuiparts/react @tuiparts/core @opentui/react @opentui/core react
+```
+
+```bash Solid
+pnpm add @tuiparts/solid @tuiparts/core @opentui/solid @opentui/core solid-js
+```
+
+```bash Core
+pnpm add @tuiparts/core @opentui/core
+```
+
+</CodeGroup>
+
+Import each Primitive from its package subpath, such as
+`@tuiparts/react/checkbox` or `@tuiparts/core/dialog`.
+
+## Choose a Primitive
+
+| Primitive | Use it for | Public shape |
+| --- | --- | --- |
+| [Button](/primitives/button) | An action without retained on/off state | `Button` |
+| [Input](/primitives/input) | Single-line text entry | `Input` |
+| [Checkbox](/primitives/checkbox) | An independent checked choice | `Root`, `Indicator` |
+| [Switch](/primitives/switch) | A checked setting | `Root`, `Thumb` |
+| [Toggle](/primitives/toggle) | An action with retained pressed state | `Toggle` |
+| [Toggle Group](/primitives/toggle-group) | Related Toggles with shared selection and roving focus | `ToggleGroup`, `Toggle` |
+| [Radio Group](/primitives/radio-group) | One mutually exclusive selection from a collection | `RadioGroup`, `Radio.Root`, `Radio.Indicator` |
+| [Dialog](/primitives/dialog) | A modal layer with dismissal and focus containment | Eight composable Parts |
+
+There is no Badge Primitive. Badge has no reusable interaction behavior, so
+it is available only as an editable [Badge Recipe](/catalog/badge).
+
+## One behavior model
+
+Core owns the framework-neutral Stores and Renderables. React and Solid adapt
+those same objects to compound JSX APIs and hide Store wiring through runtime
+context. State transitions, interaction rules, and imperative Renderable refs
+remain aligned across all three runtimes.
+
+Framework children may be ordinary JSX or a function receiving readonly
+Primitive state. Core callers subscribe to the corresponding Store or
+Renderable when presentation needs to reflect state.
+
+## Composition and ownership
+
+Primitives own behavior: state transitions, activation, focus, collections,
+overlays, and lifecycle. Your design system owns presentation and assembly.
+Parts are real OpenTUI nodes, so native properties, children, and Renderable
+refs remain available.
+
+For the conceptual boundary between packaged behavior and copied
+presentation, read [Architecture](/architecture). For a ready-made assembly,
+follow the Recipe link on each Primitive page.

@@ -28,7 +28,9 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/toggle
 
 </CodeGroup>
 
-## React and Solid
+## Use the Recipe
+
+### React and Solid
 
 ```tsx
 import { Toggle } from "./components/ui/toggle";
@@ -45,7 +47,7 @@ import { Toggle } from "./components/ui/toggle";
 Use `pressed` with `onPressedChange` for controlled ownership, or
 `defaultPressed` for uncontrolled initial state.
 
-## Core
+### Core
 
 ```ts
 import { createToggle } from "./components/ui/toggle";
@@ -60,7 +62,13 @@ parent.add(bold);
 
 The factory returns `ToggleRenderable`.
 
-## Standalone and grouped ownership
+## Customize the Recipe
+
+The copied source owns the label child tree, spacing, and pressed-state color
+mapping. Edit it to add icons, variants, or another layout. Shared colors and
+density come from the [Theme Recipe](/theming).
+
+## Behavior
 
 The package export is the single-part `Toggle`, not `Toggle.Root`. A
 standalone Toggle owns its pressed value. Inside a Toggle Group it requires a
@@ -69,8 +77,6 @@ unique `value` and adopts the group's array-valued selection.
 Use the [Toggle Group Recipe](/catalog/toggle-group) when related Toggles
 should share a single keyboard stop.
 
-## Keyboard interaction
-
 | Key | Behavior |
 | --- | --- |
 | `Enter` or `Return` | Toggles pressed state. |
@@ -78,6 +84,9 @@ should share a single keyboard stop.
 
 An uncancelled primary-pointer release and `press()` request the same change.
 Disabled Toggles reject focus and activation.
+
+For standalone and grouped state ownership, change details, and raw
+composition, see the [Toggle Primitive](/primitives/toggle).
 
 ## Recipe API
 
@@ -109,3 +118,8 @@ Disabled Toggles reject focus and activation.
 
 React and Solid extend `TogglePrimitive.Props` except for `children`. Core
 `ToggleOptions` exposes the fields above through `createToggle()`.
+
+## Build with the Primitive
+
+Use the packaged [Toggle Primitive](/primitives/toggle) when you want to own
+the pressed-state presentation rather than start from the labeled Recipe.

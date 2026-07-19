@@ -1,0 +1,123 @@
+---
+title: Checkbox
+description: Compose an independent checked choice from Root and Indicator Parts.
+---
+
+Checkbox owns an independent boolean choice without prescribing its mark,
+label, layout, or colors. Use [Switch](/primitives/switch) for a setting that
+takes effect immediately and [Radio Group](/primitives/radio-group) for one
+selection from a set.
+
+## Install
+
+Install the [package for your runtime](/primitives#install), then import the
+`checkbox` subpath:
+
+```ts
+import { Checkbox } from "@tuiparts/react/checkbox";
+```
+
+Replace `react` with `solid`. Core exports the Checkbox Renderables and Store
+from `@tuiparts/core/checkbox`.
+
+## Anatomy
+
+| Part | Responsibility |
+| --- | --- |
+| `Checkbox.Root` | Owns checked state, focus, disabled behavior, and activation. |
+| `Checkbox.Indicator` | Reflects the Root's checked state and remains mounted with its visibility synchronized. |
+
+Indicator does not choose a mark or layout. You can omit it when another part
+of your presentation already communicates checked state.
+
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { Checkbox } from "@tuiparts/react/checkbox";
+
+<Checkbox.Root defaultChecked flexDirection="row" gap={1}>
+  {(state) => (
+    <>
+      <Checkbox.Indicator>
+        <text content="✓" />
+      </Checkbox.Indicator>
+      <text content={state.checked ? "Enabled" : "Disabled"} />
+    </>
+  )}
+</Checkbox.Root>;
+```
+
+```tsx Solid
+import { Checkbox } from "@tuiparts/solid/checkbox";
+
+<Checkbox.Root defaultChecked flexDirection="row" gap={1}>
+  {(state) => (
+    <>
+      <Checkbox.Indicator>
+        <text content="✓" />
+      </Checkbox.Indicator>
+      <text content={state.checked ? "Enabled" : "Disabled"} />
+    </>
+  )}
+</Checkbox.Root>;
+```
+
+```ts Core
+import { TextRenderable } from "@opentui/core";
+import {
+  CheckboxIndicatorRenderable,
+  CheckboxRootRenderable,
+} from "@tuiparts/core/checkbox";
+
+const root = new CheckboxRootRenderable(ctx, { defaultChecked: true, gap: 1 });
+const indicator = new CheckboxIndicatorRenderable(ctx, { store: root.store });
+
+indicator.add(new TextRenderable(ctx, { content: "✓" }));
+root.add(indicator);
+root.add(new TextRenderable(ctx, { content: "Enable notifications" }));
+parent.add(root);
+```
+
+</CodeGroup>
+
+React and Solid connect Indicator to Root through context. Core callers pass
+the Root's Store explicitly.
+
+## State ownership
+
+Use `checked` with `onCheckedChange` for controlled ownership, or
+`defaultChecked` for uncontrolled initial state. Readonly state contains
+`checked`, `disabled`, and `focused`.
+
+Core callers can construct a `CheckboxStore` separately or use the Store
+created by `CheckboxRootRenderable`. An Indicator may be reattached to another
+Checkbox Store by assigning its `store` property.
+
+## Interaction
+
+| Input | Behavior |
+| --- | --- |
+| `Enter`, `Return`, or `Space` | Requests the opposite checked value. |
+| Primary-pointer release | Requests the same change unless cancelled. |
+| `press()` | Requests the same change imperatively. |
+
+Disabled Checkboxes reject focus and activation.
+
+## API reference
+
+| Surface | API |
+| --- | --- |
+| React and Solid | `Checkbox.Root`, `Checkbox.Indicator` and their scoped `Props` types |
+| Core | `CheckboxRootRenderable`, `CheckboxIndicatorRenderable`, `CheckboxStore` |
+| State | `checked`, `disabled`, `focused` |
+| Root options | `checked`, `defaultChecked`, `disabled`, `onCheckedChange` |
+| Indicator options | Native Box properties; Core additionally requires `store` |
+
+Framework refs target the matching Root or Indicator Renderable.
+
+## Start with the Recipe
+
+The editable [Checkbox Recipe](/catalog/checkbox) adds a one-cell mark, label,
+tone, and theme token mapping.

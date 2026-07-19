@@ -1,0 +1,187 @@
+---
+title: Dialog
+description: Compose a modal layer from state, trigger, portal, backdrop, and popup Parts.
+---
+
+Dialog packages open-state transitions, renderer-scoped layers, topmost
+dismissal, focus containment, and focus restoration. It does not choose popup
+layout, backdrop appearance, borders, spacing, or controls.
+
+Prefer inline controls when a task does not need to interrupt the current
+context.
+
+## Install
+
+Install the [package for your runtime](/primitives#install), then import the
+`dialog` subpath:
+
+```ts
+import { Dialog } from "@tuiparts/react/dialog";
+```
+
+Replace `react` with `solid`. Core exports every Dialog Renderable and Store
+from `@tuiparts/core/dialog`.
+
+## Anatomy
+
+| Part | Responsibility |
+| --- | --- |
+| `Dialog.Root` | Owns open state and provides the Store to related Parts. |
+| `Dialog.Trigger` | Requests opening and records the focus-restoration target. |
+| `Dialog.Portal` | Registers the renderer-scoped layer and shows it while open. |
+| `Dialog.Backdrop` | Covers content behind the Popup and can request outside dismissal. |
+| `Dialog.Popup` | Contains modal content and coordinates initial and trapped focus. |
+| `Dialog.Title` | Provides visible title text without imposing styling. |
+| `Dialog.Description` | Provides supporting text without imposing styling. |
+| `Dialog.Close` | Requests close or accepted-action dismissal. |
+
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { Dialog } from "@tuiparts/react/dialog";
+
+<Dialog.Root>
+  <Dialog.Trigger><text content="Open settings" /></Dialog.Trigger>
+  <Dialog.Portal
+    width="100%"
+    height="100%"
+    alignItems="center"
+    justifyContent="center"
+  >
+    <Dialog.Backdrop
+      position="absolute"
+      width="100%"
+      height="100%"
+      backgroundColor="#000000"
+    />
+    <Dialog.Popup flexDirection="column" border padding={1} gap={1} width={40}>
+      <Dialog.Title content="Settings" />
+      <Dialog.Description content="Change this project's options." />
+      <Dialog.Close><text content="Close" /></Dialog.Close>
+    </Dialog.Popup>
+  </Dialog.Portal>
+</Dialog.Root>;
+```
+
+```tsx Solid
+import { Dialog } from "@tuiparts/solid/dialog";
+
+<Dialog.Root>
+  <Dialog.Trigger><text content="Open settings" /></Dialog.Trigger>
+  <Dialog.Portal
+    width="100%"
+    height="100%"
+    alignItems="center"
+    justifyContent="center"
+  >
+    <Dialog.Backdrop
+      position="absolute"
+      width="100%"
+      height="100%"
+      backgroundColor="#000000"
+    />
+    <Dialog.Popup flexDirection="column" border padding={1} gap={1} width={40}>
+      <Dialog.Title content="Settings" />
+      <Dialog.Description content="Change this project's options." />
+      <Dialog.Close><text content="Close" /></Dialog.Close>
+    </Dialog.Popup>
+  </Dialog.Portal>
+</Dialog.Root>;
+```
+
+```ts Core
+import { TextRenderable } from "@opentui/core";
+import {
+  DialogBackdropRenderable,
+  DialogCloseRenderable,
+  DialogPopupRenderable,
+  DialogPortalRenderable,
+  DialogRootRenderable,
+  DialogTitleRenderable,
+  DialogTriggerRenderable,
+} from "@tuiparts/core/dialog";
+
+const root = new DialogRootRenderable(ctx);
+const trigger = new DialogTriggerRenderable(ctx, { store: root.store });
+const portal = new DialogPortalRenderable(ctx, {
+  store: root.store,
+  width: "100%",
+  height: "100%",
+  alignItems: "center",
+  justifyContent: "center",
+});
+const backdrop = new DialogBackdropRenderable(ctx, {
+  store: root.store,
+  position: "absolute",
+  width: "100%",
+  height: "100%",
+  backgroundColor: "#000000",
+});
+const popup = new DialogPopupRenderable(ctx, {
+  store: root.store,
+  flexDirection: "column",
+  border: true,
+  padding: 1,
+  width: 40,
+});
+const close = new DialogCloseRenderable(ctx, { store: root.store });
+
+trigger.add(new TextRenderable(ctx, { content: "Open settings" }));
+popup.add(new DialogTitleRenderable(ctx, { content: "Settings" }));
+close.add(new TextRenderable(ctx, { content: "Close" }));
+popup.add(close);
+popup.registerFocusable(close, true);
+portal.add(backdrop);
+portal.add(popup);
+root.add(trigger);
+parent.add(root);
+parent.add(portal);
+```
+
+</CodeGroup>
+
+Core callers add both Root and Portal to the render tree. The Portal is a
+sibling layer, not a Popup child hidden inside Root.
+
+## State ownership
+
+Use `open` with `onOpenChange` for controlled ownership, or `defaultOpen` for
+uncontrolled initial state. Open-change details report `trigger`, `escape`,
+`outside`, `close`, `action`, or `programmatic` as the reason.
+
+Dismissal requests are cancelable where the Primitive can synchronously honor
+`details.preventDefault()`. Core Parts share a `DialogStore`; React and Solid
+provide it through Root context.
+
+## Interaction
+
+| Input | Behavior |
+| --- | --- |
+| `Escape` | Requests dismissal of the topmost eligible Dialog. |
+| `Tab` / `Shift+Tab` | Moves forward or backward within the topmost Popup. |
+| `Enter`, `Return`, or `Space` | Activates a focused Trigger or Close Part. |
+| Backdrop pointer release | Requests outside dismissal for the topmost Dialog. |
+
+Opening focuses `initialFocus`, the first registered focusable descendant, or
+Popup itself. Closing restores focus to Trigger or the appropriate parent
+Dialog. Pointer interaction inside Popup does not dismiss it.
+
+## API reference
+
+| Surface | API |
+| --- | --- |
+| React and Solid | `Dialog.Root`, `Trigger`, `Portal`, `Backdrop`, `Popup`, `Title`, `Description`, `Close` |
+| Core | Matching `Dialog*Renderable` classes plus `DialogStore` |
+| Root options | `open`, `defaultOpen`, `onOpenChange` |
+| Popup behavior | `initialFocus`, `registerFocusable()`, `focusInitial()`, `moveFocus()` |
+| Close behavior | `reason="close"` or `reason="action"` |
+
+All Parts accept the native OpenTUI properties appropriate to their Box or
+Text base. Framework refs target matching Core Renderables.
+
+## Start with the Recipe
+
+The editable [Dialog Recipe](/catalog/dialog) adds a centered popup, backdrop,
+border, spacing, styled controls, and convenience composition.

@@ -29,7 +29,9 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/radio-group
 
 </CodeGroup>
 
-## React and Solid
+## Use the Recipe
+
+### React and Solid
 
 ```tsx
 import {
@@ -52,7 +54,7 @@ import {
 Use `value` with `onValueChange` for controlled ownership, or `defaultValue`
 for uncontrolled initial selection.
 
-## Core
+### Core
 
 ```ts
 import {
@@ -80,7 +82,14 @@ parent.add(colorMode);
 
 Each Core item receives the group's Store explicitly.
 
-## Selection and focus
+## Customize the Recipe
+
+The copied source owns the vertical layout, one-cell mark, label assembly,
+tone mapping, and convenience item API. Edit it for horizontal presentation,
+wider marks, descriptions, or another public item shape. Shared defaults come
+from the [Theme Recipe](/theming).
+
+## Behavior
 
 Keyboard navigation moves focus and selection together. Direct activation
 selects the focused item. Unavailable items are skipped, and a disabled group
@@ -88,8 +97,6 @@ rejects item focus and selection.
 
 Change details distinguish `"activation"` from `"navigation"` and report an
 imperative, keyboard, or pointer source.
-
-## Keyboard interaction
 
 | Key | Behavior |
 | --- | --- |
@@ -101,6 +108,9 @@ imperative, keyboard, or pointer source.
 Arrow movement follows the collection's navigation model. The starter Recipe
 lays items out vertically, but Primitive keyboard handling accepts the
 supported directional navigation keys independently of that visual layout.
+
+For collection and Radio Part ownership, see the
+[Radio Group Primitive](/primitives/radio-group).
 
 ## Recipe API
 
@@ -133,3 +143,8 @@ supported directional navigation keys independently of that visual layout.
 navigation. `mark` overrides the theme radio glyph; the starter layout
 reserves one terminal cell. React and Solid also expose `tone="accent" |
 "success"`; the Core starter factory does not expose that tone convenience.
+
+## Build with the Primitive
+
+Compose [Radio Group and Radio Parts](/primitives/radio-group) directly when
+the Recipe's item structure does not fit your design system.

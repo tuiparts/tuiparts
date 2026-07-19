@@ -27,7 +27,9 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/button
 
 </CodeGroup>
 
-## React and Solid
+## Use the Recipe
+
+### React and Solid
 
 Both framework Recipes export `Button` with the same convenience props:
 
@@ -45,7 +47,7 @@ import { Button } from "./components/ui/button";
 Remaining props pass to the framework Button Primitive, including native
 OpenTUI layout properties and the Renderable `ref`.
 
-## Core
+### Core
 
 The Core Recipe exports an imperative factory:
 
@@ -65,7 +67,14 @@ parent.add(button);
 `createButton()` returns the packaged `ButtonRenderable`, so actions such as
 `button.press()` remain available.
 
-## Keyboard interaction
+## Customize the Recipe
+
+The copied source owns the label child tree, intent palette, horizontal
+padding, and which native properties its Core factory forwards. Add intent or
+size variants directly in that file. Application-wide colors and density come
+from the [Theme Recipe](/theming).
+
+## Behavior
 
 | Key | Behavior |
 | --- | --- |
@@ -74,6 +83,9 @@ parent.add(button);
 
 An uncancelled primary-pointer release and `press()` request the same action.
 Disabled Buttons reject focus and activation.
+
+For transient pressed state, activation details, imperative actions, and raw
+composition, see the [Button Primitive](/primitives/button).
 
 ## Recipe API
 
@@ -108,5 +120,7 @@ Recipe owns to render its label.
 Native presentation options are not forwarded by this starter Core factory;
 edit the installed class when you want to expose more.
 
-For raw composition and press details, import `Button` from the `button`
-subpath of your runtime's `@tuiparts` package.
+## Build with the Primitive
+
+Use the packaged [Button Primitive](/primitives/button) when you want to own
+the child tree and visual API without starting from the Recipe.

@@ -1,0 +1,117 @@
+---
+title: Button
+description: Compose a focusable action from the single-Part Button Primitive.
+---
+
+Button packages activation without choosing a label, glyph, layout, or
+palette. Use it for an action that does not retain an on/off value. Use
+[Toggle](/primitives/toggle) when pressed state represents a persistent value.
+
+## Install
+
+Install the [package for your runtime](/primitives#install), then import the
+`button` subpath:
+
+```ts
+import { Button } from "@tuiparts/react/button";
+```
+
+Replace `react` with `solid`, or import `ButtonRenderable` from
+`@tuiparts/core/button`.
+
+## Anatomy
+
+| Part | Responsibility |
+| --- | --- |
+| `Button` | Owns focus, transient pressed state, disabled behavior, and activation. Arbitrary children are its presentation seam. |
+
+Button is deliberately a single-Part Primitive. A packaged Label Part would
+hide presentation without adding behavior.
+
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { Button } from "@tuiparts/react/button";
+
+<Button
+  flexDirection="row"
+  paddingLeft={2}
+  paddingRight={2}
+  onPress={(details) => save(details.source)}
+>
+  {(state) => (
+    <text content={state.pressed ? "Saving…" : "Save changes"} />
+  )}
+</Button>;
+```
+
+```tsx Solid
+import { Button } from "@tuiparts/solid/button";
+
+<Button
+  flexDirection="row"
+  paddingLeft={2}
+  paddingRight={2}
+  onPress={(details) => save(details.source)}
+>
+  {(state) => (
+    <text content={state.pressed ? "Saving…" : "Save changes"} />
+  )}
+</Button>;
+```
+
+```ts Core
+import { TextRenderable } from "@opentui/core";
+import { ButtonRenderable } from "@tuiparts/core/button";
+
+const button = new ButtonRenderable(ctx, {
+  paddingLeft: 2,
+  paddingRight: 2,
+  onPress: (details) => save(details.source),
+});
+
+button.add(new TextRenderable(ctx, { content: "Save changes" }));
+parent.add(button);
+```
+
+</CodeGroup>
+
+## State ownership
+
+Button exposes readonly `disabled`, `focused`, and `pressed` state. React and
+Solid pass that state to a function child. Core exposes it through
+`getState()`, `subscribe()`, and `ButtonStore`.
+
+Pressed state describes the current interaction gesture; it is not a retained
+selection value. `onPress` receives immutable details whose `source` is
+`"imperative"`, `"keyboard"`, or `"pointer"`.
+
+## Interaction
+
+| Input | Behavior |
+| --- | --- |
+| `Enter`, `Return`, or `Space` | Requests the action. |
+| Primary-pointer release | Requests the action unless the gesture was cancelled. |
+| `press()` | Requests the same action with an imperative source. |
+
+Disabling Button clears focus and pressed state and rejects further focus or
+activation.
+
+## API reference
+
+| Surface | API |
+| --- | --- |
+| React and Solid | `Button.Props`, `Button.State`, `Button.PressDetails` |
+| Core | `ButtonRenderable`, `ButtonStore`, `ButtonOptions`, `ButtonState`, `ButtonPressDetails` |
+| State | `disabled`, `focused`, `pressed` |
+| Behavior options | `disabled`, `onPress` |
+
+All remaining props or options are native OpenTUI Box properties. Framework
+refs target the actual `ButtonRenderable`.
+
+## Start with the Recipe
+
+The editable [Button Recipe](/catalog/button) adds a label, intent palette,
+and horizontal density.

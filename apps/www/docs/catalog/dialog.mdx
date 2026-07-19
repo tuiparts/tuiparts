@@ -30,7 +30,9 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/dialog
 
 </CodeGroup>
 
-## React and Solid
+## Use the Recipe
+
+### React and Solid
 
 ```tsx
 import {
@@ -57,9 +59,8 @@ import {
 ```
 
 `DialogContent` composes the Primitive's Portal, Backdrop, and Popup Parts.
-Compose those Parts directly when you need a different layer structure.
 
-## Core
+### Core
 
 The Core Recipe returns the Parts needed for imperative assembly:
 
@@ -86,7 +87,15 @@ parent.add(dialog.portal);
 Core callers add both the Root and Portal to the render tree. The helper
 functions append semantic text and Close Parts to the Popup.
 
-## Open-state ownership
+## Customize the Recipe
+
+The copied source owns the relationship between `DialogContent`, Portal,
+Backdrop, and Popup along with popup width, border, spacing, and control
+presentation. Edit that source when you need another layer structure or
+convenience API. Shared colors and borders come from the
+[Theme Recipe](/theming).
+
+## Behavior
 
 Use `open` with `onOpenChange` for controlled ownership, or `defaultOpen` for
 uncontrolled initial state. Change details report whether a transition came
@@ -96,8 +105,6 @@ programmatic request.
 Dismissal requests are cancelable where the Primitive can synchronously honor
 `details.preventDefault()`.
 
-## Focus and layers
-
 When a Dialog opens, focus moves to `initialFocus`, the first focusable Popup
 descendant, or the Popup itself. Tab and Shift+Tab wrap within the topmost
 Popup. Closing restores focus to its Trigger or the appropriate parent Dialog.
@@ -105,14 +112,15 @@ Popup. Closing restores focus to its Trigger or the appropriate parent Dialog.
 Only the topmost eligible layer handles Escape or Backdrop dismissal. Pointer
 interaction inside the Popup does not dismiss it.
 
-## Keyboard interaction
-
 | Key | Behavior |
 | --- | --- |
 | `Escape` | Requests dismissal of the topmost Dialog. |
 | `Tab` | Moves to the next focusable Popup descendant. |
 | `Shift+Tab` | Moves to the previous focusable Popup descendant. |
 | `Enter`, `Return`, or `Space` | Activates a focused Trigger or Close Part. |
+
+For all eight Parts, cancelable transitions, and raw layer composition, see
+the [Dialog Primitive](/primitives/dialog).
 
 ## Recipe API
 
@@ -134,4 +142,9 @@ are changed by editing the installed source or composing the Primitive.
 an accepted Dialog action through `onOpenChange`.
 
 Core `DialogOptions` extends `DialogRootOptions` and adds `width`; the Core
-helpers expose the assembled Parts instead of framework wrapper components.
+helpers expose the assembled Parts instead of framework Recipe exports.
+
+## Build with the Primitive
+
+Compose the packaged [Dialog Primitive](/primitives/dialog) when you need a
+different Portal, Backdrop, or Popup structure than `DialogContent` provides.

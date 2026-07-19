@@ -1,0 +1,132 @@
+---
+title: Toggle Group
+description: Compose related Toggles with shared selection and roving focus.
+---
+
+Toggle Group coordinates related [Toggle](/primitives/toggle) Primitives. It
+owns single or multiple selection, item registration, orientation-aware roving
+focus, and group disabled behavior without choosing item presentation.
+
+## Install
+
+Install the [package for your runtime](/primitives#install), then import both
+the `toggle-group` and `toggle` subpaths:
+
+```ts
+import { ToggleGroup } from "@tuiparts/react/toggle-group";
+import { Toggle } from "@tuiparts/react/toggle";
+```
+
+Replace `react` with `solid`. Core exports `ToggleGroupRenderable` and
+`ToggleRenderable` from their matching `@tuiparts/core` subpaths.
+
+## Anatomy
+
+| Part | Responsibility |
+| --- | --- |
+| `ToggleGroup` | Owns array-valued selection, collection registration, orientation, and roving focus. |
+| `Toggle` | Registers through a unique `value`, reflects group selection, and owns activation presentation. |
+
+There is no packaged `ToggleGroupItem`. That name belongs to Catalog Recipes
+that add labeled presentation over the existing Toggle Primitive.
+
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { Toggle } from "@tuiparts/react/toggle";
+import { ToggleGroup } from "@tuiparts/react/toggle-group";
+
+<ToggleGroup defaultValue={["left"]} flexDirection="row" gap={1}>
+  <Toggle value="left">
+    {(state) => <text content={state.pressed ? "[Left]" : "Left"} />}
+  </Toggle>
+  <Toggle value="center">
+    {(state) => <text content={state.pressed ? "[Center]" : "Center"} />}
+  </Toggle>
+  <Toggle value="right">
+    {(state) => <text content={state.pressed ? "[Right]" : "Right"} />}
+  </Toggle>
+</ToggleGroup>;
+```
+
+```tsx Solid
+import { Toggle } from "@tuiparts/solid/toggle";
+import { ToggleGroup } from "@tuiparts/solid/toggle-group";
+
+<ToggleGroup defaultValue={["left"]} flexDirection="row" gap={1}>
+  <Toggle value="left">
+    {(state) => <text content={state.pressed ? "[Left]" : "Left"} />}
+  </Toggle>
+  <Toggle value="center">
+    {(state) => <text content={state.pressed ? "[Center]" : "Center"} />}
+  </Toggle>
+  <Toggle value="right">
+    {(state) => <text content={state.pressed ? "[Right]" : "Right"} />}
+  </Toggle>
+</ToggleGroup>;
+```
+
+```ts Core
+import { TextRenderable } from "@opentui/core";
+import { ToggleGroupRenderable } from "@tuiparts/core/toggle-group";
+import { ToggleRenderable } from "@tuiparts/core/toggle";
+
+const group = new ToggleGroupRenderable(ctx, {
+  defaultValue: ["left"],
+  flexDirection: "row",
+  gap: 1,
+});
+
+for (const value of ["left", "center", "right"]) {
+  const item = new ToggleRenderable(ctx, { group: group.store, value });
+  item.add(new TextRenderable(ctx, { content: value }));
+  group.add(item);
+}
+
+parent.add(group);
+```
+
+</CodeGroup>
+
+Framework adapters supply the group Store through context. Core callers pass
+`group.store` to every Toggle.
+
+## State ownership
+
+`value`, `defaultValue`, and `onValueChange` use readonly arrays. In default
+single-selection mode, the group retains at most one unique value and pressing
+the active Toggle may clear it. Set `multiple` to retain several values.
+
+Group state contains `value`, `disabled`, `multiple`, and `orientation`.
+Individual Toggle state adds `pressed`, `focused`, and `tabbable`.
+
+## Interaction
+
+| Input | Behavior |
+| --- | --- |
+| `Left` / `Right` | Moves focus in a horizontal group. |
+| `Up` / `Down` | Moves focus in a vertical group. |
+| `Home` / `End` | Moves focus to the first or last available Toggle. |
+| `Enter`, `Return`, or `Space` | Changes the focused Toggle's pressed state. |
+
+Focus movement does not change selection. Unavailable items are skipped.
+Navigation wraps by default; set `loopFocus={false}` to stop at collection
+edges.
+
+## API reference
+
+| Surface | API |
+| --- | --- |
+| React and Solid | `ToggleGroup`, `Toggle` and their scoped types |
+| Core | `ToggleGroupRenderable`, `ToggleGroupStore`, `ToggleRenderable`, `ToggleStore` |
+| Group options | `value`, `defaultValue`, `onValueChange`, `multiple`, `orientation`, `loopFocus`, `disabled` |
+| Toggle membership | Unique `value`; Core additionally receives `group` |
+
+Framework refs target the matching Group or Toggle Renderable.
+
+## Start with the Recipe
+
+The editable [Toggle Group Recipe](/catalog/toggle-group) adds group layout and
+labeled Toggle presentation.

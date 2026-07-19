@@ -1,0 +1,128 @@
+---
+title: Switch
+description: Compose a checked setting from Root and always-mounted Thumb Parts.
+---
+
+Switch owns the boolean state and activation of a setting without choosing a
+track, thumb glyph, position, label, or colors. Use
+[Checkbox](/primitives/checkbox) for an independent choice commonly submitted
+with others.
+
+## Install
+
+Install the [package for your runtime](/primitives#install), then import the
+`switch` subpath:
+
+```ts
+import { Switch } from "@tuiparts/react/switch";
+```
+
+Replace `react` with `solid`. Core exports the Switch Renderables and Store
+from `@tuiparts/core/switch`.
+
+## Anatomy
+
+| Part | Responsibility |
+| --- | --- |
+| `Switch.Root` | Owns checked state, focus, disabled behavior, and activation. |
+| `Switch.Thumb` | Reflects the Root's readonly state and remains mounted whether checked or unchecked. |
+
+The Primitive does not move Thumb. Your composition uses state to choose its
+position or content.
+
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { Switch } from "@tuiparts/react/switch";
+
+<Switch.Root defaultChecked flexDirection="row" gap={1}>
+  {(state) => (
+    <>
+      <box width={5}>
+        <text content="─────" />
+        <Switch.Thumb position="absolute" left={state.checked ? 4 : 0}>
+          <text content="●" />
+        </Switch.Thumb>
+      </box>
+      <text content="Dark mode" />
+    </>
+  )}
+</Switch.Root>;
+```
+
+```tsx Solid
+import { Switch } from "@tuiparts/solid/switch";
+
+<Switch.Root defaultChecked flexDirection="row" gap={1}>
+  {(state) => (
+    <>
+      <box width={5}>
+        <text content="─────" />
+        <Switch.Thumb position="absolute" left={state.checked ? 4 : 0}>
+          <text content="●" />
+        </Switch.Thumb>
+      </box>
+      <text content="Dark mode" />
+    </>
+  )}
+</Switch.Root>;
+```
+
+```ts Core
+import { TextRenderable } from "@opentui/core";
+import {
+  SwitchRootRenderable,
+  SwitchThumbRenderable,
+} from "@tuiparts/core/switch";
+
+const root = new SwitchRootRenderable(ctx, { defaultChecked: true, gap: 1 });
+const thumb = new SwitchThumbRenderable(ctx, { store: root.store });
+
+thumb.add(new TextRenderable(ctx, { content: "●" }));
+root.add(thumb);
+root.add(new TextRenderable(ctx, { content: "Dark mode" }));
+parent.add(root);
+```
+
+</CodeGroup>
+
+React and Solid connect Thumb to Root through context. Core callers subscribe
+to the Store when state should change Thumb position or styling.
+
+## State ownership
+
+Use `checked` with `onCheckedChange` for controlled ownership, or
+`defaultChecked` for uncontrolled initial state. Readonly state contains
+`checked`, `disabled`, and `focused`.
+
+Core callers can construct a `SwitchStore` separately or use the Store created
+by `SwitchRootRenderable`. Thumb can be reattached to another Switch Store.
+
+## Interaction
+
+| Input | Behavior |
+| --- | --- |
+| `Enter`, `Return`, or `Space` | Requests the opposite checked value. |
+| Primary-pointer release | Requests the same change unless cancelled. |
+| `press()` | Requests the same change imperatively. |
+
+Disabled Switches reject focus and activation.
+
+## API reference
+
+| Surface | API |
+| --- | --- |
+| React and Solid | `Switch.Root`, `Switch.Thumb` and their scoped `Props` types |
+| Core | `SwitchRootRenderable`, `SwitchThumbRenderable`, `SwitchStore` |
+| State | `checked`, `disabled`, `focused` |
+| Root options | `checked`, `defaultChecked`, `disabled`, `onCheckedChange` |
+| Thumb options | Native Box properties; Core additionally requires `store` |
+
+Framework refs target the matching Root or Thumb Renderable.
+
+## Start with the Recipe
+
+The editable [Switch Recipe](/catalog/switch) adds a glyph track, positioned
+Thumb, density choices, label, and colors.

@@ -27,7 +27,9 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/switch
 
 </CodeGroup>
 
-## React and Solid
+## Use the Recipe
+
+### React and Solid
 
 ```tsx
 import { Switch } from "./components/ui/switch";
@@ -43,7 +45,7 @@ import { Switch } from "./components/ui/switch";
 Use `checked` with `onCheckedChange` for controlled ownership, or
 `defaultChecked` for uncontrolled initial state.
 
-## Core
+### Core
 
 ```ts
 import { createSwitch } from "./components/ui/switch";
@@ -60,14 +62,14 @@ parent.add(colorMode);
 The factory returns `SwitchRootRenderable` and constructs a Thumb attached to
 the Root's Store.
 
-## Anatomy
+## Customize the Recipe
 
-`Switch.Root` owns state and activation. `Switch.Thumb` reflects the same
-readonly state and remains mounted whether checked or unchecked. The starter
-Recipe absolutely positions the Thumb over a repeated track glyph; that
-layout is editable and not part of the Primitive contract.
+The copied source owns the track and thumb glyphs, track width, Thumb
+positioning, label gap, density choices, and colors. Edit those choices or add
+variants directly in the installed file. Shared defaults come from the
+[Theme Recipe](/theming).
 
-## Keyboard interaction
+## Behavior
 
 | Key | Behavior |
 | --- | --- |
@@ -76,6 +78,9 @@ layout is editable and not part of the Primitive contract.
 
 An uncancelled primary-pointer release and `press()` request the same change.
 Disabled Switches reject focus and activation.
+
+For Root and Thumb ownership and raw composition, see the
+[Switch Primitive](/primitives/switch).
 
 ## Recipe API
 
@@ -112,3 +117,8 @@ Disabled Switches reject focus and activation.
 
 React and Solid extend `SwitchPrimitive.Root.Props` except for `children`.
 Core `SwitchOptions` exposes the same fields through `createSwitch()`.
+
+## Build with the Primitive
+
+Compose the packaged [Switch Primitive](/primitives/switch) when you want to
+design your own track, Thumb position, or public API.

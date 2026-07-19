@@ -26,7 +26,9 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/input
 
 </CodeGroup>
 
-## React and Solid
+## Use the Recipe
+
+### React and Solid
 
 The framework Recipes export `Input` and retain the Primitive's props:
 
@@ -43,7 +45,7 @@ import { Input } from "./components/ui/input";
 All visual defaults are ordinary OpenTUI properties. Instance props override
 the Recipe defaults because they are spread last.
 
-## Core
+### Core
 
 The Core Recipe exports `createInput()`:
 
@@ -62,7 +64,14 @@ parent.add(input);
 The returned `InputRenderable` retains OpenTUI's native value and editing
 surface.
 
-## Value and events
+## Customize the Recipe
+
+The Recipe adds visual defaults only. Edit the copied file to change its
+placeholder, text, cursor, and focus colors, or pass native Input properties
+per instance to override those defaults. Shared values belong in the
+[Theme Recipe](/theming).
+
+## Behavior
 
 - `onInput(value)` reports buffer changes, including programmatic `value`
   assignments that change the buffer.
@@ -72,13 +81,12 @@ surface.
 Editing, selection, cursor movement, insertion, and deletion follow the
 installed OpenTUI version. Use native Input props for those capabilities.
 
-## Keyboard interaction
+`Enter` or `Return` submits the current value and fires `onSubmit`. Other
+editing keys use OpenTUI's native Input behavior. A disabled Input rejects
+focus, key handling, and submission.
 
-| Key | Behavior |
-| --- | --- |
-| `Enter` or `Return` | Submits the current value and fires `onSubmit`. |
-
-Other editing keys use OpenTUI's native Input behavior.
+For the exact ownership and native editing boundary, see the
+[Input Primitive](/primitives/input).
 
 ## Recipe API
 
@@ -88,5 +96,9 @@ add semantic convenience props; it only supplies visual defaults that callers
 can override.
 
 For the exact native option surface, use the types from your installed
-`@opentui/core` package and the `input` subpath of your runtime's `@tuiparts`
-package.
+`@opentui/core` package.
+
+## Build with the Primitive
+
+Use the packaged [Input Primitive](/primitives/input) when you want OpenTUI's
+editing behavior without the Recipe's visual defaults.

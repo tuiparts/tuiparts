@@ -69,34 +69,14 @@ Open `components/ui/checkbox.tsx`. You can change the layout or add Recipe
 props without wrapping an opaque package API. For application-wide colors,
 glyphs, borders, and density, edit `components/ui/theme.ts` instead.
 
-## Compose the Primitive directly
-
-When the Recipe's structure is not useful, import the Primitive and assemble
-its Parts yourself:
-
-```tsx
-import { Checkbox as CheckboxPrimitive } from "@tuiparts/react/checkbox";
-
-<CheckboxPrimitive.Root defaultChecked flexDirection="row" gap={1}>
-  {(state) => (
-    <>
-      <CheckboxPrimitive.Indicator>
-        <text content="✓" />
-      </CheckboxPrimitive.Indicator>
-      <text content={state.checked ? "Enabled" : "Disabled"} />
-    </>
-  )}
-</CheckboxPrimitive.Root>;
-```
-
-The Primitive owns state, focus, and activation. Your tree owns every visual
-choice.
-
 ## Next steps
 
 <CardGroup cols={2}>
   <Card title="Browse the Catalog" href="/catalog" icon="layout-grid">
     Compare the available interactive and presentation-only Recipes.
+  </Card>
+  <Card title="Compose Primitives" href="/primitives" icon="boxes">
+    Build custom controls while retaining packaged interaction behavior.
   </Card>
   <Card title="Customize themes" href="/theming" icon="palette">
     Edit tokens, follow terminal color mode, and install presets.

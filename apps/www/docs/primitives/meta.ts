@@ -1,8 +1,8 @@
 import { defineMeta } from "blume";
 
 export default defineMeta({
-  title: "Catalog",
-  order: 5,
+  title: "Primitives",
+  order: 4,
   pages: [
     "index",
     "button",
@@ -13,6 +13,5 @@ export default defineMeta({
     "toggle-group",
     "radio-group",
     "dialog",
-    "badge",
   ],
 });

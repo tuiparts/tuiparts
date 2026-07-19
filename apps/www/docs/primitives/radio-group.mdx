@@ -1,0 +1,140 @@
+---
+title: Radio Group
+description: Compose one mutually exclusive selection with Radio Parts and roving focus.
+---
+
+Radio Group owns one selected value and coordinates a collection of Radios.
+Every Radio requires a Radio Group; use [Checkbox](/primitives/checkbox) or
+[Switch](/primitives/switch) for an independent boolean choice.
+
+## Install
+
+Install the [package for your runtime](/primitives#install), then import the
+`radio` subpath:
+
+```ts
+import { Radio } from "@tuiparts/react/radio";
+import { RadioGroup } from "@tuiparts/react/radio-group";
+```
+
+Replace `react` with `solid`. Core callers import group exports from
+`@tuiparts/core/radio-group` and Radio Parts from `@tuiparts/core/radio`.
+
+## Anatomy
+
+| Part | Responsibility |
+| --- | --- |
+| `RadioGroup` | Owns the selected value, collection registration, availability, and roving focus. |
+| `Radio.Root` | Registers a unique value and owns focus and activation for one option. |
+| `Radio.Indicator` | Reflects the owning Radio's checked state without choosing a mark. |
+
+In React and Solid, the `radio` subpath exports the `Radio` namespace while
+the `radio-group` subpath exports `RadioGroup`.
+
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { Radio } from "@tuiparts/react/radio";
+import { RadioGroup } from "@tuiparts/react/radio-group";
+
+<RadioGroup defaultValue="dark" flexDirection="column" gap={1}>
+  {[
+    ["dark", "Dark"],
+    ["light", "Light"],
+    ["system", "System"],
+  ].map(([value, label]) => (
+    <Radio.Root key={value} value={value} flexDirection="row" gap={1}>
+      <Radio.Indicator>
+        <text content="●" />
+      </Radio.Indicator>
+      <text content={label} />
+    </Radio.Root>
+  ))}
+</RadioGroup>;
+```
+
+```tsx Solid
+import { Radio } from "@tuiparts/solid/radio";
+import { RadioGroup } from "@tuiparts/solid/radio-group";
+
+<RadioGroup defaultValue="dark" flexDirection="column" gap={1}>
+  <Radio.Root value="dark" flexDirection="row" gap={1}>
+    <Radio.Indicator>
+      <text content="●" />
+    </Radio.Indicator>
+    <text content="Dark" />
+  </Radio.Root>
+  <Radio.Root value="light" flexDirection="row" gap={1}>
+    <Radio.Indicator>
+      <text content="●" />
+    </Radio.Indicator>
+    <text content="Light" />
+  </Radio.Root>
+</RadioGroup>;
+```
+
+```ts Core
+import { TextRenderable } from "@opentui/core";
+import { RadioGroupRenderable } from "@tuiparts/core/radio-group";
+import {
+  RadioIndicatorRenderable,
+  RadioRootRenderable,
+} from "@tuiparts/core/radio";
+
+const group = new RadioGroupRenderable(ctx, { defaultValue: "dark", gap: 1 });
+
+for (const value of ["dark", "light"]) {
+  const radio = new RadioRootRenderable(ctx, { store: group.store, value });
+  const indicator = new RadioIndicatorRenderable(ctx, { radio });
+  indicator.add(new TextRenderable(ctx, { content: "●" }));
+  radio.add(indicator);
+  radio.add(new TextRenderable(ctx, { content: value }));
+  group.add(radio);
+}
+
+parent.add(group);
+```
+
+</CodeGroup>
+
+## State ownership
+
+Use `value` with `onValueChange` for controlled ownership, or `defaultValue`
+for uncontrolled initial selection. Group state contains `value` and
+`disabled`. Radio state contains `value`, `checked`, `focused`, `tabbable`,
+`available`, and effective `disabled` state.
+
+Change details distinguish `"activation"` from `"navigation"` and report an
+imperative, keyboard, or pointer source.
+
+## Interaction
+
+| Input | Behavior |
+| --- | --- |
+| Arrow keys | Moves focus and selection to the next available Radio. |
+| `Home` / `End` | Moves focus and selection to the first or last available Radio. |
+| `Enter`, `Return`, or `Space` | Selects the focused Radio. |
+| `press()` | Requests selection of that Radio imperatively. |
+
+Unavailable Radios are skipped. A disabled group rejects item focus and
+selection.
+
+## API reference
+
+| Surface | API |
+| --- | --- |
+| React and Solid | `RadioGroup`, `Radio.Root`, `Radio.Indicator` and their scoped types |
+| Core group | `RadioGroupRenderable`, `RadioGroupStore`, `RadioGroupOptions` |
+| Core Radio | `RadioRootRenderable`, `RadioIndicatorRenderable` |
+| Group options | `value`, `defaultValue`, `onValueChange`, `disabled` |
+| Radio options | `value`, `disabled`; Core additionally requires the group `store` |
+| Indicator options | Native Box properties; frameworks also support `keepMounted` |
+
+Framework refs target the matching Group, Radio, or Indicator Renderable.
+
+## Start with the Recipe
+
+The editable [Radio Group Recipe](/catalog/radio-group) adds a vertical layout,
+one-cell marks, labels, and colors.

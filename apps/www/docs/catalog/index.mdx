@@ -36,13 +36,14 @@ copies source into `components/ui` and adds the shared consumer-owned theme.
 
 Each installed file owns its convenience API and composition. React and Solid
 Recipes expose components; Core Recipes expose imperative factory functions.
-Their behavior aligns, but their syntax and public Recipe types are documented
-separately on each Catalog page.
+Catalog pages document that copied source: how to use it, what to customize,
+and which convenience API it provides.
 
 Application-wide colors, glyphs, borders, and density resolve from the
 [Theme Recipe](/theming). Per-instance labels, marks, variants, and layout
 remain ordinary source in the installed Recipe.
 
-To understand how Recipe ownership differs from packaged behavior, read
-[Architecture](/architecture). To compare upstream source after installation,
-read [Registry](/registry#review-updates).
+To build your own control or design system from packaged behavior, use the
+[Primitive documentation](/primitives). To understand the ownership boundary,
+read [Architecture](/architecture). To compare upstream source after
+installation, read [Registry](/registry#review-updates).

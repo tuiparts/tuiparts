@@ -29,7 +29,9 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/checkbox
 
 </CodeGroup>
 
-## React and Solid
+## Use the Recipe
+
+### React and Solid
 
 ```tsx
 import { Checkbox } from "./components/ui/checkbox";
@@ -44,7 +46,7 @@ import { Checkbox } from "./components/ui/checkbox";
 Use `checked` with `onCheckedChange` for controlled ownership, or
 `defaultChecked` for uncontrolled initial state.
 
-## Core
+### Core
 
 ```ts
 import { createCheckbox } from "./components/ui/checkbox";
@@ -61,29 +63,14 @@ parent.add(checkbox);
 The factory returns `CheckboxRootRenderable`. The installed source constructs
 an Indicator attached to the Root's Store.
 
-## Compose the Primitive
+## Customize the Recipe
 
-Use the Parts directly when the Recipe layout does not fit:
+The copied source owns the one-cell mark, label assembly, tone mapping, gap,
+and checked-state presentation. Edit it when your design system needs a wider
+mark, a different layout, or another convenience prop. Shared glyph and color
+defaults come from the [Theme Recipe](/theming).
 
-```tsx
-import { Checkbox as CheckboxPrimitive } from "@tuiparts/react/checkbox";
-
-<CheckboxPrimitive.Root defaultChecked flexDirection="row" gap={1}>
-  {(state) => (
-    <>
-      <CheckboxPrimitive.Indicator>
-        <text content="✓" />
-      </CheckboxPrimitive.Indicator>
-      <text content={state.checked ? "Enabled" : "Disabled"} />
-    </>
-  )}
-</CheckboxPrimitive.Root>;
-```
-
-An authored Indicator remains attached and reflects checked state. Core
-callers construct `CheckboxIndicatorRenderable` with the Root's Store.
-
-## Keyboard interaction
+## Behavior
 
 | Key | Behavior |
 | --- | --- |
@@ -92,6 +79,9 @@ callers construct `CheckboxIndicatorRenderable` with the Root's Store.
 
 An uncancelled primary-pointer release and `press()` request the same change.
 Disabled Checkboxes reject focus and activation.
+
+For Part ownership and raw composition, see the
+[Checkbox Primitive](/primitives/checkbox).
 
 ## Recipe API
 
@@ -129,3 +119,8 @@ Disabled Checkboxes reject focus and activation.
 React and Solid extend `CheckboxPrimitive.Root.Props` except for `children`.
 Core `CheckboxOptions` exposes the same ownership fields, label, and mark, but
 does not currently expose the framework Recipe's `tone` convenience option.
+
+## Build with the Primitive
+
+Compose the packaged [Checkbox Primitive](/primitives/checkbox) when the
+Recipe's mark-and-label structure does not fit your design system.

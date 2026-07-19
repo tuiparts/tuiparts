@@ -1,0 +1,103 @@
+---
+title: Input
+description: Use OpenTUI-native single-line editing through the thin Input Primitive.
+---
+
+Input preserves OpenTUI's mutable editing buffer and event order while adding
+consistent disabled behavior across the tuiparts runtimes. It does not invent
+a browser-style controlled-value model.
+
+## Install
+
+Install the [package for your runtime](/primitives#install), then import the
+`input` subpath:
+
+```ts
+import { Input } from "@tuiparts/react/input";
+```
+
+Replace `react` with `solid`, or import `InputRenderable` from
+`@tuiparts/core/input`.
+
+## Anatomy
+
+| Part | Responsibility |
+| --- | --- |
+| `Input` | Owns one native OpenTUI editing surface, including its buffer, cursor, selection, and editing events. |
+
+Input is a single-Part Primitive because OpenTUI already provides its editing
+machinery. tuiparts does not wrap that machinery in decorative Parts.
+
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { Input } from "@tuiparts/react/input";
+
+<Input
+  placeholder="Search commands…"
+  focusedBackgroundColor="#20242c"
+  onInput={(value) => setQuery(value)}
+  onSubmit={(value) => runSearch(value)}
+/>;
+```
+
+```tsx Solid
+import { Input } from "@tuiparts/solid/input";
+
+<Input
+  placeholder="Search commands…"
+  focusedBackgroundColor="#20242c"
+  onInput={(value) => setQuery(value)}
+  onSubmit={(value) => runSearch(value)}
+/>;
+```
+
+```ts Core
+import { InputRenderable } from "@tuiparts/core/input";
+
+const input = new InputRenderable(ctx, {
+  placeholder: "Search commands…",
+  focusedBackgroundColor: "#20242c",
+  onInput: (value) => setQuery(value),
+  onSubmit: (value) => runSearch(value),
+});
+
+parent.add(input);
+```
+
+</CodeGroup>
+
+## State ownership
+
+The OpenTUI Renderable owns the mutable value. `onInput` reports buffer
+changes, `onChange` reports commit-style changes on blur or submission, and
+`onSubmit` reports an Enter submission. Programmatic value assignments that
+change the buffer also produce the native input event.
+
+Use the native Input properties and Renderable ref for value, cursor,
+selection, and editing operations.
+
+## Interaction
+
+`Enter` or `Return` submits the current value. Cursor movement, selection,
+insertion, deletion, and other editing keys follow the installed OpenTUI
+version. A disabled Input rejects focus, key handling, and submission.
+
+## API reference
+
+| Surface | API |
+| --- | --- |
+| React and Solid | `Input.Props` |
+| Core | `InputRenderable`, `InputOptions` |
+| Behavior options | `disabled`, `onInput`, `onChange`, `onSubmit` |
+| Native surface | OpenTUI `InputRenderableOptions` and `InputRenderable` methods |
+
+Framework refs target the actual tuiparts `InputRenderable`, which extends the
+OpenTUI Input Renderable.
+
+## Start with the Recipe
+
+The editable [Input Recipe](/catalog/input) supplies placeholder, cursor,
+text, and focus colors that remain overridable with native properties.

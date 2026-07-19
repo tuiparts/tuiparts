@@ -19,6 +19,7 @@ Each catalog recipe is available as `core/<name>`, `react/<name>`, and
 | Button | Button activation primitive | `Button` |
 | RadioGroup/Radio | Radio collection and selectable parts | `RadioGroup`, `RadioGroupItem` |
 | Input | Native OpenTUI input behavior | `Input` |
+| Textarea | Native OpenTUI multiline editing | `Textarea` |
 | Dialog | Overlay layers, focus containment, and dismissal | `Dialog`, `DialogTrigger`, `DialogContent`, `DialogTitle`, `DialogDescription`, `DialogClose` |
 | Badge | None; presentation-only recipe | `Badge` |
 | Toggle | Standalone pressed-state primitive | `Toggle` |

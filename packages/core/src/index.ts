@@ -75,6 +75,10 @@ export {
   SwitchThumbRenderable,
 } from "./switch";
 export {
+  type TextareaOptions,
+  TextareaRenderable,
+} from "./textarea";
+export {
   type ToggleChangeDetails,
   type ToggleOptions,
   type TogglePressedChangeHandler,

@@ -19,7 +19,7 @@ Peer requirements are `@opentui/core` and `@opentui/react` `^0.4.3`, React
 ## Primitive example
 
 ```tsx
-import { Button, Checkbox, Input, Radio, RadioGroup, Switch, Toggle, ToggleGroup } from "@tuiparts/react";
+import { Button, Checkbox, Input, Radio, RadioGroup, Switch, Textarea, Toggle, ToggleGroup } from "@tuiparts/react";
 import { useState } from "react";
 
 export function Settings() {
@@ -36,6 +36,7 @@ export function Settings() {
         <text content="Run checks" />
       </Checkbox.Root>
       <Input placeholder="Release name" onSubmit={console.log} />
+      <Textarea initialValue="Release notes" onSubmit={console.log} />
       <Switch.Root checked={checked} onCheckedChange={setChecked}>
         {(state) => <text content={state.checked ? "On" : "Off"} />}
       </Switch.Root>
@@ -68,6 +69,7 @@ import { Input } from "@tuiparts/react/input";
 import { Radio } from "@tuiparts/react/radio";
 import { RadioGroup } from "@tuiparts/react/radio-group";
 import { Switch } from "@tuiparts/react/switch";
+import { Textarea } from "@tuiparts/react/textarea";
 import { Dialog } from "@tuiparts/react/dialog";
 import { Toggle } from "@tuiparts/react/toggle";
 import { ToggleGroup } from "@tuiparts/react/toggle-group";
@@ -106,6 +108,13 @@ import { Input } from "@tuiparts/react/input";
 `onInput` reports mutations, `onChange` reports commits on blur or submit, and
 `onSubmit` reports Enter after any changed-value `onChange`. Visual defaults
 belong in editable recipes. This is the canonical primitive contract.
+
+## Textarea
+
+`Textarea` is the named single-part adapter for OpenTUI's multiline editor.
+It preserves `initialValue`, the native `EditBuffer`, editing methods,
+keybindings, and cursor/content/submit callbacks. Refs resolve to the actual
+Core `TextareaRenderable`; there is no controlled value facade or Store.
 
 ## Recipes
 

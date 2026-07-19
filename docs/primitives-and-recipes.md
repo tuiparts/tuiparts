@@ -82,13 +82,14 @@ root.add(indicator);
 | ToggleGroup | `ToggleGroup` containing `Toggle` | value, disabled, multiple, orientation | arrows and Home/End move focus; Toggle activation changes value | matching Group or Toggle Renderable |
 | RadioGroup/Radio | `RadioGroup`, `Radio.Root`, `Radio.Indicator` | group value/disabled; radio checked/focused/availability | Radio `press()`; arrows, Home/End, Enter/Return/Space | matching Group, Radio, or Indicator Renderable |
 | Input | `Input` | OpenTUI-owned mutable buffer | native editing; `onInput`, `onChange`, `onSubmit` | `InputRenderable` |
+| Textarea | `Textarea` | OpenTUI-owned `EditBuffer` | native multiline editing; content, cursor, submit callbacks | `TextareaRenderable` |
 | Dialog | `Dialog.Root`, Trigger, Portal, Backdrop, Popup, Title, Description, Close | open | Trigger/Close `press()`; Enter/Return/Space, Escape, Tab containment | matching Dialog part Renderable |
 
 Checkbox, Switch, Toggle, ToggleGroup, RadioGroup, and Dialog support controlled and uncontrolled
 ownership. RadioGroup owns one collection value and every Radio must belong to
 a group.
-Input deliberately preserves OpenTUI's native mutable value and event order
-instead of inventing browser-style controlled rollback.
+Input and Textarea deliberately preserve OpenTUI's native mutable editing
+owners and event order instead of inventing browser-style controlled rollback.
 
 Disabled controls reject focus and activation. Radio navigation skips
 unavailable items. Dialog coordinates renderer-scoped layers, topmost
@@ -114,6 +115,7 @@ The starter catalog provides `core/*`, `react/*`, and `solid/*` items for:
 - Button
 - RadioGroup/Radio
 - Input
+- Textarea
 - Dialog
 - Badge
 - Toggle

@@ -10,6 +10,7 @@ export default defineConfig({
     "src/radio/index.tsx",
     "src/radio-group/index.tsx",
     "src/switch/index.tsx",
+    "src/textarea/index.tsx",
     "src/toggle/index.tsx",
     "src/toggle-group/index.tsx",
   ],

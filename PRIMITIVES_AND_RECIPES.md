@@ -256,6 +256,34 @@ focus positions were additionally verified from rendered screenshots. This
 sequence was last executed against the shared roving-collection engine
 covering both ToggleGroup and RadioGroup.
 
+## Textarea primitive
+
+Textarea follows Input's OpenTUI-native ownership precedent for multiline
+editing:
+
+- `TextareaRenderable` retains OpenTUI's `EditBuffer`, `EditorView`, cursor,
+  selection, undo history, paste handling, keybindings, and callback order.
+- `initialValue` keeps its native initialize-once meaning. Applications use
+  native editing methods rather than a controlled `value` or synthetic
+  `defaultValue` owner.
+- React and Solid expose the named single-part `Textarea`, reactive native
+  props, and refs to the actual Core Renderable. There is no artificial Root,
+  compound Part, or Store.
+- Disabled gates focus, keyboard editing, paste, and submission while leaving
+  programmatic EditBuffer operations native.
+- Editable recipes own height, wrapping, and cursor, selection, placeholder,
+  text, and focus colors.
+
+Reference implementations:
+
+- `packages/core/src/textarea/primitive.ts`
+- `packages/react/src/textarea/primitive.ts`
+- `packages/solid/src/textarea/primitive.ts`
+- `registry/textarea/`
+
+The focused public contract and conformance rationale are recorded in
+`docs/primitive-contracts/textarea.md`.
+
 ## Badge Recipe
 
 Badge has no reusable interaction, state, focus, keyboard, pointer, collection,

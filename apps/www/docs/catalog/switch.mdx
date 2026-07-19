@@ -1,20 +1,15 @@
 ---
 title: Switch
-description: A toggle rendered as a thumb that slides along a glyph track.
+description: A checked setting rendered as a movable thumb over a glyph track.
 ---
 
-A toggle rendered as a thumb that slides along a glyph track. Checked-state
-ownership, activation keys, and focus come from the packaged primitive; the
-track width, symbol set, and label styling install as source you edit.
+Switch represents a setting that takes effect immediately. The packaged
+Primitive owns checked state, activation, focus, and the always-mounted Thumb
+Part. The Recipe chooses the track, thumb glyph, density, label, and colors.
 
-## Usage guidelines
+Use [Checkbox](/catalog/checkbox) for choices commonly submitted together.
 
-- **Use `Switch` for a setting that takes effect immediately.** Prefer
-  `Checkbox` for choices that are submitted together.
-- **Disabled switches reject focus and activation.** Focus skips them when it
-  moves through the screen.
-
-## Installation
+## Install
 
 <CodeGroup>
 
@@ -32,12 +27,7 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/switch
 
 </CodeGroup>
 
-The command above copies the recipe into `components/ui`. The file belongs to
-your application.
-
-## Anatomy
-
-Import the installed component and render it:
+## React and Solid
 
 ```tsx
 import { Switch } from "./components/ui/switch";
@@ -50,24 +40,44 @@ import { Switch } from "./components/ui/switch";
 />;
 ```
 
-`Switch.Root` owns state and activation; `Switch.Thumb` is a passive part
-that positions itself from the shared Store. The starter recipe places the
-Thumb absolutely over a repeated track glyph — replace the glyphs or layout
-freely; the behavior does not depend on them.
+Use `checked` with `onCheckedChange` for controlled ownership, or
+`defaultChecked` for uncontrolled initial state.
 
-## Keyboard interactions
+## Core
+
+```ts
+import { createSwitch } from "./components/ui/switch";
+
+const colorMode = createSwitch(ctx, {
+  label: "Dark mode",
+  density: "comfortable",
+  defaultChecked: true,
+});
+
+parent.add(colorMode);
+```
+
+The factory returns `SwitchRootRenderable` and constructs a Thumb attached to
+the Root's Store.
+
+## Anatomy
+
+`Switch.Root` owns state and activation. `Switch.Thumb` reflects the same
+readonly state and remains mounted whether checked or unchecked. The starter
+Recipe absolutely positions the Thumb over a repeated track glyph; that
+layout is editable and not part of the Primitive contract.
+
+## Keyboard interaction
 
 | Key | Behavior |
 | --- | --- |
-| `Enter` | Toggles the checked state. |
-| `Space` | Toggles the checked state. |
+| `Enter` or `Return` | Toggles checked state. |
+| `Space` | Toggles checked state. |
 
-The primary pointer button also toggles.
+An uncancelled primary-pointer release and `press()` request the same change.
+Disabled Switches reject focus and activation.
 
-## API reference
-
-The installed recipe adds presentation props and passes ownership props
-through to `SwitchPrimitive.Root`:
+## Recipe API
 
 <TypeTable
   type={{
@@ -78,37 +88,27 @@ through to `SwitchPrimitive.Root`:
     },
     checked: {
       type: "boolean",
-      description:
-        "Whether the switch is on. Use with `onCheckedChange` to control the state.",
+      description: "Controlled checked value.",
     },
     defaultChecked: {
       type: "boolean",
-      description:
-        "Whether the switch is initially on. To control the state, use the `checked` prop instead.",
+      description: "Initial uncontrolled checked value.",
     },
     onCheckedChange: {
       type: "(checked: boolean) => void",
-      description: "Event handler called when the checked state changes.",
+      description: "Called when the Primitive requests a checked-state change.",
     },
     density: {
       type: '"compact" | "comfortable"',
       default: '"compact"',
-      description:
-        "Which track density to apply. Compact is 3 cells wide, comfortable is 5.",
+      description: "Uses a three-cell or five-cell track and adjusts the label gap.",
     },
     symbols: {
       type: '"round" | "ascii"',
-      default: '"round"',
-      description:
-        "Which glyph set to render for the thumb and track — round (● ─) or pure ASCII (* -).",
-    },
-    disabled: {
-      type: "boolean",
-      description:
-        "Whether the switch is disabled. Disabled switches reject focus and activation.",
+      description: "Overrides the theme thumb and track glyphs with a named pair.",
     },
   }}
 />
 
-For the update workflow on installed recipes, see the
-[registry page](/registry).
+React and Solid extend `SwitchPrimitive.Root.Props` except for `children`.
+Core `SwitchOptions` exposes the same fields through `createSwitch()`.

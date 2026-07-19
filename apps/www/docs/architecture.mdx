@@ -1,76 +1,96 @@
 ---
 title: Architecture
-description: The two architecture layers — versioned behavior packages and consumer-owned recipes — and the primitive contract behind them.
+description: How tuiparts.sh divides packaged behavior from consumer-owned presentation.
 sidebar:
   order: 3
 ---
 
-tuiparts.sh splits every component into behavior that is packaged and
-presentation that is copied.
+tuiparts.sh has two product layers with different ownership and update models.
+Primitives centralize reusable terminal interaction. Recipes keep opinionated
+presentation inside the application that renders it.
 
-## Two layers
+## The two layers
 
-<Columns cols={2}>
-  <Column>
-    <Card title="Packages own behavior" icon="package">
-      State, keyboard and pointer interaction, focus, collections, overlays,
-      lifecycle, public parts, and framework adapters ship as versioned npm
-      packages. Upgrades deliver behavior fixes.
-    </Card>
-  </Column>
-  <Column>
-    <Card title="Recipes own presentation" icon="palette">
-      Glyphs, layout, colors, themes, semantic variants, and convenience
-      assembly install as editable source controlled by the application.
-      Updates are optional source integrations.
-    </Card>
-  </Column>
-</Columns>
-
-This is the same trade Base UI and shadcn/ui make on the web, applied to the
-terminal: the difficult, correctness-critical behavior is centralized and
-tested once, while everything opinionated stays in code you can read and
-change.
-
-## Primitive reference
-
-| Primitive | Framework shape | Readonly state | Actions and keys |
+| Layer | Owns | Distribution | Update model |
 | --- | --- | --- | --- |
-| Button | `Button` | disabled, focused, pressed | `press()`; Enter/Return, Space, primary pointer |
-| Checkbox | `Checkbox.Root`, `Checkbox.Indicator` | checked, disabled, focused | `press()`; Enter/Return, Space, primary pointer |
-| Switch | `Switch.Root`, `Switch.Thumb` | checked, disabled, focused | `press()`; Enter/Return, Space, primary pointer |
-| Toggle | `Toggle` | pressed, disabled, focused | `press()`; Enter/Return, Space, primary pointer |
-| ToggleGroup | `ToggleGroup` containing `Toggle` | value, disabled, multiple, orientation | arrows and Home/End move focus; Toggle activation changes value |
-| RadioGroup/Radio | `RadioGroup`, `Radio.Root`, `Radio.Indicator` | group value/disabled; radio checked/focused/availability | Radio `press()`; arrows, Home/End, Enter/Return/Space |
-| Input | `Input` | OpenTUI-owned mutable buffer | native editing; `onInput`, `onChange`, `onSubmit` |
-| Dialog | `Dialog.Root`, Trigger, Portal, Backdrop, Popup, Title, Description, Close | open | Trigger/Close `press()`; Enter/Return/Space, Escape, Tab containment |
+| Primitive packages | State, interaction, focus, collections, overlays, lifecycle, and public Parts | npm packages | Update with the package manager |
+| Registry Recipes | Layout, colors, glyphs, labels, variants, and convenience assembly | Copied TypeScript source | Review and merge with shadcn diff |
 
-Checkbox, Switch, Toggle, ToggleGroup, RadioGroup, and Dialog support controlled and uncontrolled
-ownership. RadioGroup owns one collection value and every Radio must belong to
-a group. Input deliberately preserves OpenTUI's native mutable value and event
-order instead of inventing browser-style controlled rollback.
+OpenTUI remains the platform layer. When OpenTUI already owns a behavior, a
+Primitive preserves that contract instead of building a parallel state
+machine. Input is the clearest example: it retains OpenTUI's mutable buffer and
+event order while the Recipe adds visual defaults.
 
-Disabled controls reject focus and activation. Radio navigation skips
-unavailable items. Dialog coordinates renderer-scoped layers, topmost
-dismissal, focus containment, and restoration.
+## Primitive ownership
 
-The complete ownership, event, part, lifecycle, and conformance rules live in
-[`PRIMITIVE_CONTRACT.md`](https://github.com/tuiparts/tuiparts/blob/main/PRIMITIVE_CONTRACT.md)
-in the repository.
+A Primitive owns only behavior that must remain consistent across
+presentations. Depending on its interaction model, that can include:
 
-## Parts, state, and refs
+- controlled and uncontrolled state;
+- keyboard, pointer, and imperative activation;
+- focus eligibility and restoration;
+- collection registration and roving focus;
+- overlay stacking, containment, and dismissal;
+- readonly public state and semantic change details;
+- cleanup when a behavior-bearing node is destroyed.
 
-- **Public parts** — primitives expose independently composable nodes
-  (`Checkbox.Root`, `Checkbox.Indicator`); parts are not merely style slots.
-- **Readonly state callbacks** — render functions receive readonly primitive
-  state, so recipes react to `checked`, `focused`, `pressed`, and `disabled`
-  without owning them.
-- **Real refs** — a `ref` points at the actual Core Renderable. Imperative
-  actions like `press()` never need a wrapper handle.
-- **No Store passing** — framework consumers configure controlled props and
-  callbacks; only Core callers construct Stores directly.
+It does not choose colors, spacing, glyphs, labels, semantic visual variants,
+or a fixed visual tree beyond the Parts needed for behavior.
 
-## Versioning
+## Roots, Parts, and Stores
 
-`@tuiparts/core`, `@tuiparts/react`, and `@tuiparts/solid` version
-together as a linked foundation release line, managed with Changesets.
+A **Root** is the ownership and composition boundary for one Primitive
+instance. It owns state directly or attaches to a Store when several
+Renderables must coordinate.
+
+A **Part** is a public Renderable with a behavior or semantic responsibility.
+For example, `Switch.Root` owns checked state while `Switch.Thumb` reads that
+state and leaves its position and content to the caller.
+
+A **Store** is the framework-neutral owner of state or cross-Renderable
+coordination. Core callers wire Stores explicitly. React and Solid adapters
+normally create and provide them, so framework consumers configure Roots with
+props rather than passing Stores through their trees.
+
+## State and refs
+
+Framework render callbacks receive readonly state such as `checked`,
+`pressed`, `focused`, or `disabled`. State snapshots are replaced only when
+observable behavior changes; callers do not mutate them.
+
+A framework `ref` resolves to the actual Core Renderable for that Part. The
+same imperative actions used by Core—such as `press()`—remain available
+without a wrapper handle.
+
+## Runtime adapters
+
+`@tuiparts/core` contains framework-neutral Stores and Renderables.
+`@tuiparts/react` and `@tuiparts/solid` expose equivalent compound Parts and
+adapt their runtime's state flow to the same Core behavior.
+
+The adapters share public vocabulary where runtime semantics permit it, but
+their syntax is not identical to imperative Core. Registry reference pages
+therefore show framework usage separately from Core factory usage.
+
+## Collections and overlays
+
+Collection Roots such as Radio Group and Toggle Group coordinate item
+registration, availability, orientation, and roving focus. Radio always
+belongs to Radio Group; Toggle can operate independently or adopt Toggle Group
+ownership.
+
+Dialog coordinates renderer-scoped layers. Only the topmost eligible layer
+handles Escape or backdrop dismissal, focus remains within the active popup,
+and closing restores focus to the appropriate trigger or parent layer.
+
+## Releases
+
+`@tuiparts/core`, `@tuiparts/react`, and `@tuiparts/solid` form the linked
+foundation release line and version together. `@tuiparts/dialog` and
+`@tuiparts/toast` are independently versioned companion products; they are
+not part of that foundation line.
+
+The complete ownership, event, Part, lifecycle, and conformance rules are in
+[`PRIMITIVE_CONTRACT.md`](https://github.com/tuiparts/tuiparts/blob/main/PRIMITIVE_CONTRACT.md).
+The accepted decisions behind the architecture live in
+[`docs/adr`](https://github.com/tuiparts/tuiparts/tree/main/docs/adr).

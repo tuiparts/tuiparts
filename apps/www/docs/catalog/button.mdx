@@ -1,22 +1,15 @@
 ---
 title: Button
-description: A focusable action that activates from the keyboard or pointer.
+description: A focusable action activated by keyboard, pointer, or imperative code.
 ---
 
-A focusable action that activates on `Enter`, `Space`, or the primary pointer
-button. Activation, focus, and disabled handling come from the packaged
-primitive; the intent palette, sizing, and label rendering install as source
-you edit.
+Button performs an action without retaining an on/off value. The packaged
+Primitive owns activation, pressed state, focus, and disabled behavior. The
+Recipe adds a label, intent palette, and horizontal density.
 
-## Usage guidelines
+Use [Toggle](/catalog/toggle) when the pressed state must remain visible.
 
-- **Install the recipe when you want a working button.** Compose
-  `ButtonPrimitive` directly when you are building your own component or
-  design system.
-- **Disabled buttons reject focus and activation.** Focus skips them when it
-  moves through the screen.
-
-## Installation
+## Install
 
 <CodeGroup>
 
@@ -34,12 +27,9 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/button
 
 </CodeGroup>
 
-The command above copies the recipe into `components/ui`. The file belongs to
-your application.
+## React and Solid
 
-## Anatomy
-
-Import the installed component and render it:
+Both framework Recipes export `Button` with the same convenience props:
 
 ```tsx
 import { Button } from "./components/ui/button";
@@ -52,53 +42,71 @@ import { Button } from "./components/ui/button";
 />;
 ```
 
-## Keyboard interactions
+Remaining props pass to the framework Button Primitive, including native
+OpenTUI layout properties and the Renderable `ref`.
+
+## Core
+
+The Core Recipe exports an imperative factory:
+
+```ts
+import { createButton } from "./components/ui/button";
+
+const button = createButton(ctx, {
+  label: "Save changes",
+  intent: "primary",
+  size: "comfortable",
+  onPress: () => save(),
+});
+
+parent.add(button);
+```
+
+`createButton()` returns the packaged `ButtonRenderable`, so actions such as
+`button.press()` remain available.
+
+## Keyboard interaction
 
 | Key | Behavior |
 | --- | --- |
-| `Enter` | Activates the button. |
-| `Space` | Activates the button. |
+| `Enter` or `Return` | Activates the Button. |
+| `Space` | Activates the Button. |
 
-The primary pointer button also activates. To activate imperatively, call
-`press()` on the Renderable `ref`.
+An uncancelled primary-pointer release and `press()` request the same action.
+Disabled Buttons reject focus and activation.
 
-## API reference
+## Recipe API
 
-The installed recipe adds presentation props on top of the primitive's
-`ButtonPrimitive.Props`:
+### React and Solid props
 
 <TypeTable
   type={{
     label: {
       type: "string",
       required: true,
-      description: "Text rendered inside the button.",
+      description: "Text rendered inside the Button.",
     },
     intent: {
       type: '"neutral" | "primary"',
       default: '"primary"',
-      description:
-        "Which theme tokens the resting state uses: primary or surface. Edit or extend the mapping in the installed file.",
+      description: "Uses either the surface or primary theme token pair.",
     },
     size: {
       type: '"compact" | "comfortable"',
       default: '"compact"',
-      description: "Which horizontal padding density to apply.",
-    },
-    disabled: {
-      type: "boolean",
-      description:
-        "Whether the button is disabled. Disabled buttons reject focus and activation.",
+      description: "Selects the horizontal padding token.",
     },
   }}
 />
 
-All remaining primitive props — layout, colors, and event callbacks — pass
-through to `ButtonPrimitive`. The render callback receives readonly
-`pressed`, `focused`, and `disabled` state, which the starter recipe maps to
-[theme tokens](/theming): `focus` for the focused background, a
-`tint`-derived shade of it for the pressed flash, and the `disabled` pair for
-disabled controls.
+The Recipe extends `ButtonPrimitive.Props` except for `children`, which the
+Recipe owns to render its label.
 
-For the split between packaged behavior and installed presentation, see the
-[architecture page](/architecture).
+### Core options
+
+`ButtonOptions` exposes `label`, `intent`, `size`, `disabled`, and `onPress`.
+Native presentation options are not forwarded by this starter Core factory;
+edit the installed class when you want to expose more.
+
+For raw composition and press details, import `Button` from the `button`
+subpath of your runtime's `@tuiparts` package.

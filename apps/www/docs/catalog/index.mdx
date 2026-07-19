@@ -1,51 +1,48 @@
 ---
 title: Overview
-description: The starter catalog of editable recipes, available for Core, React, and Solid.
+description: Choose an editable Recipe for Core, React, or Solid OpenTUI applications.
 sidebar:
   order: 1
 ---
 
-Every recipe in the starter catalog is available as `core/<name>`,
-`react/<name>`, and `solid/<name>`, installs through the shadcn CLI, and
-becomes source your application owns.
+The Catalog contains editable Recipes for Core, React, and Solid. Interactive
+Recipes build on packaged Primitives; presentation-only Recipes use OpenTUI
+directly.
 
-## Starter catalog
+Install a runtime-specific item with the shadcn CLI:
 
-<CardGroup cols={2}>
-  <Card title="Button" href="/catalog/button" icon="square-mouse-pointer">
-    Activation primitive with pressed, focused, and disabled state.
-  </Card>
-  <Card title="Checkbox" href="/catalog/checkbox" icon="square-check">
-    Root and Indicator parts over controlled or uncontrolled checked state.
-  </Card>
-  <Card title="Switch" href="/catalog/switch" icon="toggle-right">
-    Root and Thumb parts with a movable thumb over a glyph track.
-  </Card>
-  <Card title="Toggle" href="/catalog/toggle" icon="panel-top">
-    A standalone two-state button with controlled or uncontrolled pressed state.
-  </Card>
-  <Card title="Toggle Group" href="/catalog/toggle-group" icon="panels-top-left">
-    Single or multiple pressed values with orientation-aware roving focus.
-  </Card>
-  <Card title="Radio Group" href="/catalog/radio-group" icon="circle-dot">
-    A collection primitive owning one value with roving arrow-key focus.
-  </Card>
-  <Card title="Input" href="/catalog/input" icon="text-cursor-input">
-    OpenTUI-native text editing with input, change, and submit events.
-  </Card>
-  <Card title="Dialog" href="/catalog/dialog" icon="app-window">
-    Overlay layers with controlled focus, dismissal, and restoration.
-  </Card>
-  <Card title="Badge" href="/catalog/badge" icon="tag">
-    Presentation-only status label composed from ordinary OpenTUI elements.
-  </Card>
-  <Card title="Theme" href="/theming" icon="palette">
-    The consumer-owned token contract, store, and preset themes every recipe
-    reads from.
-  </Card>
-</CardGroup>
+```bash
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/button
+```
 
-**Recipes are starting points.** Colors, density, and symbols resolve from
-the consumer-owned [theme file](/theming) installed alongside every recipe;
-labels and intent variants live directly in each installed file. All of it is
-example source for you to edit, not package APIs.
+Replace `react` with `solid` or `core` for the other runtimes. Installation
+copies source into `components/ui` and adds the shared consumer-owned theme.
+
+## Choose a Recipe
+
+| Recipe | Use it for | Packaged behavior |
+| --- | --- | --- |
+| [Button](/catalog/button) | An action without retained on/off state | Activation, pressed state, focus, disabled behavior |
+| [Input](/catalog/input) | Single-line text entry | OpenTUI-native editing and events |
+| [Checkbox](/catalog/checkbox) | An independent choice commonly submitted with others | Checked state and activation |
+| [Switch](/catalog/switch) | A setting that takes effect immediately | Checked state and activation |
+| [Toggle](/catalog/toggle) | An action whose pressed state remains visible | Pressed state and activation |
+| [Toggle Group](/catalog/toggle-group) | Related toggles sharing one keyboard stop | Selection and roving focus |
+| [Radio Group](/catalog/radio-group) | One mutually exclusive selection from a set | Selection and roving focus |
+| [Dialog](/catalog/dialog) | A short modal task or decision | Layers, dismissal, and focus containment |
+| [Badge](/catalog/badge) | Non-interactive status text | None; Recipe only |
+
+## Recipes are starting points
+
+Each installed file owns its convenience API and composition. React and Solid
+Recipes expose components; Core Recipes expose imperative factory functions.
+Their behavior aligns, but their syntax and public Recipe types are documented
+separately on each Catalog page.
+
+Application-wide colors, glyphs, borders, and density resolve from the
+[Theme Recipe](/theming). Per-instance labels, marks, variants, and layout
+remain ordinary source in the installed Recipe.
+
+To understand how Recipe ownership differs from packaged behavior, read
+[Architecture](/architecture). To compare upstream source after installation,
+read [Registry](/registry#review-updates).

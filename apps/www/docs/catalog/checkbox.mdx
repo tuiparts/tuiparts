@@ -1,21 +1,17 @@
 ---
 title: Checkbox
-description: A toggle that renders a one-cell mark next to a label.
+description: An independent checked choice rendered with an editable mark and label.
 ---
 
-A toggle that renders a one-cell mark next to a label. Checked-state
-ownership, activation keys, focus, and the Indicator's visibility come from
-the packaged primitive; the mark glyph, tone palette, and label colors
-install as source you edit.
+Checkbox represents an independent choice, commonly one of several values
+submitted together. The packaged Primitive owns checked state, activation,
+focus, and Indicator visibility. The Recipe adds a one-cell mark, label, and
+tone.
 
-## Usage guidelines
+Use [Switch](/catalog/switch) for a setting that takes effect immediately and
+[Radio Group](/catalog/radio-group) for mutually exclusive options.
 
-- **Use `Checkbox` for choices that are submitted together.** Prefer `Switch`
-  for a setting that takes effect immediately.
-- **Disabled checkboxes reject focus and activation.** Focus skips them when
-  it moves through the screen.
-
-## Installation
+## Install
 
 <CodeGroup>
 
@@ -33,12 +29,7 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/checkbox
 
 </CodeGroup>
 
-The command above copies the recipe into `components/ui`. The file belongs to
-your application.
-
-## Anatomy
-
-Import the installed component and render it:
+## React and Solid
 
 ```tsx
 import { Checkbox } from "./components/ui/checkbox";
@@ -46,24 +37,33 @@ import { Checkbox } from "./components/ui/checkbox";
 <Checkbox
   label="Enable notifications"
   defaultChecked
-  onCheckedChange={(checked) => console.log(checked)}
+  onCheckedChange={(checked) => console.log({ checked })}
 />;
 ```
 
-## Keyboard interactions
+Use `checked` with `onCheckedChange` for controlled ownership, or
+`defaultChecked` for uncontrolled initial state.
 
-| Key | Behavior |
-| --- | --- |
-| `Enter` | Toggles the checked state. |
-| `Space` | Toggles the checked state. |
+## Core
 
-The primary pointer button also toggles.
+```ts
+import { createCheckbox } from "./components/ui/checkbox";
 
-## Examples
+const checkbox = createCheckbox(ctx, {
+  label: "Enable notifications",
+  defaultChecked: true,
+  onCheckedChange: (checked) => console.log({ checked }),
+});
 
-### Composing the primitive directly
+parent.add(checkbox);
+```
 
-Assemble the primitive's parts when the recipe's structure does not fit:
+The factory returns `CheckboxRootRenderable`. The installed source constructs
+an Indicator attached to the Root's Store.
+
+## Compose the Primitive
+
+Use the Parts directly when the Recipe layout does not fit:
 
 ```tsx
 import { Checkbox as CheckboxPrimitive } from "@tuiparts/react/checkbox";
@@ -80,14 +80,20 @@ import { Checkbox as CheckboxPrimitive } from "@tuiparts/react/checkbox";
 </CheckboxPrimitive.Root>;
 ```
 
-The Indicator renders its children only while checked. Core callers build the
-same structure with `CheckboxRootRenderable` and
-`CheckboxIndicatorRenderable`, sharing the Root's Store.
+An authored Indicator remains attached and reflects checked state. Core
+callers construct `CheckboxIndicatorRenderable` with the Root's Store.
 
-## API reference
+## Keyboard interaction
 
-The installed recipe adds presentation props and passes ownership props
-through to `CheckboxPrimitive.Root`:
+| Key | Behavior |
+| --- | --- |
+| `Enter` or `Return` | Toggles checked state. |
+| `Space` | Toggles checked state. |
+
+An uncancelled primary-pointer release and `press()` request the same change.
+Disabled Checkboxes reject focus and activation.
+
+## Recipe API
 
 <TypeTable
   type={{
@@ -98,37 +104,28 @@ through to `CheckboxPrimitive.Root`:
     },
     checked: {
       type: "boolean",
-      description:
-        "Whether the checkbox is checked. Use with `onCheckedChange` to control the state.",
+      description: "Controlled checked value.",
     },
     defaultChecked: {
       type: "boolean",
-      description:
-        "Whether the checkbox is initially checked. To control the state, use the `checked` prop instead.",
+      description: "Initial uncontrolled checked value.",
     },
     onCheckedChange: {
       type: "(checked: boolean) => void",
-      description: "Event handler called when the checked state changes.",
+      description: "Called when the Primitive requests a checked-state change.",
     },
     mark: {
       type: "string",
-      default: '"✓"',
-      description:
-        "Which glyph to render as the checked mark. One terminal cell; widen the editable mark cell for wider content.",
+      description: "Overrides the theme check glyph. The starter layout reserves one terminal cell.",
     },
     tone: {
       type: '"accent" | "success"',
       default: '"accent"',
-      description:
-        "Which starter color to apply to the mark. Edit or extend it in the installed file.",
-    },
-    disabled: {
-      type: "boolean",
-      description:
-        "Whether the checkbox is disabled. Disabled checkboxes reject focus and activation.",
+      description: "Selects the primary or success mark color in React and Solid.",
     },
   }}
 />
 
-For the update workflow on installed recipes, see the
-[registry page](/registry).
+React and Solid extend `CheckboxPrimitive.Root.Props` except for `children`.
+Core `CheckboxOptions` exposes the same ownership fields, label, and mark, but
+does not currently expose the framework Recipe's `tone` convenience option.

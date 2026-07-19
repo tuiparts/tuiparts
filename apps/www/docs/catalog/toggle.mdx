@@ -1,21 +1,16 @@
 ---
 title: Toggle
-description: A two-state button that can be pressed or unpressed.
+description: A two-state action whose pressed state remains visible.
 ---
 
-A two-state button that can be pressed or unpressed. Pressed-state ownership,
-activation keys, and focus come from the packaged primitive; the label,
-colors, and spacing install as source you edit.
+Toggle is a two-state action that can be pressed or unpressed. The packaged
+Primitive owns pressed state, activation, focus, and optional Toggle Group
+membership. The Recipe adds a label, spacing, and state-dependent colors.
 
-## Usage guidelines
+Use [Button](/catalog/button) for an action without retained state and
+[Switch](/catalog/switch) for a labeled setting row.
 
-- **Use `Toggle` for an action whose on/off state stays visible.** Prefer
-  `Switch` for a setting row with a label, and `Button` for actions without
-  retained state.
-- **Disabled Toggles reject focus and activation.** Focus skips them when it
-  moves through the screen.
-
-## Installation
+## Install
 
 <CodeGroup>
 
@@ -33,71 +28,84 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/toggle
 
 </CodeGroup>
 
-The command above copies the recipe into `components/ui`. The file belongs to
-your application.
-
-## Anatomy
-
-Import the installed component and render it:
+## React and Solid
 
 ```tsx
 import { Toggle } from "./components/ui/toggle";
 
-<Toggle label="Bold" defaultPressed />;
+<Toggle
+  label="Bold"
+  defaultPressed
+  onPressedChange={(pressed, details) => {
+    console.log({ pressed, source: details.source });
+  }}
+/>;
 ```
 
-The package export is the direct single-part `Toggle`, not `Toggle.Root`. To
-place a Toggle inside a shared selection, see the
-[Toggle Group page](/catalog/toggle-group).
+Use `pressed` with `onPressedChange` for controlled ownership, or
+`defaultPressed` for uncontrolled initial state.
 
-## Keyboard interactions
+## Core
+
+```ts
+import { createToggle } from "./components/ui/toggle";
+
+const bold = createToggle(ctx, {
+  label: "Bold",
+  defaultPressed: true,
+});
+
+parent.add(bold);
+```
+
+The factory returns `ToggleRenderable`.
+
+## Standalone and grouped ownership
+
+The package export is the single-part `Toggle`, not `Toggle.Root`. A
+standalone Toggle owns its pressed value. Inside a Toggle Group it requires a
+unique `value` and adopts the group's array-valued selection.
+
+Use the [Toggle Group Recipe](/catalog/toggle-group) when related Toggles
+should share a single keyboard stop.
+
+## Keyboard interaction
 
 | Key | Behavior |
 | --- | --- |
-| `Enter` | Toggles the pressed state. |
-| `Space` | Toggles the pressed state. |
+| `Enter` or `Return` | Toggles pressed state. |
+| `Space` | Toggles pressed state. |
 
-The primary pointer button and the Renderable's `press()` action request the
-same state change.
+An uncancelled primary-pointer release and `press()` request the same change.
+Disabled Toggles reject focus and activation.
 
-## API reference
-
-The installed recipe adds a label and passes ownership props through to the
-`Toggle` primitive:
+## Recipe API
 
 <TypeTable
   type={{
     label: {
       type: "string",
       required: true,
-      description: "Text rendered inside the toggle.",
+      description: "Text rendered inside the Toggle.",
     },
     pressed: {
       type: "boolean",
-      description:
-        "Whether the toggle is pressed. Use with `onPressedChange` to control the state.",
+      description: "Controlled pressed value for a standalone Toggle.",
     },
     defaultPressed: {
       type: "boolean",
-      description:
-        "Whether the toggle is initially pressed. To control the state, use the `pressed` prop instead.",
+      description: "Initial uncontrolled pressed value.",
     },
     onPressedChange: {
-      type: "(pressed: boolean, details: Toggle.ChangeDetails) => void",
-      description:
-        "Event handler called when the pressed state changes. `details` carries the frozen activation source.",
+      type: "(pressed: boolean, details: ToggleChangeDetails) => void",
+      description: "Called with the requested value and immutable activation source.",
     },
     disabled: {
       type: "boolean",
-      description:
-        "Whether the toggle is disabled. Disabled toggles reject focus and activation.",
+      description: "Prevents focus and activation.",
     },
   }}
 />
 
-The primitive's render callback receives readonly state: `pressed`,
-`focused`, `disabled`, and `tabbable`. `tabbable` marks the Toggle holding a
-group's single tab stop and is `true` for every enabled standalone Toggle.
-
-For the update workflow on installed recipes, see the
-[registry page](/registry).
+React and Solid extend `TogglePrimitive.Props` except for `children`. Core
+`ToggleOptions` exposes the fields above through `createToggle()`.

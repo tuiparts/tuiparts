@@ -1,24 +1,18 @@
 ---
 title: Badge
-description: A presentation-only status label composed from ordinary OpenTUI elements.
+description: A presentation-only status label composed directly from OpenTUI elements.
 ---
 
 <Badge>Recipe only</Badge>
 
-A presentation-only status label composed from ordinary OpenTUI elements — a
-`box` and a `text` — with intents mapped to [theme tokens](/theming). Badge
-is not interactive:
-it renders no focus, keyboard, or pointer behavior, so it is distributed only
-as editable registry source.
+Badge displays non-interactive status text. It is composed directly from an
+OpenTUI Box and Text node and distributed only as editable Registry source.
+There is no Badge Primitive or Badge subpath in the `@tuiparts/core`,
+`@tuiparts/react`, or `@tuiparts/solid` packages.
 
-## Usage guidelines
+Use [Button](/catalog/button) when the user can activate the element.
 
-- **Use `Badge` for status, not actions.** For anything the user activates,
-  use `Button`.
-- **The recipe is the entire implementation.** Edit the intent-to-token map
-  directly; there is no package behind it.
-
-## Installation
+## Install
 
 <CodeGroup>
 
@@ -36,12 +30,7 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/badge
 
 </CodeGroup>
 
-The command above copies the recipe into `components/ui`. The file belongs to
-your application.
-
-## Anatomy
-
-Import the installed component and render it:
+## React and Solid
 
 ```tsx
 import { Badge } from "./components/ui/badge";
@@ -50,36 +39,55 @@ import { Badge } from "./components/ui/badge";
 <Badge label="Deprecated" intent="danger" size="comfortable" />
 ```
 
-## API reference
+Native Box properties apply to the root. `labelOptions` applies native Text
+properties to the label.
+
+## Core
+
+```ts
+import { createBadge } from "./components/ui/badge";
+
+const status = createBadge(ctx, {
+  label: "Passing",
+  intent: "success",
+});
+
+parent.add(status);
+```
+
+The factory returns a `BoxRenderable` containing the Text label.
+
+## Recipe API
 
 <TypeTable
   type={{
     label: {
       type: "string",
       required: true,
-      description: "Text rendered inside the badge.",
+      description: "Text rendered inside the Badge.",
     },
     intent: {
       type: '"danger" | "neutral" | "success" | "warning"',
       default: '"neutral"',
-      description:
-        "Which theme token pair to apply: success, warning, destructive, or surface/foreground for neutral.",
+      description: "Selects the matching semantic theme token pair.",
     },
     size: {
       type: '"compact" | "comfortable"',
       default: '"compact"',
-      description: "Which horizontal padding density to apply.",
+      description: "Selects the horizontal padding token.",
     },
     labelOptions: {
       type: "Omit<TextOptions, 'content'>",
-      description: "Extra OpenTUI text options applied to the label.",
+      description: "Overrides native properties on the Text label.",
     },
   }}
 />
 
-Remaining props are ordinary OpenTUI `BoxOptions` applied to the root.
+The framework props and Core options also extend OpenTUI `BoxOptions`.
+Instance root properties and `labelOptions` are applied after starter defaults.
 
-## Why there is no Badge package
+## Why Badge is Recipe-only
 
-Packages exist to version difficult behavior — state, focus, keys, overlays.
-Badge has none, so packaging it would only hide presentation behind an API.
+Primitives exist to version reusable behavior such as state, focus, keys,
+collections, and overlays. Badge has none of those responsibilities. Packaging
+it would hide presentation without centralizing any difficult behavior.

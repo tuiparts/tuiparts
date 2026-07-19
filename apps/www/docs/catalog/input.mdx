@@ -1,21 +1,14 @@
 ---
 title: Input
-description: A single-line text field with OpenTUI's native editing behavior.
+description: A single-line text field that preserves OpenTUI's native editing contract.
 ---
 
-A single-line text field with OpenTUI's native editing behavior. The recipe
-applies editable visual defaults — text, placeholder, cursor, and focus
-colors — over the packaged Input primitive.
+Input provides single-line text entry. The packaged Primitive preserves
+OpenTUI's mutable buffer and event order instead of introducing browser-style
+controlled rollback. The Recipe adds editable text, placeholder, cursor, and
+focus colors.
 
-## Usage guidelines
-
-- **Input keeps OpenTUI's native mutable buffer and event order.** It does
-  not implement browser-style controlled rollback; if you need strict
-  controlled-value semantics, layer them in your consumer-owned recipe.
-- **Programmatic `value` assignments that change the buffer fire `onInput`.**
-  Commit-style updates arrive through `onChange` instead.
-
-## Installation
+## Install
 
 <CodeGroup>
 
@@ -33,60 +26,67 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/input
 
 </CodeGroup>
 
-The command above copies the recipe into `components/ui`. The file belongs to
-your application.
+## React and Solid
 
-## Anatomy
-
-Import the installed component and render it:
+The framework Recipes export `Input` and retain the Primitive's props:
 
 ```tsx
 import { Input } from "./components/ui/input";
 
 <Input
-  placeholder="Search components…"
+  placeholder="Search Recipes…"
   onInput={(value) => setQuery(value)}
   onSubmit={(value) => search(value)}
 />;
 ```
 
-## Keyboard interactions
+All visual defaults are ordinary OpenTUI properties. Instance props override
+the Recipe defaults because they are spread last.
+
+## Core
+
+The Core Recipe exports `createInput()`:
+
+```ts
+import { createInput } from "./components/ui/input";
+
+const input = createInput(ctx, {
+  placeholder: "Search Recipes…",
+  onInput: (value) => setQuery(value),
+  onSubmit: (value) => search(value),
+});
+
+parent.add(input);
+```
+
+The returned `InputRenderable` retains OpenTUI's native value and editing
+surface.
+
+## Value and events
+
+- `onInput(value)` reports buffer changes, including programmatic `value`
+  assignments that change the buffer.
+- `onChange(value)` reports commit-style changes on blur or submit.
+- `onSubmit(value)` reports an Enter submission.
+
+Editing, selection, cursor movement, insertion, and deletion follow the
+installed OpenTUI version. Use native Input props for those capabilities.
+
+## Keyboard interaction
 
 | Key | Behavior |
 | --- | --- |
-| `Enter` | Submits the value and fires `onSubmit`. |
+| `Enter` or `Return` | Submits the current value and fires `onSubmit`. |
 
-Editing — cursor movement, insertion, and deletion — is OpenTUI's native
-input behavior.
+Other editing keys use OpenTUI's native Input behavior.
 
-## API reference
+## Recipe API
 
-<TypeTable
-  type={{
-    placeholder: {
-      type: "string",
-      description: "Text shown while the value is empty.",
-    },
-    onInput: {
-      type: "(value: string) => void",
-      description:
-        "Event handler called when the value changes, including programmatic assignments that change the buffer.",
-    },
-    onChange: {
-      type: "(value: string) => void",
-      description:
-        "Event handler called when a blur or submit commits the value.",
-    },
-    onSubmit: {
-      type: "(value: string) => void",
-      description: "Event handler called when the user submits with `Enter`.",
-    },
-  }}
-/>
+The React and Solid `InputProps` types extend their runtime Primitive props.
+Core `InputOptions` extends the packaged `InputOptions`. The Recipe does not
+add semantic convenience props; it only supplies visual defaults that callers
+can override.
 
-Every visual default in the installed file — `textColor`,
-`placeholderColor`, `cursorColor`, and the focused variants — is an ordinary
-OpenTUI property you can change or expose as variants.
-
-For the update workflow on installed recipes, see the
-[registry page](/registry).
+For the exact native option surface, use the types from your installed
+`@opentui/core` package and the `input` subpath of your runtime's `@tuiparts`
+package.

@@ -1,26 +1,21 @@
 ---
 title: Theming
-description: A guide to theming recipes with the consumer-owned token contract.
+description: Customize the consumer-owned token contract shared by installed Recipes.
 sidebar:
-  order: 4
+  order: 5
 ---
 
-Every recipe reads its colors, glyphs, and density from one consumer-owned
-theme file instead of hard-coding literals. Installing any recipe also
-installs `components/ui/theme.ts` — it is declared as a registry dependency
-of every item — plus a small `components/ui/use-theme.tsx` binding in React
-and Solid. It is the terminal analog of shadcn's `globals.css` and
-`lib/utils.ts`.
+Every Recipe reads colors, glyphs, borders, and density from a consumer-owned
+theme file. Installing a Recipe adds `components/ui/theme.ts`; React and Solid
+also receive a small `components/ui/use-theme.tsx` binding.
 
-There is no packaged theme runtime. The installed file contains the whole
-mechanism: the `Tokens` contract, a small subscription store, and a default
-theme built from ANSI-indexed colors. Editing it is the supported
-customization path, and the shadcn diff workflow updates it like any recipe.
+There is no packaged theme runtime. The installed source contains the token
+contract, subscription store, default terminal theme, and color helper. Edit
+it as part of your application.
 
-## The token contract
+## Token contract
 
-`Tokens` is a small, flat, semantic vocabulary — shadcn-sized, not a
-per-component style sheet:
+`Tokens` is a small semantic vocabulary shared by the starter Recipes:
 
 ```ts title="components/ui/theme.ts (excerpt)"
 export interface Tokens {
@@ -43,10 +38,10 @@ export interface Tokens {
     disabledForeground: ColorInput;
   };
   glyphs: {
-    check: string; // "✓"
-    radio: string; // "●"
-    thumb: string; // "●"
-    track: string; // "─"
+    check: string;
+    radio: string;
+    thumb: string;
+    track: string;
   };
   borders: {
     style: "single" | "rounded" | "double" | "heavy";
@@ -58,34 +53,34 @@ export interface Tokens {
 }
 ```
 
-Intent colors ship as background/foreground pairs (`primary` /
-`primaryForeground`), so recipes never guess label contrast. Interaction
-states that are not in the vocabulary — a pressed flash, a backdrop scrim, a
-focus emphasis — are derived in recipe code with the `tint` helper rather
-than authored as extra tokens.
+Intent colors use background and foreground pairs so Recipes do not infer
+text contrast. Short-lived interaction colors, such as a pressed shade or
+backdrop scrim, are derived in Recipe code with `tint()`.
 
-## The store
+## Read and change the active theme
 
-`theme.ts` exports an app-wide store singleton. Every installed recipe
-subscribes to it, so changing the theme restyles live components without a
-remount:
+`theme.ts` exports an application-wide `theme` store:
 
 | Member | Behavior |
 | --- | --- |
-| `theme.get()` | The current resolved `Tokens` snapshot — deep-frozen and referentially stable until the next change. |
-| `theme.subscribe(fn)` | Notifies on every change; returns an unsubscribe function. |
-| `theme.setActive(name)` | Switches the active named theme. Returns `false` for unknown names. |
-| `theme.setMode(mode)` | `"system" \| "dark" \| "light"` — selects which per-mode overlay applies. |
-| `theme.register(name, definition)` | Adds or replaces a named theme at runtime. |
-| `theme.override(partial)` | Applies a top-priority partial overlay (or clears it with `undefined`). |
-| `theme.follow(renderer)` | Keeps `"system"` mode in sync with the terminal's live light/dark signal. |
-| `tint(base, overlay, alpha)` | Blends two colors to derive interaction-state shades. |
+| `theme.get()` | Returns the current deep-frozen token snapshot. |
+| `theme.subscribe(listener)` | Subscribes to resolved theme changes and returns an unsubscribe function. |
+| `theme.setActive(name)` | Activates a registered theme; returns `false` when the name is unknown. |
+| `theme.setMode(mode)` | Selects `"system"`, `"dark"`, or `"light"`. |
+| `theme.register(name, definition)` | Adds or replaces a theme definition. |
+| `theme.override(partial)` | Applies a top-priority partial overlay, or clears it with `undefined`. |
+| `theme.follow(renderer)` | Follows the renderer's terminal color mode. |
+| `tint(base, overlay, alpha)` | Blends two OpenTUI colors. |
 
-Snapshots resolve eagerly as `base ⊕ theme.tokens ⊕ theme[mode] ⊕ override`:
-missing keys at any layer fall through to the layer below.
+Resolved tokens merge in this order:
 
-React and Solid recipes read the store through the installed `useTheme()`
-binding; Core recipes call `theme.get()` and `theme.subscribe` directly:
+```text
+base → active shared tokens → active mode tokens → runtime override
+```
+
+Missing keys fall through to the preceding layer.
+
+## Use tokens in each runtime
 
 <CodeGroup>
 
@@ -110,48 +105,48 @@ function StatusLine() {
 ```ts Core
 import { theme } from "./components/ui/theme";
 
-const unsubscribe = theme.subscribe(() => {
+const applyTheme = () => {
   label.fg = theme.get().colors.mutedForeground;
-});
+};
+
+applyTheme();
+const unsubscribe = theme.subscribe(applyTheme);
 ```
 
 </CodeGroup>
 
-## Modes and `"system"`
+Core code must call the styling function once before subscribing. Destroying
+consumer-owned Renderables should also call the returned unsubscribe function.
 
-`"system"` follows your terminal's colors, not the operating system's
-appearance setting. OpenTUI queries the terminal for its background color,
-derives dark or light from its luminance, and emits a live `theme_mode` event
-when the terminal reports a change. Wire it up once at startup:
+## Follow terminal color mode
 
-```tsx title="index.tsx"
+`"system"` refers to the terminal's detected light or dark colors, not
+directly to the operating system setting. Connect the store to the renderer
+once during startup:
+
+```ts
 const renderer = await createCliRenderer({ exitOnCtrlC: true });
-theme.follow(renderer);
+const stopFollowingTheme = theme.follow(renderer);
 ```
 
-Terminals that switch their palette with the OS appearance (Ghostty, iTerm2,
-and others) propagate that switch live; every subscribed component restyles
-in place. If the terminal never answers the query, `"system"` falls back to
-dark.
+OpenTUI derives the mode from the terminal background and emits updates when
+the terminal reports a change. If no mode has been detected, the theme store
+uses dark mode. Call `stopFollowingTheme()` during teardown when the renderer
+does not own the full application lifetime.
 
-## Out-of-the-box themes
+## Install a preset
 
-The default theme, `terminal`, is built entirely from ANSI-indexed and
-default-intent colors — your app inherits the palette, background, and
-transparency the terminal user already configured, with zero hex literals.
+The Registry includes framework-neutral presets:
 
-Preset themes are framework-neutral registry items that install to
-`themes/<name>.ts` and serve all three runtimes:
-
-| Preset | Item | Dark | Light |
+| Preset | Registry item | Dark variant | Light variant |
 | --- | --- | --- | --- |
-| Cobalt Deep | `theme-cobalt-deep` | tuiparts.sh brand graphite/amber | Light brand variant |
+| Cobalt Deep | `theme-cobalt-deep` | Brand graphite and cobalt | Light brand palette |
 | Catppuccin | `theme-catppuccin` | Mocha | Latte |
-| Gruvbox | `theme-gruvbox` | Gruvbox dark | Gruvbox light |
+| Gruvbox | `theme-gruvbox` | Gruvbox Dark | Gruvbox Light |
 | Rosé Pine | `theme-rosepine` | Main | Dawn |
-| ASCII | `theme-ascii` | Glyph-only compatibility preset (`x`, `*`, `-`) for terminals without Unicode | — |
+| ASCII | `theme-ascii` | ASCII glyph overrides | Uses the base colors |
 
-Install a preset, register it, and switch to it:
+Install, register, and activate a preset:
 
 ```bash
 pnpm dlx shadcn@4.13.0 add @tuiparts/theme-catppuccin
@@ -165,24 +160,13 @@ theme.register("catppuccin", catppuccin);
 theme.setActive("catppuccin");
 ```
 
-Presets are `DeepPartial` overrides merged over your base theme, not
-full token sets: anything a preset does not define falls back to your
-defaults, so a glyph-only preset like ASCII changes no colors, and your own
-token extensions never break a preset install.
+Presets are `DeepPartial<Tokens>` definitions. They merge over your base, so a
+glyph-only preset does not replace colors and locally added tokens do not make
+existing presets incomplete.
 
-## Custom themes
+## Create a custom theme
 
-The theme file is yours; there are three tiers of customization, and none of
-them involve configuration.
-
-**Edit the defaults.** Changing a value in the installed `terminal` theme
-changes every recipe at once — the single-source-of-truth edit shadcn users
-make in `globals.css`.
-
-**Write a theme definition.** A theme is shared token overrides plus optional
-per-mode overlays. Register it at startup or load it at runtime — the store
-does not care where the definition came from, which is the seam for
-user-supplied theme files:
+A theme definition can provide shared tokens and optional mode overlays:
 
 ```ts title="themes/midnight.ts"
 import type { ThemeDefinition } from "../components/ui/theme";
@@ -205,32 +189,22 @@ export const midnight: ThemeDefinition = {
 };
 ```
 
-**Extend the contract.** Because you own the `Tokens` interface, app-specific
-tokens are ordinary edits — add a `colors.sidebar` or a `glyphs.spinner` and
-it flows through the same resolve/subscribe pipeline with full type safety.
-Presets remain compatible: they are partial by construction.
+You can also edit the `terminal` base, extend `Tokens` with application
+semantics, or replace the vocabulary entirely. Recipe token access is ordinary
+typed property access, so TypeScript identifies the installed files that need
+updating after a rename.
 
-**Or reshape it entirely.** Removing or renaming a token is a type-guided
-refactor, not a breaking change: recipes read tokens as plain property access
-(`tokens.colors.focus`), never string lookups, so `tsc` lists every recipe
-line that referenced the old name — all consumer-owned source you edit in
-place. An installed preset that set the removed token surfaces the same way.
-The packaged primitives contain no styling and never read tokens, so no
-change to your contract can break a package. Design-system builders composing
-raw primitives can go further still: `createThemeStore` and the merge
-mechanics are shape-agnostic, so you can keep the store, modes, and
-`follow(renderer)` under a token vocabulary of your own — or skip the theme
-item entirely and bring your own system.
+Persistence, theme-picker UI, and config-directory discovery are application
+concerns built on `subscribe()` and `register()`; the Registry does not impose
+those policies.
 
-Persisting the user's choice, theme-picker UIs, and config-directory theme
-loading are consumer-side patterns built on `theme.subscribe` and
-`theme.register`; the registry deliberately ships none of them.
+## Review theme updates
 
-## Updating the theme file
-
-The theme item updates through the same consumer-owned lifecycle as every
-recipe — diff first, merge what you want:
+The Theme item follows the same consumer-owned update lifecycle as every
+Recipe:
 
 ```bash
 pnpm dlx shadcn@4.13.0 add @tuiparts/react/theme --diff
 ```
+
+Review and merge upstream changes rather than overwriting local tokens.

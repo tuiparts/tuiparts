@@ -1,87 +1,86 @@
 ---
 title: Introduction
-description: Composable interaction primitives and editable UI recipes for building terminal interfaces with OpenTUI.
+description: Packaged interaction Primitives and editable Recipes for OpenTUI applications.
 sidebar:
   order: 1
 ---
 
-tuiparts.sh is the component ecosystem for
-[OpenTUI](https://github.com/anomalyco/opentui), covering React, Solid, and
-imperative Core. Behavior ships as versioned packages. Presentation installs
-as source you own.
+tuiparts.sh provides interaction Primitives and editable UI Recipes for
+[OpenTUI](https://github.com/anomalyco/opentui). It supports React, Solid, and
+imperative Core applications.
 
-You already know the difficult parts of a terminal UI, because they are the
-same in every app you build: focus that moves predictably, keys that activate
-the right control, overlays that dismiss in the right order, disabled controls
-that reject input. None of that is what makes your interface yours — but it is
-where the time goes, and where the bugs live. tuiparts.sh splits every
-component along that line.
+The project separates terminal UI work by ownership:
 
-## Packages own behavior
+- **Primitives package behavior.** State, focus, keyboard and pointer
+  interaction, collections, overlays, and lifecycle ship in versioned npm
+  packages.
+- **Recipes copy presentation.** Layout, colors, glyphs, labels, variants, and
+  convenience APIs install as TypeScript source owned by your application.
 
-State, focus, keyboard and pointer interaction, collections, overlays, and
-lifecycle ship as versioned npm packages: `@tuiparts/core` provides
-framework-neutral Stores and Renderables, and `@tuiparts/react` and
-`@tuiparts/solid` provide compound-part adapters over them. Upgrading a
-package delivers behavior fixes without touching your presentation code.
+Package the behavior you want to share and test centrally. Copy the
+presentation you expect to adapt.
 
-## Recipes install as source you own
+## Primitives and Parts
 
-Glyphs, palettes, layout, semantic variants, and convenience assembly install
-as plain TypeScript through the official shadcn CLI. The installed files land
-in your project and belong to your application — every recipe reads its
-colors and glyphs from a consumer-owned [theme file](/theming) installed
-alongside it; there is no hidden theme runtime.
+A Primitive is a visually unstyled behavior unit. `@tuiparts/core` provides
+framework-neutral Stores and Renderables; `@tuiparts/react` and
+`@tuiparts/solid` adapt the same behavior to their runtimes.
 
-## One vocabulary, three runtimes
+Primitives expose independently composable **Parts** where the interaction
+model needs them. For example, Checkbox exposes `Root` and `Indicator`.
+`Root` owns checked state and activation while `Indicator` reflects that
+state without choosing a mark, color, or layout.
 
-The React and Solid adapters sit over the same Core Stores and Renderables,
-so the primitive vocabulary is identical wherever the runtimes permit it. You
-can also drive the Core layer imperatively, without a framework.
+Parts are real OpenTUI nodes, not styling slots. You can arrange them, pass
+native properties, attach Renderable refs, and supply your own content.
 
-## Parts, not style slots
+## Recipes and the Catalog
 
-Primitives expose independently composable parts — `Checkbox.Root`,
-`Checkbox.Indicator` — rather than a single styled component with escape
-hatches. Recipes assemble those parts into convenient components you can take
-apart again.
+A Recipe assembles Primitives into useful presentation and installs from the
+[Catalog](/catalog) through the shadcn CLI. The installed file is ordinary
+Core, React, or Solid source in `components/ui`.
 
-## FAQ
+Recipes share a consumer-owned [theme file](/theming), but there is no hidden
+styling engine or packaged theme runtime. Change the installed source when
+you need a different layout, token mapping, glyph, or public convenience prop.
 
-**Should I compose a primitive or install a recipe?**
+Some Recipes have no Primitive behind them. Badge, for example, is only
+presentation, so it is composed directly from OpenTUI elements and distributed
+only as editable source.
 
-Compose a package primitive when you are building your own component or
-design system. Install a registry recipe when you want a working component
-whose layout, glyphs, and colors you can edit.
+## Choose a layer
 
-**Why is Badge not a package?**
+| Start with | Use it when | You own |
+| --- | --- | --- |
+| A packaged Primitive | You are building a custom control or design system and want tested interaction behavior. | Presentation and composition |
+| A Catalog Recipe | You want a useful starting point that already combines behavior and presentation. | The installed source and future merges |
 
-Badge has no interaction behavior to version, so packaging it would only hide
-presentation behind an API. It is distributed only as editable registry
-source.
+You can start with a Recipe and later take it apart. The underlying Primitive
+remains available when the Recipe's structure no longer fits.
 
-**What happens to my edits when a recipe updates?**
+## One model, three runtimes
 
-Nothing, until you act. Run the `diff` command to review upstream changes and
-merge the ones you want; an ordinary `add` asks before touching an existing
-file.
+React and Solid expose compound-part APIs over the same Core behavior. Core
+callers construct Renderables and wire Stores explicitly where coordination
+requires it. Runtime syntax differs, but ownership, state transitions, and
+interaction rules remain aligned.
 
 ## Next steps
 
 <CardGroup cols={2}>
   <Card title="Quick start" href="/quickstart" icon="rocket">
-    Install an adapter and render your first primitive.
+    Install and render your first editable Recipe.
   </Card>
   <Card title="Catalog" href="/catalog" icon="layout-grid">
-    Browse the starter catalog of editable recipes.
+    Choose a Recipe and inspect its behavior and API.
   </Card>
   <Card title="Architecture" href="/architecture" icon="blocks">
-    Understand primitives, recipes, and who owns what.
+    Understand ownership, Parts, Stores, and runtime adapters.
   </Card>
   <Card title="Theming" href="/theming" icon="palette">
-    The token contract, live theme switching, and preset themes.
+    Customize the token contract and add preset themes.
   </Card>
   <Card title="Registry" href="/registry" icon="package">
-    Configure shadcn and manage consumer-owned updates.
+    Configure installation and review upstream changes.
   </Card>
 </CardGroup>

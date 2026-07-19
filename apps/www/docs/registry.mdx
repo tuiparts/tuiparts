@@ -1,29 +1,37 @@
 ---
 title: Registry
-description: The shadcn-compatible registry hosted on this site — configuration, the install lifecycle, and consumer-owned updates.
+description: Install consumer-owned Recipes and review upstream source changes with the shadcn CLI.
 sidebar:
-  order: 5
+  order: 6
 ---
 
-The tuiparts.sh registry distributes editable recipe source through the
-official shadcn CLI. It is hosted on this site: every item is a static JSON
-payload at `/r/<framework>/<name>.json`.
+The tuiparts.sh Registry serves editable Recipe source as static JSON payloads.
+The official shadcn CLI installs that source and its declared dependencies
+into your application.
 
-Installed files belong to the consuming project. The registry does not
-maintain a second package manager, a recipe lockfile, or an automatic merge
-engine.
+There is no tuiparts-specific installer, Recipe lockfile, or automatic merge
+engine. Installed files belong to the consuming project.
 
-## Install
+## Item addresses
 
-When the shadcn Registry Directory resolves `@tuiparts`, install an item
-directly:
+Runtime-specific Recipes use `<runtime>/<name>` addresses:
 
-```bash
-pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox
+```text
+core/checkbox
+react/checkbox
+solid/checkbox
 ```
 
-If your CLI cannot resolve the namespace yet, add the registry mapping to your
-project's `components.json`:
+With the `@tuiparts` namespace configured, those become addresses such as
+`@tuiparts/react/checkbox`. The equivalent direct URL is
+`https://tuiparts.sh/r/react/checkbox.json`.
+
+Theme presets are framework-neutral and omit the runtime segment, for example
+`@tuiparts/theme-catppuccin`.
+
+## Configure the namespace
+
+Add the Registry mapping to `components.json`:
 
 ```json title="components.json"
 {
@@ -34,63 +42,50 @@ project's `components.json`:
 }
 ```
 
-You can also install any item by direct URL without configuring a namespace:
+You can skip this configuration when using direct item URLs.
+
+## Install an item
+
+Install by namespace:
+
+```bash
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox
+```
+
+Or install the same item by URL:
 
 ```bash
 pnpm dlx shadcn@4.13.0 add https://tuiparts.sh/r/react/checkbox.json
 ```
 
-The command above installs the item's declared dependencies and copies the
-recipe into `components/ui`. Running an ordinary `add` against an existing
-file asks before replacement and defaults to preserving the local file.
+The CLI copies the Recipe into `components/ui` and installs the dependencies
+declared by the item. Every Recipe also declares its runtime's Theme item, so
+the first installation adds `components/ui/theme.ts`; React and Solid also
+receive `components/ui/use-theme.tsx`.
 
-## Catalog
+Running an ordinary `add` against an existing file prompts before replacing
+it and preserves the local file by default.
 
-Each catalog recipe is available as `core/<name>`, `react/<name>`, and
-`solid/<name>`:
+## Compatibility metadata
 
-| Recipe | Packaged behavior | Installed vocabulary |
-| --- | --- | --- |
-| Checkbox | Checkbox Root and Indicator | `Checkbox` |
-| Switch | Switch Root and Thumb | `Switch` |
-| Button | Button activation primitive | `Button` |
-| RadioGroup/Radio | Radio collection and selectable parts | `RadioGroup`, `RadioGroupItem` |
-| Input | Native OpenTUI input behavior | `Input` |
-| Dialog | Overlay layers, focus containment, and dismissal | `Dialog`, `DialogTrigger`, `DialogContent`, `DialogTitle`, `DialogDescription`, `DialogClose` |
-| Badge | None; presentation-only recipe | `Badge` |
-| Toggle | Standalone pressed-state primitive | `Toggle` |
-| ToggleGroup/Toggle | Single or multiple selection and roving focus | `ToggleGroup`, `ToggleGroupItem` |
-| Theme | None; consumer-owned token contract and store | `Tokens`, `theme`, `createThemeStore`, `tint` (+ `useTheme` in React/Solid) |
+Each interactive Recipe declares compatible `@tuiparts` and OpenTUI package
+ranges in `dependencies`. Those ranges are the runtime compatibility
+contract.
 
-Framework-neutral preset themes are additionally available as
-`theme-<name>` — currently `theme-cobalt-deep`, `theme-ascii`,
-`theme-catppuccin`, `theme-gruvbox`, and `theme-rosepine`. They install to
-`themes/<name>.ts` and serve one file to all three runtimes; see
-[Theming](/theming).
+Registry metadata describes the source lifecycle:
 
-React and Solid recipes expose the same installed names and props where their
-runtime semantics permit. Core recipes expose equivalent imperative factory
-functions and install ordinary `.ts` source rather than framework JSX. Every
-recipe declares its runtime's `theme` item in `registryDependencies`, so
-installing any recipe also installs the consumer-owned
-`components/ui/theme.ts`.
+| Field | Meaning |
+| --- | --- |
+| `meta.framework` | The Recipe targets Core, React, or Solid. |
+| `meta.sourceOwnership: "consumer"` | The installed source is expected to be edited locally. |
+| `meta.updateStrategy: "shadcn-diff"` | Updates should be reviewed as source changes. |
 
-## Compatibility
-
-Each registry item records its framework in `meta.framework` and declares its
-compatible primitive and OpenTUI package ranges in `dependencies`.
-
-- `meta.sourceOwnership: "consumer"` — the installed source is expected to be
-  edited locally.
-- `meta.updateStrategy: "shadcn-diff"` — the supported update workflow.
-
-Package ranges are the compatibility contract. Registry metadata describes the
-source lifecycle; it does not replace package dependency resolution.
+Presentation-only Recipes such as Badge do not declare a `@tuiparts`
+Primitive dependency because there is no packaged behavior behind them.
 
 ## Review updates
 
-The current registry item is the upstream recipe revision. Inspect the
-upstream source and compare it with your installed file:
+Inspect the current upstream file or compare it with your installed source:
 
 ```bash
 pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox --view
@@ -98,33 +93,23 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox --diff
 pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox --dry-run
 ```
 
-Review the diff and merge useful upstream changes into the consumer-owned
-file.
+Review the output and merge the changes you want. Primitive package updates
+arrive through your package manager; Recipe updates are optional source
+integrations unless release notes identify a required compatibility change.
 
 :::warning
-**`--overwrite` discards your local edits.** Use it only when you intend to
-replace the installed file; ordinary updates must never rely on unattended
-overwrite.
+**`--overwrite` replaces the installed file and discards local edits.** Use it
+only when that replacement is intentional.
 :::
 
-## Primitive upgrades versus recipe updates
+## Build the Registry
 
-Primitive packages own behavior, state, focus, keyboard and pointer handling,
-and lifecycle fixes. Update those packages with your package manager, subject
-to the recipe item's declared version ranges.
-
-Registry recipes own presentation and convenience composition. A recipe update
-is optional source integration unless its release notes explicitly identify a
-required compatibility change.
-
-## Hosting
-
-This site builds the registry from the repository's `registry.json` with the
-pinned shadcn CLI and serves the output as static assets:
+This section is for Registry maintainers. The website build generates every
+payload from the repository's `registry.json`:
 
 ```bash
 pnpm registry:build --output apps/www/public/r
 ```
 
-Application consumers never run this build command — they use `shadcn add`
-against the published item address.
+Application consumers do not run this command. They install the published
+payloads with `shadcn add`.

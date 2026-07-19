@@ -1,23 +1,17 @@
 ---
 title: Toggle Group
-description: A group of two-state buttons that share pressed values and a single tab stop.
+description: Related Toggles with shared selection and one roving keyboard stop.
 ---
 
-A group of two-state buttons that share pressed values and a single tab stop.
-The recipe installs two components: `ToggleGroup`, which owns the array of
-pressed values, and `ToggleGroupItem`, which renders a labeled Toggle.
-Selection, roving focus, and orientation-aware navigation come from the
-packaged primitives.
+Toggle Group coordinates related two-state actions. The packaged Primitives
+own single or multiple selection, item registration, orientation-aware roving
+focus, and disabled behavior. The Recipe adds group layout and labeled Toggle
+presentation.
 
-## Usage guidelines
+Use standalone [Toggle](/catalog/toggle) for one independent stateful action
+and [Radio Group](/catalog/radio-group) when only one value may be selected.
 
-- **Use a toggle group when related on/off choices should share one keyboard
-  stop.** For a single independent action, use `Toggle` alone; for exactly one
-  required selection, use `RadioGroup`.
-- **Every grouped Toggle requires a unique string `value`.** The group
-  identifies items and reports selection by those values.
-
-## Installation
+## Install
 
 <CodeGroup>
 
@@ -35,12 +29,7 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/toggle-group
 
 </CodeGroup>
 
-The command above copies the recipe into `components/ui`. The file belongs to
-your application.
-
-## Anatomy
-
-Import the installed components and nest items inside the group:
+## React and Solid
 
 ```tsx
 import {
@@ -55,25 +44,62 @@ import {
 </ToggleGroup>;
 ```
 
-By default, one value may be pressed at a time. Set `multiple` to permit
-several pressed values.
+The Recipe uses a horizontal layout unless `orientation="vertical"` is set.
+Set `multiple` to allow more than one pressed value.
 
-## Keyboard interactions
+## Core
+
+```ts
+import {
+  createToggleGroup,
+  createToggleGroupItem,
+} from "./components/ui/toggle-group";
+
+const alignment = createToggleGroup(ctx, {
+  defaultValue: ["left"],
+});
+
+alignment.add(
+  createToggleGroupItem(ctx, alignment.store, {
+    value: "left",
+    label: "Left",
+  }),
+);
+alignment.add(
+  createToggleGroupItem(ctx, alignment.store, {
+    value: "center",
+    label: "Center",
+  }),
+);
+
+parent.add(alignment);
+```
+
+Each Core item receives the group's Store explicitly.
+
+## Selection
+
+`value`, `defaultValue`, and `onValueChange` always use arrays. In the default
+single-selection mode, only the first unique value is retained and pressing
+the active item can clear the group. With `multiple`, every unique active
+value is retained.
+
+Focus movement does not change selection.
+
+## Keyboard interaction
 
 | Key | Behavior |
 | --- | --- |
-| `←` `→` | Moves focus in a horizontal group. |
-| `↑` `↓` | Moves focus in a vertical group. |
+| `Left` / `Right` | Moves focus in a horizontal group. |
+| `Up` / `Down` | Moves focus in a vertical group. |
 | `Home` | Moves focus to the first available Toggle. |
 | `End` | Moves focus to the last available Toggle. |
-| `Enter` | Changes the focused Toggle's pressed state. |
-| `Space` | Changes the focused Toggle's pressed state. |
+| `Enter`, `Return`, or `Space` | Changes the focused Toggle's pressed state. |
 
-Focus navigation does not change selection. By default, arrow navigation
-wraps at the collection edges; set `loopFocus` to `false` to stop at the
-ends.
+Unavailable items are skipped. Navigation wraps by default; set
+`loopFocus={false}` to stop at the collection edges.
 
-## API reference
+## Recipe API
 
 ### ToggleGroup
 
@@ -81,73 +107,37 @@ ends.
   type={{
     value: {
       type: "readonly string[]",
-      description:
-        "Values of the pressed Toggles. Use with `onValueChange` to control the group.",
+      description: "Controlled pressed values.",
     },
     defaultValue: {
       type: "readonly string[]",
-      description:
-        "Values pressed initially. To control the group, use the `value` prop instead.",
+      description: "Initial uncontrolled pressed values.",
     },
     onValueChange: {
-      type: "(value: readonly string[]) => void",
-      description: "Event handler called when the pressed values change.",
+      type: "(value: readonly string[], details: ToggleGroupChangeDetails) => void",
+      description: "Called when an item requests a selection change.",
     },
     multiple: {
       type: "boolean",
       default: "false",
-      description:
-        "Whether more than one Toggle may be pressed. In single mode, pressing the selected Toggle again clears the group.",
+      description: "Allows more than one pressed value.",
     },
     orientation: {
       type: '"horizontal" | "vertical"',
       default: '"horizontal"',
-      description:
-        "Which arrow-key axis moves focus. The recipe also uses it to set the flex direction.",
+      description: "Sets the focus axis and the starter Recipe layout.",
     },
     loopFocus: {
       type: "boolean",
       default: "true",
-      description: "Whether arrow navigation wraps at the collection edges.",
-    },
-    disabled: {
-      type: "boolean",
-      description:
-        "Whether the whole group is disabled. Disabled groups reject focus and activation.",
+      description: "Controls whether navigation wraps at collection edges.",
     },
   }}
 />
-
-`value`, `defaultValue`, and `onValueChange` always use arrays, including
-single mode.
 
 ### ToggleGroupItem
 
-<TypeTable
-  type={{
-    value: {
-      type: "string",
-      required: true,
-      description:
-        "Value this Toggle contributes to the group. Unique within the group.",
-    },
-    label: {
-      type: "string",
-      required: true,
-      description: "Text rendered inside the toggle.",
-    },
-    onPressedChange: {
-      type: "(pressed: boolean, details: Toggle.ChangeDetails) => void",
-      description:
-        "Event handler called when this Toggle requests a pressed change. Runs before the group's `onValueChange`.",
-    },
-    disabled: {
-      type: "boolean",
-      description:
-        "Whether the item is unavailable. Unavailable items are skipped during navigation.",
-    },
-  }}
-/>
-
-For the update workflow on installed recipes, see the
-[registry page](/registry).
+React and Solid items require `value` and `label`, and otherwise extend Toggle
+Primitive props except for `children` and `value`. The Core
+`ToggleGroupItemOptions` starter surface contains `value`, `label`, and
+`disabled`; edit the installed factory to expose additional item callbacks.

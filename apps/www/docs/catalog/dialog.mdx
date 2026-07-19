@@ -1,24 +1,18 @@
 ---
 title: Dialog
-description: A modal overlay that contains focus until dismissed.
+description: A modal layer with coordinated dismissal, focus containment, and restoration.
 ---
 
-A modal overlay that contains focus until dismissed. Open state, layer
-coordination, dismissal, and focus restoration come from the packaged
-primitive. The backdrop, popup layout, colors, and controls install as source
-you edit.
+Dialog presents a short modal task or decision. The packaged Primitive owns
+open state, renderer-scoped layers, topmost dismissal, focus containment, and
+restoration. The Recipe provides a centered popup, backdrop, border, spacing,
+and styled controls.
 
-## Usage guidelines
+Prefer inline controls when the task does not need to interrupt the current
+context. Give every Dialog a visible title and add a description when the
+action or consequences need explanation.
 
-- **Use `Dialog` for a short task that requires the user's attention.** Prefer
-  inline controls when the user can complete the task without leaving the
-  current context.
-- **Give every dialog a visible title.** Add a description when the action or
-  its consequences need more context.
-- **tuiparts contains focus while the dialog is open.** You are responsible
-  for placing the actions in a clear order and rendering visible focus states.
-
-## Installation
+## Install
 
 <CodeGroup>
 
@@ -36,14 +30,9 @@ pnpm dlx shadcn@4.13.0 add @tuiparts/core/dialog
 
 </CodeGroup>
 
-The command above copies the recipe into `components/ui`. The file belongs to
-your application.
+## React and Solid
 
-## Anatomy
-
-Import the installed components and assemble the dialog:
-
-```tsx title="app/settings-dialog.tsx"
+```tsx
 import {
   Dialog,
   DialogClose,
@@ -59,7 +48,7 @@ import {
   </DialogTrigger>
   <DialogContent>
     <DialogTitle content="Settings" />
-    <DialogDescription content="Change the options for this project." />
+    <DialogDescription content="Change this project's options." />
     <DialogClose>
       <text content="Close" />
     </DialogClose>
@@ -67,82 +56,82 @@ import {
 </Dialog>;
 ```
 
-The recipe composes `Portal`, `Backdrop`, and `Popup` into `DialogContent`.
-Compose the packaged parts directly when you need a different layer structure.
+`DialogContent` composes the Primitive's Portal, Backdrop, and Popup Parts.
+Compose those Parts directly when you need a different layer structure.
 
-## Keyboard interactions
+## Core
+
+The Core Recipe returns the Parts needed for imperative assembly:
+
+```ts
+import { TextRenderable } from "@opentui/core";
+import {
+  addDialogClose,
+  addDialogDescription,
+  addDialogTitle,
+  createDialog,
+} from "./components/ui/dialog";
+
+const dialog = createDialog(ctx);
+dialog.trigger.add(new TextRenderable(ctx, { content: "Open settings" }));
+addDialogTitle(ctx, dialog, "Settings");
+addDialogDescription(ctx, dialog, "Change this project's options.");
+addDialogClose(ctx, dialog, "Close");
+
+parent.add(dialog.root);
+parent.add(dialog.portal);
+```
+
+`createDialog()` returns `root`, `trigger`, `portal`, `backdrop`, and `popup`.
+Core callers add both the Root and Portal to the render tree. The helper
+functions append semantic text and Close Parts to the Popup.
+
+## Open-state ownership
+
+Use `open` with `onOpenChange` for controlled ownership, or `defaultOpen` for
+uncontrolled initial state. Change details report whether a transition came
+from the Trigger, Escape, outside interaction, Close, an accepted action, or a
+programmatic request.
+
+Dismissal requests are cancelable where the Primitive can synchronously honor
+`details.preventDefault()`.
+
+## Focus and layers
+
+When a Dialog opens, focus moves to `initialFocus`, the first focusable Popup
+descendant, or the Popup itself. Tab and Shift+Tab wrap within the topmost
+Popup. Closing restores focus to its Trigger or the appropriate parent Dialog.
+
+Only the topmost eligible layer handles Escape or Backdrop dismissal. Pointer
+interaction inside the Popup does not dismiss it.
+
+## Keyboard interaction
 
 | Key | Behavior |
 | --- | --- |
-| `Esc` | Dismisses the topmost open dialog. |
-| `Tab` | Moves focus to the next focusable control inside the dialog. |
-| `Shift+Tab` | Moves focus to the previous focusable control inside the dialog. |
-| `Enter` | Activates the focused `Trigger` or `Close`. |
-| `Space` | Activates the focused `Trigger` or `Close`. |
+| `Escape` | Requests dismissal of the topmost Dialog. |
+| `Tab` | Moves to the next focusable Popup descendant. |
+| `Shift+Tab` | Moves to the previous focusable Popup descendant. |
+| `Enter`, `Return`, or `Space` | Activates a focused Trigger or Close Part. |
 
-Focus wraps within the topmost dialog. Closing it restores focus to its
-trigger. The primary pointer button activates `DialogTrigger` and
-`DialogClose`; pressing the backdrop dismisses the topmost dialog.
-
-## API reference
+## Recipe API
 
 ### Dialog
 
-`Dialog` passes state ownership props through to `DialogPrimitive.Root`:
-
-<TypeTable
-  type={{
-    open: {
-      type: "boolean",
-      description:
-        "Whether the dialog is open. Use with `onOpenChange` to control the state.",
-    },
-    defaultOpen: {
-      type: "boolean",
-      default: "false",
-      description:
-        "Whether the dialog is initially open. To control the state, use the `open` prop instead.",
-    },
-    onOpenChange: {
-      type: "(open: boolean, details: DialogOpenChangeDetails) => void",
-      description:
-        "Event handler called when the open state changes. `details.reason` identifies the trigger, dismissal, action, or programmatic source.",
-    },
-  }}
-/>
+`Dialog` retains the Primitive Root props: `open`, `defaultOpen`,
+`onOpenChange`, native Root properties, children, and the Renderable ref.
 
 ### DialogContent
 
-`DialogContent` accepts the primitive popup props and adds backdrop styling:
-
-<TypeTable
-  type={{
-    backdropColor: {
-      type: "ColorInput",
-      description:
-        "Which color to apply to the terminal-wide backdrop. By default, the recipe derives it from the active theme.",
-    },
-    initialFocus: {
-      type: "Renderable",
-      description:
-        "Which focusable Renderable to focus when the dialog opens. By default, focus moves to the first focusable descendant.",
-    },
-  }}
-/>
+React and Solid `DialogContent` accepts Primitive Popup props and adds
+`backdropColor?: ColorInput`. `initialFocus?: Renderable` selects a preferred
+focus target. The Recipe owns its Portal and Backdrop tree, so those Part props
+are changed by editing the installed source or composing the Primitive.
 
 ### DialogClose
 
-<TypeTable
-  type={{
-    reason: {
-      type: '"close" | "action"',
-      default: '"close"',
-      description:
-        "Which dismissal reason to report to `onOpenChange` when the control activates.",
-    },
-  }}
-/>
+`reason` defaults to `"close"`. Set `reason="action"` when activation reports
+an accepted Dialog action through `onOpenChange`.
 
-For the split between packaged behavior and installed presentation, see the
-[architecture page](/architecture). For the update workflow, see the
-[registry page](/registry).
+Core `DialogOptions` extends `DialogRootOptions` and adds `width`; the Core
+helpers expose the assembled Parts instead of framework wrapper components.

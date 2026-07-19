@@ -1,132 +1,107 @@
 ---
 title: Quick start
-description: Install a runtime adapter, compose a primitive, and install your first editable recipe.
+description: Install and render an editable tuiparts.sh Recipe in an OpenTUI application.
 sidebar:
   order: 2
 ---
 
-tuiparts.sh supports three runtimes: React, Solid, and imperative Core. This
-page covers the shortest path through both layers — composing a packaged
-primitive and installing an editable recipe.
+This tutorial installs the React Checkbox Recipe. The same Catalog address is
+available under `solid/checkbox` and `core/checkbox` for the other runtimes.
 
-## Install a runtime
+You need an existing OpenTUI application and a `components.json` file. If you
+have not configured a shadcn-compatible Registry before, add the tuiparts.sh
+namespace first.
 
-Install the adapter for your runtime together with its OpenTUI peers:
+## Configure the Registry
 
-<CodeGroup>
+Add `@tuiparts` to `components.json`:
 
-```bash React
-pnpm add @tuiparts/react @tuiparts/core \
-  @opentui/core @opentui/react react
+```json title="components.json"
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "registries": {
+    "@tuiparts": "https://tuiparts.sh/r/{name}.json"
+  }
+}
 ```
 
-```bash Solid
-pnpm add @tuiparts/solid @tuiparts/core \
-  @opentui/core @opentui/solid solid-js
+This maps an address such as `@tuiparts/react/checkbox` to the static Registry
+item at `/r/react/checkbox.json`.
+
+## Install Checkbox
+
+Run the shadcn CLI from your application:
+
+```bash
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox
 ```
 
-```bash Core
-pnpm add @tuiparts/core @opentui/core
-```
+The command copies `checkbox.tsx` into `components/ui`, installs its package
+dependencies, and adds the consumer-owned theme files used by the Recipe.
 
-</CodeGroup>
+Use `@tuiparts/solid/checkbox` for Solid or `@tuiparts/core/checkbox` for
+imperative Core.
 
-The three runtimes share one primitive vocabulary. React and Solid expose
-compound parts; Core exposes the same behavior as Stores and Renderables.
+## Render the Recipe
 
-## Compose a primitive
+Import the installed file through your application's local path:
 
-Import a primitive from its module namespace and assemble its parts:
+```tsx
+import { Checkbox } from "./components/ui/checkbox";
 
-<CodeGroup>
-
-```tsx React
-import { Checkbox as CheckboxPrimitive } from "@tuiparts/react/checkbox";
-
-export function Checkbox() {
+export function NotificationSetting() {
   return (
-    <CheckboxPrimitive.Root defaultChecked flexDirection="row" gap={1}>
-      {(state) => (
-        <>
-          <CheckboxPrimitive.Indicator>
-            <text content="✓" />
-          </CheckboxPrimitive.Indicator>
-          <text content={state.checked ? "Enabled" : "Disabled"} />
-        </>
-      )}
-    </CheckboxPrimitive.Root>
+    <Checkbox
+      label="Enable notifications"
+      defaultChecked
+      onCheckedChange={(checked) => console.log({ checked })}
+    />
   );
 }
 ```
 
-```ts Core
-import {
-  CheckboxIndicatorRenderable,
-  CheckboxRootRenderable,
-} from "@tuiparts/core/checkbox";
+Checkbox behavior comes from the packaged Primitive. Its label, mark, spacing,
+and token mapping live in the installed file and are yours to edit.
 
-const root = new CheckboxRootRenderable(ctx, { defaultChecked: true });
-const indicator = new CheckboxIndicatorRenderable(ctx, { store: root.store });
-root.add(indicator);
+## Customize it
+
+Open `components/ui/checkbox.tsx`. You can change the layout or add Recipe
+props without wrapping an opaque package API. For application-wide colors,
+glyphs, borders, and density, edit `components/ui/theme.ts` instead.
+
+## Compose the Primitive directly
+
+When the Recipe's structure is not useful, import the Primitive and assemble
+its Parts yourself:
+
+```tsx
+import { Checkbox as CheckboxPrimitive } from "@tuiparts/react/checkbox";
+
+<CheckboxPrimitive.Root defaultChecked flexDirection="row" gap={1}>
+  {(state) => (
+    <>
+      <CheckboxPrimitive.Indicator>
+        <text content="✓" />
+      </CheckboxPrimitive.Indicator>
+      <text content={state.checked ? "Enabled" : "Disabled"} />
+    </>
+  )}
+</CheckboxPrimitive.Root>;
 ```
 
-</CodeGroup>
-
-The render callback receives readonly primitive state, and a `ref` points at
-the actual Core Renderable, so imperative actions never need a wrapper
-handle. Recipes conventionally alias primitives locally with a `Primitive`
-suffix.
-
-## Install a recipe
-
-Recipes install through the official shadcn CLI and become source your
-application owns.
-
-1. Install the item for your runtime -- `core/*`, `react/*`, or `solid/*`:
-
-    ```bash
-    pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox
-    ```
-
-    The command above copies the recipe into `components/ui` and installs its
-    declared dependencies.
-
-2. If your CLI cannot resolve `@tuiparts`, add the registry namespace to
-   `components.json` and repeat the command:
-
-    ```json title="components.json"
-    {
-      "$schema": "https://ui.shadcn.com/schema.json",
-      "registries": {
-        "@tuiparts": "https://tuiparts.sh/r/{name}.json"
-      }
-    }
-    ```
-
-3. Import the installed component like any local file:
-
-    ```tsx
-    import { Checkbox } from "./components/ui/checkbox";
-
-    <Checkbox label="Enable notifications" defaultChecked />;
-    ```
-
-**The installed files belong to your application.** Installing any recipe
-also installs the consumer-owned [theme file](/theming) it reads its colors
-and glyphs from. Labels and variants live in the recipe itself. All of it is
-starter source, not package APIs — edit it directly or use it as the basis
-of your own registry.
+The Primitive owns state, focus, and activation. Your tree owns every visual
+choice.
 
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Catalog" href="/catalog" icon="layout-grid">
-    Browse the starter recipes for packaged primitives, including Dialog.
+  <Card title="Browse the Catalog" href="/catalog" icon="layout-grid">
+    Compare the available interactive and presentation-only Recipes.
   </Card>
-  <Card title="Theming" href="/theming" icon="palette">
-    Tokens, live theme switching, and the out-of-the-box preset themes.
+  <Card title="Customize themes" href="/theming" icon="palette">
+    Edit tokens, follow terminal color mode, and install presets.
   </Card>
-  <Card title="Registry lifecycle" href="/registry" icon="git-compare">
-    Review upstream recipe changes without discarding local edits.
+  <Card title="Review updates" href="/registry#review-updates" icon="git-compare">
+    Compare upstream Recipe changes with your local source.
   </Card>
 </CardGroup>

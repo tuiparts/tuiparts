@@ -6,6 +6,11 @@ This document defines the shared contract for v1 primitives. It is grounded in
 the shipped Checkbox, RadioGroup, Input, and Dialog behavior. New primitives
 and changes to existing primitives must conform to it.
 
+[ADR-0009](docs/adr/0009-deliver-primitives-and-recipes-as-complete-verticals.md)
+defines the mandatory implementation, test-ownership, Registry, packaging,
+documentation, validation, and release workflow for delivering this contract
+as a complete vertical.
+
 The contract describes public behavior, not a required internal class layout.
 Primitive-specific behavior still belongs in that primitive's public API and
 tests.

@@ -7,7 +7,8 @@ wrap. This package owns interaction and lifecycle, not recipe presentation.
 
 | Task | File(s) | Notes |
 |------|---------|-------|
-| Add/change primitive | `../../PRIMITIVE_CONTRACT.md` | Apply the public contract and conformance matrix |
+| Add/change Primitive | `../../docs/adr/0009-deliver-primitives-and-recipes-as-complete-verticals.md` | Complete every Core, adapter, Registry, package, docs, test, and release surface |
+| Primitive behavior contract | `../../PRIMITIVE_CONTRACT.md` | Apply the public contract and conformance matrix |
 | Primitive architecture | `../../PRIMITIVES_AND_RECIPES.md` | Store, public parts, state, events, refs, actions |
 | Compound primitive pattern | `src/checkbox/primitive.ts` | Store + public Root/Indicator behavior pattern |
 | Barrel export | `src/<name>/index.ts` | Re-exports the component's public API |

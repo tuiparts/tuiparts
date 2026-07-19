@@ -31,7 +31,8 @@ tuiparts/
 
 | Task | Location | Notes |
 |------|----------|-------|
-| Add/change primitive | `PRIMITIVE_CONTRACT.md` | Start with the public contract and applicable conformance rows |
+| Add/change Primitive or Recipe | `docs/adr/0009-deliver-primitives-and-recipes-as-complete-verticals.md` | Mandatory delivery checklist, test ownership, validation, docs, and release evidence |
+| Primitive behavior contract | `PRIMITIVE_CONTRACT.md` | Public contract and applicable conformance rows |
 | Primitive architecture | `PRIMITIVES_AND_RECIPES.md` | Package behavior; copy opinionated recipes |
 | Architecture decisions | `docs/adr/` | Read accepted ADRs before changing public APIs, ownership, package boundaries, or adapter state flow |
 | Primitive and recipe usage | `docs/primitives-and-recipes.md` | Package versus registry choice and public component matrix |
@@ -55,7 +56,7 @@ tuiparts/
 
 ## CONVENTIONS
 
-- **Accepted ADRs are binding context** - Read `docs/adr/*.md` before architectural work and update or supersede the relevant ADR when a decision changes
+- **Accepted ADRs are binding context** - Start with `docs/adr/README.md`; update or supersede the relevant ADR when a decision changes
 - **pnpm workspace** - Use `pnpm -r` for recursive commands
 - **ES Modules** - All packages use `"type": "module"`
 - **Biome** - Linting/formatting (spaces, double quotes)

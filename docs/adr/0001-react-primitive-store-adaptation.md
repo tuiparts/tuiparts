@@ -83,8 +83,8 @@ Input.Props
 Radio always receives collection ownership from RadioGroup, including a
 one-choice composition; see ADR 0002.
 
-The former flat framework type aliases are removed because the project is
-pre-release. Registry recipes alias package primitives locally as
+The former flat framework type aliases were removed before the first stable
+Foundation release. Registry recipes alias package primitives locally as
 `CheckboxPrimitive`, `SwitchPrimitive`, and similar names.
 
 ### Core Stores are real low-level composition APIs

@@ -56,8 +56,8 @@ vocabulary. RadioGroup continues to own `value`, `defaultValue`, and
 behavior, dynamic registration, roving focus, refs, and change details remain
 the existing collection behavior.
 
-The earlier fixed-tree Radio and layout-only RadioGroup are removed without
-deprecated aliases because the project is pre-release.
+The earlier fixed-tree Radio and layout-only RadioGroup were removed without
+deprecated aliases before the first stable Foundation release.
 
 ## Consequences
 

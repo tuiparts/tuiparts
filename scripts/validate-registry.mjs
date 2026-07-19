@@ -33,11 +33,22 @@ assert(nextFoundationVersion, "Core package version cannot be incremented");
 const frameworks = {
   core: {
     extension: "ts",
+    hostDependencies: {
+      "@opentui/core": "^0.4.3",
+    },
     localPackages: ["@tuiparts/core"],
     smokeFile: "smoke.test.ts",
   },
   react: {
     extension: "tsx",
+    hostDependencies: {
+      "@opentui/core": "^0.4.3",
+      "@opentui/react": "^0.4.3",
+      react: "^19.2.0",
+    },
+    hostDevDependencies: {
+      "@types/react": "^19.2.0",
+    },
     localPackages: ["@tuiparts/core", "@tuiparts/react"],
     compilerOptions: {
       jsx: "react-jsx",
@@ -48,6 +59,11 @@ const frameworks = {
   },
   solid: {
     extension: "tsx",
+    hostDependencies: {
+      "@opentui/core": "^0.4.3",
+      "@opentui/solid": "^0.4.3",
+      "solid-js": "1.9.12",
+    },
     localPackages: ["@tuiparts/core", "@tuiparts/solid"],
     compilerOptions: {
       jsx: "preserve",
@@ -111,28 +127,16 @@ const themePresets = [
 ];
 const expectedCatalogDependencyNames = {
   core: {
-    primitive: ["@tuiparts/core", "@opentui/core"],
-    recipe: ["@opentui/core"],
+    primitive: ["@tuiparts/core"],
+    recipe: [],
   },
   react: {
-    primitive: [
-      "@tuiparts/react",
-      "@tuiparts/core",
-      "@opentui/core",
-      "@opentui/react",
-      "react",
-    ],
-    recipe: ["@opentui/core", "@opentui/react", "react"],
+    primitive: ["@tuiparts/react"],
+    recipe: [],
   },
   solid: {
-    primitive: [
-      "@tuiparts/solid",
-      "@tuiparts/core",
-      "@opentui/core",
-      "@opentui/solid",
-      "solid-js",
-    ],
-    recipe: ["@opentui/core", "@opentui/solid", "solid-js"],
+    primitive: ["@tuiparts/solid"],
+    recipe: [],
   },
 };
 function consumerFiles(recipe, framework, extension) {
@@ -255,6 +259,13 @@ function packageName(specifier) {
 function packageRange(specifier) {
   const separator = specifier.lastIndexOf("@");
   return separator > 0 ? specifier.slice(separator + 1) : "*";
+}
+
+function localPackagesForConsumer(consumer, item) {
+  const installsFoundationPackage = item.dependencies.some((dependency) =>
+    packageName(dependency).startsWith("@tuiparts/"),
+  );
+  return installsFoundationPackage ? consumer.localPackages : [];
 }
 
 function sourceExports(source) {
@@ -394,12 +405,10 @@ try {
     assert(existsSync(join(root, preset.source)), `Missing ${preset.source}`);
   }
   for (const item of registry.items) {
-    if (item.meta?.framework === "react") {
-      assert(
-        item.devDependencies?.includes("@types/react@^19.2.0"),
-        `${item.name} must install React types as a development dependency`,
-      );
-    }
+    assert(
+      !item.devDependencies?.length,
+      `${item.name} must inherit development tooling from its host application`,
+    );
     for (const dependency of item.dependencies) {
       if (!Object.hasOwn(packageDirectories, packageName(dependency))) continue;
       assert(
@@ -486,8 +495,7 @@ try {
       selectedConsumers.flatMap((consumer) => {
         const itemName = `${consumer.framework}/${consumer.recipe}`;
         const item = registry.items.find((candidate) => candidate.name === itemName);
-        const dependencies = new Set(item.dependencies.map(packageName));
-        return consumer.localPackages.filter((name) => dependencies.has(name));
+        return localPackagesForConsumer(consumer, item);
       }),
     ),
   ];
@@ -576,6 +584,11 @@ try {
     );
     writeJson(installItemPath, installItem);
     const dependencyNames = registryItem.dependencies.map(packageName);
+    const smokeFoundationDevDependencies = Object.fromEntries(
+      localPackagesForConsumer(consumer, registryItem)
+        .filter((name) => !dependencyNames.includes(name))
+        .map((name) => [name, `file:${tarballs.get(name)}`]),
+    );
 
     mkdirSync(consumerDir);
     writeJson(join(consumerDir, "package.json"), {
@@ -583,10 +596,13 @@ try {
       private: true,
       type: "module",
       packageManager: "pnpm@10.34.5",
+      dependencies: consumer.hostDependencies,
       devDependencies: {
         "@types/bun": "1.3.14",
         "@types/node": "24.13.3",
         typescript: "5.9.3",
+        ...consumer.hostDevDependencies,
+        ...smokeFoundationDevDependencies,
         ...consumer.devDependencies,
       },
     });
@@ -637,6 +653,7 @@ try {
         ui: "@/components/ui",
       },
     });
+    await capture("pnpm", ["install"], consumerDir);
 
     const untouched = "registry installation must not modify this file\n";
     writeFileSync(join(consumerDir, "untouched.txt"), untouched);
@@ -746,9 +763,13 @@ try {
     const installedPackage = JSON.parse(
       readFileSync(join(consumerDir, "package.json"), "utf8"),
     );
+    const expectedInstalledDependencies = [
+      ...Object.keys(consumer.hostDependencies),
+      ...dependencyNames,
+    ].sort();
     assert(
       JSON.stringify(Object.keys(installedPackage.dependencies).sort()) ===
-        JSON.stringify([...dependencyNames].sort()),
+        JSON.stringify(expectedInstalledDependencies),
       `${itemName} registry dependencies do not match the item`,
     );
     for (const dependency of registryItem.dependencies) {
@@ -757,8 +778,9 @@ try {
     }
     writeJson(join(consumerDir, "package.json"), installedPackage);
 
-    const installedLocalPackages = consumer.localPackages.filter(
-      (name) => installedPackage.dependencies?.[name] !== undefined,
+    const installedLocalPackages = localPackagesForConsumer(
+      consumer,
+      registryItem,
     );
     const localLockfile = readFileSync(
       join(consumerDir, "pnpm-lock.yaml"),

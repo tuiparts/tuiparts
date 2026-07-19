@@ -68,9 +68,11 @@ it and preserves the local file by default.
 
 ## Compatibility metadata
 
-Each interactive Recipe declares compatible `@tuiparts` and OpenTUI package
-ranges in `dependencies`. Those ranges are the runtime compatibility
-contract.
+Registry items assume an existing OpenTUI application for their selected
+runtime. Interactive Recipes declare only their direct `@tuiparts/core`,
+`@tuiparts/react`, or `@tuiparts/solid` package in `dependencies`. The adapter
+package owns its Core dependency and checks the application's OpenTUI and
+framework versions through peer dependencies.
 
 Registry metadata describes the source lifecycle:
 
@@ -80,8 +82,8 @@ Registry metadata describes the source lifecycle:
 | `meta.sourceOwnership: "consumer"` | The installed source is expected to be edited locally. |
 | `meta.updateStrategy: "shadcn-diff"` | Updates should be reviewed as source changes. |
 
-Presentation-only Recipes such as Badge do not declare a `@tuiparts`
-Primitive dependency because there is no packaged behavior behind them.
+Presentation-only Recipes such as Badge and Theme add no npm dependencies.
+They use the OpenTUI runtime already owned by the application.
 
 ## Review updates
 

@@ -37,19 +37,23 @@ ordinary `.ts` source rather than framework JSX.
 
 ## Compatibility
 
-Each registry item records its framework in `meta.framework` and declares its
-compatible primitive and OpenTUI package ranges in `dependencies`. The
-`meta.sourceOwnership` value `consumer` means the installed source is expected
-to be edited locally. The `meta.updateStrategy` value `shadcn-diff` identifies
-the supported update workflow.
+Each registry item records its framework in `meta.framework`. Interactive
+recipes declare only the direct `@tuiparts/core`, `@tuiparts/react`, or
+`@tuiparts/solid` package added to an existing OpenTUI application. React and
+Solid adapters own their `@tuiparts/core` dependency and check the host's
+OpenTUI and framework versions through peer dependencies.
 
-Package ranges are the compatibility contract. Registry metadata describes the
+The `meta.sourceOwnership` value `consumer` means the installed source is
+expected to be edited locally. The `meta.updateStrategy` value `shadcn-diff`
+identifies the supported update workflow. Registry metadata describes the
 source lifecycle; it does not replace package dependency resolution.
 
 Primitive-backed items target `>=0.0.1 <0.1.0`, beginning with the first
 stable release in the `@tuiparts` scope and accepting compatible package
-patches. Validation preserves those declared ranges while temporary workspace
-overrides resolve them to the local packed tarballs under test.
+patches. Presentation-only recipes add no npm packages. Validation starts from
+an isolated application with the matching OpenTUI runtime, then uses temporary
+workspace overrides to resolve Foundation packages to the local packed
+tarballs under test.
 
 ## Install
 
@@ -148,15 +152,15 @@ dependencies on a hidden theme runtime.
 
 `pnpm validate:registry` verifies the catalog's dependencies, lifecycle
 metadata, and matching React/Solid vocabulary. It builds every registry item
-with the pinned official shadcn CLI, installs every adapter item into an
-isolated strict consumer with bounded concurrency (30 consumers; the
-framework-neutral preset items install and byte-compare inside the three
-theme consumers, whose smokes exercise them), resolves each recipe's theme
-`registryDependencies` from the locally built registry, type-checks
-everything, and runs the runtime smokes. React Checkbox additionally applies a local edit, creates a newer
-upstream payload, verifies `--diff` shows both changes, and proves ordinary
-`add` does not overwrite the local source; that installer behavior is
-framework-independent.
+with the pinned official shadcn CLI, creates an isolated strict OpenTUI host
+for each runtime, and installs every item with bounded concurrency (30
+consumers; the framework-neutral preset items install and byte-compare inside
+the three theme consumers, whose smokes exercise them). It resolves each
+Recipe's Theme `registryDependencies` from the locally built Registry,
+type-checks everything, and runs the runtime smokes. React Checkbox
+additionally applies a local edit, creates a newer upstream payload, verifies
+`--diff` shows both changes, and proves ordinary `add` does not overwrite the
+local source; that installer behavior is framework-independent.
 
 Use `--recipe=<name>` or `--framework=<core|react|solid>` for focused local
 feedback, and combine them when only one consumer matters. CI uses `--built`

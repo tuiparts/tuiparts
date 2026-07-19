@@ -20,7 +20,7 @@ afterEach(() => {
 
 test("installed Core Tabs Recipe runtime smoke", async () => {
   setup = await createTestRenderer({ width: 40, height: 6 });
-  const root = createTabs(setup.renderer);
+  const root = createTabs(setup.renderer, { orientation: "vertical" });
   const list = createTabsList(setup.renderer, root);
   const alpha = createTabsTab(setup.renderer, root, {
     label: "Alpha",
@@ -37,6 +37,7 @@ test("installed Core Tabs Recipe runtime smoke", async () => {
   root.add(createTabsPanel(setup.renderer, root, { value: "beta" }));
   setup.renderer.root.add(root);
   await setup.renderOnce();
+  expect(beta.y).toBeGreaterThan(alpha.y);
   beta.select();
   expect(root.value).toBe("beta");
 

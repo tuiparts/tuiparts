@@ -1,8 +1,13 @@
 /** @jsxImportSource @opentui/solid */
 
 import { Tabs as TabsPrimitive } from "@tuiparts/solid/tabs";
-import { splitProps } from "solid-js";
+import { type Accessor, createContext, splitProps, useContext } from "solid-js";
 import { useTheme } from "./use-theme";
+
+const DEFAULT_TABS_ORIENTATION: TabsPrimitive.Root.Orientation = "horizontal";
+const TabsOrientationContext = createContext<
+  Accessor<TabsPrimitive.Root.Orientation>
+>(() => DEFAULT_TABS_ORIENTATION);
 
 /** Props for the consumer-owned Solid Tabs Root. */
 export type TabsProps = TabsPrimitive.Root.Props;
@@ -18,12 +23,44 @@ export type TabsContentProps = TabsPrimitive.Panel.Props;
 
 /** Consumer-owned Solid Tabs Root. */
 export function Tabs(props: TabsProps) {
-  return <TabsPrimitive.Root gap={1} {...props} />;
+  const [recipe, root] = splitProps(props, [
+    "orientation",
+    "flexDirection",
+    "gap",
+    "children",
+  ]);
+  const orientation = () => recipe.orientation ?? "horizontal";
+  return (
+    <TabsOrientationContext.Provider value={orientation}>
+      <TabsPrimitive.Root
+        flexDirection={
+          recipe.flexDirection ??
+          (orientation() === "vertical" ? "row" : "column")
+        }
+        gap={recipe.gap ?? 1}
+        orientation={orientation()}
+        {...root}
+      >
+        {recipe.children}
+      </TabsPrimitive.Root>
+    </TabsOrientationContext.Provider>
+  );
 }
 
 /** Consumer-owned Solid Tabs List layout. */
 export function TabsList(props: TabsListProps) {
-  return <TabsPrimitive.List flexDirection="row" gap={1} {...props} />;
+  const orientation = useContext(TabsOrientationContext);
+  const [recipe, list] = splitProps(props, ["flexDirection", "gap"]);
+  return (
+    <TabsPrimitive.List
+      flexDirection={
+        recipe.flexDirection ??
+        (orientation() === "vertical" ? "column" : "row")
+      }
+      gap={recipe.gap ?? 1}
+      {...list}
+    />
+  );
 }
 
 /** Consumer-owned labeled Solid Tabs Trigger presentation. */

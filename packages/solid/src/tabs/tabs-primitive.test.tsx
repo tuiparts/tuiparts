@@ -118,6 +118,174 @@ describe("Solid Tabs", () => {
     expect(tab).toBeUndefined();
   });
 
+  it("reactively changes orientation and layout without remounting or duplicate registration", async () => {
+    const originalRegisterTab = TabsStore.prototype.registerTab;
+    const originalRegisterPanel = TabsStore.prototype.registerPanel;
+    let tabRegistrations = 0;
+    let panelRegistrations = 0;
+    TabsStore.prototype.registerTab = function registerTab(...args) {
+      tabRegistrations += 1;
+      return originalRegisterTab.apply(this, args);
+    };
+    TabsStore.prototype.registerPanel = function registerPanel(...args) {
+      panelRegistrations += 1;
+      return originalRegisterPanel.apply(this, args);
+    };
+
+    let root: TabsRootRenderable | undefined;
+    let list: TabsListRenderable | undefined;
+    let tab: TabsTabRenderable | undefined;
+    let beta: TabsTabRenderable | undefined;
+    let panel: TabsPanelRenderable | undefined;
+    let setOrientation: (orientation: "horizontal" | "vertical") => void =
+      () => {};
+    try {
+      setup = await testRender(
+        () => {
+          const [orientation, updateOrientation] = createSignal<
+            "horizontal" | "vertical"
+          >("horizontal");
+          setOrientation = updateOrientation;
+          return (
+            <Tabs.Root
+              orientation={orientation()}
+              ref={(value) => (root = value)}
+            >
+              <Tabs.List
+                flexDirection={orientation() === "vertical" ? "column" : "row"}
+                ref={(value) => (list = value)}
+              >
+                <Tabs.Tab
+                  height={1}
+                  ref={(value) => (tab = value)}
+                  value="alpha"
+                  width={3}
+                />
+                <Tabs.Tab
+                  height={1}
+                  ref={(value) => (beta = value)}
+                  value="beta"
+                  width={3}
+                />
+              </Tabs.List>
+              <Tabs.Panel
+                keepMounted
+                ref={(value) => (panel = value)}
+                value="alpha"
+              />
+              <Tabs.Panel keepMounted value="beta" />
+            </Tabs.Root>
+          );
+        },
+        { width: 40, height: 6 },
+      );
+      const retainedRoot = root;
+      const retainedList = list;
+      const retainedTab = tab;
+      const retainedPanel = panel;
+      const retainedStore = root?.store;
+      expect(tabRegistrations).toBe(2);
+      expect(panelRegistrations).toBe(2);
+
+      setOrientation("vertical");
+      await setup.waitFor(
+        () =>
+          root?.orientation === "vertical" && (beta?.y ?? 0) > (tab?.y ?? 0),
+      );
+      expect(root).toBe(retainedRoot);
+      expect(list).toBe(retainedList);
+      expect(tab).toBe(retainedTab);
+      expect(panel).toBe(retainedPanel);
+      expect(root?.store).toBe(retainedStore);
+      expect(tabRegistrations).toBe(2);
+      expect(panelRegistrations).toBe(2);
+
+      setOrientation("horizontal");
+      await setup.waitFor(
+        () =>
+          root?.orientation === "horizontal" && (beta?.x ?? 0) > (tab?.x ?? 0),
+      );
+      expect(root).toBe(retainedRoot);
+      expect(list).toBe(retainedList);
+      expect(tab).toBe(retainedTab);
+      expect(panel).toBe(retainedPanel);
+      expect(tabRegistrations).toBe(2);
+      expect(panelRegistrations).toBe(2);
+    } finally {
+      TabsStore.prototype.registerTab = originalRegisterTab;
+      TabsStore.prototype.registerPanel = originalRegisterPanel;
+    }
+  });
+
+  it("reconciles dynamic Parts and reruns Root state children", async () => {
+    const observedOrientations: string[] = [];
+    let setMounted: (mounted: boolean) => void = () => {};
+    let setOrientation: (orientation: "horizontal" | "vertical") => void =
+      () => {};
+    setup = await testRender(
+      () => {
+        const [mounted, updateMounted] = createSignal(false);
+        const [orientation, updateOrientation] = createSignal<
+          "horizontal" | "vertical"
+        >("horizontal");
+        setMounted = updateMounted;
+        setOrientation = updateOrientation;
+        return (
+          <Tabs.Root defaultValue="alpha" orientation={orientation()}>
+            <Tabs.List>
+              <Tabs.Tab value="alpha" />
+              {mounted() && <Tabs.Tab id="dynamic-tab" value="beta" />}
+            </Tabs.List>
+            <Tabs.Panel keepMounted value="alpha" />
+            {mounted() && (
+              <Tabs.Panel id="dynamic-panel" keepMounted value="beta" />
+            )}
+          </Tabs.Root>
+        );
+      },
+      { width: 40, height: 6 },
+    );
+    expect(
+      setup.renderer.root.findDescendantById("dynamic-tab"),
+    ).toBeUndefined();
+    setMounted(true);
+    await setup.waitFor(
+      () =>
+        setup?.renderer.root.findDescendantById("dynamic-tab") instanceof
+          TabsTabRenderable &&
+        setup?.renderer.root.findDescendantById("dynamic-panel") instanceof
+          TabsPanelRenderable,
+    );
+    setMounted(false);
+    await setup.waitFor(
+      () =>
+        setup?.renderer.root.findDescendantById("dynamic-tab") === undefined &&
+        setup?.renderer.root.findDescendantById("dynamic-panel") === undefined,
+    );
+
+    setup.renderer.destroy();
+    setup = await testRender(
+      () => {
+        const [orientation, updateOrientation] = createSignal<
+          "horizontal" | "vertical"
+        >("horizontal");
+        setOrientation = updateOrientation;
+        return (
+          <Tabs.Root orientation={orientation()}>
+            {(state: Tabs.Root.State) => {
+              observedOrientations.push(state.orientation);
+              return <text id="root-state" content={state.orientation} />;
+            }}
+          </Tabs.Root>
+        );
+      },
+      { width: 40, height: 2 },
+    );
+    setOrientation("vertical");
+    await setup.waitFor(() => observedOrientations.includes("vertical"));
+    expect(observedOrientations).toContain("horizontal");
+  });
+
   it("unmounts inactive Panels by default and rejects orphan Parts", async () => {
     let root: TabsRootRenderable | undefined;
     let panelRef: TabsPanelRenderable | undefined;

@@ -79,14 +79,15 @@ Each Core Part factory receives the created Root so it can use the same Store.
 ## Customize the Recipe
 
 The copied source owns Trigger labels and selected, focused, and disabled
-presentation. It also supplies starter spacing and a horizontal List layout.
-Your application owns the content rendered inside each Panel.
+presentation. It also supplies starter spacing and orientation-aware Root and
+List layouts. Your application owns the content rendered inside each Panel.
 
-Set `orientation="vertical"` on the Root and use a column List when an instance
-needs vertical Tabs. Edit the Recipe when vertical layout should be your
-default, or when your design system needs indicators, different Trigger
-content, or another convenience API. Shared colors and density come from the
-[Theme Recipe](/theming).
+Set `orientation="vertical"` on `Tabs` to switch both keyboard navigation and
+the starter layout. The Recipe arranges a vertical List beside its Content;
+horizontal Tabs place a horizontal List above their Content. Explicit native
+`flexDirection` props override those defaults. Edit the Recipe when your design
+system needs indicators, different Trigger content, or another convenience
+API. Shared colors and density come from the [Theme Recipe](/theming).
 
 ## Behavior
 

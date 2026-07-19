@@ -115,9 +115,13 @@ export function Root(props: Root.Props): JSX.Element {
   return createComponent(StoreContext.Provider, {
     value: store,
     get children() {
-      const child = local.children;
-      const children = typeof child === "function" ? child(publicState) : child;
-      spreadRenderableProps(element, () => ({ ...renderableProps, children }));
+      spreadRenderableProps(element, () => ({ ...renderableProps }));
+      spreadRenderableProps(element, () => {
+        const child = local.children;
+        return {
+          children: typeof child === "function" ? child(publicState) : child,
+        };
+      });
       return element;
     },
   });
@@ -135,10 +139,8 @@ export function List(props: List.Props): JSX.Element {
   const ref = untrack(() => local.ref);
   setRenderableRef(ref, element);
   onCleanup(() => setRenderableRef(ref, undefined));
-  spreadRenderableProps(element, () => ({
-    ...renderableProps,
-    children: local.children,
-  }));
+  spreadRenderableProps(element, () => ({ ...renderableProps }));
+  spreadRenderableProps(element, () => ({ children: local.children }));
   return element;
 }
 

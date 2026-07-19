@@ -16,7 +16,7 @@ afterEach(async () => {
 
 test("installed React Tabs Recipe runtime smoke", async () => {
   setup = await testRender(
-    <Tabs id="root">
+    <Tabs id="root" orientation="vertical">
       <TabsList>
         <TabsTrigger id="alpha" label="Alpha" value="alpha" />
         <TabsTrigger id="beta" label="Beta" value="beta" />
@@ -27,12 +27,16 @@ test("installed React Tabs Recipe runtime smoke", async () => {
     { width: 40, height: 6 },
   );
   const root = setup.renderer.root.findDescendantById("root");
+  const alpha = setup.renderer.root.findDescendantById("alpha");
   const beta = setup.renderer.root.findDescendantById("beta");
   if (
     !(root instanceof TabsRootRenderable) ||
+    !(alpha instanceof TabsTabRenderable) ||
     !(beta instanceof TabsTabRenderable)
   )
     throw new Error("Expected Tabs Recipe Renderables");
+  await act(async () => setup?.waitFor(() => beta.y > alpha.y));
+  expect(beta.y).toBeGreaterThan(alpha.y);
   await act(async () => beta.select());
   expect(root.value).toBe("beta");
   theme.register("smoke", { tokens: { colors: { primary: "#123456" } } });

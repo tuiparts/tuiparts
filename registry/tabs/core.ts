@@ -69,7 +69,13 @@ export function createTabs(
   ctx: RenderContext,
   options: TabsOptions = {},
 ): TabsRootRenderable {
-  return new TabsRootRenderable(ctx, { ...options, gap: options.gap ?? 1 });
+  const orientation = options.orientation ?? "horizontal";
+  return new TabsRootRenderable(ctx, {
+    ...options,
+    flexDirection:
+      options.flexDirection ?? (orientation === "vertical" ? "row" : "column"),
+    gap: options.gap ?? 1,
+  });
 }
 
 /** Creates the imperative Tabs List layout. */
@@ -80,7 +86,9 @@ export function createTabsList(
 ): TabsListRenderable {
   return new TabsListRenderable(ctx, {
     ...options,
-    flexDirection: root.orientation === "vertical" ? "column" : "row",
+    flexDirection:
+      options.flexDirection ??
+      (root.orientation === "vertical" ? "column" : "row"),
     gap: options.gap ?? 1,
     store: root.store,
   });

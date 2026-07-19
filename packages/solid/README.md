@@ -7,9 +7,10 @@ New to package primitives and editable recipes? Start with the
 
 ## Installation
 
+Add the Adapter to an existing OpenTUI Solid application:
+
 ```bash
-pnpm add @tuiparts/solid @tuiparts/core \
-  @opentui/core @opentui/solid solid-js
+pnpm add @tuiparts/solid
 ```
 
 Peer requirements are `@opentui/core` and `@opentui/solid` `^0.4.3`, with

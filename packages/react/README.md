@@ -7,9 +7,10 @@ New to package primitives and editable recipes? Start with the
 
 ## Installation
 
+Add the Adapter to an existing OpenTUI React application:
+
 ```bash
-pnpm add @tuiparts/react @tuiparts/core \
-  @opentui/core @opentui/react react
+pnpm add @tuiparts/react
 ```
 
 Peer requirements are `@opentui/core` and `@opentui/react` `^0.4.3`, React

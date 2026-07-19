@@ -5,25 +5,24 @@ tuiparts.sh has two architecture layers:
 1. Versioned packages provide reusable terminal behavior.
 2. Registry recipes copy editable presentation into your application.
 
-Use a package primitive when you are building a component or design system.
-Install a registry recipe when you want a useful starting component whose
+Use a packaged Primitive when you are building a custom control or design
+system. Install a Registry Recipe when you want useful starting source whose
 layout, glyphs, colors, and convenience props you can edit.
 
 ## Choose a runtime
 
-Install one framework adapter and its peers:
+Add one package to an existing OpenTUI application with the corresponding
+runtime already installed:
 
 ```bash
 # React
-pnpm add @tuiparts/react @tuiparts/core \
-  @opentui/core @opentui/react react
+pnpm add @tuiparts/react
 
 # Solid
-pnpm add @tuiparts/solid @tuiparts/core \
-  @opentui/core @opentui/solid solid-js
+pnpm add @tuiparts/solid
 
 # Imperative Core
-pnpm add @tuiparts/core @opentui/core
+pnpm add @tuiparts/core
 ```
 
 The React and Solid packages expose the same primitive vocabulary where their

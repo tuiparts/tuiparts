@@ -7,8 +7,10 @@ New to the package/recipe split? Start with the
 
 ## Installation
 
+Add the package to an existing OpenTUI Core application:
+
 ```bash
-pnpm add @tuiparts/core @opentui/core
+pnpm add @tuiparts/core
 ```
 
 The package supports `@opentui/core` `^0.4.3`.

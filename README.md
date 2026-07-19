@@ -64,16 +64,16 @@ release line.
 
 ## Install an Adapter
 
-Choose one Adapter and install its OpenTUI peers. For example:
+Add one Adapter to an existing OpenTUI application. The React and Solid
+Adapters install `@tuiparts/core`; your application already owns its OpenTUI
+runtime and framework peers.
 
 ```bash
-pnpm add @tuiparts/react @tuiparts/core \
-  @opentui/core @opentui/react react
+pnpm add @tuiparts/react
 ```
 
 ```bash
-pnpm add @tuiparts/solid @tuiparts/core \
-  @opentui/core @opentui/solid solid-js
+pnpm add @tuiparts/solid
 ```
 
 See the package READMEs for exact peer ranges and usage.

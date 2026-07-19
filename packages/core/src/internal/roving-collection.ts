@@ -378,6 +378,16 @@ export abstract class RovingCollectionStore<
     }
   }
 
+  /** Releases collection listeners and retained coordination state. */
+  protected disposeCollection(): void {
+    this.listeners.clear();
+    this.mutationQueue.length = 0;
+    this.itemOrderResolver = undefined;
+    this.items.clear();
+    this.activeKey = null;
+    this.tabStopKey = null;
+  }
+
   protected isItemAvailable(
     item: RegisteredCollectionItem<TItemState>,
   ): boolean {
@@ -469,7 +479,8 @@ export abstract class RovingCollectionStore<
     return undefined;
   }
 
-  private getOrderedItems(
+  /** Returns registered members in current rendered order. */
+  protected getOrderedItems(
     updateOrder = true,
   ): Array<CollectionEntry<TItemState>> {
     if (!this.itemOrderResolver) return [...this.items];

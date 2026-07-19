@@ -28,6 +28,7 @@ colors, spacing, glyphs, labels, or fixed visual trees.
 | Input | OpenTUI-native state | `InputRenderable` |
 | Radio / RadioGroup | `RadioGroupStore` | `RadioGroupRenderable`, `RadioRootRenderable`, `RadioIndicatorRenderable` |
 | Switch | `SwitchStore` | `SwitchRootRenderable`, `SwitchThumbRenderable` |
+| Tabs | `TabsStore` | `TabsRootRenderable`, `TabsListRenderable`, `TabsTabRenderable`, `TabsPanelRenderable` |
 | Toggle | `ToggleStore` | `ToggleRenderable` |
 | ToggleGroup | `ToggleGroupStore` | `ToggleGroupRenderable` containing ordinary `ToggleRenderable` children |
 

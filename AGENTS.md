@@ -51,6 +51,7 @@ tuiparts/
 | `toast` | Object | `packages/toast/src/state.ts` | Global toast API (toast.success, toast.error, etc.) |
 | `ToasterRenderable` | Class | `packages/toast/src/renderables/toaster.ts` | Container that manages toast notifications |
 | `DialogStore` | Class | `packages/core/src/dialog/primitive.ts` | Dialog state and layer coordination |
+| `TabsStore` | Class | `packages/core/src/tabs/primitive.ts` | Tabs selection, association, repair, and roving-focus coordination |
 | `DialogManager` | Class | `packages/dialog/src/manager.ts` | Production convenience state with prompt/confirm/alert/choice |
 | `DialogContainerRenderable` | Class | `packages/dialog/src/renderables/dialog-container.ts` | Container that renders dialogs with backdrop |
 

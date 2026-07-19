@@ -71,6 +71,7 @@ import { Switch } from "@tuiparts/react/switch";
 import { Dialog } from "@tuiparts/react/dialog";
 import { Toggle } from "@tuiparts/react/toggle";
 import { ToggleGroup } from "@tuiparts/react/toggle-group";
+import { Tabs } from "@tuiparts/react/tabs";
 ```
 
 ## Dialog

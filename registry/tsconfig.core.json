@@ -10,6 +10,7 @@
       "input",
       "radio-group",
       "switch",
+      "tabs",
       "theme",
       "toggle",
       "toggle-group"

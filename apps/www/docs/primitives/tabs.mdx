@@ -1,0 +1,67 @@
+---
+title: Tabs
+description: Compose selection and associated content from four genuine Parts.
+---
+
+Tabs owns selection, rendered-order keyboard navigation, roving focus, dynamic
+association, repair, and Panel lifecycle without choosing labels or styling.
+It does not wrap OpenTUI `TabSelect`: use that native fixed-tree control when
+its option-driven presentation is the desired interface.
+
+## Install and anatomy
+
+```ts
+import { Tabs } from "@tuiparts/react/tabs";
+```
+
+Replace `react` with `solid`. Core exports `TabsStore` and the four matching
+Renderables from `@tuiparts/core/tabs`.
+
+| Part | Responsibility |
+| --- | --- |
+| `Tabs.Root` | Owns selection, activation mode, orientation, and disabled state. |
+| `Tabs.List` | Determines live rendered Tab order and collection availability. |
+| `Tabs.Tab` | Focusable, pressable selection target associated by `value`. |
+| `Tabs.Panel` | Content region associated by `value`; visible only while active. |
+
+## Compose
+
+```tsx
+<Tabs.Root defaultValue="overview">
+  <Tabs.List flexDirection="row" gap={1}>
+    <Tabs.Tab value="overview"><text content="Overview" /></Tabs.Tab>
+    <Tabs.Tab value="activity"><text content="Activity" /></Tabs.Tab>
+  </Tabs.List>
+  <Tabs.Panel value="overview"><text content="Summary" /></Tabs.Panel>
+  <Tabs.Panel value="activity"><text content="Recent activity" /></Tabs.Panel>
+</Tabs.Root>
+```
+
+Core callers pass `root.store` to List, Tab, and Panel Renderables. Framework
+adapters provide it through Root context.
+
+## Ownership and interaction
+
+Use `value` with `onValueChange` for controlled ownership or `defaultValue`
+for uncontrolled selection. Without a usable default, uncontrolled Tabs
+selects the first available Tab and repairs to the nearest available Tab after
+dynamic removal, hiding, or disablement.
+
+Left/Right navigate horizontal Lists; Up/Down navigate vertical Lists.
+Home/End move to collection edges. Navigation wraps unless `loopFocus={false}`.
+Automatic activation selects while keyboard focus moves. Set
+`activationMode="manual"` to move focus without selection until Enter, Return,
+Space, pointer activation, or `select()`.
+
+Inactive framework Panels unmount by default. `keepMounted` retains the actual
+Panel Renderable and reflects inactivity with `visible=false`. Core Panels are
+always retained once constructed.
+
+## API
+
+Root state contains `value`, `disabled`, `orientation`, and `activationMode`.
+Tab state adds `selected`, `focused`, `tabbable`, `available`, and `associated`.
+Panel state exposes `active`, `associated`, and `value`. Refs target the actual
+matching Core Renderable.
+
+Start with the editable [Tabs Recipe](/catalog/tabs) for labeled themed Tabs.

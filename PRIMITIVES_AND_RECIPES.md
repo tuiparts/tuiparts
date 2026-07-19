@@ -256,6 +256,32 @@ focus positions were additionally verified from rendered screenshots. This
 sequence was last executed against the shared roving-collection engine
 covering both ToggleGroup and RadioGroup.
 
+## Tabs Primitive
+
+Tabs is a genuine compound Primitive rather than a wrapper around OpenTUI's
+fixed-tree `TabSelect`:
+
+- `Tabs.Root` and `TabsStore` own controlled or uncontrolled string selection,
+  activation mode, orientation, and repair.
+- `Tabs.List` owns dynamic rendered order and collection availability.
+- `Tabs.Tab` owns focus and activation while exposing selected, associated,
+  available, disabled, focused, and tabbable state.
+- `Tabs.Panel` associates by value and synchronizes active visibility. React
+  and Solid unmount inactive Panels by default and support `keepMounted`.
+- Automatic activation selects during keyboard focus movement; manual mode
+  waits for Enter, Return, Space, pointer activation, or `select()`.
+- Editable Recipes own labels, spacing, colors, layout, and panel content.
+
+Reference implementations:
+
+- `packages/core/src/tabs/primitive.ts`
+- `packages/react/src/tabs/primitive.ts`
+- `packages/solid/src/tabs/primitive.tsx`
+- `registry/tabs/`
+
+The focused public contract and conformance disposition are recorded in
+`docs/primitive-contracts/tabs.md`.
+
 ## Badge Recipe
 
 Badge has no reusable interaction, state, focus, keyboard, pointer, collection,

@@ -258,6 +258,10 @@ public base class.
   selection, dynamic Toggle identity, rendered order, and roving focus. A
   standalone Toggle owns pressed state; a grouped Toggle reads selection from
   its group through the same Toggle Store before Renderable construction.
+- Tabs retains a public Store for controlled or uncontrolled selection,
+  dynamic Tab/Panel association, automatic or manual activation, rendered
+  order, roving focus, repair, and Panel visibility. Root owns the Store, List
+  owns collection availability/order, and Tab/Panel Parts consume it directly.
 
 React creates a component-specific Core Store before host construction so state
 callbacks and compound context are authoritative during the first render. The
@@ -406,6 +410,10 @@ The shipped primitives establish these precedents:
   adopt explicit ToggleGroup selection without changing its public component
   identity. ToggleGroup proves array-valued single/multiple selection and
   roving focus that does not imply selection.
+- Tabs proves a genuine Root/List/Tab/Panel composition with value-based
+  association, automatic or manual keyboard activation, uncontrolled
+  selection repair, and conditionally or retained mounted Panels without
+  wrapping OpenTUI's fixed-tree `TabSelect`.
 
 Shared infrastructure may be extracted from these implementations only when
 another vertical primitive demonstrates genuine reuse. The contract does not

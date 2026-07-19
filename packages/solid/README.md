@@ -71,6 +71,7 @@ import { Switch } from "@tuiparts/solid/switch";
 import { Dialog } from "@tuiparts/solid/dialog";
 import { Toggle } from "@tuiparts/solid/toggle";
 import { ToggleGroup } from "@tuiparts/solid/toggle-group";
+import { Tabs } from "@tuiparts/solid/tabs";
 ```
 
 All Primitives are also exported from `@tuiparts/solid`.

@@ -373,9 +373,10 @@ export class TabsStore extends RovingCollectionStore<
 
   protected override onItemUnregistered(
     item: RegisteredCollectionItem<TabsTabCollectionState>,
+    fallback: RegisteredCollectionItem<TabsTabCollectionState> | undefined,
   ): boolean {
     if (this.controlled || this.state.value !== item.value) return false;
-    this.update({ value: this.nearestEligibleValue(item.order) });
+    this.update({ value: fallback?.value ?? null });
     return true;
   }
 
@@ -413,7 +414,10 @@ export class TabsStore extends RovingCollectionStore<
   }
 
   private nearestEligibleValue(order: number): string | null {
-    const eligible = this.getOrderedItems().filter(([, item]) =>
+    // Registration removal runs after the selected item has left the Map.
+    // Keep survivor positions from the last complete rendered-order walk so
+    // they remain comparable with the unavailable item's retained position.
+    const eligible = this.getOrderedItems(false).filter(([, item]) =>
       this.isItemAvailable(item),
     );
     return (
@@ -435,6 +439,7 @@ export class TabsRootRenderable extends BoxRenderable {
   private readonly _store: TabsStore;
   private readonly ownsStore: boolean;
   private readonly unsubscribe: () => void;
+  private ownershipReleased = false;
 
   /** Creates a Tabs Root Renderable. */
   constructor(ctx: RenderContext, options: TabsRootOptions = {}) {
@@ -555,16 +560,22 @@ export class TabsRootRenderable extends BoxRenderable {
   }
 
   protected override onRemove(): void {
-    this._store.setRootAvailable(false);
+    this.releaseOwnership();
     super.onRemove();
   }
 
   /** Releases Root subscriptions and an internally owned Store. */
   override destroy(): void {
+    this.releaseOwnership();
+    super.destroy();
+  }
+
+  private releaseOwnership(): void {
+    if (this.ownershipReleased) return;
+    this.ownershipReleased = true;
     this._store.setRootAvailable(false);
     this.unsubscribe();
     if (this.ownsStore) this._store.destroy();
-    super.destroy();
   }
 
   /** Reconciles owning-tree availability outside OpenTUI's hidden traversal. */
@@ -598,6 +609,7 @@ export class TabsListRenderable extends RovingCollectionRenderable<
   TabsTabCollectionState
 > {
   private readonly _store: TabsStore;
+  private ownershipReleased = false;
 
   /** Creates a Tabs List Renderable. */
   constructor(ctx: RenderContext, options: TabsListOptions) {
@@ -625,11 +637,23 @@ export class TabsListRenderable extends RovingCollectionRenderable<
       : undefined;
   }
 
+  protected override onRemove(): void {
+    this.releaseOwnership();
+    super.onRemove();
+  }
+
   /** Releases rendered-order ownership. */
   override destroy(): void {
+    this.releaseOwnership();
+    super.destroy();
+  }
+
+  private releaseOwnership(): void {
+    if (this.ownershipReleased) return;
+    this.ownershipReleased = true;
     this._store.setCollectionAvailable(false);
     this._store.detachList(this);
-    super.destroy();
+    this.releaseCollectionOwnership();
   }
 }
 
@@ -650,6 +674,7 @@ export class TabsTabRenderable extends PressableRenderable {
   private readonly stateListeners = new Set<TabsTabListener>();
   private readonly unsubscribe: () => void;
   private readonly _store: TabsStore;
+  private registrationReleased = false;
 
   /** Creates a Tabs Tab Renderable. */
   constructor(ctx: RenderContext, options: TabsTabOptions) {
@@ -779,11 +804,22 @@ export class TabsTabRenderable extends PressableRenderable {
     fallback?.focus();
   }
 
+  protected override onRemove(): void {
+    this.releaseRegistration();
+    super.onRemove();
+  }
+
   /** Unregisters the Tab and releases subscriptions. */
   override destroy(): void {
+    this.releaseRegistration();
+    super.destroy();
+  }
+
+  private releaseRegistration(): void {
+    if (this.registrationReleased) return;
+    this.registrationReleased = true;
     this.unsubscribe();
     this.registration.unregister();
-    super.destroy();
     this.stateListeners.clear();
   }
 
@@ -893,6 +929,7 @@ export class TabsPanelRenderable extends BoxRenderable {
   private readonly _store: TabsStore;
   private readonly unsubscribe: () => void;
   private panelValue: string;
+  private registrationReleased = false;
 
   /** Creates a Tabs Panel Renderable. */
   constructor(ctx: RenderContext, options: TabsPanelOptions) {
@@ -957,12 +994,23 @@ export class TabsPanelRenderable extends BoxRenderable {
     super.onUpdate(deltaTime);
   }
 
+  protected override onRemove(): void {
+    this.releaseRegistration();
+    super.onRemove();
+  }
+
   /** Unregisters Panel association and subscriptions. */
   override destroy(): void {
+    this.releaseRegistration();
+    super.destroy();
+  }
+
+  private releaseRegistration(): void {
+    if (this.registrationReleased) return;
+    this.registrationReleased = true;
     this.unsubscribe();
     this.registration.unregister();
     this.stateListeners.clear();
-    super.destroy();
   }
 
   private isAvailable(): boolean {

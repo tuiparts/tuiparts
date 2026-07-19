@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it } from "bun:test";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/solid";
 import {
+  type TabsListRenderable,
   TabsPanelRenderable,
   type TabsPanelState,
   type TabsRootRenderable,
@@ -50,6 +51,7 @@ describe("Solid Tabs", () => {
   it("reactively updates ownership, props, callback, refs, and retained identity", async () => {
     const calls: string[] = [];
     let root: TabsRootRenderable | undefined;
+    let list: TabsListRenderable | undefined;
     let tab: TabsTabRenderable | undefined;
     let retainedPanel: TabsPanelRenderable | undefined;
     let release: () => void = () => {};
@@ -75,7 +77,7 @@ describe("Solid Tabs", () => {
             ref={(value) => (root = value)}
             value={value()}
           >
-            <Tabs.List>
+            <Tabs.List ref={(value) => (list = value)}>
               <Tabs.Tab ref={(value) => (tab = value)} value="alpha" />
               <Tabs.Tab id="solid-beta" value="beta" />
             </Tabs.List>
@@ -111,6 +113,9 @@ describe("Solid Tabs", () => {
     setup.renderer.destroy();
     setup = undefined;
     expect(retainedPanel).toBeUndefined();
+    expect(root).toBeUndefined();
+    expect(list).toBeUndefined();
+    expect(tab).toBeUndefined();
   });
 
   it("unmounts inactive Panels by default and rejects orphan Parts", async () => {
@@ -191,6 +196,47 @@ describe("Solid Tabs", () => {
     expect(firstState).toEqual({ active: false, associated: false });
     expect(
       setup.renderer.root.findDescendantById("solid-invalid"),
+    ).toBeUndefined();
+  });
+
+  it("does not mount a default conditional Panel while consumer-visible is false", async () => {
+    let panel: TabsPanelRenderable | undefined;
+    let setVisible: (visible: boolean) => void = () => {};
+    setup = await testRender(
+      () => {
+        const [visible, updateVisible] = createSignal(false);
+        setVisible = updateVisible;
+        return (
+          <Tabs.Root defaultValue="alpha">
+            <Tabs.List>
+              <Tabs.Tab value="alpha" />
+            </Tabs.List>
+            <Tabs.Panel
+              id="solid-consumer-visible-panel"
+              ref={(value) => (panel = value)}
+              value="alpha"
+              visible={visible()}
+            />
+          </Tabs.Root>
+        );
+      },
+      { width: 20, height: 4 },
+    );
+    expect(panel).toBeUndefined();
+    expect(
+      setup.renderer.root.findDescendantById("solid-consumer-visible-panel"),
+    ).toBeUndefined();
+
+    setVisible(true);
+    await setup.waitFor(() => panel instanceof TabsPanelRenderable);
+    expect(
+      setup.renderer.root.findDescendantById("solid-consumer-visible-panel"),
+    ).toBeInstanceOf(TabsPanelRenderable);
+
+    setVisible(false);
+    await setup.waitFor(() => panel === undefined);
+    expect(
+      setup.renderer.root.findDescendantById("solid-consumer-visible-panel"),
     ).toBeUndefined();
   });
 

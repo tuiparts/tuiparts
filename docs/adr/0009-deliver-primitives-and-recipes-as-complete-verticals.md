@@ -159,7 +159,7 @@ The test pyramid is mandatory:
 | React adapter tests | First-render authoritative state, controlled frame consistency, prop application and removal, callback replacement, actual refs, retained Renderable and Store identity, Strict Mode, context errors, and subscription teardown. |
 | Solid adapter tests | Reactive getters and cleanup, prop application and removal, actual refs, retained Renderable and Store identity, context errors, and subscription teardown. |
 | Registry smoke tests | Installation-facing mount, one prop or state round-trip, Recipe-owned presentation, and theme restyle. |
-| Packed-package validation | Published declarations, peer installation, every subpath import, runtime import, and representative executable behavior. |
+| Packed-package validation | Published declaration imports and peer installation for every listed subpath, runtime loading of every listed subpath, and representative compiled executable behavior. |
 | Terminal sequence | User-visible ordering, focus, pointer, dismissal, or restoration that lower seams cannot prove end to end. |
 
 Core owns behavior semantics. React and Solid each keep exactly one interaction

@@ -154,7 +154,7 @@ export function Panel({
     () => store.state,
   );
   void rootState;
-  const initialState = store.getPanelState(value);
+  const initialState = store.getPanelState(value, props.visible ?? true);
   if (!keepMounted && !initialState.active) return null;
   return createElement(PanelHost, {
     ...props,

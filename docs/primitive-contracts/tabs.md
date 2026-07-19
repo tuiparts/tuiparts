@@ -91,8 +91,11 @@ prop changes do not replace retained Root, List, Tab, Panel, or Store identity.
 `keepMounted` is adapter mounting policy and is not forwarded as an OpenTUI
 property.
 
-Mount registers Tabs and Panels; destroy/unmount unregisters exactly once.
-List teardown releases order/availability ownership. Root teardown releases
+Mount registers Tabs and Panels; destroy, framework unmount, or direct parent
+removal unregisters exactly once. OpenTUI removal has no matching reattachment
+hook, so a detached Tabs Part has permanently ended its coordination lifetime
+and must be replaced rather than reattached as the same Renderable. List
+teardown releases order/availability ownership. Root teardown releases
 subscriptions and an owned Store. Every Part tears down Store subscriptions,
 registration, focus ownership, callbacks, and refs. Reentrant callbacks and
 dynamic registration are serialized by Core.
@@ -105,7 +108,7 @@ dynamic registration are serialized by Core.
 | React | Applicable. Real `testRender` tests own first-render Store authority, controlled frame consistency, prop removal and callback replacement, actual refs, retained identity, default/retained Panel ref lifecycle, Strict Mode, context errors, subscription teardown, and one interaction round-trip. |
 | Solid | Applicable. The adapter matrix is repeated through signals and Solid's real renderer, including cleanup and one interaction round-trip. |
 | Registry | Applicable. Core, React, and Solid Recipes import only `/tabs`, compile in isolated strict consumers, mount, perform one selection round-trip, prove Recipe-owned presentation, and restyle from the consumer-owned Theme. |
-| Packed | Applicable. All three `/tabs` subpaths are included in tarball declaration, peer-install, runtime-import, and executable checks. |
+| Packed | Applicable. All three `/tabs` subpaths are included in tarball declaration and runtime-import checks; the compiled packed-consumer check executes representative Core Tabs selection behavior. |
 | Terminal | N/A. Tabs has no renderer-root portal, global listener, restoration, or platform sequence hidden from the real OpenTUI test renderer. Core tests drive actual focus, keys, pointer coordinates, rendered order, and Panel visibility end to end, so a second PTY demo would duplicate lower-seam evidence. |
 
 OpenTUI-native ownership is **N/A** because Tabs owns selection rather than

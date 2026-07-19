@@ -105,8 +105,12 @@ export function Root(props: Root.Props): JSX.Element {
     element.orientation = local.orientation;
     element.value = local.value;
   });
-  onCleanup(() => store.destroy());
-  setRenderableRef(local.ref, element);
+  const ref = untrack(() => local.ref);
+  onCleanup(() => {
+    setRenderableRef(ref, undefined);
+    store.destroy();
+  });
+  setRenderableRef(ref, element);
   return createComponent(StoreContext.Provider, {
     value: store,
     get children() {
@@ -127,7 +131,9 @@ export function List(props: List.Props): JSX.Element {
     renderer,
     untrack(() => ({ ...renderableProps, store })),
   );
-  setRenderableRef(local.ref, element);
+  const ref = untrack(() => local.ref);
+  setRenderableRef(ref, element);
+  onCleanup(() => setRenderableRef(ref, undefined));
   spreadRenderableProps(element, () => ({
     ...renderableProps,
     children: local.children,
@@ -182,7 +188,9 @@ export function Tab(props: Tab.Props): JSX.Element {
     element.disabled = local.disabled;
     element.value = local.value;
   });
-  setRenderableRef(local.ref, element);
+  const ref = untrack(() => local.ref);
+  setRenderableRef(ref, element);
+  onCleanup(() => setRenderableRef(ref, undefined));
   spreadRenderableProps(element, () => {
     const child = local.children;
     return {
@@ -208,7 +216,10 @@ export function Panel(props: Panel.Props): JSX.Element {
     keyed: true,
     get when() {
       rootState();
-      return local.keepMounted || store.getPanelState(local.value).active;
+      return (
+        local.keepMounted ||
+        store.getPanelState(local.value, renderableProps.visible ?? true).active
+      );
     },
     get children() {
       const element = new TabsPanelRenderable(

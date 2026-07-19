@@ -346,6 +346,7 @@ export abstract class RovingCollectionStore<
   /** Repairs selection after an item unregisters; true when state was updated. */
   protected onItemUnregistered(
     _item: RegisteredCollectionItem<TItemState>,
+    _fallback: RegisteredCollectionItem<TItemState> | undefined,
   ): boolean {
     return false;
   }
@@ -430,12 +431,12 @@ export abstract class RovingCollectionStore<
     key: CollectionItemKey,
     item: RegisteredCollectionItem<TItemState>,
   ): void {
-    const fallback =
-      this.activeKey === key ? this.getFocusFallback(key) : undefined;
+    const nearest = this.getFocusFallback(key);
+    const fallback = this.activeKey === key ? nearest : undefined;
     if (this.activeKey === key) this.activeKey = null;
     this.items.delete(key);
     this.reconcileTabStop();
-    if (!this.onItemUnregistered(item)) {
+    if (!this.onItemUnregistered(item, nearest)) {
       this.refreshItems();
       this.touch();
     }
@@ -458,7 +459,7 @@ export abstract class RovingCollectionStore<
   private getFocusFallback(
     key: CollectionItemKey,
   ): RegisteredCollectionItem<TItemState> | undefined {
-    const items = this.getOrderedItems(false);
+    const items = this.getOrderedItems();
     const index = items.findIndex(([itemKey]) => itemKey === key);
     if (index < 0) {
       const removed = this.items.get(key);
@@ -523,6 +524,7 @@ export abstract class RovingCollectionRenderable<
   private readonly collection: RovingCollectionStore<TState, TItemState>;
   private readonly removeItemOrderResolver: () => void;
   private readonly unsubscribeCollection: () => void;
+  private collectionOwnershipReleased = false;
 
   protected constructor(
     ctx: RenderContext,
@@ -579,10 +581,17 @@ export abstract class RovingCollectionRenderable<
     super.onRemove();
   }
 
-  /** Releases collection subscriptions and ownership. */
-  override destroy(): void {
+  /** Permanently releases resolver and subscription ownership once. */
+  protected releaseCollectionOwnership(): void {
+    if (this.collectionOwnershipReleased) return;
+    this.collectionOwnershipReleased = true;
     this.removeItemOrderResolver();
     this.unsubscribeCollection();
+  }
+
+  /** Releases collection subscriptions and ownership. */
+  override destroy(): void {
+    this.releaseCollectionOwnership();
     super.destroy();
   }
 

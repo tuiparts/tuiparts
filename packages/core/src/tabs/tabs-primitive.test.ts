@@ -210,6 +210,34 @@ describe("Tabs primitive", () => {
     expect(root.value).toBe("alpha");
   });
 
+  for (const unavailable of ["hide", "detach"] as const) {
+    it(`repairs from the selected Tab's last rendered position after reorder and ${unavailable}`, async () => {
+      const { alpha, beta, list, root } = await renderTabs();
+      if (!setup) throw new Error("Expected Tabs test renderer");
+      const gamma = new TabsTabRenderable(setup.renderer, {
+        store: root.store,
+        value: "gamma",
+      });
+      list.add(gamma);
+      root.add(
+        new TabsPanelRenderable(setup.renderer, {
+          store: root.store,
+          value: "gamma",
+        }),
+      );
+      // Registration order is a,b,c; rendered order becomes b,a,c.
+      list.add(beta, 0);
+      await setup.renderOnce();
+      alpha.focus();
+
+      if (unavailable === "hide") alpha.visible = false;
+      else list.remove(alpha);
+
+      expect(root.value).toBe("gamma");
+      expect(gamma.focused).toBe(true);
+    });
+  }
+
   it("makes the owning Root unavailable through hidden and detached ancestors", async () => {
     setup = await createTestRenderer({ width: 40, height: 8 });
     const ancestor = new BoxRenderable(setup.renderer, {});
@@ -394,6 +422,105 @@ describe("Tabs primitive", () => {
     expect(root.value).toBe("alpha");
   });
 
+  it("ends detached Part ownership exactly once and permits replacements", async () => {
+    setup = await createTestRenderer({ width: 30, height: 6 });
+    const store = new TabsStore();
+    const originalSubscribe = store.subscribe.bind(store);
+    let activeSubscriptions = 0;
+    let unsubscribes = 0;
+    store.subscribe = (listener) => {
+      activeSubscriptions += 1;
+      const unsubscribe = originalSubscribe(listener);
+      let active = true;
+      return () => {
+        if (!active) return;
+        active = false;
+        activeSubscriptions -= 1;
+        unsubscribes += 1;
+        unsubscribe();
+      };
+    };
+    const root = new TabsRootRenderable(setup.renderer, { store });
+    const originalRegisterTab = store.registerTab.bind(store);
+    const originalRegisterPanel = store.registerPanel.bind(store);
+    const originalDetachList = store.detachList.bind(store);
+    let tabUnregisters = 0;
+    let panelUnregisters = 0;
+    let listDetaches = 0;
+    store.registerTab = (...args) => {
+      const registration = originalRegisterTab(...args);
+      return {
+        ...registration,
+        unregister: () => {
+          tabUnregisters += 1;
+          registration.unregister();
+        },
+      };
+    };
+    store.registerPanel = (...args) => {
+      const registration = originalRegisterPanel(...args);
+      return {
+        ...registration,
+        unregister: () => {
+          panelUnregisters += 1;
+          registration.unregister();
+        },
+      };
+    };
+    store.detachList = (owner) => {
+      listDetaches += 1;
+      originalDetachList(owner);
+    };
+    const list = new TabsListRenderable(setup.renderer, { store });
+    const tab = new TabsTabRenderable(setup.renderer, {
+      store,
+      value: "alpha",
+    });
+    const panel = new TabsPanelRenderable(setup.renderer, {
+      store,
+      value: "alpha",
+    });
+    list.add(tab);
+    root.add(list);
+    root.add(panel);
+    setup.renderer.root.add(root);
+    await setup.renderOnce();
+
+    list.remove(tab);
+    root.remove(panel);
+    root.remove(list);
+    tab.destroy();
+    panel.destroy();
+    list.destroy();
+
+    expect({ listDetaches, panelUnregisters, tabUnregisters }).toEqual({
+      listDetaches: 1,
+      panelUnregisters: 1,
+      tabUnregisters: 1,
+    });
+    expect({ activeSubscriptions, unsubscribes }).toEqual({
+      activeSubscriptions: 1,
+      unsubscribes: 3,
+    });
+
+    const replacementList = new TabsListRenderable(setup.renderer, { store });
+    const replacementTab = new TabsTabRenderable(setup.renderer, {
+      store,
+      value: "alpha",
+    });
+    const replacementPanel = new TabsPanelRenderable(setup.renderer, {
+      store,
+      value: "alpha",
+    });
+    replacementList.add(replacementTab);
+    root.add(replacementList);
+    root.add(replacementPanel);
+    await setup.renderOnce();
+    replacementTab.select();
+    expect(root.value).toBe("alpha");
+    expect(activeSubscriptions).toBe(4);
+  });
+
   it("makes every Tab unavailable when the List tears down", async () => {
     const { alpha, list, root } = await renderTabs();
     alpha.focus();
@@ -422,6 +549,7 @@ describe("Tabs primitive", () => {
     setup.renderer.root.add(root);
     expect(activeSubscriptions).toBe(1);
 
+    setup.renderer.root.remove(root);
     root.destroy();
 
     expect(activeSubscriptions).toBe(0);

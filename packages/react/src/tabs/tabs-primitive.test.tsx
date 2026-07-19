@@ -124,6 +124,57 @@ describe("React Tabs", () => {
     ).toBeUndefined();
   });
 
+  it("does not mount a default conditional Panel while consumer-visible is false", async () => {
+    const refs: Array<TabsPanelRenderable | null> = [];
+    let setVisible: (visible: boolean) => void = () => {};
+    function App() {
+      const [visible, updateVisible] = useState(false);
+      setVisible = updateVisible;
+      return createElement(
+        Tabs.Root,
+        { defaultValue: "alpha" },
+        createElement(
+          Tabs.List,
+          null,
+          createElement(Tabs.Tab, { value: "alpha" }),
+        ),
+        createElement(Tabs.Panel, {
+          id: "consumer-visible-panel",
+          ref: (value) => {
+            refs.push(value);
+          },
+          value: "alpha",
+          visible,
+        }),
+      );
+    }
+    setup = await testRender(createElement(App), { width: 20, height: 4 });
+    expect(
+      setup.renderer.root.findDescendantById("consumer-visible-panel"),
+    ).toBeUndefined();
+    expect(refs).toEqual([]);
+
+    await act(async () => setVisible(true));
+    await act(async () =>
+      setup?.waitFor(() =>
+        refs.some((value) => value instanceof TabsPanelRenderable),
+      ),
+    );
+    expect(
+      setup.renderer.root.findDescendantById("consumer-visible-panel"),
+    ).toBeInstanceOf(TabsPanelRenderable);
+
+    await act(async () => setVisible(false));
+    await act(async () =>
+      setup?.waitFor(
+        () =>
+          setup?.renderer.root.findDescendantById("consumer-visible-panel") ===
+          undefined,
+      ),
+    );
+    expect(refs.at(-1)).toBeNull();
+  });
+
   it("never renders a controlled frame with the wrong conditional Panel", async () => {
     let setValue: (value: string) => void = () => {};
     function App() {

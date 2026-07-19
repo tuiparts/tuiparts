@@ -1,5 +1,58 @@
 # @tuiparts/core
 
+## 0.0.2
+
+### Patch Changes
+
+- [#41](https://github.com/tuiparts/tuiparts/pull/41) [`76c96b2`](https://github.com/tuiparts/tuiparts/commit/76c96b2ed275df772814e3de1061ebdcb6ecc092) Thanks [@msmps](https://github.com/msmps)! - Add Toggle and ToggleGroup foundation primitives, framework adapters, and
+  editable registry recipes with controlled and uncontrolled pressed state,
+  single or multiple group selection, orientation-aware roving focus, and
+  immutable terminal activation details.
+
+- [#46](https://github.com/tuiparts/tuiparts/pull/46) [`9a281e8`](https://github.com/tuiparts/tuiparts/commit/9a281e8f2b942cc5267578133f289a1d4801c626) Thanks [@msmps](https://github.com/msmps)! - Collapse Checkbox and Switch Store facades onto the shared internal checked-state implementation. This is an internal refactor; public APIs and behavior are unchanged.
+
+- [#47](https://github.com/tuiparts/tuiparts/pull/47) [`54514d2`](https://github.com/tuiparts/tuiparts/commit/54514d2e48647d174ddd553c9aa276488c10a1a1) Thanks [@msmps](https://github.com/msmps)! - De-slop pass across the foundation surface:
+
+  - Stores expose state through the `state` getter only; the duplicate
+    `getState()` methods on ButtonStore, ToggleStore, and the shared
+    checked-state implementation are removed (Renderables keep `getState()` —
+    that is the adapter seam).
+  - Dialog Title and Description no longer take or hold a `store`; the field
+    was write-only.
+  - The core root barrel now exports all seven primitive Stores and their
+    options types.
+  - Listener notification uses one re-entrancy posture everywhere: iterate a
+    copy, skip listeners that unsubscribed mid-notification.
+
+- [#44](https://github.com/tuiparts/tuiparts/pull/44) [`efc8768`](https://github.com/tuiparts/tuiparts/commit/efc8768104834a3171dbbc89707812d7ef405471) Thanks [@msmps](https://github.com/msmps)! - Concentrate activation behavior in one internal Pressable base class
+  (ADR-0007). Checkbox, Switch, Button, Toggle, Radio, and Dialog Trigger/Close
+  now share a single interaction contract instead of five drifted copies.
+
+  Behavior changes:
+
+  - Keyboard activation everywhere is an uncancelled, unmodified Space or Enter
+    press. Modifier chords (Ctrl/Meta/Shift/Option/Super/Hyper) and keys with
+    `defaultPrevented` no longer activate any Root. Previously Checkbox and
+    Switch ignored both guards, Button ignored modifiers, Radio ignored
+    cancellation, and Dialog Trigger/Close ignored everything.
+  - Pointer activation everywhere requires an uncancelled primary-button press
+    that starts and ends on the node (Button's model). Previously every
+    non-Button Root activated on any primary release over the node, including
+    drags that started elsewhere.
+
+  Breaking (pre-release):
+
+  - `RadioGroupChangeDetails.source` renames `"programmatic"` to
+    `"imperative"`, unifying the press vocabulary across the catalog.
+  - `PressDetails` is exported from the core root as the canonical gesture
+    type; `ButtonPressDetails` and `ToggleChangeDetails` remain as aliases.
+
+- [#41](https://github.com/tuiparts/tuiparts/pull/41) [`76c96b2`](https://github.com/tuiparts/tuiparts/commit/76c96b2ed275df772814e3de1061ebdcb6ecc092) Thanks [@msmps](https://github.com/msmps)! - Share one internal roving-collection engine between RadioGroup and
+  ToggleGroup. Both Stores keep their public interfaces and selection semantics
+  while item registration, availability, rendered ordering, tab-stop
+  reconciliation, and re-entrant mutation queuing now live in a single audited
+  implementation, and collection refreshes no longer publish no-op snapshots.
+
 ## 0.0.1
 
 ### Patch Changes

@@ -33,9 +33,12 @@ Primitives own reusable interaction contracts:
 - Framework-neutral behavior shared by React and Solid.
 
 Primitives do not own colors, spacing, glyph sets, themes, semantic variants,
-or a fixed visual child tree. Where OpenTUI already provides the behavior, as
-with Input, the primitive preserves OpenTUI's contract rather than replacing
-it.
+or a fixed visual child tree. OpenTUI-native behavior does not require a
+tuiparts Primitive: when OpenTUI's Core and framework adapters already provide
+the required contract, Recipes use them directly. A single-part Primitive such
+as Input or Textarea exists only when tuiparts adds concrete reusable behavior,
+such as consistent disabled interaction gating, and otherwise preserves
+OpenTUI's state and event model.
 
 ## Recipe Layer
 
@@ -50,6 +53,12 @@ Recipes assemble primitives into useful defaults:
 Recipes express variants and state-dependent presentation with ordinary
 TypeScript and native OpenTUI properties. The project does not impose a
 styling engine on application or registry authors.
+
+Recipes may therefore be Primitive-backed, native-backed, or purely
+presentational. Native-backed Recipes do not create Foundation pass-throughs
+for inventory symmetry. They are Catalog candidates only when exposed native
+properties still leave meaningful presentation or composition for the copied
+source to own.
 
 ## Parts Versus Style Slots
 

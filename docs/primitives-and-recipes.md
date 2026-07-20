@@ -28,6 +28,12 @@ pnpm add @tuiparts/core
 The React and Solid packages expose the same primitive vocabulary where their
 runtimes permit it. Core exposes the same behavior as Stores and Renderables.
 
+Not every Catalog Recipe needs one of these packages. When OpenTUI already
+owns the complete behavior and its React and Solid adapters expose the needed
+props, events, reactive updates, and actual Renderable refs, Recipes consume
+OpenTUI directly. The Foundation does not wrap a native Renderable only to
+rename or restyle it.
+
 ## Compose a primitive
 
 Compound framework primitives use Base UI-style module namespaces. Package

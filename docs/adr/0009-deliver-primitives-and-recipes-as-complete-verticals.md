@@ -43,10 +43,13 @@ Primitives and native OpenTUI Renderables. It must not recreate behavior that
 belongs to a packaged Primitive.
 
 When OpenTUI already owns a control's difficult behavior, preserve its native
-state and event model. Use a named single-part adapter when there is no honest
-composition value. Do not project compound Parts onto a fixed internal tree;
-every public Part must be a real Renderable with behavior or semantic
-responsibility.
+state and event model. If OpenTUI's Core and framework adapters already expose
+the required prop, event, reactive-update, and Renderable-ref contract, a
+Recipe consumes them directly; do not add a pass-through Foundation Primitive.
+A named single-part Primitive is justified only when tuiparts packages a
+concrete missing behavior contract, such as comprehensive disabled interaction
+gating. Do not project compound Parts onto a fixed internal tree; every public
+Part must be a real Renderable with behavior or semantic responsibility.
 
 Before implementation, write down:
 
@@ -206,10 +209,11 @@ A Primitive is complete only when its Core behavior, React and Solid adapters,
 Recipe source, Registry entries, correctly scoped tests, package subpaths,
 packed-consumer checks, documentation, and release changeset are complete.
 
-A Recipe-only addition is complete only when its Core, React, and Solid source
-where applicable, Registry metadata, installed-consumer smokes, documentation,
-and full validation are complete. It does not add a behaviorless Foundation
-export merely to make the Catalog inventory symmetrical.
+A Recipe-only addition, including one backed directly by native OpenTUI
+behavior, is complete only when its Core, React, and Solid source where
+applicable, Registry metadata, installed-consumer smokes, documentation, and
+full validation are complete. It does not add a behaviorless or pass-through
+Foundation export merely to make the Catalog inventory symmetrical.
 
 ## Consequences
 

@@ -354,6 +354,55 @@ describe("React Tabs", () => {
     }
   });
 
+  it("exposes public Root state through useRootState inside Tabs.Root only", async () => {
+    const states: Tabs.Root.State[] = [];
+    function Probe(): null {
+      states.push(Tabs.useRootState());
+      return null;
+    }
+    let setOrientation: (value: Tabs.Root.Orientation) => void = () => {};
+    function Harness() {
+      const [orientation, set] = useState<Tabs.Root.Orientation>("horizontal");
+      setOrientation = set;
+      return createElement(
+        Tabs.Root,
+        { id: "root", orientation },
+        createElement(
+          Tabs.List,
+          null,
+          createElement(Tabs.Tab, { value: "alpha" }),
+        ),
+        createElement(Probe),
+      );
+    }
+    setup = await testRender(createElement(Harness), { width: 40, height: 6 });
+    const first = states.at(-1);
+    expect(first?.orientation).toBe("horizontal");
+    expect(Object.isFrozen(first)).toBe(true);
+    await act(async () => setOrientation("vertical"));
+    await act(async () =>
+      setup?.waitFor(() => states.at(-1)?.orientation === "vertical"),
+    );
+    expect(states.at(-1)?.orientation).toBe("vertical");
+    await destroySetup();
+
+    const error = spyOn(console, "error").mockImplementation(() => {});
+    try {
+      setup = await testRender(createElement(Probe), { width: 10, height: 2 });
+      expect(
+        error.mock.calls.some((call) =>
+          call.some((value) =>
+            String(value).includes(
+              "Tabs.useRootState must be rendered inside Tabs.Root",
+            ),
+          ),
+        ),
+      ).toBe(true);
+    } finally {
+      error.mockRestore();
+    }
+  });
+
   it("releases every Store subscription on teardown", async () => {
     const originalSubscribe = TabsStore.prototype.subscribe;
     let activeSubscriptions = 0;

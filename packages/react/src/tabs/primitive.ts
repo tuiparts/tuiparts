@@ -200,6 +200,16 @@ function PanelHost({
   );
 }
 
+/** React hook exposing the public frozen Tabs Root state. */
+export function useRootState(): TabsState {
+  const store = useStore("useRootState");
+  return useSyncExternalStore(
+    (listener) => store.subscribe(listener),
+    () => store.state,
+    () => store.state,
+  );
+}
+
 Root.displayName = "Tabs.Root";
 List.displayName = "Tabs.List";
 Tab.displayName = "Tabs.Tab";

@@ -12,3 +12,8 @@ Set `orientation="vertical"` on `Tabs` to coordinate Up/Down keyboard behavior
 with a row-oriented Root and column-oriented List. Horizontal Tabs default to
 a column-oriented Root and row-oriented List. Explicit native
 `flexDirection` props override these Recipe defaults.
+
+`TabsList` reads the packaged public Root state through
+`Tabs.useRootState()`, so its layout follows any ancestor Tabs Root —
+including a primitive `Tabs.Root` — and never diverges from keyboard
+orientation.

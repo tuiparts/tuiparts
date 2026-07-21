@@ -134,6 +134,11 @@ Tab state contains `value`, `selected`, `focused`, `tabbable`, `disabled`,
 `available`, and `associated`. Panel state contains `value`, `active`, and
 `associated`.
 
+React and Solid expose the Root state snapshot to composition-aware parts
+through `Tabs.useRootState()`, which must be rendered inside `Tabs.Root`.
+Core callers read `store.state` or Renderable getters such as
+`root.orientation` directly.
+
 When an uncontrolled selected Tab becomes unavailable, selection repairs to
 the nearest available Tab in rendered order. Controlled selection is never
 rewritten by repair.
@@ -161,7 +166,7 @@ with active state.
 
 | Surface | API |
 | --- | --- |
-| React and Solid | `Tabs.Root`, `Tabs.List`, `Tabs.Tab`, `Tabs.Panel` and their scoped types |
+| React and Solid | `Tabs.Root`, `Tabs.List`, `Tabs.Tab`, `Tabs.Panel`, `Tabs.useRootState`, and their scoped types |
 | Core | `TabsStore`, `TabsRootRenderable`, `TabsListRenderable`, `TabsTabRenderable`, `TabsPanelRenderable` and matching option/state types |
 | Root options | `value`, `defaultValue`, `onValueChange`, `activationMode`, `orientation`, `loopFocus`, `disabled` |
 | Tab options and actions | Required `value`, optional `disabled`, `select()`, and inherited press behavior |

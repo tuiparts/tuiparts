@@ -338,6 +338,37 @@ describe("Solid Tabs", () => {
     ).rejects.toThrow("Tabs.Panel must be rendered inside Tabs.Root");
   });
 
+  it("exposes reactive public Root state through useRootState inside Tabs.Root only", async () => {
+    const [orientation, setOrientation] =
+      createSignal<Tabs.Root.Orientation>("horizontal");
+    let state: Tabs.Root.State | undefined;
+    function Probe() {
+      state = Tabs.useRootState();
+      return <box id="probe" />;
+    }
+    setup = await testRender(
+      () => (
+        <Tabs.Root orientation={orientation()}>
+          <Tabs.List>
+            <Tabs.Tab value="alpha" />
+          </Tabs.List>
+          <Probe />
+        </Tabs.Root>
+      ),
+      { width: 40, height: 6 },
+    );
+    expect(state?.orientation).toBe("horizontal");
+    setOrientation("vertical");
+    await setup.waitFor(() => state?.orientation === "vertical");
+    expect(state?.orientation).toBe("vertical");
+    setup.renderer.destroy();
+    setup = undefined;
+
+    await expect(
+      testRender(() => <Probe />, { width: 10, height: 2 }),
+    ).rejects.toThrow("Tabs.useRootState must be rendered inside Tabs.Root");
+  });
+
   it("starts invalid controlled Panels from authoritative inactive state", async () => {
     let firstState: { active: boolean; associated: boolean } | undefined;
     setup = await testRender(

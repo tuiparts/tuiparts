@@ -37,7 +37,7 @@ import {
 } from "../internal/renderable-props";
 import { createRenderableState } from "../internal/renderable-state";
 
-const StoreContext = createContext<TabsStore>();
+const StoreContext = createContext<{ state: TabsState; store: TabsStore }>();
 
 type RootProps = Omit<TabsRootOptions, "store"> & {
   children?: JSX.Element | ((state: TabsState) => JSX.Element);
@@ -58,9 +58,18 @@ type PanelProps = Omit<TabsPanelOptions, "store"> & {
 };
 
 function useStore(part: string): TabsStore {
-  const store = useContext(StoreContext);
-  if (!store) throw new Error(`Tabs.${part} must be rendered inside Tabs.Root`);
-  return store;
+  const context = useContext(StoreContext);
+  if (!context)
+    throw new Error(`Tabs.${part} must be rendered inside Tabs.Root`);
+  return context.store;
+}
+
+/** Solid hook exposing the public reactive Tabs Root state. */
+export function useRootState(): TabsState {
+  const context = useContext(StoreContext);
+  if (!context)
+    throw new Error("Tabs.useRootState must be rendered inside Tabs.Root");
+  return context.state;
 }
 
 /** Solid Tabs Root adapter. */
@@ -113,7 +122,7 @@ export function Root(props: Root.Props): JSX.Element {
   });
   setRenderableRef(ref, element);
   return createComponent(StoreContext.Provider, {
-    value: store,
+    value: { state: publicState, store },
     get children() {
       spreadRenderableProps(element, () => ({ ...renderableProps }));
       spreadRenderableProps(element, () => {

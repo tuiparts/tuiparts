@@ -27,6 +27,11 @@ independently composable Renderables.
 `value`/`defaultValue` provide controlled/uncontrolled selection. The public
 Root state is a frozen, referentially stable snapshot containing
 `value: string | null`, `activationMode`, `disabled`, and `orientation`.
+React and Solid expose that snapshot through `Tabs.useRootState()`, which
+must be rendered inside `Tabs.Root` and fails with the part-specific orphan
+error otherwise. Compositions read Root-owned facts such as `orientation`
+from this hook rather than mirroring them in framework state; Core callers
+read `store.state` or Renderable getters directly.
 `onValueChange(value, details)` receives one frozen
 `{ source: "imperative" | "keyboard" | "pointer" | "focus" }` detail. In
 uncontrolled mode a valid request commits before callback. In controlled mode
@@ -109,7 +114,7 @@ by Core.
 | Surface | Applicability and evidence |
 | --- | --- |
 | Core | Applicable. Public Store/Renderable tests own controlled and uncontrolled selection, frozen state/details, all actions and input sources, automatic/manual activation, rendered order, association, disabled/unavailable behavior, focus/selection repair, panel visibility, dynamic lifecycle, reentrancy, and teardown. |
-| React | Applicable. Real `testRender` tests own first-render Store authority, controlled frame consistency, prop removal and callback replacement, actual refs, retained identity, default/retained Panel ref lifecycle, Strict Mode, context errors, subscription teardown, and one interaction round-trip. |
+| React | Applicable. Real `testRender` tests own first-render Store authority, controlled frame consistency, prop removal and callback replacement, actual refs, retained identity, default/retained Panel ref lifecycle, Strict Mode, context errors, the public Root state hook, subscription teardown, and one interaction round-trip. |
 | Solid | Applicable. The adapter matrix is repeated through signals and Solid's real renderer, including cleanup and one interaction round-trip. |
 | Registry | Applicable. Core, React, and Solid Recipes import only `/tabs`, compile in isolated strict consumers, mount, perform one selection round-trip, prove Recipe-owned presentation, and restyle from the consumer-owned Theme. |
 | Packed | Applicable. All three `/tabs` subpaths are included in tarball declaration and runtime-import checks; the compiled packed-consumer check executes representative Core Tabs selection behavior. |

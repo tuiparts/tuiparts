@@ -1,11 +1,7 @@
 /** @jsxImportSource @opentui/react */
 
 import { Tabs as TabsPrimitive } from "@tuiparts/react/tabs";
-import { createContext, useContext } from "react";
 import { useTheme } from "./use-theme";
-
-const TabsOrientationContext =
-  createContext<TabsPrimitive.Root.Orientation>("horizontal");
 
 /** Props for the consumer-owned React Tabs Root. */
 export type TabsProps = TabsPrimitive.Root.Props;
@@ -22,20 +18,18 @@ export type TabsContentProps = TabsPrimitive.Panel.Props;
 /** Consumer-owned React Tabs Root. */
 export function Tabs({ orientation = "horizontal", ...props }: TabsProps) {
   return (
-    <TabsOrientationContext.Provider value={orientation}>
-      <TabsPrimitive.Root
-        flexDirection={orientation === "vertical" ? "row" : "column"}
-        gap={1}
-        orientation={orientation}
-        {...props}
-      />
-    </TabsOrientationContext.Provider>
+    <TabsPrimitive.Root
+      flexDirection={orientation === "vertical" ? "row" : "column"}
+      gap={1}
+      orientation={orientation}
+      {...props}
+    />
   );
 }
 
 /** Consumer-owned React Tabs List layout. */
 export function TabsList(props: TabsListProps) {
-  const orientation = useContext(TabsOrientationContext);
+  const { orientation } = TabsPrimitive.useRootState();
   return (
     <TabsPrimitive.List
       flexDirection={orientation === "vertical" ? "column" : "row"}

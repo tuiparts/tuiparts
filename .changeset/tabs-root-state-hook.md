@@ -1,6 +1,6 @@
 ---
-"@tuiparts/react": minor
-"@tuiparts/solid": minor
+"@tuiparts/react": patch
+"@tuiparts/solid": patch
 ---
 
 Add the public `Tabs.useRootState()` hook exposing the frozen public Root

@@ -1,7 +1,7 @@
 ---
-"@tuiparts/core": minor
-"@tuiparts/react": minor
-"@tuiparts/solid": minor
+"@tuiparts/core": patch
+"@tuiparts/react": patch
+"@tuiparts/solid": patch
 ---
 
 Add the complete Tabs Primitive vertical with Core behavior, React and Solid

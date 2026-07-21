@@ -22,27 +22,12 @@ react/checkbox
 solid/checkbox
 ```
 
-With the `@tuiparts` namespace configured, those become addresses such as
+The official shadcn Registry Directory resolves addresses such as
 `@tuiparts/react/checkbox`. The equivalent direct URL is
 `https://tuiparts.sh/r/react/checkbox.json`.
 
 Theme presets are framework-neutral and omit the runtime segment, for example
 `@tuiparts/theme-catppuccin`.
-
-## Configure the namespace
-
-Add the Registry mapping to `components.json`:
-
-```json title="components.json"
-{
-  "$schema": "https://ui.shadcn.com/schema.json",
-  "registries": {
-    "@tuiparts": "https://tuiparts.sh/r/{name}.json"
-  }
-}
-```
-
-You can skip this configuration when using direct item URLs.
 
 ## Install an item
 
@@ -62,6 +47,10 @@ The CLI copies the Recipe into `components/ui` and installs the dependencies
 declared by the item. Every Recipe also declares its runtime's Theme item, so
 the first installation adds `components/ui/theme.ts`; React and Solid also
 receive `components/ui/use-theme.tsx`.
+
+Every payload is a universal `registry:item` with explicit file targets. A
+fresh OpenTUI project therefore needs no `components.json`, Tailwind metadata,
+or shadcn framework initialization.
 
 Running an ordinary `add` against an existing file prompts before replacing
 it and preserves the local file by default.
@@ -87,7 +76,11 @@ They use the OpenTUI runtime already owned by the application.
 
 ## Review updates
 
-Inspect the current upstream file or compare it with your installed source:
+An ordinary `add` preserves existing files unless you explicitly approve or
+request replacement. shadcn 4.13 still requires a valid `components.json` for
+its inspection-only `--view`, `--diff`, and `--dry-run` flags, even for
+universal items. If your project already has that compatibility configuration,
+you can use:
 
 ```bash
 pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox --view

@@ -4,8 +4,8 @@ The tuiparts.sh registry distributes editable recipe source through the shadcn
 CLI. Installed files belong to the consuming project. The registry does not
 maintain a second package manager, recipe lockfile, or automatic merge engine.
 Deployed catalog items are served at `/r/{adapter}/{recipe}.json` (for
-example `r/react/checkbox.json`), which lets consumers register the
-`@tuiparts` namespace once and install by name.
+example `r/react/checkbox.json`). The shadcn Registry Directory resolves the
+`@tuiparts` namespace so consumers can install by name.
 
 ## Catalog
 
@@ -59,9 +59,7 @@ tarballs under test.
 
 ## Install
 
-A consumer installs an item by its `@tuiparts` address when the shadcn Registry
-Directory resolves the namespace. If it does not, the consumer configures the
-same namespace URL in `components.json` or installs the item by direct URL:
+A consumer installs an item by its `@tuiparts` address or direct URL:
 
 ```bash
 pnpm dlx shadcn@4.13.0 add <item-address>
@@ -70,6 +68,11 @@ pnpm dlx shadcn@4.13.0 add <item-address>
 The CLI installs declared dependencies and copies the recipe into
 `components/ui`. Running ordinary `add` against an existing file asks before
 replacement and defaults to preserving the local file.
+
+All Recipes, Themes, and presets are universal `registry:item` payloads whose
+files have explicit targets. Installation and recursive Registry dependencies
+therefore require no `components.json`, framework detection, or Tailwind
+configuration.
 
 ## Build The Registry
 
@@ -89,7 +92,10 @@ The current registry item is the upstream recipe revision. Its Git commit, tag,
 or deployed registry version identifies the exact upstream source; tuiparts.sh
 does not write hidden revision state into the consumer's project.
 
-Inspect the current upstream source and compare it with the installed file:
+shadcn 4.13 requires a valid `components.json` for its inspection-only flags,
+even though universal item installation does not. Projects that already have
+that compatibility configuration can inspect the current upstream source and
+compare it with the installed file:
 
 ```bash
 pnpm dlx shadcn@4.13.0 add <item-address> --view

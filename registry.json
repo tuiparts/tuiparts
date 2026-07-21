@@ -5,7 +5,7 @@
   "items": [
     {
       "name": "core/checkbox",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Checkbox (Core)",
       "description": "Editable imperative Checkbox recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
@@ -26,7 +26,7 @@
     },
     {
       "name": "react/checkbox",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Checkbox (React)",
       "description": "Editable React Checkbox recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
@@ -47,7 +47,7 @@
     },
     {
       "name": "solid/checkbox",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Checkbox (Solid)",
       "description": "Editable Solid Checkbox recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
@@ -68,7 +68,7 @@
     },
     {
       "name": "core/switch",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Switch (Core)",
       "description": "Editable imperative Switch recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
@@ -89,7 +89,7 @@
     },
     {
       "name": "react/switch",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Switch (React)",
       "description": "Editable React Switch recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
@@ -110,7 +110,7 @@
     },
     {
       "name": "solid/switch",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Switch (Solid)",
       "description": "Editable Solid Switch recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
@@ -131,7 +131,7 @@
     },
     {
       "name": "core/button",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Button (Core)",
       "description": "Editable imperative Button recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
@@ -152,7 +152,7 @@
     },
     {
       "name": "react/button",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Button (React)",
       "description": "Editable React Button recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
@@ -173,7 +173,7 @@
     },
     {
       "name": "solid/button",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Button (Solid)",
       "description": "Editable Solid Button recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
@@ -194,7 +194,7 @@
     },
     {
       "name": "core/badge",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Badge (Core)",
       "description": "Editable imperative Badge recipe built directly from OpenTUI Renderables.",
       "dependencies": [],
@@ -215,7 +215,7 @@
     },
     {
       "name": "react/badge",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Badge (React)",
       "description": "Editable React Badge recipe built directly from OpenTUI elements.",
       "dependencies": [],
@@ -236,7 +236,7 @@
     },
     {
       "name": "solid/badge",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Badge (Solid)",
       "description": "Editable Solid Badge recipe built directly from OpenTUI elements.",
       "dependencies": [],
@@ -257,7 +257,7 @@
     },
     {
       "name": "core/radio-group",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Radio Group (Core)",
       "description": "Editable imperative Radio and Radio Group recipe built on the tuiparts.sh collection Primitive.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
@@ -278,7 +278,7 @@
     },
     {
       "name": "react/radio-group",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Radio Group (React)",
       "description": "Editable React Radio and Radio Group recipe built on the tuiparts.sh collection Primitive.",
       "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
@@ -299,7 +299,7 @@
     },
     {
       "name": "solid/radio-group",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Radio Group (Solid)",
       "description": "Editable Solid Radio and Radio Group recipe built on the tuiparts.sh collection Primitive.",
       "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
@@ -320,7 +320,7 @@
     },
     {
       "name": "core/input",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Input (Core)",
       "description": "Editable imperative Input recipe preserving OpenTUI-native editing and events.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
@@ -342,7 +342,7 @@
     },
     {
       "name": "react/input",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Input (React)",
       "description": "Editable React Input recipe preserving OpenTUI-native editing and events.",
       "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
@@ -364,7 +364,7 @@
     },
     {
       "name": "solid/input",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Input (Solid)",
       "description": "Editable Solid Input recipe preserving OpenTUI-native editing and events.",
       "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
@@ -386,7 +386,7 @@
     },
     {
       "name": "core/textarea",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Textarea (Core)",
       "description": "Editable imperative Textarea recipe preserving OpenTUI-native multiline editing.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
@@ -408,7 +408,7 @@
     },
     {
       "name": "react/textarea",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Textarea (React)",
       "description": "Editable React Textarea recipe preserving OpenTUI-native multiline editing.",
       "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
@@ -430,7 +430,7 @@
     },
     {
       "name": "solid/textarea",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Textarea (Solid)",
       "description": "Editable Solid Textarea recipe preserving OpenTUI-native multiline editing.",
       "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
@@ -452,7 +452,7 @@
     },
     {
       "name": "core/dialog",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Dialog (Core)",
       "description": "Editable imperative Dialog recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
@@ -473,7 +473,7 @@
     },
     {
       "name": "react/dialog",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Dialog (React)",
       "description": "Editable React Dialog recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
@@ -494,7 +494,7 @@
     },
     {
       "name": "solid/dialog",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Dialog (Solid)",
       "description": "Editable Solid Dialog recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
@@ -515,7 +515,7 @@
     },
     {
       "name": "core/toggle",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Toggle (Core)",
       "description": "Editable imperative Toggle recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
@@ -536,7 +536,7 @@
     },
     {
       "name": "react/toggle",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Toggle (React)",
       "description": "Editable React Toggle recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
@@ -557,7 +557,7 @@
     },
     {
       "name": "solid/toggle",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Toggle (Solid)",
       "description": "Editable Solid Toggle recipe built on the tuiparts.sh packaged primitive.",
       "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
@@ -578,7 +578,7 @@
     },
     {
       "name": "core/toggle-group",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Toggle Group (Core)",
       "description": "Editable imperative ToggleGroup recipe built on the tuiparts.sh packaged primitives.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
@@ -599,7 +599,7 @@
     },
     {
       "name": "react/toggle-group",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Toggle Group (React)",
       "description": "Editable React ToggleGroup recipe built on the tuiparts.sh packaged primitives.",
       "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
@@ -620,7 +620,7 @@
     },
     {
       "name": "solid/toggle-group",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Toggle Group (Solid)",
       "description": "Editable Solid ToggleGroup recipe built on the tuiparts.sh packaged primitives.",
       "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
@@ -641,7 +641,7 @@
     },
     {
       "name": "core/tabs",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Tabs (Core)",
       "description": "Editable imperative Tabs Recipe built on the tuiparts.sh packaged Primitive.",
       "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
@@ -662,7 +662,7 @@
     },
     {
       "name": "react/tabs",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Tabs (React)",
       "description": "Editable React Tabs Recipe built on the tuiparts.sh packaged Primitive.",
       "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
@@ -683,7 +683,7 @@
     },
     {
       "name": "solid/tabs",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Tabs (Solid)",
       "description": "Editable Solid Tabs Recipe built on the tuiparts.sh packaged Primitive.",
       "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
@@ -704,7 +704,7 @@
     },
     {
       "name": "core/theme",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Theme (Core)",
       "description": "Editable imperative theme contract, store, and terminal default read by every tuiparts.sh recipe.",
       "dependencies": [],
@@ -724,7 +724,7 @@
     },
     {
       "name": "react/theme",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Theme (React)",
       "description": "Editable React theme contract, store, and terminal default read by every tuiparts.sh recipe.",
       "dependencies": [],
@@ -749,7 +749,7 @@
     },
     {
       "name": "solid/theme",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Theme (Solid)",
       "description": "Editable Solid theme contract, store, and terminal default read by every tuiparts.sh recipe.",
       "dependencies": [],
@@ -774,7 +774,7 @@
     },
     {
       "name": "theme-cobalt-deep",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Cobalt Deep Theme",
       "description": "Truecolor tuiparts.sh brand preset applied as a partial override of the installed theme contract.",
       "dependencies": [],
@@ -795,7 +795,7 @@
     },
     {
       "name": "theme-ascii",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "ASCII Theme",
       "description": "ASCII-glyph preset for fonts and terminals without Unicode coverage, applied as a partial override.",
       "dependencies": [],
@@ -816,7 +816,7 @@
     },
     {
       "name": "theme-catppuccin",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Catppuccin Theme",
       "description": "Catppuccin Mocha/Latte.",
       "dependencies": [],
@@ -837,7 +837,7 @@
     },
     {
       "name": "theme-gruvbox",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Gruvbox Theme",
       "description": "Gruvbox dark/light.",
       "dependencies": [],
@@ -858,7 +858,7 @@
     },
     {
       "name": "theme-rosepine",
-      "type": "registry:ui",
+      "type": "registry:item",
       "title": "Rosé Pine Theme",
       "description": "Rosé Pine/Dawn.",
       "dependencies": [],

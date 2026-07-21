@@ -130,7 +130,8 @@ In particular:
   presentation tokens from the consumer-owned theme Recipe.
 - Add Registry items for each supported runtime with accurate direct package
   dependencies, theme `registryDependencies`, consumer ownership metadata,
-  and shadcn diff update strategy.
+  shadcn diff update strategy, universal `registry:item` type, and explicit
+  `registry:file` targets (ADR-0011).
 - Add the Recipe to the structural lists in `scripts/validate-registry.mjs`,
   including its correct Primitive-backed or Recipe-only classification.
 - Add a focused README and one Registry smoke per supported runtime.

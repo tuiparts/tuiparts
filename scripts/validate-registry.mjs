@@ -247,6 +247,30 @@ function writeJson(path, value) {
   writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
 }
 
+function writeShadcnCompatibilityConfig(directory) {
+  writeJson(join(directory, "components.json"), {
+    $schema: "https://ui.shadcn.com/schema.json",
+    style: "new-york",
+    rsc: false,
+    tsx: true,
+    tailwind: {
+      config: "",
+      css: "",
+      baseColor: "neutral",
+      cssVariables: false,
+      prefix: "",
+    },
+    iconLibrary: "lucide",
+    aliases: {
+      components: "@/components",
+      hooks: "@/hooks",
+      lib: "@/lib",
+      utils: "@/lib/utils",
+      ui: "@/components/ui",
+    },
+  });
+}
+
 /** Points an item's registry dependencies at the locally built registry. */
 function localizeRegistryDependencies(item) {
   item.registryDependencies = item.registryDependencies?.map((address) =>
@@ -382,6 +406,10 @@ try {
     const item = registry.items.find((candidate) => candidate.name === itemName);
     assert(item, `Missing registry item ${itemName}`);
     assert(
+      item.type === "registry:item",
+      `${itemName} must be installable without components.json`,
+    );
+    assert(
       item.files.length === consumer.files.length &&
         consumer.files.every(
           (file, index) =>
@@ -400,6 +428,10 @@ try {
       (candidate) => candidate.name === preset.item,
     );
     assert(item, `Missing registry item ${preset.item}`);
+    assert(
+      item.type === "registry:item",
+      `${preset.item} must be installable without components.json`,
+    );
     assert(
       item.files.length === 1 &&
         item.files[0]?.path === preset.source &&
@@ -636,27 +668,6 @@ try {
         ...(consumer.smoke ? [consumer.smokeFile] : []),
       ],
     });
-    writeJson(join(consumerDir, "components.json"), {
-      $schema: "https://ui.shadcn.com/schema.json",
-      style: "new-york",
-      rsc: false,
-      tsx: true,
-      tailwind: {
-        config: "",
-        css: "",
-        baseColor: "neutral",
-        cssVariables: false,
-        prefix: "",
-      },
-      iconLibrary: "lucide",
-      aliases: {
-        components: "@/components",
-        hooks: "@/hooks",
-        lib: "@/lib",
-        utils: "@/lib/utils",
-        ui: "@/components/ui",
-      },
-    });
     await capture("pnpm", ["install"], consumerDir);
 
     const untouched = "registry installation must not modify this file\n";
@@ -702,6 +713,10 @@ try {
       );
       writeJson(updatedItemPath, updatedItem);
 
+      // shadcn 4.13 installs universal items without configuration, but its
+      // inspection-only flags still require the legacy project config.
+      writeShadcnCompatibilityConfig(consumerDir);
+
       const diff = await capture("pnpm", [
         "exec",
         "shadcn",
@@ -740,6 +755,7 @@ try {
     const allowedChanges = new Set([
       "package.json",
       "pnpm-lock.yaml",
+      ...(itemName === "react/checkbox" ? ["components.json"] : []),
       ...consumer.files.map((file) => file.target),
     ]);
     if (registryItem.registryDependencies?.length) {

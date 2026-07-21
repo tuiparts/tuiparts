@@ -107,9 +107,10 @@ The complete ownership, event, part, lifecycle, and conformance rules are in
 
 ## Install a recipe
 
-Install the item for your runtime by its `@tuiparts` address. If the shadcn
-Registry Directory does not resolve the namespace, configure its URL in
-`components.json` or use the direct item URL:
+Install the universal Registry item for your runtime by its `@tuiparts`
+address. The shadcn Registry Directory resolves the namespace, and the item
+uses explicit targets so no `components.json` or framework initialization is
+required. A direct item URL works as a fallback:
 
 ```bash
 pnpm dlx shadcn@4.13.0 add <item-address>
@@ -144,8 +145,9 @@ packaged theme runtime; see ADR
 [0006](adr/0006-theming-ships-as-registry-source.md).
 
 Primitive package upgrades deliver behavior fixes. Recipe updates are optional
-source integrations. Review upstream recipe changes without discarding local
-edits:
+source integrations. Ordinary `add` preserves local files. Projects with a
+valid shadcn `components.json` can also use its inspection-only update flags
+(shadcn 4.13 still requires that configuration for universal items):
 
 ```bash
 pnpm dlx shadcn@4.13.0 add <item-address> --view

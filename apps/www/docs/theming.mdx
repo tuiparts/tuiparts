@@ -201,7 +201,9 @@ those policies.
 ## Review theme updates
 
 The Theme item follows the same consumer-owned update lifecycle as every
-Recipe:
+Recipe. If the project has a valid shadcn `components.json`, its inspection
+flags can compare the installed source (shadcn 4.13 still requires that
+configuration for universal items):
 
 ```bash
 pnpm dlx shadcn@4.13.0 add @tuiparts/react/theme --diff

@@ -27,6 +27,7 @@ specification. ADR-0009 defines how to deliver that contract completely.
 | [0008](0008-checked-store-collapse.md) | Checkbox and Switch share one internal checked-state implementation while retaining distinct public Stores. |
 | [0009](0009-deliver-primitives-and-recipes-as-complete-verticals.md) | Every Primitive or Recipe ships as a complete, validated vertical with tests owned by the correct seam. |
 | [0010](0010-public-root-state-hooks.md) | Framework adapters expose public Root state through `useRootState()` hooks; Recipes read Primitive state from them instead of Recipe-local contexts. |
+| [0011](0011-serve-recipes-as-universal-registry-items.md) | Recipes are universal shadcn Registry items that install without framework detection or `components.json`. |
 
 ADR numbering is intentionally append-only and may contain gaps. ADR-0003 was
 a temporary RC decision superseded by ADR-0004 before the first stable

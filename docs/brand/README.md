@@ -108,8 +108,10 @@ serving shape `/r/{adapter}/{recipe}.json`:
 PART NO. r/react/checkbox.json
 ```
 
-The Catalog manifest is served at `/r/registry.json`; consumers register the
-namespace once: `@tuiparts = https://tuiparts.sh/r/{name}.json`.
+The Catalog manifest is served at `/r/registry.json`; the official shadcn
+Registry Directory maps `@tuiparts` to
+`https://tuiparts.sh/r/{name}.json`, so consumers do not configure the
+namespace themselves.
 
 ## Applications
 

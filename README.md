@@ -91,6 +91,10 @@ Recipes; every Recipe targets exactly one Adapter, so choose the `core/*`,
 pnpm dlx shadcn@4.13.0 add <item-address>
 ```
 
+Recipes are universal Registry items with explicit targets. The shadcn
+Registry Directory resolves `@tuiparts`, so installation needs no
+`components.json`, Tailwind configuration, or framework initialization.
+
 Editing the copied source is not a workaround — it is the intended
 maintenance model. See the [primitive and recipe guide](./docs/primitives-and-recipes.md) for the
 starter Catalog and the [Catalog lifecycle](./registry/README.md) for safe

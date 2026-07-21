@@ -1,5 +1,23 @@
 # @tuiparts/react
 
+## 0.0.3
+
+### Patch Changes
+
+- [`230b998`](https://github.com/tuiparts/tuiparts/commit/230b998209ebf8a509933882f23f54273845a9a4) Thanks [@msmps](https://github.com/msmps)! - Add the complete Tabs Primitive vertical with Core behavior, React and Solid
+  compound Parts, packed subpaths, and consumer-owned Registry Recipes.
+
+- [`111a4d3`](https://github.com/tuiparts/tuiparts/commit/111a4d30602786578c5e180d98864fab89971b81) Thanks [@msmps](https://github.com/msmps)! - Add the public `Tabs.useRootState()` hook exposing the frozen public Root
+  state snapshot to composition-aware parts. The Registry Tabs Recipe now reads
+  List orientation from it instead of a recipe-local context, so Recipe layout
+  can no longer desynchronize from keyboard orientation under primitive
+  composition.
+
+- [`fb5973e`](https://github.com/tuiparts/tuiparts/commit/fb5973e835278685d540fbd40baebe602ceec4ba) Thanks [@msmps](https://github.com/msmps)! - Add the ship-ready Textarea Primitive and adapters, preserving OpenTUI's
+  native multiline EditBuffer and event model with consistent disabled gating.
+- Updated dependencies [[`230b998`](https://github.com/tuiparts/tuiparts/commit/230b998209ebf8a509933882f23f54273845a9a4), [`fb5973e`](https://github.com/tuiparts/tuiparts/commit/fb5973e835278685d540fbd40baebe602ceec4ba)]:
+  - @tuiparts/core@0.0.3
+
 ## 0.0.2
 
 ### Patch Changes

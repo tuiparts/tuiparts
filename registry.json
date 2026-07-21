@@ -20,7 +20,7 @@
         "framework": "core",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
@@ -41,7 +41,7 @@
         "framework": "react",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
@@ -62,7 +62,7 @@
         "framework": "solid",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
@@ -83,7 +83,7 @@
         "framework": "core",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
@@ -104,7 +104,7 @@
         "framework": "react",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
@@ -125,7 +125,7 @@
         "framework": "solid",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
@@ -146,7 +146,7 @@
         "framework": "core",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
@@ -167,7 +167,7 @@
         "framework": "react",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
@@ -188,7 +188,7 @@
         "framework": "solid",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
@@ -209,7 +209,7 @@
         "framework": "core",
         "primitiveStatus": "recipe",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
@@ -230,7 +230,7 @@
         "framework": "react",
         "primitiveStatus": "recipe",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
@@ -251,7 +251,7 @@
         "framework": "solid",
         "primitiveStatus": "recipe",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
@@ -272,7 +272,7 @@
         "framework": "core",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
@@ -293,7 +293,7 @@
         "framework": "react",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
@@ -314,7 +314,7 @@
         "framework": "solid",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
@@ -336,7 +336,7 @@
         "framework": "core",
         "primitiveStatus": "tracer",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
@@ -358,7 +358,7 @@
         "framework": "react",
         "primitiveStatus": "tracer",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
@@ -380,7 +380,7 @@
         "framework": "solid",
         "primitiveStatus": "tracer",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
@@ -402,7 +402,7 @@
         "framework": "core",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
@@ -424,7 +424,7 @@
         "framework": "react",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
@@ -446,7 +446,7 @@
         "framework": "solid",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
@@ -467,7 +467,7 @@
         "framework": "core",
         "primitiveStatus": "tracer",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
@@ -488,7 +488,7 @@
         "framework": "react",
         "primitiveStatus": "tracer",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
@@ -509,7 +509,7 @@
         "framework": "solid",
         "primitiveStatus": "tracer",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
@@ -530,7 +530,7 @@
         "framework": "core",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
@@ -551,7 +551,7 @@
         "framework": "react",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
@@ -572,7 +572,7 @@
         "framework": "solid",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
@@ -593,7 +593,7 @@
         "framework": "core",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
@@ -614,7 +614,7 @@
         "framework": "react",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
@@ -635,7 +635,7 @@
         "framework": "solid",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
@@ -656,7 +656,7 @@
         "framework": "core",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
     },
@@ -677,7 +677,7 @@
         "framework": "react",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
     },
@@ -698,7 +698,7 @@
         "framework": "solid",
         "primitiveStatus": "primitive",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       },
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
@@ -719,7 +719,7 @@
         "framework": "core",
         "primitiveStatus": "recipe",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       }
     },
     {
@@ -744,7 +744,7 @@
         "framework": "react",
         "primitiveStatus": "recipe",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       }
     },
     {
@@ -769,7 +769,7 @@
         "framework": "solid",
         "primitiveStatus": "recipe",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       }
     },
     {
@@ -790,7 +790,7 @@
         "framework": "neutral",
         "primitiveStatus": "recipe",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       }
     },
     {
@@ -811,7 +811,7 @@
         "framework": "neutral",
         "primitiveStatus": "recipe",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       }
     },
     {
@@ -832,7 +832,7 @@
         "framework": "neutral",
         "primitiveStatus": "recipe",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       }
     },
     {
@@ -853,7 +853,7 @@
         "framework": "neutral",
         "primitiveStatus": "recipe",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       }
     },
     {
@@ -874,7 +874,7 @@
         "framework": "neutral",
         "primitiveStatus": "recipe",
         "sourceOwnership": "consumer",
-        "updateStrategy": "shadcn-diff"
+        "updateStrategy": "shadcn-add"
       }
     }
   ]

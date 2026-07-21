@@ -48,9 +48,8 @@ declared by the item. Every Recipe also declares its runtime's Theme item, so
 the first installation adds `components/ui/theme.ts`; React and Solid also
 receive `components/ui/use-theme.tsx`.
 
-Every payload is a universal `registry:item` with explicit file targets. A
-fresh OpenTUI project therefore needs no `components.json`, Tailwind metadata,
-or shadcn framework initialization.
+A fresh OpenTUI project needs no `components.json` or shadcn framework
+initialization because each item declares its file targets.
 
 Running an ordinary `add` against an existing file prompts before replacing
 it and preserves the local file by default.
@@ -67,20 +66,25 @@ Registry metadata describes the source lifecycle:
 
 | Field | Meaning |
 | --- | --- |
+| `type: "registry:item"` | The item installs without shadcn project configuration. |
 | `meta.framework` | The Recipe targets Core, React, or Solid. |
 | `meta.sourceOwnership: "consumer"` | The installed source is expected to be edited locally. |
-| `meta.updateStrategy: "shadcn-diff"` | Updates should be reviewed as source changes. |
+| `meta.updateStrategy: "shadcn-add"` | Re-run `add` to check for Recipe updates without replacing local files. |
 
 Presentation-only Recipes such as Badge and Theme add no npm dependencies.
 They use the OpenTUI runtime already owned by the application.
 
 ## Review updates
 
-An ordinary `add` preserves existing files unless you explicitly approve or
-request replacement. shadcn 4.13 still requires a valid `components.json` for
-its inspection-only `--view`, `--diff`, and `--dry-run` flags, even for
-universal items. If your project already has that compatibility configuration,
-you can use:
+Re-run the same `add` command to check the current Recipe. It preserves
+existing files unless you explicitly approve or request replacement:
+
+```bash
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox
+```
+
+If your project has a valid shadcn `components.json`, you can also inspect
+changes before updating:
 
 ```bash
 pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox --view

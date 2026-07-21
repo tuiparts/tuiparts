@@ -477,8 +477,8 @@ try {
         `${itemName} must declare consumer-owned recipe source`,
       );
       assert(
-        item.meta?.updateStrategy === "shadcn-diff",
-        `${itemName} must declare the shadcn diff update strategy`,
+        item.meta?.updateStrategy === "shadcn-add",
+        `${itemName} must declare the shadcn add update strategy`,
       );
       const recipeKind = primitivelessRecipes.includes(recipe)
         ? "recipe"
@@ -586,8 +586,8 @@ try {
         `${itemName} must declare consumer-owned recipe source`,
       );
       assert(
-        registryItem.meta?.updateStrategy === "shadcn-diff",
-        `${itemName} must declare the shadcn diff update strategy`,
+        registryItem.meta?.updateStrategy === "shadcn-add",
+        `${itemName} must declare the shadcn add update strategy`,
       );
     }
     const builtItem = JSON.parse(

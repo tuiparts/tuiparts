@@ -145,19 +145,10 @@ packaged theme runtime; see ADR
 [0006](adr/0006-theming-ships-as-registry-source.md).
 
 Primitive package upgrades deliver behavior fixes. Recipe updates are optional
-source integrations. Ordinary `add` preserves local files. Projects with a
-valid shadcn `components.json` can also use its inspection-only update flags
-(shadcn 4.13 still requires that configuration for universal items):
-
-```bash
-pnpm dlx shadcn@4.13.0 add <item-address> --view
-pnpm dlx shadcn@4.13.0 add <item-address> --diff
-pnpm dlx shadcn@4.13.0 add <item-address> --dry-run
-```
-
-Ordinary `add` asks before replacing an existing file. Use `--overwrite` only
-when you deliberately want to discard local changes. See the
-[`registry` catalog](../registry/README.md) for the complete lifecycle.
+source integrations. Ordinary `add` preserves local files, while `--overwrite`
+deliberately discards local changes. See the
+[`registry` catalog](../registry/README.md) for the complete lifecycle and the
+current shadcn inspection limitation.
 
 ## Release gates
 

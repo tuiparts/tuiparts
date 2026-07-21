@@ -46,9 +46,10 @@ Solid adapters own their `@tuiparts/core` dependency and check the host's
 OpenTUI and framework versions through peer dependencies.
 
 The `meta.sourceOwnership` value `consumer` means the installed source is
-expected to be edited locally. The `meta.updateStrategy` value `shadcn-diff`
-identifies the supported update workflow. Registry metadata describes the
-source lifecycle; it does not replace package dependency resolution.
+expected to be edited locally. The `meta.updateStrategy` value `shadcn-add`
+identifies safe reinstallation as the default update workflow. Registry
+metadata describes the source lifecycle; it does not replace package
+dependency resolution.
 
 Primitive-backed items target `>=0.0.1 <0.1.0`, beginning with the first
 stable release in the `@tuiparts` scope and accepting compatible package
@@ -91,6 +92,13 @@ do not run this build command.
 The current registry item is the upstream recipe revision. Its Git commit, tag,
 or deployed registry version identifies the exact upstream source; tuiparts.sh
 does not write hidden revision state into the consumer's project.
+
+Re-run `add` to check the current Recipe without replacing local source by
+default:
+
+```bash
+pnpm dlx shadcn@4.13.0 add <item-address>
+```
 
 shadcn 4.13 requires a valid `components.json` for its inspection-only flags,
 even though universal item installation does not. Projects that already have

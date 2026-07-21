@@ -26,10 +26,12 @@ The official shadcn CLI remains the installer. tuiparts.sh does not maintain a
 parallel installer, Recipe lockfile, or merge engine.
 
 Clean-consumer validation must install every item without `components.json`.
-Lifecycle validation continues to cover non-overwrite behavior and shadcn's
-source inspection commands. shadcn 4.13 still requires its legacy project
-configuration for `--diff`, `--view`, and `--dry-run`; this compatibility
-limitation is documented separately from the normal installation path.
+Registry metadata names safe `add` reinstallation as the default update
+strategy. Lifecycle validation continues to cover non-overwrite behavior and
+shadcn's source inspection commands. shadcn 4.13 still requires its legacy
+project configuration for `--diff`, `--view`, and `--dry-run`; this optional
+compatibility path is documented separately from normal installation and
+updates.
 
 ## Consequences
 

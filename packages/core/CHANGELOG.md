@@ -1,5 +1,13 @@
 # @tuiparts/core
 
+## 0.0.5
+
+### Patch Changes
+
+- [#57](https://github.com/tuiparts/tuiparts/pull/57) [`1bc2409`](https://github.com/tuiparts/tuiparts/commit/1bc2409c00a6faf3121ab9ba5f13e0e3f735dd33) Thanks [@msmps](https://github.com/msmps)! - Add NumberField with controlled or uncontrolled nullable numeric ownership, strict numeric drafts, decimal-safe bounded stepping, semantic change and commit details, native OpenTUI Input coordination, press controls, and selection-free terminal-cell scrubbing.
+
+  Expose matching React and Solid compound Parts for Root, Input, Increment, Decrement, and ScrubArea.
+
 ## 0.0.4
 
 ### Patch Changes

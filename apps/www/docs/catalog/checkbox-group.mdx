@@ -1,0 +1,109 @@
+---
+title: Checkbox Group
+description: Present related checked choices with editable labels, marks, and layout.
+---
+
+Checkbox Group presents related choices that may be checked independently. The
+packaged Primitives own array-valued checked state, Checkbox registration,
+activation, disablement, and rendered-order focus. The Recipe adds labeled
+Checkbox presentation, marks, theme colors, and row or column layout.
+
+Use standalone [Checkbox](/catalog/checkbox) when another control does not need
+to share value ownership or keyboard navigation.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox-group
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/checkbox-group
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/checkbox-group
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import {
+  CheckboxGroup,
+  CheckboxGroupItem,
+} from "./components/ui/checkbox-group";
+
+<CheckboxGroup defaultValue={["email"]}>
+  <CheckboxGroupItem value="email" label="Email notifications" />
+  <CheckboxGroupItem value="sms" label="SMS notifications" />
+  <CheckboxGroupItem value="product" label="Product announcements" />
+</CheckboxGroup>;
+```
+
+Use `value` with `onValueChange` when the application owns the checked array.
+
+### Core
+
+```ts
+import {
+  createCheckboxGroup,
+  createCheckboxGroupItem,
+} from "./components/ui/checkbox-group";
+
+const notifications = createCheckboxGroup(ctx, {
+  defaultValue: ["email"],
+});
+
+notifications.add(
+  createCheckboxGroupItem(ctx, notifications.store, {
+    value: "email",
+    label: "Email notifications",
+  }),
+);
+notifications.add(
+  createCheckboxGroupItem(ctx, notifications.store, {
+    value: "sms",
+    label: "SMS notifications",
+  }),
+);
+
+parent.add(notifications);
+```
+
+Each Core item receives the group's Store explicitly.
+
+## Customize the Recipe
+
+The copied source owns group layout, spacing, the one-cell mark, labels, and
+tone mapping. It uses a column by default and switches to a row when
+`orientation="horizontal"`. Edit the source for wider marks, descriptions,
+section decoration, or another item convenience API. Shared glyph and color
+defaults come from the [Theme Recipe](/theming).
+
+## Behavior
+
+Every Item may be checked independently. Arrow keys move the group's single
+roving focus along its orientation; Home and End move to the first and last
+available Item. Enter, Return, Space, pointer activation, and `press()` toggle
+the focused Item without affecting the others. Disabled and unavailable Items
+are skipped.
+
+Detailed ownership, callbacks, focus repair, and lifecycle rules belong to the
+[Checkbox Group Primitive](/primitives/checkbox-group).
+
+## Recipe API
+
+`CheckboxGroup` forwards packaged group props and adds row or column starter
+layout from `orientation`.
+
+`CheckboxGroupItem` requires `value` and `label`. React and Solid accept `mark`
+and `tone="accent" | "success"` while forwarding the remaining Checkbox Root
+props. Core accepts `value`, `label`, `mark`, and `disabled`. The Item name is
+Recipe convenience; packaged behavior uses the existing `Checkbox.Root`
+rather than introducing a separate Item Part.

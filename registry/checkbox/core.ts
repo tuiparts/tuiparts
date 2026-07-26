@@ -4,6 +4,7 @@ import {
   TextRenderable,
 } from "@opentui/core";
 import {
+  type CheckboxChangeDetails,
   CheckboxIndicatorRenderable,
   CheckboxRootRenderable,
 } from "@tuiparts/core/checkbox";
@@ -16,7 +17,7 @@ export interface CheckboxOptions {
   label: string;
   /** One terminal-cell mark; widen the editable mark cell for wider content. */
   mark?: string;
-  onCheckedChange?: (checked: boolean) => void;
+  onCheckedChange?: (checked: boolean, details: CheckboxChangeDetails) => void;
 }
 
 class CheckboxRecipeRenderable extends CheckboxRootRenderable {

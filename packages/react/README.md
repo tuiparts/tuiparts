@@ -79,8 +79,9 @@ export function Settings() {
 }
 ```
 
-From a repository checkout, run the focused Accordion or Collapsible tracer
-with `pnpm --filter @tuiparts/react demo:accordion` or
+From a repository checkout, run a focused tracer with
+`pnpm --filter @tuiparts/react demo:checkbox-group`,
+`pnpm --filter @tuiparts/react demo:accordion`, or
 `pnpm --filter @tuiparts/react demo:collapsible`.
 
 ## Imports
@@ -92,6 +93,7 @@ supported:
 import { Accordion } from "@tuiparts/react/accordion";
 import { Button } from "@tuiparts/react/button";
 import { Checkbox } from "@tuiparts/react/checkbox";
+import { CheckboxGroup } from "@tuiparts/react/checkbox-group";
 import { Collapsible } from "@tuiparts/react/collapsible";
 import { Input } from "@tuiparts/react/input";
 import { Radio } from "@tuiparts/react/radio";

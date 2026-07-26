@@ -97,6 +97,7 @@ try {
     "@tuiparts/core/accordion",
     "@tuiparts/core/button",
     "@tuiparts/core/checkbox",
+    "@tuiparts/core/checkbox-group",
     "@tuiparts/core/collapsible",
     "@tuiparts/core/dialog",
     "@tuiparts/core/input",
@@ -111,6 +112,7 @@ try {
     "@tuiparts/react/accordion",
     "@tuiparts/react/button",
     "@tuiparts/react/checkbox",
+    "@tuiparts/react/checkbox-group",
     "@tuiparts/react/collapsible",
     "@tuiparts/react/dialog",
     "@tuiparts/react/input",
@@ -125,6 +127,7 @@ try {
     "@tuiparts/solid/accordion",
     "@tuiparts/solid/button",
     "@tuiparts/solid/checkbox",
+    "@tuiparts/solid/checkbox-group",
     "@tuiparts/solid/collapsible",
     "@tuiparts/solid/dialog",
     "@tuiparts/solid/input",
@@ -169,6 +172,7 @@ import {
   AccordionTriggerRenderable,
 } from "@tuiparts/core/accordion";
 import { CheckboxRootRenderable } from "@tuiparts/core/checkbox";
+import { CheckboxGroupRenderable } from "@tuiparts/core/checkbox-group";
 import {
   CollapsiblePanelRenderable,
   CollapsibleRootRenderable,
@@ -206,6 +210,17 @@ try {
   setup.renderer.root.add(checkbox);
   checkbox.press();
   if (!checkbox.checked) throw new Error("Compiled Checkbox did not activate");
+
+  const checkboxGroup = new CheckboxGroupRenderable(setup.renderer);
+  const groupedCheckbox = new CheckboxRootRenderable(setup.renderer, {
+    group: checkboxGroup.store,
+    value: "updates",
+  });
+  checkboxGroup.add(groupedCheckbox);
+  setup.renderer.root.add(checkboxGroup);
+  groupedCheckbox.press();
+  if (checkboxGroup.value[0] !== "updates")
+    throw new Error("Compiled CheckboxGroup did not check its item");
 
   const collapsible = new CollapsibleRootRenderable(setup.renderer);
   const trigger = new CollapsibleTriggerRenderable(setup.renderer, {

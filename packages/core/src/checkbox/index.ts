@@ -1,4 +1,6 @@
 export {
+  type CheckboxChangeDetails,
+  type CheckboxCheckedChangeHandler,
   type CheckboxIndicatorOptions,
   CheckboxIndicatorRenderable,
   type CheckboxRootOptions,

@@ -96,14 +96,15 @@ Checkbox follows the primitive contract:
   `Checkbox.Indicator` parts.
 - The example recipes choose a mark, label, spacing, and colors in editable
   source.
-- Core callers pass the owning Root to Indicator; React and Solid hide that
+- Core callers pass the owning Store to Indicator; React and Solid hide that
   owner wiring through Root context.
 - An authored Indicator remains mounted and reflects checked state through
   Renderable visibility in Core, React, and Solid. Recipes may omit the part
   entirely when they do not need a visual indicator.
 - `press()`, Enter, Space, and an uncancelled primary-button release request the
-  same boolean change. Checkbox does not expose input-source details because no
-  Checkbox behavior currently depends on the activation source.
+  same boolean change and report frozen terminal press details.
+- A standalone Root owns checked state. Inside CheckboxGroup, the same Root
+  adopts array-valued group ownership through a required unique `value`.
 - Composition uses Root children, Indicator children, readonly state callbacks,
   and Renderable refs. It does not support arbitrary Root or Indicator
   replacement.
@@ -120,6 +121,32 @@ Reference implementations:
 `Checkbox` is the canonical React and Solid primitive export. Editable starter
 recipes reserve one terminal cell for `mark`; applications that need a wide
 mark own the corresponding recipe layout change.
+
+## CheckboxGroup primitive
+
+CheckboxGroup coordinates existing Checkbox Roots rather than introducing a
+second Item identity:
+
+- `CheckboxGroupStore` owns readonly checked values, registration, rendered
+  order, effective disablement, orientation, and roving focus.
+- `CheckboxGroupRenderable` is the non-focusable collection boundary.
+- Existing `CheckboxRootRenderable` registers with an optional group Store;
+  its Indicator continues to consume the same Checkbox Store.
+- React and Solid expose direct `CheckboxGroup` functions and supply ownership
+  to nested `Checkbox.Root` through context.
+- Arrow keys and Home/End move focus without changing checked values. Checkbox
+  activation updates the group value and invokes local then group callbacks.
+- Recipes may expose `CheckboxGroupItem` as labeled presentation, but it is not
+  a packaged Part.
+
+Reference implementations:
+
+- `packages/core/src/checkbox-group/primitive.ts`
+- `packages/react/src/checkbox-group/primitive.ts`
+- `packages/solid/src/checkbox-group/primitive.ts`
+- `registry/checkbox-group/core.ts`
+- `registry/checkbox-group/react.tsx`
+- `registry/checkbox-group/solid.tsx`
 
 ## Collapsible Primitive
 

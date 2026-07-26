@@ -1,0 +1,166 @@
+---
+title: Checkbox Group
+description: Coordinate existing Checkbox Roots through shared checked values and roving focus.
+---
+
+Checkbox Group coordinates existing [Checkbox](/primitives/checkbox)
+Primitives. It owns array-valued checked state, registration, effective
+disablement, orientation-aware focus navigation, and lifecycle without choosing
+marks, labels, layout, or colors.
+
+## Install
+
+Install the [package for your runtime](/primitives#install), then import both
+the `checkbox-group` and `checkbox` subpaths:
+
+```ts
+import { CheckboxGroup } from "@tuiparts/react/checkbox-group";
+import { Checkbox } from "@tuiparts/react/checkbox";
+```
+
+Replace `react` with `solid`. Core exports the matching Store and Renderables
+from `@tuiparts/core/checkbox-group` and `@tuiparts/core/checkbox`.
+
+## Anatomy
+
+| Part | Responsibility |
+| --- | --- |
+| `CheckboxGroup` | Owns checked values, collection registration, orientation, and roving focus. |
+| `Checkbox.Root` | Registers through a unique `value`, reflects group ownership, and owns activation and focus. |
+| `Checkbox.Indicator` | Reflects its Checkbox Root's effective checked state. |
+
+There is no packaged `CheckboxGroup.Item`. A grouped Checkbox is the same
+Root/Indicator Primitive used independently; Catalog Recipes may add the
+`CheckboxGroupItem` convenience name for labeled presentation.
+
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { Checkbox } from "@tuiparts/react/checkbox";
+import { CheckboxGroup } from "@tuiparts/react/checkbox-group";
+
+<CheckboxGroup defaultValue={["email"]} flexDirection="column" gap={1}>
+  {[
+    ["email", "Email notifications"],
+    ["sms", "SMS notifications"],
+  ].map(([value, label]) => (
+    <Checkbox.Root key={value} value={value} flexDirection="row" gap={1}>
+      <Checkbox.Indicator>
+        <text content="✓" />
+      </Checkbox.Indicator>
+      <text content={label} />
+    </Checkbox.Root>
+  ))}
+</CheckboxGroup>;
+```
+
+```tsx Solid
+import { Checkbox } from "@tuiparts/solid/checkbox";
+import { CheckboxGroup } from "@tuiparts/solid/checkbox-group";
+
+<CheckboxGroup defaultValue={["email"]} flexDirection="column" gap={1}>
+  <Checkbox.Root value="email" flexDirection="row" gap={1}>
+    <Checkbox.Indicator>
+      <text content="✓" />
+    </Checkbox.Indicator>
+    <text content="Email notifications" />
+  </Checkbox.Root>
+  <Checkbox.Root value="sms" flexDirection="row" gap={1}>
+    <Checkbox.Indicator>
+      <text content="✓" />
+    </Checkbox.Indicator>
+    <text content="SMS notifications" />
+  </Checkbox.Root>
+</CheckboxGroup>;
+```
+
+```ts Core
+import { TextRenderable } from "@opentui/core";
+import {
+  CheckboxIndicatorRenderable,
+  CheckboxRootRenderable,
+} from "@tuiparts/core/checkbox";
+import { CheckboxGroupRenderable } from "@tuiparts/core/checkbox-group";
+
+const group = new CheckboxGroupRenderable(ctx, {
+  defaultValue: ["email"],
+  flexDirection: "column",
+  gap: 1,
+});
+const email = new CheckboxRootRenderable(ctx, {
+  group: group.store,
+  value: "email",
+});
+const indicator = new CheckboxIndicatorRenderable(ctx, {
+  store: email.store,
+});
+indicator.add(new TextRenderable(ctx, { content: "✓" }));
+email.add(indicator);
+email.add(new TextRenderable(ctx, { content: "Email notifications" }));
+group.add(email);
+parent.add(group);
+```
+
+</CodeGroup>
+
+Framework adapters supply the group Store through context. Core callers pass
+`group.store` to every grouped Checkbox. Runnable tracers are available for
+[Core](https://github.com/tuiparts/tuiparts/blob/main/packages/core/examples/checkbox-group.ts),
+[React](https://github.com/tuiparts/tuiparts/blob/main/packages/react/examples/checkbox-group.tsx),
+and [Solid](https://github.com/tuiparts/tuiparts/blob/main/packages/solid/examples/checkbox-group.tsx).
+
+## State ownership
+
+Use group `value` with `onValueChange` for controlled ownership, or
+`defaultValue` for uncontrolled initial state. Values are deduplicated while
+preserving order. A grouped Checkbox requires a unique `value`; its standalone
+`checked` and `defaultChecked` props do not override group ownership.
+
+Group state contains `value`, `disabled`, and `orientation`; orientation
+is vertical by default. Checkbox state
+contains effective `checked` and `disabled`, actual `focused`, and whether it
+is the current roving `tabbable` item. A grouped activation commits
+uncontrolled state before calling the Checkbox's `onCheckedChange`, then the
+group's `onValueChange`; both receive the same frozen terminal press details.
+
+Renaming a checked uncontrolled Checkbox repairs its value without callbacks.
+Unmounting preserves the checked value so a conditional Checkbox with the same
+identity recovers state when it returns. Controlled values may name no live
+Checkbox.
+
+## Interaction
+
+| Input | Behavior |
+| --- | --- |
+| `Left` / `Right` | Moves focus in a horizontal group. |
+| `Up` / `Down` | Moves focus in a vertical group. |
+| `Home` / `End` | Moves focus to the first or last available Checkbox. |
+| `Enter`, `Return`, or `Space` | Toggles the focused Checkbox. |
+| Primary-pointer release or `press()` | Focuses when applicable and makes the same semantic request. |
+
+Focus movement does not change checked values. Navigation wraps by default;
+set `loopFocus={false}` to stop at collection edges. Root and Checkbox-local
+disablement combine. Disabled, hidden, detached, and destroyed Checkboxes are
+skipped, and losing the focused member repairs focus to the nearest available
+Checkbox.
+
+## API reference
+
+| Surface | API |
+| --- | --- |
+| React and Solid | `CheckboxGroup`, `Checkbox.Root`, `Checkbox.Indicator`, and scoped types |
+| Core | `CheckboxGroupRenderable`, `CheckboxGroupStore`, Checkbox Renderables and Store |
+| Group options | `value`, `defaultValue`, `onValueChange`, `orientation`, `loopFocus`, `disabled` |
+| Checkbox membership | Unique `value`; Core additionally receives `group` |
+| Group state | `value`, `disabled`, `orientation` |
+| Checkbox state | `checked`, `disabled`, `focused`, `tabbable` |
+| Change details | `source` is `"imperative"`, `"keyboard"`, or `"pointer"` |
+
+Framework refs target the actual matching Group, Root, or Indicator Renderable.
+
+## Start with the Recipe
+
+The editable [Checkbox Group Recipe](/catalog/checkbox-group) adds labeled
+Items, marks, theme colors, spacing, and orientation-aware starter layout.

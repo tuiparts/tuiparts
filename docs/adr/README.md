@@ -24,10 +24,11 @@ specification. ADR-0009 defines how to deliver that contract completely.
 | [0005](0005-toggle-optionally-adopts-toggle-group.md) | Toggle may own standalone state or adopt ToggleGroup ownership. |
 | [0006](0006-theming-ships-as-registry-source.md) | Theming is consumer-owned Registry source, not a packaged Primitive. |
 | [0007](0007-pressable-base-class.md) | Press-activated Roots share one internal gesture implementation and contract. |
-| [0008](0008-checked-store-collapse.md) | Checkbox and Switch share one internal checked-state implementation while retaining distinct public Stores. |
+| [0008](0008-checked-store-collapse.md) | Historical Checkbox/Switch checked-state extraction; ADR-0012 supersedes Checkbox participation while Switch retains the internal Store. |
 | [0009](0009-deliver-primitives-and-recipes-as-complete-verticals.md) | Every Primitive or Recipe ships as a complete, validated vertical with tests owned by the correct seam. |
 | [0010](0010-public-root-state-hooks.md) | Framework adapters expose public Root state through `useRootState()` hooks; Recipes read Primitive state from them instead of Recipe-local contexts. |
 | [0011](0011-serve-recipes-as-universal-registry-items.md) | Recipes are universal shadcn Registry items that install without framework detection or `components.json`. |
+| [0012](0012-checkbox-optionally-adopts-checkbox-group.md) | Checkbox optionally adopts CheckboxGroup array ownership and roving focus without introducing an Item Part. |
 
 ADR numbering is intentionally append-only and may contain gaps. ADR-0003 was
 a temporary RC decision superseded by ADR-0004 before the first stable

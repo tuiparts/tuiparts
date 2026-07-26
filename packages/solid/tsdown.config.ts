@@ -6,6 +6,7 @@ export default defineConfig({
     "src/accordion/index.ts",
     "src/button/index.tsx",
     "src/checkbox/index.tsx",
+    "src/checkbox-group/index.ts",
     "src/collapsible/index.ts",
     "src/dialog/index.ts",
     "src/input/index.tsx",

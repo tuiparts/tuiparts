@@ -26,6 +26,8 @@ export {
   type ButtonStoreOptions,
 } from "./button";
 export {
+  type CheckboxChangeDetails,
+  type CheckboxCheckedChangeHandler,
   type CheckboxIndicatorOptions,
   CheckboxIndicatorRenderable,
   type CheckboxRootOptions,
@@ -34,6 +36,22 @@ export {
   CheckboxStore,
   type CheckboxStoreOptions,
 } from "./checkbox";
+export {
+  type CheckboxGroupChangeDetails,
+  type CheckboxGroupFocusDirection,
+  type CheckboxGroupItemKey,
+  type CheckboxGroupItemRegistration,
+  type CheckboxGroupItemRegistrationOptions,
+  type CheckboxGroupItemState,
+  type CheckboxGroupNavigationTarget,
+  type CheckboxGroupOptions,
+  type CheckboxGroupOrientation,
+  CheckboxGroupRenderable,
+  type CheckboxGroupState,
+  CheckboxGroupStore,
+  type CheckboxGroupStoreOptions,
+  type CheckboxGroupValueChangeHandler,
+} from "./checkbox-group";
 export {
   type CollapsibleOpenChangeDetails,
   type CollapsibleOpenChangeHandler,

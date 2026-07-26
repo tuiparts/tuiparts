@@ -50,8 +50,8 @@ version together.
 | [`@tuiparts/react`](./packages/react) | React compound-part Adapter |
 | [`@tuiparts/solid`](./packages/solid) | Solid compound-part Adapter |
 
-Accordion, Button, Checkbox, Collapsible, Dialog, Input, RadioGroup, Switch,
-Tabs, Textarea, Toggle, and ToggleGroup expose Primitive
+Accordion, Button, Checkbox, CheckboxGroup, Collapsible, Dialog, Input,
+RadioGroup, Switch, Tabs, Textarea, Toggle, and ToggleGroup expose Primitive
 behavior. Badge is distributed only as editable Recipe source because it has
 no reusable interaction behavior.
 
@@ -82,7 +82,8 @@ See the package READMEs for exact peer ranges and usage.
 ## Install a Recipe
 
 Recipes are installed with the official shadcn CLI and become
-application-owned source. The Catalog contains Accordion, Checkbox, Collapsible, Switch, Button,
+application-owned source. The Catalog contains Accordion, Checkbox,
+CheckboxGroup, Collapsible, Switch, Button,
 RadioGroup/Radio, Tabs, Toggle, ToggleGroup, Input, Textarea, Dialog, and Badge
 Recipes; every Recipe targets exactly one Adapter, so choose the `core/*`,
 `react/*`, or `solid/*` item for your runtime:

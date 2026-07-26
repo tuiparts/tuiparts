@@ -82,8 +82,9 @@ export function Settings() {
 Solid props are spread reactively onto the existing Renderable. Signal changes
 update controlled primitive state without remounting.
 
-From a repository checkout, run the focused Accordion or Collapsible tracer
-with `pnpm --filter @tuiparts/solid demo:accordion` or
+From a repository checkout, run a focused tracer with
+`pnpm --filter @tuiparts/solid demo:checkbox-group`,
+`pnpm --filter @tuiparts/solid demo:accordion`, or
 `pnpm --filter @tuiparts/solid demo:collapsible`.
 
 ## Imports
@@ -92,6 +93,7 @@ with `pnpm --filter @tuiparts/solid demo:accordion` or
 import { Accordion } from "@tuiparts/solid/accordion";
 import { Button } from "@tuiparts/solid/button";
 import { Checkbox } from "@tuiparts/solid/checkbox";
+import { CheckboxGroup } from "@tuiparts/solid/checkbox-group";
 import { Collapsible } from "@tuiparts/solid/collapsible";
 import { Input } from "@tuiparts/solid/input";
 import { Radio } from "@tuiparts/solid/radio";

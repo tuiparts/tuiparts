@@ -23,6 +23,23 @@ describe("Checkbox primitive", () => {
     expect(root.checked).toBe(true);
   });
 
+  it("reports frozen semantic details after standalone state commits", async () => {
+    setup = await createTestRenderer({ width: 30, height: 5 });
+    const events: string[] = [];
+    const details: object[] = [];
+    const root = new CheckboxRootRenderable(setup.renderer, {
+      onCheckedChange: (checked, changeDetails) => {
+        events.push(`${checked}:${root.checked}`);
+        details.push(changeDetails);
+      },
+    });
+
+    root.press();
+
+    expect(events).toEqual(["true:true"]);
+    expect(details.every(Object.isFrozen)).toBe(true);
+  });
+
   it("adopts a Store and rejects replacement", async () => {
     setup = await createTestRenderer({ width: 30, height: 5 });
     const store = new CheckboxStore({ defaultChecked: true });
@@ -47,6 +64,7 @@ describe("Checkbox primitive", () => {
       checked: true,
       disabled: true,
       focused: false,
+      tabbable: false,
     });
     root.disabled = false;
     root.press();

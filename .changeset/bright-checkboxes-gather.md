@@ -4,6 +4,6 @@
 "@tuiparts/solid": patch
 ---
 
-Add CheckboxGroup with array-valued checked ownership, optional Checkbox.Root adoption, effective disablement, dynamic registration, and orientation-aware roving focus.
+Add CheckboxGroup with array-valued checked ownership, optional Checkbox.Root adoption, effective disablement, dynamic registration, and orientation-aware roving focus. Low-level collection registration and navigation types remain internal rather than becoming part of the public package interface.
 
 Checkbox state now exposes `tabbable`, and checked-change callbacks receive immutable terminal press details. Checkbox no longer shares its internal Store implementation with Switch so grouped collection policy remains isolated from Switch.

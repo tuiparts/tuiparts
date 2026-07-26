@@ -38,12 +38,6 @@ export {
 } from "./checkbox";
 export {
   type CheckboxGroupChangeDetails,
-  type CheckboxGroupFocusDirection,
-  type CheckboxGroupItemKey,
-  type CheckboxGroupItemRegistration,
-  type CheckboxGroupItemRegistrationOptions,
-  type CheckboxGroupItemState,
-  type CheckboxGroupNavigationTarget,
   type CheckboxGroupOptions,
   type CheckboxGroupOrientation,
   CheckboxGroupRenderable,

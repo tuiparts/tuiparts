@@ -6,14 +6,16 @@ import {
   type RenderContext,
 } from "@opentui/core";
 import {
-  type CheckboxGroupFocusDirection,
-  type CheckboxGroupItemKey,
-  type CheckboxGroupItemRegistration,
   type CheckboxGroupItemState,
   CheckboxGroupRenderable,
   type CheckboxGroupStore,
 } from "../checkbox-group/primitive";
 import { PressableRenderable, type PressDetails } from "../internal/pressable";
+import type {
+  CollectionFocusDirection,
+  CollectionItemKey,
+  CollectionItemRegistration,
+} from "../internal/roving-collection";
 
 /** Gesture details for one semantic Checkbox press. */
 export type CheckboxChangeDetails = PressDetails;
@@ -66,7 +68,7 @@ export class CheckboxStore {
   private _checked: boolean;
   private _value?: string;
   private onCheckedChangeCallback?: CheckboxCheckedChangeHandler;
-  private registration?: CheckboxGroupItemRegistration;
+  private registration?: CollectionItemRegistration;
   private collectionState?: CheckboxGroupItemState;
   private readonly listeners = new Set<CheckboxStateListener>();
   private unsubscribeGroup?: () => void;
@@ -104,7 +106,7 @@ export class CheckboxStore {
   }
 
   /** Current group registration key, when mounted in a CheckboxGroup. */
-  get groupKey(): CheckboxGroupItemKey | undefined {
+  get groupKey(): CollectionItemKey | undefined {
     return this.registration?.key;
   }
 
@@ -351,7 +353,7 @@ export class CheckboxRootRenderable extends PressableRenderable {
   }
 
   /** Group registration key when this Checkbox belongs to a group. */
-  get groupKey(): CheckboxGroupItemKey | undefined {
+  get groupKey(): CollectionItemKey | undefined {
     return this._store.groupKey;
   }
 
@@ -475,7 +477,7 @@ export class CheckboxRootRenderable extends PressableRenderable {
     this._store.setFocused(false);
   }
 
-  private moveFocus(direction: CheckboxGroupFocusDirection): boolean {
+  private moveFocus(direction: CollectionFocusDirection): boolean {
     const key = this.groupKey;
     if (!this.group || !key) return false;
     const target = this.group.getNavigationTarget(key, direction);

@@ -94,6 +94,7 @@ try {
 
   const entrypoints = [
     "@tuiparts/core",
+    "@tuiparts/core/accordion",
     "@tuiparts/core/button",
     "@tuiparts/core/checkbox",
     "@tuiparts/core/collapsible",
@@ -107,6 +108,7 @@ try {
     "@tuiparts/core/toggle",
     "@tuiparts/core/toggle-group",
     "@tuiparts/react",
+    "@tuiparts/react/accordion",
     "@tuiparts/react/button",
     "@tuiparts/react/checkbox",
     "@tuiparts/react/collapsible",
@@ -120,6 +122,7 @@ try {
     "@tuiparts/react/toggle",
     "@tuiparts/react/toggle-group",
     "@tuiparts/solid",
+    "@tuiparts/solid/accordion",
     "@tuiparts/solid/button",
     "@tuiparts/solid/checkbox",
     "@tuiparts/solid/collapsible",
@@ -159,6 +162,12 @@ try {
   writeFileSync(
     join(consumerDir, "executable.ts"),
     `import { createTestRenderer } from "@opentui/core/testing";
+import {
+  AccordionItemRenderable,
+  AccordionPanelRenderable,
+  AccordionRootRenderable,
+  AccordionTriggerRenderable,
+} from "@tuiparts/core/accordion";
 import { CheckboxRootRenderable } from "@tuiparts/core/checkbox";
 import {
   CollapsiblePanelRenderable,
@@ -174,6 +183,25 @@ import {
 
 const setup = await createTestRenderer({ width: 20, height: 3 });
 try {
+  const accordion = new AccordionRootRenderable(setup.renderer);
+  const accordionItem = new AccordionItemRenderable(setup.renderer, {
+    store: accordion.store,
+    value: "details",
+  });
+  const accordionTrigger = new AccordionTriggerRenderable(setup.renderer, {
+    item: accordionItem,
+  });
+  const accordionPanel = new AccordionPanelRenderable(setup.renderer, {
+    item: accordionItem,
+  });
+  accordionItem.add(accordionTrigger);
+  accordionItem.add(accordionPanel);
+  accordion.add(accordionItem);
+  setup.renderer.root.add(accordion);
+  accordionTrigger.press();
+  if (accordion.value[0] !== "details" || !accordionPanel.visible)
+    throw new Error("Compiled Accordion did not open its Item");
+
   const checkbox = new CheckboxRootRenderable(setup.renderer);
   setup.renderer.root.add(checkbox);
   checkbox.press();

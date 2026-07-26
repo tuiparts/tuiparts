@@ -22,6 +22,7 @@ colors, spacing, glyphs, labels, or fixed visual trees.
 
 | Module | Core interface | Public parts |
 | --- | --- | --- |
+| Accordion | `AccordionStore` | `AccordionRootRenderable`, `AccordionItemRenderable`, `AccordionTriggerRenderable`, `AccordionPanelRenderable` |
 | Button | `ButtonStore` | `ButtonRenderable` |
 | Checkbox | `CheckboxStore` | `CheckboxRootRenderable`, `CheckboxIndicatorRenderable` |
 | Collapsible | `CollapsibleStore` | `CollapsibleRootRenderable`, `CollapsibleTriggerRenderable`, `CollapsiblePanelRenderable` |
@@ -56,7 +57,8 @@ parent.add(root);
 Consumer-owned recipes assemble these parts with native OpenTUI Renderables and
 choose their presentation. Installable examples live under `registry/`.
 
-From a repository checkout, run the focused Collapsible tracer with
+From a repository checkout, run the focused Accordion or Collapsible tracer
+with `pnpm --filter @tuiparts/core demo:accordion` or
 `pnpm --filter @tuiparts/core demo:collapsible`.
 
 ## Input

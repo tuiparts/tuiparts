@@ -82,6 +82,7 @@ root.add(indicator);
 | Primitive | Framework shape | Readonly state | Actions and keys | Ref target |
 | --- | --- | --- | --- | --- |
 | Button | `Button` | disabled, focused, pressed | `press()`; Enter/Return, Space, primary pointer | `ButtonRenderable` |
+| Accordion | `Accordion.Root`, `Accordion.Item`, `Accordion.Trigger`, `Accordion.Panel` | Root values and policy; Item open/disabled; Trigger focus | Up/Down/Home/End focus; Trigger `press()`; Enter/Return, Space, primary pointer | matching Part Renderable |
 | Checkbox | `Checkbox.Root`, `Checkbox.Indicator` | checked, disabled, focused | `press()`; Enter/Return, Space, primary pointer | matching Root or Indicator Renderable |
 | Collapsible | `Collapsible.Root`, `Collapsible.Trigger`, `Collapsible.Panel` | open, disabled; Trigger focus | Trigger `press()`; Enter/Return, Space, primary pointer | matching Part Renderable |
 | Switch | `Switch.Root`, `Switch.Thumb` | checked, disabled, focused | `press()`; Enter/Return, Space, primary pointer | matching Root or Thumb Renderable |
@@ -93,7 +94,8 @@ root.add(indicator);
 | Textarea | `Textarea` | OpenTUI-owned `EditBuffer` | native multiline editing; content, cursor, submit callbacks | `TextareaRenderable` |
 | Dialog | `Dialog.Root`, Trigger, Portal, Backdrop, Popup, Title, Description, Close | open | Trigger/Close `press()`; Enter/Return/Space, Escape, Tab containment | matching Dialog part Renderable |
 
-Checkbox, Collapsible, Switch, Toggle, ToggleGroup, Tabs, RadioGroup, and Dialog support controlled and uncontrolled
+Accordion, Checkbox, Collapsible, Switch, Toggle, ToggleGroup, Tabs,
+RadioGroup, and Dialog support controlled and uncontrolled
 ownership. RadioGroup owns one collection value and every Radio must belong to
 a group.
 Input and Textarea deliberately preserve OpenTUI's native mutable editing
@@ -119,6 +121,7 @@ pnpm dlx shadcn@4.13.0 add <item-address>
 
 The starter catalog provides `core/*`, `react/*`, and `solid/*` items for:
 
+- Accordion
 - Checkbox
 - Collapsible
 - Switch

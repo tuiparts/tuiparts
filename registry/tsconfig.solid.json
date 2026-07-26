@@ -5,6 +5,7 @@
     "jsxImportSource": "@opentui/solid",
     "noEmit": true,
     "rootDirs": [
+      "accordion",
       "badge",
       "button",
       "checkbox",

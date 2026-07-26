@@ -146,6 +146,33 @@ Reference implementations:
 The focused public contract and conformance disposition are recorded in
 `docs/primitive-contracts/collapsible.md`.
 
+## Accordion Primitive
+
+Accordion coordinates related disclosure Items without choosing headers,
+labels, or Panel presentation:
+
+- `Accordion.Root` and `AccordionStore` own controlled or uncontrolled value
+  arrays, single or multiple expansion policy, and Root disablement.
+- `Accordion.Item` registers one unique value and scopes local disablement,
+  Trigger, Panel, and Item-level open callbacks.
+- `Accordion.Trigger` is a focusable Pressable that toggles its Item, exposes
+  open, effective disabled, and actual focused state, and moves focus with
+  Up/Down/Home/End without changing expansion.
+- `Accordion.Panel` reflects Item state through native visibility. React and
+  Solid unmount it while closed by default and support `keepMounted`.
+- Header structure remains Recipe-owned because HTML heading semantics do not
+  create terminal behavior.
+
+Reference implementations:
+
+- `packages/core/src/accordion/primitive.ts`
+- `packages/react/src/accordion/primitive.ts`
+- `packages/solid/src/accordion/primitive.tsx`
+- `registry/accordion/`
+
+The focused public contract and conformance disposition are recorded in
+`docs/primitive-contracts/accordion.md`.
+
 ## Switch primitive
 
 Switch follows the same frozen ownership and activation rules without treating

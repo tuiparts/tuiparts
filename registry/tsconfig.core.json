@@ -3,6 +3,7 @@
   "compilerOptions": {
     "noEmit": true,
     "rootDirs": [
+      "accordion",
       "badge",
       "button",
       "checkbox",

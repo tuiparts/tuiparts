@@ -1,0 +1,123 @@
+---
+title: Accordion
+description: Organize related terminal content into editable disclosure Items.
+---
+
+Accordion presents a set of labeled disclosure Items. The packaged Primitive
+coordinates single or multiple open values, activation, focus, disablement,
+and content lifecycle. The Recipe adds labels, disclosure markers, themed
+text, indentation, and vertical Item layout.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/accordion
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/accordion
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/accordion
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./components/ui/accordion";
+
+<Accordion defaultValue={["shipping"]}>
+  <AccordionItem value="shipping">
+    <AccordionTrigger label="How long does shipping take?" />
+    <AccordionContent>
+      <text content="Most orders arrive within three business days." />
+    </AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="returns">
+    <AccordionTrigger label="Can I return an order?" />
+    <AccordionContent>
+      <text content="Unused items can be returned within 30 days." />
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>;
+```
+
+Add `multiple` to Root when more than one Item may remain open.
+
+### Core
+
+```ts
+import { TextRenderable } from "@opentui/core";
+import {
+  createAccordion,
+  createAccordionContent,
+  createAccordionItem,
+  createAccordionTrigger,
+} from "./components/ui/accordion";
+
+const accordion = createAccordion(ctx, { defaultValue: ["shipping"] });
+const item = createAccordionItem(ctx, accordion, { value: "shipping" });
+const trigger = createAccordionTrigger(ctx, item, {
+  label: "How long does shipping take?",
+});
+const content = createAccordionContent(ctx, item);
+content.add(new TextRenderable(ctx, {
+  content: "Most orders arrive within three business days.",
+}));
+
+item.add(trigger);
+item.add(content);
+accordion.add(item);
+parent.add(accordion);
+```
+
+Core factories receive the created Root or Item so every Part uses the same
+ownership chain.
+
+## Customize the Recipe
+
+`AccordionTrigger` uses `›` while closed and `⌄` while open. Override them with
+`closedMark` and `openMark`, or edit the copied source to replace the Trigger
+composition. The Recipe owns vertical Item layout, marker and label colors,
+and content indentation. Native OpenTUI properties override those starter
+choices.
+
+Shared colors and density come from the [Theme Recipe](/theming). Item labels
+and Panel content always belong to your application.
+
+## Behavior
+
+Enter, Return, Space, and a primary-pointer press toggle the focused Item.
+Focus remains on its Trigger. Up and Down move focus between available
+Triggers; Home and End move to the first and last. A disabled Root gates every
+Trigger, and a disabled Item is skipped and gates only its own Trigger. React
+and Solid Content unmounts while closed unless
+`keepMounted` is set; Core Content remains mounted and synchronizes native
+visibility. Detailed ownership and lifecycle rules belong to the
+[Accordion Primitive](/primitives/accordion).
+
+## Recipe API
+
+`Accordion` forwards Root props and supplies vertical layout. `AccordionItem`
+requires a unique `value`, forwards Item props, and groups one Trigger with its
+Content. `AccordionTrigger` requires `label`, accepts `closedMark` and
+`openMark`, and owns its children as Recipe presentation. `AccordionContent`
+forwards Panel props and preserves caller-owned children while adding starter
+indentation.
+
+Core exposes `createAccordion`, `createAccordionItem`,
+`createAccordionTrigger`, and `createAccordionContent`. Compose the packaged
+[Accordion Primitive](/primitives/accordion) directly when these names or
+presentation boundaries do not fit.

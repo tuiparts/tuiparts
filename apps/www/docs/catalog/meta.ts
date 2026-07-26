@@ -7,6 +7,7 @@ export default defineMeta({
     "index",
     "button",
     "input",
+    "number-field",
     "textarea",
     "checkbox",
     "checkbox-group",

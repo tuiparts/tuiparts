@@ -1,0 +1,166 @@
+---
+title: Number Field
+description: Coordinate numeric drafts, bounded stepping, commits, and terminal-cell scrubbing.
+---
+
+Number Field packages numeric editing behavior without choosing labels, glyphs,
+layout, dimensions, or colors. It coordinates one native OpenTUI Input with
+shared value ownership, two press controls, and an optional terminal-native
+drag surface.
+
+## Install
+
+Install the [package for your runtime](/primitives#install), then import the
+`number-field` subpath:
+
+```ts
+import { NumberField } from "@tuiparts/react/number-field";
+```
+
+Replace `react` with `solid`. Core exports the matching Store and Renderables
+from `@tuiparts/core/number-field`.
+
+## Anatomy
+
+| Part | Responsibility |
+| --- | --- |
+| `Root` | Owns numeric value, draft text, configuration, commits, and descendant coordination. |
+| `Input` | Provides the one focusable native OpenTUI editing surface. |
+| `Increment` | Requests one bounded normal step upward. |
+| `Decrement` | Requests one bounded normal step downward. |
+| `ScrubArea` | Converts horizontal primary-pointer dragging into terminal-cell steps. |
+
+Root and ScrubArea are not focusable. Increment and Decrement are focusable
+Pressable Parts. Input is the only text editor, and Root's `focused` state
+specifically reflects actual Input focus.
+
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { NumberField } from "@tuiparts/react/number-field";
+
+<NumberField.Root defaultValue={1} min={0} max={20} flexDirection="column">
+  {(state) => (
+    <>
+      <NumberField.ScrubArea>
+        <text content={state.scrubbing ? "Quantity ↔" : "Quantity"} />
+      </NumberField.ScrubArea>
+      <box flexDirection="row">
+        <NumberField.Decrement><text content="−" /></NumberField.Decrement>
+        <NumberField.Input width={8} />
+        <NumberField.Increment><text content="+" /></NumberField.Increment>
+      </box>
+    </>
+  )}
+</NumberField.Root>;
+```
+
+```tsx Solid
+import { NumberField } from "@tuiparts/solid/number-field";
+
+<NumberField.Root defaultValue={1} min={0} max={20} flexDirection="row">
+  <NumberField.Decrement><text content="−" /></NumberField.Decrement>
+  <NumberField.Input width={8} />
+  <NumberField.Increment><text content="+" /></NumberField.Increment>
+  <NumberField.ScrubArea><text content="Drag" /></NumberField.ScrubArea>
+</NumberField.Root>;
+```
+
+```ts Core
+import { TextRenderable } from "@opentui/core";
+import {
+  NumberFieldDecrementRenderable,
+  NumberFieldIncrementRenderable,
+  NumberFieldInputRenderable,
+  NumberFieldRootRenderable,
+  NumberFieldScrubAreaRenderable,
+} from "@tuiparts/core/number-field";
+
+const root = new NumberFieldRootRenderable(ctx, {
+  defaultValue: 1,
+  min: 0,
+  max: 20,
+});
+const decrement = new NumberFieldDecrementRenderable(ctx, { store: root.store });
+const input = new NumberFieldInputRenderable(ctx, { store: root.store });
+const increment = new NumberFieldIncrementRenderable(ctx, { store: root.store });
+const scrub = new NumberFieldScrubAreaRenderable(ctx, { store: root.store });
+scrub.add(new TextRenderable(ctx, { content: "Quantity" }));
+root.add(scrub);
+root.add(decrement);
+root.add(input);
+root.add(increment);
+parent.add(root);
+```
+
+</CodeGroup>
+
+Framework adapters supply the Store through context. Core callers pass
+`root.store` to every Part. Runnable tracers are available for
+[Core](https://github.com/tuiparts/tuiparts/blob/main/packages/core/examples/number-field.ts),
+[React](https://github.com/tuiparts/tuiparts/blob/main/packages/react/examples/number-field.tsx),
+and [Solid](https://github.com/tuiparts/tuiparts/blob/main/packages/solid/examples/number-field.tsx).
+
+## State ownership
+
+Use `value` with `onValueChange` for controlled ownership, or `defaultValue`
+for uncontrolled initial state. Both use `number | null`. Input text is a
+separate draft, so `-`, `.`, and trailing decimal text may remain visible while
+editing without becoming the committed value. The Input accepts ASCII digits,
+one decimal point, and one leading plus or minus sign. It rejects nonnumeric
+characters and invalid pasted strings atomically.
+
+Root state contains `value`, `inputValue`, `disabled`, `readOnly`, `focused`,
+and `scrubbing`. `onValueChange` runs for accepted requests after uncontrolled
+state commits; controlled mode reports intent. `onValueCommit` runs for Enter
+or blur commits, keyboard steps, Increment or Decrement activation, and one
+moved scrub release. Both callbacks receive frozen terminal semantic details.
+
+Normal, small, and large steps default to `1`, `0.1`, and `10`. All step values
+must be positive and finite. Bounds are inclusive, finite when supplied, and
+`min` cannot exceed `max`.
+
+## Interaction
+
+| Input | Behavior |
+| --- | --- |
+| Type or paste in Input | Accepts only the numeric draft grammar and requests complete finite decimal values. |
+| Enter or blur | Commits normalized text, commits empty input as `null`, or reverts a valid incomplete draft. |
+| Up / Down | Applies the normal step. |
+| Alt+Up / Alt+Down | Applies the small step. |
+| Shift+Up / Shift+Down | Applies the large step. |
+| Page Up / Page Down | Applies the large step. |
+| Home / End | Jumps to a finite minimum or maximum. |
+| Increment / Decrement activation | Applies one normal step and commits it. |
+| Primary-pointer horizontal drag on ScrubArea | Applies one normal step per terminal cell and commits once on release. |
+
+Step arithmetic avoids visible decimal floating-point artifacts and clamps to
+bounds. Scrubbing derives every request from the press origin, so results do
+not depend on drag event frequency. It clears terminal text selection at the
+start and uses OpenTUI pointer capture when the pointer leaves ScrubArea.
+
+Read-only state preserves Input focus while blocking edits and all value
+changes. Disabled state also blocks focus. Step Parts become effectively
+disabled at their corresponding bounds. Removing Root permanently ends all
+same-Store descendant coordination.
+
+## API reference
+
+| Surface | API |
+| --- | --- |
+| React and Solid | `NumberField.Root`, `.Input`, `.Increment`, `.Decrement`, `.ScrubArea`, and scoped types |
+| Core | `NumberFieldStore` and matching Root, Input, Increment, Decrement, and ScrubArea Renderables |
+| Value options | `value`, `defaultValue`, `onValueChange`, `onValueCommit` |
+| Numeric options | `min`, `max`, `step`, `smallStep`, `largeStep` |
+| Interaction options | `disabled`, `readOnly` |
+| Root state | `value`, `inputValue`, `disabled`, `readOnly`, `focused`, `scrubbing` |
+| Semantic actions | Input editing and commit, step Part `press()`, ScrubArea pointer drag |
+
+Framework refs target the actual matching Core Renderable.
+
+## Start with the Recipe
+
+The editable [Number Field Recipe](/catalog/number-field) adds a draggable
+label, glyphs, row layout, dimensions, spacing, and theme colors.

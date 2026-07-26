@@ -11,6 +11,7 @@
       "collapsible",
       "dialog",
       "input",
+      "number-field",
       "radio-group",
       "switch",
       "tabs",

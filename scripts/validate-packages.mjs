@@ -101,6 +101,7 @@ try {
     "@tuiparts/core/collapsible",
     "@tuiparts/core/dialog",
     "@tuiparts/core/input",
+    "@tuiparts/core/number-field",
     "@tuiparts/core/radio",
     "@tuiparts/core/radio-group",
     "@tuiparts/core/switch",
@@ -116,6 +117,7 @@ try {
     "@tuiparts/react/collapsible",
     "@tuiparts/react/dialog",
     "@tuiparts/react/input",
+    "@tuiparts/react/number-field",
     "@tuiparts/react/radio",
     "@tuiparts/react/radio-group",
     "@tuiparts/react/switch",
@@ -131,6 +133,7 @@ try {
     "@tuiparts/solid/collapsible",
     "@tuiparts/solid/dialog",
     "@tuiparts/solid/input",
+    "@tuiparts/solid/number-field",
     "@tuiparts/solid/radio",
     "@tuiparts/solid/radio-group",
     "@tuiparts/solid/switch",
@@ -178,6 +181,11 @@ import {
   CollapsibleRootRenderable,
   CollapsibleTriggerRenderable,
 } from "@tuiparts/core/collapsible";
+import {
+  NumberFieldIncrementRenderable,
+  NumberFieldInputRenderable,
+  NumberFieldRootRenderable,
+} from "@tuiparts/core/number-field";
 import {
   TabsListRenderable,
   TabsPanelRenderable,
@@ -235,6 +243,22 @@ try {
   trigger.press();
   if (!collapsible.open || !panel.visible)
     throw new Error("Compiled Collapsible did not open its Panel");
+
+  const numberField = new NumberFieldRootRenderable(setup.renderer, {
+    defaultValue: 2,
+  });
+  const numberInput = new NumberFieldInputRenderable(setup.renderer, {
+    store: numberField.store,
+  });
+  const increment = new NumberFieldIncrementRenderable(setup.renderer, {
+    store: numberField.store,
+  });
+  numberField.add(numberInput);
+  numberField.add(increment);
+  setup.renderer.root.add(numberField);
+  increment.press();
+  if (numberField.value !== 3 || numberInput.value !== "3")
+    throw new Error("Compiled NumberField did not increment its value");
 
   const root = new TabsRootRenderable(setup.renderer);
   const list = new TabsListRenderable(setup.renderer, { store: root.store });

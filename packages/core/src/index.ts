@@ -90,6 +90,27 @@ export {
 } from "./input";
 export type { PressDetails } from "./internal/pressable";
 export {
+  type NumberFieldChangeDetails,
+  type NumberFieldChangeReason,
+  type NumberFieldDecrementOptions,
+  NumberFieldDecrementRenderable,
+  type NumberFieldIncrementOptions,
+  NumberFieldIncrementRenderable,
+  type NumberFieldInputOptions,
+  NumberFieldInputRenderable,
+  type NumberFieldRootOptions,
+  NumberFieldRootRenderable,
+  type NumberFieldScrubAreaOptions,
+  NumberFieldScrubAreaRenderable,
+  type NumberFieldState,
+  type NumberFieldStepKey,
+  type NumberFieldStepState,
+  NumberFieldStore,
+  type NumberFieldStoreOptions,
+  type NumberFieldValueChangeHandler,
+  type NumberFieldValueCommitHandler,
+} from "./number-field";
+export {
   type RadioIndicatorOptions,
   RadioIndicatorRenderable,
   type RadioRootOptions,

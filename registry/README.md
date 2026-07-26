@@ -22,6 +22,7 @@ Each catalog recipe is available as `core/<name>`, `react/<name>`, and
 | Button | Button activation primitive | `Button` |
 | RadioGroup/Radio | Radio collection and selectable parts | `RadioGroup`, `RadioGroupItem` |
 | Input | Native OpenTUI input behavior | `Input` |
+| NumberField | Numeric drafts, bounded stepping, commits, and terminal-cell scrubbing | `NumberField` |
 | Textarea | Native OpenTUI multiline editing | `Textarea` |
 | Dialog | Overlay layers, focus containment, and dismissal | `Dialog`, `DialogTrigger`, `DialogContent`, `DialogTitle`, `DialogDescription`, `DialogClose` |
 | Badge | None; presentation-only recipe | `Badge` |
@@ -172,7 +173,7 @@ dependencies on a hidden theme runtime.
 `pnpm validate:registry` verifies the catalog's dependencies, lifecycle
 metadata, and matching React/Solid vocabulary. It builds every registry item
 with the pinned official shadcn CLI, creates an isolated strict OpenTUI host
-for each runtime, and installs every item with bounded concurrency (45
+for each runtime, and installs every item with bounded concurrency (48
 consumers; the framework-neutral preset items install and byte-compare inside
 the three theme consumers, whose smokes exercise them). It resolves each
 Recipe's Theme `registryDependencies` from the locally built Registry,

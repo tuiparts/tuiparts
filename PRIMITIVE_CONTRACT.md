@@ -422,6 +422,9 @@ The shipped primitives establish these precedents:
   and Radio-local state. Actual focus remains owned by RadioRootRenderable.
 - Input proves that preserving OpenTUI-native mutable state is more important
   than forcing controlled/uncontrolled symmetry.
+- NumberField proves that a Primitive can coordinate that native editing seam
+  with distinct numeric value ownership, intermediate drafts, decimal-safe
+  bounded stepping, semantic commits, and terminal-cell pointer scrubbing.
 - Textarea extends that precedent to OpenTUI's multiline `EditBuffer`, native
   cursor/content/submit callbacks, editing methods, paste, and keybindings.
 - Dialog proves renderer-scoped portals, topmost layer arbitration, cancellable

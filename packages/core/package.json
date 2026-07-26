@@ -20,6 +20,7 @@
     "./collapsible": "./src/collapsible/index.ts",
     "./dialog": "./src/dialog/index.ts",
     "./input": "./src/input/index.ts",
+    "./number-field": "./src/number-field/index.ts",
     "./radio": "./src/radio/index.ts",
     "./radio-group": "./src/radio-group/index.ts",
     "./switch": "./src/switch/index.ts",
@@ -63,6 +64,10 @@
       "./input": {
         "types": "./dist/input/index.d.mts",
         "import": "./dist/input/index.mjs"
+      },
+      "./number-field": {
+        "types": "./dist/number-field/index.d.mts",
+        "import": "./dist/number-field/index.mjs"
       },
       "./radio": {
         "types": "./dist/radio/index.d.mts",
@@ -115,6 +120,7 @@
     "demo:accordion": "bun run examples/accordion.ts",
     "demo:checkbox-group": "bun run examples/checkbox-group.ts",
     "demo:collapsible": "bun run examples/collapsible.ts",
+    "demo:number-field": "bun run examples/number-field.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"

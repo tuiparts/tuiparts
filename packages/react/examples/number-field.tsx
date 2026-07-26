@@ -45,7 +45,7 @@ function Demo() {
               />
             </NumberField.ScrubArea>
             <box flexDirection="row">
-              <NumberField.Decrement width={3} justifyContent="center">
+              <NumberField.Decrement width={3} alignItems="center">
                 <text content="−" />
               </NumberField.Decrement>
               <NumberField.Input
@@ -55,7 +55,7 @@ function Demo() {
                 textColor="#FFFFFF"
                 width={10}
               />
-              <NumberField.Increment width={3} justifyContent="center">
+              <NumberField.Increment width={3} alignItems="center">
                 <text content="+" />
               </NumberField.Increment>
             </box>

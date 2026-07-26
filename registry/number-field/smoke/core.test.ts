@@ -5,6 +5,7 @@ import {
   type TestRendererSetup,
 } from "@opentui/core/testing";
 import {
+  NumberFieldDecrementRenderable,
   NumberFieldIncrementRenderable,
   NumberFieldInputRenderable,
 } from "@tuiparts/core/number-field";
@@ -28,13 +29,18 @@ test("installed Core NumberField recipe runtime smoke", async () => {
   await setup.renderOnce();
 
   const row = field.getChildren()[1];
+  const decrement = row?.getChildren()[0];
   const input = row?.getChildren()[1];
   const increment = row?.getChildren()[2];
+  if (!(decrement instanceof NumberFieldDecrementRenderable))
+    throw new Error("Expected NumberField Decrement");
   if (!(input instanceof NumberFieldInputRenderable))
     throw new Error("Expected NumberField Input");
   if (!(increment instanceof NumberFieldIncrementRenderable))
     throw new Error("Expected NumberField Increment");
 
+  expect(decrement.getChildren()[0]?.x).toBe(decrement.x + 1);
+  expect(increment.getChildren()[0]?.x).toBe(increment.x + 1);
   increment.press();
   expect(field.value).toBe(3);
   expect(input.value).toBe("3");

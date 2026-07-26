@@ -62,7 +62,7 @@ scrub.add(scrubLabel);
 
 const row = new BoxRenderable(renderer, { flexDirection: "row" });
 const decrement = new NumberFieldDecrementRenderable(renderer, {
-  justifyContent: "center",
+  alignItems: "center",
   store: root.store,
   width: 3,
 });
@@ -75,7 +75,7 @@ const input = new NumberFieldInputRenderable(renderer, {
   width: 10,
 });
 const increment = new NumberFieldIncrementRenderable(renderer, {
-  justifyContent: "center",
+  alignItems: "center",
   store: root.store,
   width: 3,
 });

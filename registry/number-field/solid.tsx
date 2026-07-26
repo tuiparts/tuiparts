@@ -38,14 +38,14 @@ export function NumberField(props: NumberFieldProps) {
             />
           </Primitive.ScrubArea>
           <box flexDirection="row">
-            <Primitive.Decrement width={3} justifyContent="center">
+            <Primitive.Decrement width={3} alignItems="center">
               <text
                 content={recipe.decrementMark ?? "−"}
                 fg={tokens().colors.foreground}
               />
             </Primitive.Decrement>
             <Primitive.Input width={8} textColor={tokens().colors.foreground} />
-            <Primitive.Increment width={3} justifyContent="center">
+            <Primitive.Increment width={3} alignItems="center">
               <text
                 content={recipe.incrementMark ?? "+"}
                 fg={tokens().colors.foreground}

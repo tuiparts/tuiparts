@@ -5,6 +5,7 @@ import { parseColor, TextRenderable } from "@opentui/core";
 import type { TestRendererSetup } from "@opentui/core/testing";
 import { testRender } from "@opentui/react/test-utils";
 import {
+  NumberFieldDecrementRenderable,
   NumberFieldIncrementRenderable,
   NumberFieldInputRenderable,
   NumberFieldRootRenderable,
@@ -25,17 +26,23 @@ test("installed React NumberField recipe runtime smoke", async () => {
     <NumberField id="field" defaultValue={2} label="Amount" />,
     { width: 30, height: 4 },
   );
+  await act(async () => setup?.renderOnce());
   const field = setup.renderer.root.findDescendantById("field");
   if (!(field instanceof NumberFieldRootRenderable))
     throw new Error("Expected NumberField Root");
   const row = field.getChildren()[1];
+  const decrement = row?.getChildren()[0];
   const input = row?.getChildren()[1];
   const increment = row?.getChildren()[2];
+  if (!(decrement instanceof NumberFieldDecrementRenderable))
+    throw new Error("Expected NumberField Decrement");
   if (!(input instanceof NumberFieldInputRenderable))
     throw new Error("Expected NumberField Input");
   if (!(increment instanceof NumberFieldIncrementRenderable))
     throw new Error("Expected NumberField Increment");
 
+  expect(decrement.getChildren()[0]?.x).toBe(decrement.x + 1);
+  expect(increment.getChildren()[0]?.x).toBe(increment.x + 1);
   await act(async () => increment.press());
   expect(field.value).toBe(3);
   expect(input.value).toBe("3");

@@ -43,7 +43,7 @@ class NumberFieldRecipeRenderable extends NumberFieldRootRenderable {
     scrub.add(labelText);
     const group = new BoxRenderable(ctx, { flexDirection: "row" });
     const decrement = new NumberFieldDecrementRenderable(ctx, {
-      justifyContent: "center",
+      alignItems: "center",
       store: this.store,
       width: 3,
     });
@@ -54,7 +54,7 @@ class NumberFieldRecipeRenderable extends NumberFieldRootRenderable {
       width: 8,
     });
     const increment = new NumberFieldIncrementRenderable(ctx, {
-      justifyContent: "center",
+      alignItems: "center",
       store: this.store,
       width: 3,
     });

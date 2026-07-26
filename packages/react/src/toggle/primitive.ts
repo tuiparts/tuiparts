@@ -7,9 +7,7 @@ import {
   type ToggleState,
   ToggleStore,
 } from "@tuiparts/core/toggle";
-import type { ToggleGroupStore } from "@tuiparts/core/toggle-group";
 import {
-  createContext,
   createElement,
   type ReactElement,
   type ReactNode,
@@ -17,13 +15,11 @@ import {
   useContext,
 } from "react";
 import { useCoreStore } from "../internal/use-core-store";
+import { ToggleGroupContext } from "../toggle-group/context";
 
 const TOGGLE_TAG = "otui-toggle";
 
 extend({ [TOGGLE_TAG]: ToggleRenderable });
-
-/** Private group ownership consumed by Toggle. */
-export const ToggleGroupContext = createContext<ToggleGroupStore | null>(null);
 
 type ToggleProps = Omit<ToggleOptions, "group" | "store"> & {
   children?: ReactNode | ((state: ToggleState) => ReactNode);

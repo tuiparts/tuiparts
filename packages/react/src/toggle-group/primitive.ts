@@ -15,7 +15,7 @@ import {
   type Ref,
 } from "react";
 import { useCoreStore } from "../internal/use-core-store";
-import { ToggleGroupContext } from "../toggle/primitive";
+import { ToggleGroupContext } from "./context";
 
 const TOGGLE_GROUP_TAG = "otui-toggle-group";
 

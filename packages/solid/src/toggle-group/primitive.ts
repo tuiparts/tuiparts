@@ -21,7 +21,7 @@ import {
   spreadRenderableProps,
 } from "../internal/renderable-props";
 import { createRenderableState } from "../internal/renderable-state";
-import { ToggleGroupContext } from "../toggle/primitive";
+import { ToggleGroupContext } from "./context";
 
 type ToggleGroupProps = Omit<ToggleGroupOptions, "store"> & {
   children?: JSX.Element | ((state: ToggleGroupState) => JSX.Element);

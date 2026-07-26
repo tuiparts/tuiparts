@@ -7,9 +7,7 @@ import {
   ToggleRenderable,
   type ToggleState,
 } from "@tuiparts/core/toggle";
-import type { ToggleGroupStore } from "@tuiparts/core/toggle-group";
 import {
-  createContext,
   createEffect,
   type Ref,
   splitProps,
@@ -21,9 +19,7 @@ import {
   spreadRenderableProps,
 } from "../internal/renderable-props";
 import { createRenderableState } from "../internal/renderable-state";
-
-/** Private group ownership consumed by Toggle. */
-export const ToggleGroupContext = createContext<ToggleGroupStore>();
+import { ToggleGroupContext } from "../toggle-group/context";
 
 type ToggleProps = Omit<ToggleOptions, "group" | "store"> & {
   children?: JSX.Element | ((state: ToggleState) => JSX.Element);

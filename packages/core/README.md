@@ -25,6 +25,7 @@ colors, spacing, glyphs, labels, or fixed visual trees.
 | Accordion | `AccordionStore` | `AccordionRootRenderable`, `AccordionItemRenderable`, `AccordionTriggerRenderable`, `AccordionPanelRenderable` |
 | Button | `ButtonStore` | `ButtonRenderable` |
 | Checkbox | `CheckboxStore` | `CheckboxRootRenderable`, `CheckboxIndicatorRenderable` |
+| CheckboxGroup | `CheckboxGroupStore` | `CheckboxGroupRenderable` containing existing Checkbox Roots |
 | Collapsible | `CollapsibleStore` | `CollapsibleRootRenderable`, `CollapsibleTriggerRenderable`, `CollapsiblePanelRenderable` |
 | Dialog | `DialogStore` | Root, Trigger, Portal, Backdrop, Popup, Title, Description, Close Renderables |
 | Input | OpenTUI-native state | `InputRenderable` |
@@ -57,8 +58,9 @@ parent.add(root);
 Consumer-owned recipes assemble these parts with native OpenTUI Renderables and
 choose their presentation. Installable examples live under `registry/`.
 
-From a repository checkout, run the focused Accordion or Collapsible tracer
-with `pnpm --filter @tuiparts/core demo:accordion` or
+From a repository checkout, run a focused tracer with
+`pnpm --filter @tuiparts/core demo:checkbox-group`,
+`pnpm --filter @tuiparts/core demo:accordion`, or
 `pnpm --filter @tuiparts/core demo:collapsible`.
 
 ## Input

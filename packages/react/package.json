@@ -8,6 +8,7 @@
     "./dist/accordion/**",
     "./dist/button/**",
     "./dist/checkbox/**",
+    "./dist/checkbox-group/**",
     "./dist/collapsible/**",
     "./dist/dialog/**",
     "./dist/input/**",
@@ -30,6 +31,7 @@
     "./accordion": "./src/accordion/index.ts",
     "./button": "./src/button/index.tsx",
     "./checkbox": "./src/checkbox/index.tsx",
+    "./checkbox-group": "./src/checkbox-group/index.ts",
     "./collapsible": "./src/collapsible/index.ts",
     "./dialog": "./src/dialog/index.ts",
     "./input": "./src/input/index.tsx",
@@ -60,6 +62,10 @@
       "./checkbox": {
         "types": "./dist/checkbox/index.d.mts",
         "import": "./dist/checkbox/index.mjs"
+      },
+      "./checkbox-group": {
+        "types": "./dist/checkbox-group/index.d.mts",
+        "import": "./dist/checkbox-group/index.mjs"
       },
       "./collapsible": {
         "types": "./dist/collapsible/index.d.mts",
@@ -122,6 +128,7 @@
   "scripts": {
     "build": "tsdown",
     "demo:accordion": "bun run examples/accordion.tsx",
+    "demo:checkbox-group": "bun run examples/checkbox-group.tsx",
     "demo:collapsible": "bun run examples/collapsible.tsx",
     "test": "bun test",
     "typecheck": "tsc --noEmit",

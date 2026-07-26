@@ -16,6 +16,7 @@ Each catalog recipe is available as `core/<name>`, `react/<name>`, and
 | --- | --- | --- |
 | Accordion | Single or multiple expansion, activation, focus, and Panel lifecycle | `Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionContent` |
 | Checkbox | Checkbox Root and Indicator | `Checkbox` |
+| CheckboxGroup/Checkbox | Array-valued checked ownership and roving focus | `CheckboxGroup`, `CheckboxGroupItem` |
 | Collapsible | Open state, activation, focus, and Panel lifecycle | `Collapsible`, `CollapsibleTrigger`, `CollapsibleContent` |
 | Switch | Switch Root and Thumb | `Switch` |
 | Button | Button activation primitive | `Button` |
@@ -171,7 +172,7 @@ dependencies on a hidden theme runtime.
 `pnpm validate:registry` verifies the catalog's dependencies, lifecycle
 metadata, and matching React/Solid vocabulary. It builds every registry item
 with the pinned official shadcn CLI, creates an isolated strict OpenTUI host
-for each runtime, and installs every item with bounded concurrency (30
+for each runtime, and installs every item with bounded concurrency (45
 consumers; the framework-neutral preset items install and byte-compare inside
 the three theme consumers, whose smokes exercise them). It resolves each
 Recipe's Theme `registryDependencies` from the locally built Registry,

@@ -1,6 +1,8 @@
 import type { JSX } from "@opentui/solid";
 import { useRenderer } from "@opentui/solid";
 import {
+  type CheckboxChangeDetails,
+  type CheckboxCheckedChangeHandler,
   type CheckboxIndicatorOptions,
   CheckboxIndicatorRenderable,
   type CheckboxRootOptions,
@@ -16,18 +18,16 @@ import {
   untrack,
   useContext,
 } from "solid-js";
+import { CheckboxGroupContext } from "../internal/checkbox-group-context";
 import {
   setRenderableRef,
   spreadRenderableProps,
 } from "../internal/renderable-props";
-import {
-  createRenderableState,
-  createToggleStateView,
-} from "../internal/renderable-state";
+import { createRenderableState } from "../internal/renderable-state";
 
 const CheckboxContext = createContext<CheckboxRootRenderable>();
 
-type RootProps = Omit<CheckboxRootOptions, "store"> & {
+type RootProps = Omit<CheckboxRootOptions, "group" | "store"> & {
   children?: JSX.Element | ((state: CheckboxState) => JSX.Element);
   ref?: Ref<CheckboxRootRenderable>;
 };
@@ -37,8 +37,10 @@ type IndicatorProps = Omit<CheckboxIndicatorOptions, "store"> & {
   ref?: Ref<CheckboxIndicatorRenderable>;
 };
 
+/** Solid adapter for a standalone or grouped Checkbox Root. */
 export function Root(props: Root.Props): JSX.Element {
   const renderer = useRenderer();
+  const group = useContext(CheckboxGroupContext);
   const [local, renderableProps] = splitProps(props, [
     "checked",
     "children",
@@ -46,6 +48,7 @@ export function Root(props: Root.Props): JSX.Element {
     "disabled",
     "onCheckedChange",
     "ref",
+    "value",
   ]);
   const element = new CheckboxRootRenderable(
     renderer,
@@ -54,15 +57,31 @@ export function Root(props: Root.Props): JSX.Element {
       checked: local.checked,
       defaultChecked: local.defaultChecked,
       disabled: local.disabled,
+      group,
       onCheckedChange: local.onCheckedChange,
+      value: local.value,
     })),
   );
   const state = createRenderableState(element, element.getState());
-  const publicState: CheckboxState = createToggleStateView(state);
+  const publicState: CheckboxState = {
+    get checked() {
+      return state().checked;
+    },
+    get disabled() {
+      return state().disabled;
+    },
+    get focused() {
+      return state().focused;
+    },
+    get tabbable() {
+      return state().tabbable;
+    },
+  };
   createEffect(() => {
     element.checked = local.checked;
     element.disabled = local.disabled;
     element.onCheckedChange = local.onCheckedChange;
+    element.value = local.value;
   });
   setRenderableRef(local.ref, element);
 
@@ -77,6 +96,7 @@ export function Root(props: Root.Props): JSX.Element {
   });
 }
 
+/** Solid adapter for the passive Checkbox Indicator Part. */
 export function Indicator(props: Indicator.Props): JSX.Element {
   const renderer = useRenderer();
   const root = useContext(CheckboxContext);
@@ -96,11 +116,15 @@ export function Indicator(props: Indicator.Props): JSX.Element {
   return element;
 }
 
+/** Types scoped to Checkbox.Root. */
 export namespace Root {
   export type Props = RootProps;
   export type State = CheckboxState;
+  export type ChangeDetails = CheckboxChangeDetails;
+  export type CheckedChangeHandler = CheckboxCheckedChangeHandler;
 }
 
+/** Types scoped to Checkbox.Indicator. */
 export namespace Indicator {
   export type Props = IndicatorProps;
 }

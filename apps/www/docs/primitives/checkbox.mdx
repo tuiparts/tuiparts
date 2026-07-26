@@ -3,10 +3,11 @@ title: Checkbox
 description: Compose an independent checked choice from Root and Indicator Parts.
 ---
 
-Checkbox owns an independent boolean choice without prescribing its mark,
-label, layout, or colors. Use [Switch](/primitives/switch) for a setting that
-takes effect immediately and [Radio Group](/primitives/radio-group) for one
-selection from a set.
+Checkbox owns an independent boolean choice or adopts
+[Checkbox Group](/primitives/checkbox-group) array ownership without
+prescribing its mark, label, layout, or colors. Use
+[Switch](/primitives/switch) for a setting that takes effect immediately and
+[Radio Group](/primitives/radio-group) for one selection from a set.
 
 ## Install
 
@@ -87,13 +88,15 @@ the Root's Store explicitly.
 
 ## State ownership
 
-Use `checked` with `onCheckedChange` for controlled ownership, or
-`defaultChecked` for uncontrolled initial state. Readonly state contains
-`checked`, `disabled`, and `focused`.
+Use `checked` with `onCheckedChange` for controlled standalone ownership, or
+`defaultChecked` for uncontrolled initial state. Inside CheckboxGroup, Root
+requires `value` and derives checked state from the group instead. Readonly
+state contains `checked`, `disabled`, `focused`, and `tabbable`.
 
-Core callers can construct a `CheckboxStore` separately or use the Store
-created by `CheckboxRootRenderable`. An Indicator may be reattached to another
-Checkbox Store by assigning its `store` property.
+`onCheckedChange` receives the requested boolean and frozen terminal press
+details. Core callers can construct a `CheckboxStore` separately or use the
+Store created by `CheckboxRootRenderable`. An Indicator may be reattached to
+another Checkbox Store by assigning its `store` property.
 
 ## Interaction
 
@@ -111,8 +114,8 @@ Disabled Checkboxes reject focus and activation.
 | --- | --- |
 | React and Solid | `Checkbox.Root`, `Checkbox.Indicator` and their scoped `Props` types |
 | Core | `CheckboxRootRenderable`, `CheckboxIndicatorRenderable`, `CheckboxStore` |
-| State | `checked`, `disabled`, `focused` |
-| Root options | `checked`, `defaultChecked`, `disabled`, `onCheckedChange` |
+| State | `checked`, `disabled`, `focused`, `tabbable` |
+| Root options | `checked`, `defaultChecked`, `disabled`, `onCheckedChange`; grouped Root also requires `value` |
 | Indicator options | Native Box properties; Core additionally requires `store` |
 
 Framework refs target the matching Root or Indicator Renderable.

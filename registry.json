@@ -67,6 +67,69 @@
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
+      "name": "core/checkbox-group",
+      "type": "registry:item",
+      "title": "Checkbox Group (Core)",
+      "description": "Editable imperative CheckboxGroup Recipe built on the tuiparts.sh packaged Primitives.",
+      "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/checkbox-group/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/checkbox-group.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
+    },
+    {
+      "name": "react/checkbox-group",
+      "type": "registry:item",
+      "title": "Checkbox Group (React)",
+      "description": "Editable React CheckboxGroup Recipe built on the tuiparts.sh packaged Primitives.",
+      "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/checkbox-group/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/checkbox-group.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
+    },
+    {
+      "name": "solid/checkbox-group",
+      "type": "registry:item",
+      "title": "Checkbox Group (Solid)",
+      "description": "Editable Solid CheckboxGroup Recipe built on the tuiparts.sh packaged Primitives.",
+      "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/checkbox-group/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/checkbox-group.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
+    },
+    {
       "name": "core/checkbox",
       "type": "registry:item",
       "title": "Checkbox (Core)",

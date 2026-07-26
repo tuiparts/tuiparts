@@ -75,6 +75,7 @@ const frameworks = {
 };
 const recipes = [
   "accordion",
+  "checkbox-group",
   "checkbox",
   "collapsible",
   "switch",
@@ -91,6 +92,7 @@ const recipes = [
 ];
 const catalogRecipes = [
   "accordion",
+  "checkbox-group",
   "checkbox",
   "collapsible",
   "switch",

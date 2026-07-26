@@ -253,12 +253,17 @@ public base class.
 - Button, Checkbox, Switch, and Toggle expose attachable Core Stores. Their React
   adapters create Stores automatically and omit `store` from public framework
   Props. Passive Indicator and Thumb parts receive the owning Store in
-  Core and use private context wiring in framework adapters.
+  Core and use private context wiring in framework adapters. Checkbox and
+  Toggle Stores may adopt their matching group Store before construction.
 - Input and Textarea preserve OpenTUI-owned editing state and have no Store.
 - RadioGroup retains a public Store for dynamic item identity, selection,
   roving focus, ordering, and registration independent of any one Renderable.
 - Dialog retains a public Store for portal, layer, dismissal, nesting, and
   focus-restoration coordination across renderer-root ownership.
+- CheckboxGroup retains a public Store for array-valued checked ownership,
+  dynamic Checkbox identity, rendered order, and roving focus. A standalone
+  Checkbox owns checked state; a grouped Checkbox reads its group through the
+  same Checkbox Store before Renderable construction.
 - ToggleGroup retains a public Store for optional single or multiple
   selection, dynamic Toggle identity, rendered order, and roving focus. A
   standalone Toggle owns pressed state; a grouped Toggle reads selection from
@@ -406,10 +411,12 @@ architectural decision is recorded.
 
 The shipped primitives establish these precedents:
 
-- Checkbox proves primitive-owned toggle state, Root activation, a
-  retained state-reflecting Indicator, equivalent activation paths, and
-  editable glyph ownership. Its boolean change callback does not expose cause
-  details because no Checkbox behavior depends on cause.
+- Checkbox proves standalone checked ownership, optional CheckboxGroup
+  adoption, Root activation, a retained state-reflecting Indicator, equivalent
+  activation paths, immutable terminal change details, and editable glyph
+  ownership. CheckboxGroup proves array-valued checked ownership, dynamic
+  registration, rendered-order roving focus, and lifecycle repair without an
+  artificial Item Part.
 - RadioGroup proves dynamic collection registration, retained Radio identity,
   rendered-order navigation, disabled and unavailable skipping, roving focus,
   and Radio-local state. Actual focus remains owned by RadioRootRenderable.

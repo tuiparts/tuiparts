@@ -1,5 +1,7 @@
 import { extend } from "@opentui/react";
 import {
+  type CheckboxChangeDetails,
+  type CheckboxCheckedChangeHandler,
   type CheckboxIndicatorOptions,
   CheckboxIndicatorRenderable,
   type CheckboxRootOptions,
@@ -15,6 +17,7 @@ import {
   type Ref,
   useContext,
 } from "react";
+import { CheckboxGroupContext } from "../internal/checkbox-group-context";
 import { useCoreStore } from "../internal/use-core-store";
 
 const ROOT_TAG = "otui-checkbox-root";
@@ -27,7 +30,7 @@ extend({
 
 const CheckboxContext = createContext<CheckboxStore | null>(null);
 
-type RootProps = Omit<CheckboxRootOptions, "store"> & {
+type RootProps = Omit<CheckboxRootOptions, "group" | "store"> & {
   children?: ReactNode | ((state: CheckboxState) => ReactNode);
   ref?: Ref<CheckboxRootRenderable>;
 };
@@ -37,9 +40,11 @@ type IndicatorProps = Omit<CheckboxIndicatorOptions, "store"> & {
   ref?: Ref<CheckboxIndicatorRenderable>;
 };
 
+/** React adapter for a standalone or grouped Checkbox Root. */
 export function Root({ children, ...props }: Root.Props): ReactElement {
+  const group = useContext(CheckboxGroupContext);
   const [store, state] = useCoreStore<CheckboxState, CheckboxStore>(
-    () => new CheckboxStore(props),
+    () => new CheckboxStore({ ...props, group: group ?? undefined }),
   );
   const content = typeof children === "function" ? children(state) : children;
 
@@ -50,6 +55,7 @@ export function Root({ children, ...props }: Root.Props): ReactElement {
   );
 }
 
+/** React adapter for the passive Checkbox Indicator Part. */
 export function Indicator({
   children,
   ...props
@@ -64,11 +70,15 @@ export function Indicator({
 Root.displayName = "Checkbox.Root";
 Indicator.displayName = "Checkbox.Indicator";
 
+/** Types scoped to Checkbox.Root. */
 export namespace Root {
   export type Props = RootProps;
   export type State = CheckboxState;
+  export type ChangeDetails = CheckboxChangeDetails;
+  export type CheckedChangeHandler = CheckboxCheckedChangeHandler;
 }
 
+/** Types scoped to Checkbox.Indicator. */
 export namespace Indicator {
   export type Props = IndicatorProps;
 }

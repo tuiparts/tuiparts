@@ -9,6 +9,7 @@ export default defineMeta({
     "input",
     "textarea",
     "checkbox",
+    "checkbox-group",
     "switch",
     "toggle",
     "toggle-group",

@@ -4,6 +4,10 @@ status: accepted
 
 # Collapse Checkbox and Switch onto one internal CheckedStore
 
+> **Historical scope:** ADR-0012 supersedes Checkbox's participation in this
+> shared implementation after grouped ownership made its state behavior
+> materially different. `CheckedStore` continues to back Switch.
+
 Checkbox and Switch expose distinct public Stores, but their state behavior is
 identical. Their facades duplicated every operation while their Root
 Renderables duplicated the same Store plumbing.

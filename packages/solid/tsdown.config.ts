@@ -3,6 +3,7 @@ import { defineConfig } from "tsdown";
 export default defineConfig({
   entry: [
     "src/index.ts",
+    "src/accordion/index.ts",
     "src/button/index.tsx",
     "src/checkbox/index.tsx",
     "src/collapsible/index.ts",

@@ -13,6 +13,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./accordion": "./src/accordion/index.ts",
     "./button": "./src/button/index.ts",
     "./checkbox": "./src/checkbox/index.ts",
     "./collapsible": "./src/collapsible/index.ts",
@@ -33,6 +34,10 @@
       ".": {
         "types": "./dist/index.d.mts",
         "import": "./dist/index.mjs"
+      },
+      "./accordion": {
+        "types": "./dist/accordion/index.d.mts",
+        "import": "./dist/accordion/index.mjs"
       },
       "./button": {
         "types": "./dist/button/index.d.mts",
@@ -102,6 +107,7 @@
   ],
   "scripts": {
     "build": "tsdown",
+    "demo:accordion": "bun run examples/accordion.ts",
     "demo:collapsible": "bun run examples/collapsible.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit",

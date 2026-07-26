@@ -14,6 +14,7 @@ Each catalog recipe is available as `core/<name>`, `react/<name>`, and
 
 | Recipe | Packaged behavior | Installed vocabulary |
 | --- | --- | --- |
+| Accordion | Single or multiple expansion, activation, focus, and Panel lifecycle | `Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionContent` |
 | Checkbox | Checkbox Root and Indicator | `Checkbox` |
 | Collapsible | Open state, activation, focus, and Panel lifecycle | `Collapsible`, `CollapsibleTrigger`, `CollapsibleContent` |
 | Switch | Switch Root and Thumb | `Switch` |

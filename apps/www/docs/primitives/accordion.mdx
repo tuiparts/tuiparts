@@ -1,0 +1,178 @@
+---
+title: Accordion
+description: Coordinate single or multiple disclosure Items from four genuine Parts.
+---
+
+Accordion owns expanded values, Item registration, Trigger activation and
+focus, effective disablement, and Panel lifecycle without choosing labels,
+markers, headers, layout, or styling.
+
+## Install
+
+Install the [package for your runtime](/primitives#install), then import the
+`accordion` subpath:
+
+```ts
+import { Accordion } from "@tuiparts/react/accordion";
+```
+
+Replace `react` with `solid`. Core exports `AccordionStore` and the four
+matching Renderables from `@tuiparts/core/accordion`.
+
+## Anatomy
+
+| Part | Responsibility |
+| --- | --- |
+| `Accordion.Root` | Owns controlled or uncontrolled expanded values and single/multiple policy. |
+| `Accordion.Item` | Registers one unique value and scopes disablement, Trigger, and Panel. |
+| `Accordion.Trigger` | Focusable press target that toggles its Item. |
+| `Accordion.Panel` | Content region whose lifecycle and visibility reflect Item state. |
+
+Base UI's Header is intentionally Recipe structure rather than a packaged Part:
+HTML heading semantics do not create terminal behavior. Framework Items must be
+inside Root; Trigger and Panel must be inside Item. Core callers pass the
+matching Store and Item explicitly.
+
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { Accordion } from "@tuiparts/react/accordion";
+
+<Accordion.Root defaultValue={["shipping"]}>
+  <Accordion.Item value="shipping">
+    <Accordion.Trigger>
+      {(state) => (
+        <text content={`${state.open ? "-" : "+"} Shipping`} />
+      )}
+    </Accordion.Trigger>
+    <Accordion.Panel>
+      <text content="Most orders arrive within three business days." />
+    </Accordion.Panel>
+  </Accordion.Item>
+</Accordion.Root>;
+```
+
+```tsx Solid
+import { Accordion } from "@tuiparts/solid/accordion";
+
+<Accordion.Root defaultValue={["shipping"]}>
+  <Accordion.Item value="shipping">
+    <Accordion.Trigger>
+      {(state) => (
+        <text content={`${state.open ? "-" : "+"} Shipping`} />
+      )}
+    </Accordion.Trigger>
+    <Accordion.Panel>
+      <text content="Most orders arrive within three business days." />
+    </Accordion.Panel>
+  </Accordion.Item>
+</Accordion.Root>;
+```
+
+```ts Core
+import { TextRenderable } from "@opentui/core";
+import {
+  AccordionItemRenderable,
+  AccordionPanelRenderable,
+  AccordionRootRenderable,
+  AccordionTriggerRenderable,
+} from "@tuiparts/core/accordion";
+
+const root = new AccordionRootRenderable(ctx, {
+  defaultValue: ["shipping"],
+});
+const item = new AccordionItemRenderable(ctx, {
+  store: root.store,
+  value: "shipping",
+});
+const trigger = new AccordionTriggerRenderable(ctx, { item });
+const panel = new AccordionPanelRenderable(ctx, { item });
+
+trigger.add(new TextRenderable(ctx, { content: "Shipping" }));
+panel.add(new TextRenderable(ctx, { content: "Arrives within three days." }));
+item.add(trigger);
+item.add(panel);
+root.add(item);
+parent.add(root);
+```
+
+</CodeGroup>
+
+Framework adapters provide Root and Item ownership through context. Core
+callers pass `root.store` to Item and the created Item to Trigger and Panel.
+The repository includes focused runnable tracers for
+[Core](https://github.com/tuiparts/tuiparts/blob/main/packages/core/examples/accordion.ts),
+[React](https://github.com/tuiparts/tuiparts/blob/main/packages/react/examples/accordion.tsx),
+and [Solid](https://github.com/tuiparts/tuiparts/blob/main/packages/solid/examples/accordion.tsx).
+
+## State ownership
+
+Root `value` and `defaultValue` are readonly string arrays. Values are
+deduplicated in order. Single mode retains at most one value; add `multiple`
+to permit several open Items. Pressing an open Trigger may close it in either
+mode.
+
+Use `value` with `onValueChange` for controlled ownership or `defaultValue`
+for uncontrolled state. A controlled request reports intent without changing
+state until its owner supplies the next value. Uncontrolled Accordion commits
+an accepted request before calling Item `onOpenChange` and then Root
+`onValueChange`.
+
+Root state contains `value`, `disabled`, and `multiple`. Item and Panel state
+contain the Item's `value`, `open`, and effective `disabled`; Trigger state adds
+actual `focused` state. Snapshots and callback details are readonly and remain
+stable until observable state changes.
+
+Core `store.toggleItem(value)` makes an imperative semantic request.
+`store.setValue(value)` supplies a controlled value or releases control with
+`undefined`; it does not invoke callbacks. Renaming or removing an open
+uncontrolled Item repairs Root value without callbacks.
+
+## Interaction
+
+| Input | Behavior |
+| --- | --- |
+| `Enter`, `Return`, or `Space` | Toggles the focused Item. |
+| `Up` or `Down` | Moves focus to the previous or next available Trigger without changing open state. |
+| `Home` or `End` | Moves focus to the first or last available Trigger. |
+| Primary-pointer release | Focuses Trigger and toggles when the press starts and ends on it. |
+| `trigger.press()` or `item.toggle()` | Makes the same request with an imperative source. |
+
+Cancelled input, modifier chords, secondary pointer buttons, and disabled
+requests are ignored. Root disablement combines with Item disablement and blurs
+a focused Trigger. Opening and closing otherwise preserve Trigger focus.
+
+Focus navigation does not wrap. Base UI now relies on browser-native Tab
+traversal and deprecates its orientation and loop policy. OpenTUI has no
+equivalent default traversal, so Accordion provides fixed vertical navigation
+without copying those deprecated browser-facing options.
+
+Inactive React and Solid Panels unmount by default. `keepMounted` retains the
+same Panel Renderable and reflects closed state with `visible=false`. A Core
+Panel remains mounted once constructed and synchronizes its native visibility.
+Removed Root, Item, Trigger, and Panel Renderables permanently end their
+coordination lifetime.
+
+## API reference
+
+| Surface | API |
+| --- | --- |
+| React and Solid | `Accordion.Root`, `Accordion.Item`, `Accordion.Trigger`, `Accordion.Panel`, and scoped types |
+| Core | `AccordionStore`, four matching Renderables, and option/state types |
+| Root options | `value`, `defaultValue`, `onValueChange`, `multiple`, `disabled` |
+| Item options | Required unique `value`, `disabled`, `onOpenChange` |
+| Trigger actions | `press()` and inherited native focus methods |
+| Panel options | Native Box options; React and Solid additionally accept `keepMounted` |
+| Change details | `source` is `"imperative"`, `"keyboard"`, or `"pointer"`; keyboard details include `key`, pointer details include `button: 0` |
+
+Framework refs target the actual matching Core Renderable. Core may adopt an
+external `AccordionStore`; framework adapters create and retain it for Root.
+Browser-only heading, native-button, page-search, DOM event, transition, CSS,
+and propagation APIs are intentionally outside the terminal contract.
+
+## Start with the Recipe
+
+The editable [Accordion Recipe](/catalog/accordion) supplies labeled Triggers,
+disclosure markers, theme-derived colors, indentation, and starter layout.

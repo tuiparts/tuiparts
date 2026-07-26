@@ -19,7 +19,19 @@ Peer requirements are `@opentui/core` and `@opentui/solid` `^0.4.3`, with
 ## Primitive example
 
 ```tsx
-import { Button, Checkbox, Collapsible, Input, Radio, RadioGroup, Switch, Textarea, Toggle, ToggleGroup } from "@tuiparts/solid";
+import {
+  Accordion,
+  Button,
+  Checkbox,
+  Collapsible,
+  Input,
+  Radio,
+  RadioGroup,
+  Switch,
+  Textarea,
+  Toggle,
+  ToggleGroup,
+} from "@tuiparts/solid";
 import { createSignal } from "solid-js";
 
 export function Settings() {
@@ -35,6 +47,16 @@ export function Settings() {
         </Checkbox.Indicator>
         <text content="Run checks" />
       </Checkbox.Root>
+      <Accordion.Root defaultValue={["details"]}>
+        <Accordion.Item value="details">
+          <Accordion.Trigger>
+            <text content="Details" />
+          </Accordion.Trigger>
+          <Accordion.Panel>
+            <text content="Expanded content" />
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion.Root>
       <Input placeholder="Release name" onSubmit={console.log} />
       <Textarea initialValue="Release notes" onSubmit={console.log} />
       <Switch.Root checked={checked()} onCheckedChange={setChecked}>
@@ -60,12 +82,14 @@ export function Settings() {
 Solid props are spread reactively onto the existing Renderable. Signal changes
 update controlled primitive state without remounting.
 
-From a repository checkout, run the focused Collapsible tracer with
+From a repository checkout, run the focused Accordion or Collapsible tracer
+with `pnpm --filter @tuiparts/solid demo:accordion` or
 `pnpm --filter @tuiparts/solid demo:collapsible`.
 
 ## Imports
 
 ```ts
+import { Accordion } from "@tuiparts/solid/accordion";
 import { Button } from "@tuiparts/solid/button";
 import { Checkbox } from "@tuiparts/solid/checkbox";
 import { Collapsible } from "@tuiparts/solid/collapsible";

@@ -13,6 +13,7 @@ export default defineMeta({
     "toggle",
     "toggle-group",
     "collapsible",
+    "accordion",
     "tabs",
     "radio-group",
     "dialog",

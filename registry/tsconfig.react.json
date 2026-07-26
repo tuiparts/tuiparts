@@ -5,6 +5,7 @@
     "jsxImportSource": "@opentui/react",
     "noEmit": true,
     "rootDirs": [
+      "accordion",
       "badge",
       "button",
       "checkbox",

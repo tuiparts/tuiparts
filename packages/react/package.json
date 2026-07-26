@@ -5,6 +5,7 @@
   "author": "Matt Simpson",
   "license": "MIT",
   "sideEffects": [
+    "./dist/accordion/**",
     "./dist/button/**",
     "./dist/checkbox/**",
     "./dist/collapsible/**",
@@ -26,6 +27,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./accordion": "./src/accordion/index.ts",
     "./button": "./src/button/index.tsx",
     "./checkbox": "./src/checkbox/index.tsx",
     "./collapsible": "./src/collapsible/index.ts",
@@ -46,6 +48,10 @@
       ".": {
         "types": "./dist/index.d.mts",
         "import": "./dist/index.mjs"
+      },
+      "./accordion": {
+        "types": "./dist/accordion/index.d.mts",
+        "import": "./dist/accordion/index.mjs"
       },
       "./button": {
         "types": "./dist/button/index.d.mts",
@@ -115,6 +121,7 @@
   ],
   "scripts": {
     "build": "tsdown",
+    "demo:accordion": "bun run examples/accordion.tsx",
     "demo:collapsible": "bun run examples/collapsible.tsx",
     "test": "bun test",
     "typecheck": "tsc --noEmit",

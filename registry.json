@@ -4,6 +4,69 @@
   "homepage": "https://tuiparts.sh",
   "items": [
     {
+      "name": "core/accordion",
+      "type": "registry:item",
+      "title": "Accordion (Core)",
+      "description": "Editable imperative Accordion Recipe built on the tuiparts.sh packaged Primitive.",
+      "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/accordion/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/accordion.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
+    },
+    {
+      "name": "react/accordion",
+      "type": "registry:item",
+      "title": "Accordion (React)",
+      "description": "Editable React Accordion Recipe built on the tuiparts.sh packaged Primitive.",
+      "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/accordion/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/accordion.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
+    },
+    {
+      "name": "solid/accordion",
+      "type": "registry:item",
+      "title": "Accordion (Solid)",
+      "description": "Editable Solid Accordion Recipe built on the tuiparts.sh packaged Primitive.",
+      "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/accordion/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/accordion.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
+    },
+    {
       "name": "core/checkbox",
       "type": "registry:item",
       "title": "Checkbox (Core)",

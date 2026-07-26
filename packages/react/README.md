@@ -19,7 +19,19 @@ Peer requirements are `@opentui/core` and `@opentui/react` `^0.4.3`, React
 ## Primitive example
 
 ```tsx
-import { Button, Checkbox, Collapsible, Input, Radio, RadioGroup, Switch, Textarea, Toggle, ToggleGroup } from "@tuiparts/react";
+import {
+  Accordion,
+  Button,
+  Checkbox,
+  Collapsible,
+  Input,
+  Radio,
+  RadioGroup,
+  Switch,
+  Textarea,
+  Toggle,
+  ToggleGroup,
+} from "@tuiparts/react";
 import { useState } from "react";
 
 export function Settings() {
@@ -35,6 +47,16 @@ export function Settings() {
         </Checkbox.Indicator>
         <text content="Run checks" />
       </Checkbox.Root>
+      <Accordion.Root defaultValue={["details"]}>
+        <Accordion.Item value="details">
+          <Accordion.Trigger>
+            <text content="Details" />
+          </Accordion.Trigger>
+          <Accordion.Panel>
+            <text content="Expanded content" />
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion.Root>
       <Input placeholder="Release name" onSubmit={console.log} />
       <Textarea initialValue="Release notes" onSubmit={console.log} />
       <Switch.Root checked={checked} onCheckedChange={setChecked}>
@@ -57,7 +79,8 @@ export function Settings() {
 }
 ```
 
-From a repository checkout, run the focused Collapsible tracer with
+From a repository checkout, run the focused Accordion or Collapsible tracer
+with `pnpm --filter @tuiparts/react demo:accordion` or
 `pnpm --filter @tuiparts/react demo:collapsible`.
 
 ## Imports
@@ -66,6 +89,7 @@ All Primitives are exported from `@tuiparts/react`. Focused imports are also
 supported:
 
 ```ts
+import { Accordion } from "@tuiparts/react/accordion";
 import { Button } from "@tuiparts/react/button";
 import { Checkbox } from "@tuiparts/react/checkbox";
 import { Collapsible } from "@tuiparts/react/collapsible";

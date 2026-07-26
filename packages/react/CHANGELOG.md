@@ -1,5 +1,20 @@
 # @tuiparts/react
 
+## 0.0.4
+
+### Patch Changes
+
+- [#54](https://github.com/tuiparts/tuiparts/pull/54) [`c815137`](https://github.com/tuiparts/tuiparts/commit/c815137aa05cadf2abf145ba9c7857aa174a5cfc) Thanks [@msmps](https://github.com/msmps)! - Add CheckboxGroup with array-valued checked ownership, optional Checkbox.Root adoption, effective disablement, dynamic registration, and orientation-aware roving focus. Low-level collection registration and navigation types remain internal rather than becoming part of the public package interface.
+
+  Checkbox state now exposes `tabbable`, and checked-change callbacks receive immutable terminal press details. Checkbox no longer shares its internal Store implementation with Switch so grouped collection policy remains isolated from Switch.
+
+- [#51](https://github.com/tuiparts/tuiparts/pull/51) [`fff539b`](https://github.com/tuiparts/tuiparts/commit/fff539b155fda25231af47d6fbe38404cf05e8e9) Thanks [@msmps](https://github.com/msmps)! - Add the Collapsible Primitive and matching Core, React, and Solid package subpaths with controlled and uncontrolled open state, shared Trigger activation, disabled behavior, and conditional Panel lifecycle.
+
+- [#52](https://github.com/tuiparts/tuiparts/pull/52) [`8ca3626`](https://github.com/tuiparts/tuiparts/commit/8ca36264416d432a1bcfeb5c0126c8a1f390bd3f) Thanks [@msmps](https://github.com/msmps)! - Add the Accordion Primitive and matching Core, React, and Solid package subpaths with coordinated single or multiple expansion, scoped Item disablement, shared Trigger activation, and conditional Panel lifecycle.
+
+- Updated dependencies [[`c815137`](https://github.com/tuiparts/tuiparts/commit/c815137aa05cadf2abf145ba9c7857aa174a5cfc), [`fff539b`](https://github.com/tuiparts/tuiparts/commit/fff539b155fda25231af47d6fbe38404cf05e8e9), [`8ca3626`](https://github.com/tuiparts/tuiparts/commit/8ca36264416d432a1bcfeb5c0126c8a1f390bd3f)]:
+  - @tuiparts/core@0.0.4
+
 ## 0.0.3
 
 ### Patch Changes

@@ -25,6 +25,7 @@ import {
   Checkbox,
   Collapsible,
   Input,
+  NumberField,
   Radio,
   RadioGroup,
   Switch,
@@ -58,6 +59,11 @@ export function Settings() {
         </Accordion.Item>
       </Accordion.Root>
       <Input placeholder="Release name" onSubmit={console.log} />
+      <NumberField.Root defaultValue={1} min={0} max={20}>
+        <NumberField.Decrement><text content="−" /></NumberField.Decrement>
+        <NumberField.Input width={8} />
+        <NumberField.Increment><text content="+" /></NumberField.Increment>
+      </NumberField.Root>
       <Textarea initialValue="Release notes" onSubmit={console.log} />
       <Switch.Root checked={checked} onCheckedChange={setChecked}>
         {(state) => <text content={state.checked ? "On" : "Off"} />}
@@ -80,6 +86,7 @@ export function Settings() {
 ```
 
 From a repository checkout, run a focused tracer with
+`pnpm --filter @tuiparts/react demo:number-field`,
 `pnpm --filter @tuiparts/react demo:checkbox-group`,
 `pnpm --filter @tuiparts/react demo:accordion`, or
 `pnpm --filter @tuiparts/react demo:collapsible`.
@@ -96,6 +103,7 @@ import { Checkbox } from "@tuiparts/react/checkbox";
 import { CheckboxGroup } from "@tuiparts/react/checkbox-group";
 import { Collapsible } from "@tuiparts/react/collapsible";
 import { Input } from "@tuiparts/react/input";
+import { NumberField } from "@tuiparts/react/number-field";
 import { Radio } from "@tuiparts/react/radio";
 import { RadioGroup } from "@tuiparts/react/radio-group";
 import { Switch } from "@tuiparts/react/switch";

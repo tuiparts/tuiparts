@@ -7,18 +7,19 @@
   "sideEffects": [
     "./dist/accordion/**",
     "./dist/button/**",
-    "./dist/checkbox/**",
     "./dist/checkbox-group/**",
+    "./dist/checkbox/**",
     "./dist/collapsible/**",
     "./dist/dialog/**",
     "./dist/input/**",
-    "./dist/radio/**",
+    "./dist/number-field/**",
     "./dist/radio-group/**",
+    "./dist/radio/**",
     "./dist/switch/**",
     "./dist/tabs/**",
     "./dist/textarea/**",
-    "./dist/toggle/**",
-    "./dist/toggle-group/**"
+    "./dist/toggle-group/**",
+    "./dist/toggle/**"
   ],
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "./collapsible": "./src/collapsible/index.ts",
     "./dialog": "./src/dialog/index.ts",
     "./input": "./src/input/index.tsx",
+    "./number-field": "./src/number-field/index.ts",
     "./radio": "./src/radio/index.tsx",
     "./radio-group": "./src/radio-group/index.tsx",
     "./switch": "./src/switch/index.tsx",
@@ -78,6 +80,10 @@
       "./input": {
         "types": "./dist/input/index.d.mts",
         "import": "./dist/input/index.mjs"
+      },
+      "./number-field": {
+        "types": "./dist/number-field/index.d.mts",
+        "import": "./dist/number-field/index.mjs"
       },
       "./radio": {
         "types": "./dist/radio/index.d.mts",
@@ -130,6 +136,7 @@
     "demo:accordion": "bun run --preload @opentui/solid/preload examples/accordion.tsx",
     "demo:checkbox-group": "bun run --preload @opentui/solid/preload examples/checkbox-group.tsx",
     "demo:collapsible": "bun run --preload @opentui/solid/preload examples/collapsible.tsx",
+    "demo:number-field": "bun run --preload @opentui/solid/preload examples/number-field.tsx",
     "test": "bun test --preload @opentui/solid/preload",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"

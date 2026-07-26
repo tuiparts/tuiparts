@@ -14,8 +14,8 @@ import {
   type ReactNode,
   type Ref,
 } from "react";
-import { CheckboxGroupContext } from "../internal/checkbox-group-context";
 import { useCoreStore } from "../internal/use-core-store";
+import { CheckboxGroupContext } from "./context";
 
 const CHECKBOX_GROUP_TAG = "otui-checkbox-group";
 

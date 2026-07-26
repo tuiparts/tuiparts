@@ -1,0 +1,102 @@
+---
+title: Number Field
+description: Edit, step, and scrub a bounded numeric value with editable terminal presentation.
+---
+
+Number Field provides numeric entry with press controls and terminal-native
+scrubbing. The packaged Primitive owns draft parsing, nullable value state,
+bounds, decimal-safe steps, commit timing, and interaction lifecycle. The
+Recipe adds a draggable label, increment and decrement glyphs, layout, sizing,
+and theme colors.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/number-field
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/number-field
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/number-field
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import { NumberField } from "./components/ui/number-field";
+
+<NumberField
+  label="Quantity"
+  defaultValue={1}
+  min={0}
+  max={20}
+  onValueCommit={(value) => saveQuantity(value)}
+/>;
+```
+
+Use `value` with `onValueChange` when the application owns the numeric value.
+The value may be `number | null`; clearing the Input commits `null`.
+
+### Core
+
+```ts
+import { createNumberField } from "./components/ui/number-field";
+
+const quantity = createNumberField(ctx, {
+  label: "Quantity",
+  defaultValue: 1,
+  min: 0,
+  max: 20,
+  onValueCommit: (value) => saveQuantity(value),
+});
+
+parent.add(quantity);
+```
+
+The returned Root Renderable exposes the packaged Store and numeric value.
+
+## Customize the Recipe
+
+The copied source owns the label, increment and decrement glyphs, row layout,
+control widths, spacing, and theme colors. Edit it to add units, descriptions,
+compact sizing, validation copy, or another arrangement of the five packaged
+Parts. Shared color defaults come from the [Theme Recipe](/theming).
+
+ScrubArea uses ordinary terminal content rather than a browser cursor affordance.
+Keep its label, replace it with another drag handle, or omit it when pointer
+scrubbing does not fit the task.
+
+## Behavior
+
+Type a finite decimal in the Input. ASCII digits, one decimal point, and one
+leading sign are accepted. Nonnumeric characters and invalid pastes are rejected
+without changing the draft. Valid incomplete drafts remain editable until Enter
+or blur normalizes them.
+Up and Down step normally, Alt uses the small step, Shift and Page Up/Page Down
+use the large step, and finite Home/End bounds jump to their edge. Increment and
+Decrement use the same bounded step engine.
+
+Drag the label horizontally with the primary pointer button to move one normal
+step per terminal cell. Starting the drag clears terminal text selection, so the
+label does not become selected. A moved drag commits once on release; a click
+does not change the value. Read-only fields remain focusable but reject edits and value
+changes. Disabled fields reject focus and every interaction.
+
+Detailed ownership, callback, precision, and lifecycle rules belong to the
+[Number Field Primitive](/primitives/number-field).
+
+## Recipe API
+
+`NumberField` requires `label`, accepts optional `incrementMark` and
+`decrementMark`, and forwards the packaged Root props. Core exposes equivalent
+`createNumberField()` options. The Recipe deliberately does not add pixel
+sensitivity, touch handling, custom cursors, or cursor locking.

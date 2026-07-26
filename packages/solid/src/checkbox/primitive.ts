@@ -18,7 +18,7 @@ import {
   untrack,
   useContext,
 } from "solid-js";
-import { CheckboxGroupContext } from "../internal/checkbox-group-context";
+import { CheckboxGroupContext } from "../checkbox-group/context";
 import {
   setRenderableRef,
   spreadRenderableProps,

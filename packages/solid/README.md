@@ -25,6 +25,7 @@ import {
   Checkbox,
   Collapsible,
   Input,
+  NumberField,
   Radio,
   RadioGroup,
   Switch,
@@ -58,6 +59,11 @@ export function Settings() {
         </Accordion.Item>
       </Accordion.Root>
       <Input placeholder="Release name" onSubmit={console.log} />
+      <NumberField.Root defaultValue={1} min={0} max={20}>
+        <NumberField.Decrement><text content="−" /></NumberField.Decrement>
+        <NumberField.Input width={8} />
+        <NumberField.Increment><text content="+" /></NumberField.Increment>
+      </NumberField.Root>
       <Textarea initialValue="Release notes" onSubmit={console.log} />
       <Switch.Root checked={checked()} onCheckedChange={setChecked}>
         {(state) => <text content={state.checked ? "On" : "Off"} />}
@@ -83,6 +89,7 @@ Solid props are spread reactively onto the existing Renderable. Signal changes
 update controlled primitive state without remounting.
 
 From a repository checkout, run a focused tracer with
+`pnpm --filter @tuiparts/solid demo:number-field`,
 `pnpm --filter @tuiparts/solid demo:checkbox-group`,
 `pnpm --filter @tuiparts/solid demo:accordion`, or
 `pnpm --filter @tuiparts/solid demo:collapsible`.
@@ -96,6 +103,7 @@ import { Checkbox } from "@tuiparts/solid/checkbox";
 import { CheckboxGroup } from "@tuiparts/solid/checkbox-group";
 import { Collapsible } from "@tuiparts/solid/collapsible";
 import { Input } from "@tuiparts/solid/input";
+import { NumberField } from "@tuiparts/solid/number-field";
 import { Radio } from "@tuiparts/solid/radio";
 import { RadioGroup } from "@tuiparts/solid/radio-group";
 import { Switch } from "@tuiparts/solid/switch";

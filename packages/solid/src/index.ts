@@ -6,6 +6,7 @@ export * from "./checkbox-group";
 export * from "./collapsible";
 export * from "./dialog";
 export * from "./input";
+export * from "./number-field";
 export * from "./radio";
 export * from "./radio-group";
 export * from "./switch";

@@ -10,6 +10,7 @@ export default defineConfig({
     "src/collapsible/index.ts",
     "src/dialog/index.ts",
     "src/input/index.ts",
+    "src/number-field/index.ts",
     "src/radio/index.ts",
     "src/radio-group/index.ts",
     "src/switch/index.ts",

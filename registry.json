@@ -445,6 +445,69 @@
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
+      "name": "core/number-field",
+      "type": "registry:item",
+      "title": "Number Field (Core)",
+      "description": "Editable imperative NumberField Recipe built on the tuiparts.sh packaged Primitive.",
+      "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/number-field/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/number-field.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
+    },
+    {
+      "name": "react/number-field",
+      "type": "registry:item",
+      "title": "Number Field (React)",
+      "description": "Editable React NumberField Recipe built on the tuiparts.sh packaged Primitive.",
+      "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/number-field/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/number-field.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
+    },
+    {
+      "name": "solid/number-field",
+      "type": "registry:item",
+      "title": "Number Field (Solid)",
+      "description": "Editable Solid NumberField Recipe built on the tuiparts.sh packaged Primitive.",
+      "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/number-field/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/number-field.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
+    },
+    {
       "name": "core/input",
       "type": "registry:item",
       "title": "Input (Core)",
@@ -1048,8 +1111,8 @@
     {
       "name": "theme-rosepine",
       "type": "registry:item",
-      "title": "Rosé Pine Theme",
-      "description": "Rosé Pine/Dawn.",
+      "title": "Ros\u00e9 Pine Theme",
+      "description": "Ros\u00e9 Pine/Dawn.",
       "dependencies": [],
       "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"],
       "files": [

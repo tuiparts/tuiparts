@@ -29,6 +29,7 @@ colors, spacing, glyphs, labels, or fixed visual trees.
 | Collapsible | `CollapsibleStore` | `CollapsibleRootRenderable`, `CollapsibleTriggerRenderable`, `CollapsiblePanelRenderable` |
 | Dialog | `DialogStore` | Root, Trigger, Portal, Backdrop, Popup, Title, Description, Close Renderables |
 | Input | OpenTUI-native state | `InputRenderable` |
+| NumberField | `NumberFieldStore` | Root, Input, Increment, Decrement, and ScrubArea Renderables |
 | Textarea | OpenTUI-native `EditBuffer` | `TextareaRenderable` |
 | Radio / RadioGroup | `RadioGroupStore` | `RadioGroupRenderable`, `RadioRootRenderable`, `RadioIndicatorRenderable` |
 | Switch | `SwitchStore` | `SwitchRootRenderable`, `SwitchThumbRenderable` |
@@ -59,6 +60,7 @@ Consumer-owned recipes assemble these parts with native OpenTUI Renderables and
 choose their presentation. Installable examples live under `registry/`.
 
 From a repository checkout, run a focused tracer with
+`pnpm --filter @tuiparts/core demo:number-field`,
 `pnpm --filter @tuiparts/core demo:checkbox-group`,
 `pnpm --filter @tuiparts/core demo:accordion`, or
 `pnpm --filter @tuiparts/core demo:collapsible`.

@@ -16,12 +16,12 @@ import {
   splitProps,
   untrack,
 } from "solid-js";
-import { CheckboxGroupContext } from "../internal/checkbox-group-context";
 import {
   setRenderableRef,
   spreadRenderableProps,
 } from "../internal/renderable-props";
 import { createRenderableState } from "../internal/renderable-state";
+import { CheckboxGroupContext } from "./context";
 
 type CheckboxGroupProps = Omit<CheckboxGroupOptions, "store"> & {
   children?: JSX.Element | ((state: CheckboxGroupState) => JSX.Element);

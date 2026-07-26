@@ -148,6 +148,31 @@ Reference implementations:
 - `registry/checkbox-group/react.tsx`
 - `registry/checkbox-group/solid.tsx`
 
+## NumberField Primitive
+
+NumberField coordinates native text editing with numeric value ownership:
+
+- `NumberFieldStore` owns `number | null`, draft text, bounds, decimal-safe
+  step configuration, callback timing, and controlled or uncontrolled state.
+- `NumberField.Input` retains OpenTUI's editing surface while routing drafts,
+  commits, focus, disablement, and read-only behavior through the Store.
+- `NumberField.Increment` and `.Decrement` are Pressable Parts that share the
+  same normalization and commit path as keyboard stepping.
+- `NumberField.ScrubArea` maps horizontal terminal-cell drag displacement to
+  normal steps, using captured pointer delivery without browser cursor APIs.
+- Recipes own labels, glyphs, layout, dimensions, colors, and variants.
+
+Reference implementations:
+
+- `packages/core/src/number-field/primitive.ts`
+- `packages/react/src/number-field/primitive.ts`
+- `packages/solid/src/number-field/primitive.ts`
+- `registry/number-field/`
+
+The focused contract is recorded in
+`docs/primitive-contracts/number-field.md`; ADR-0013 records the native Input
+and terminal-scrubbing boundary.
+
 ## Collapsible Primitive
 
 Collapsible packages disclosure behavior without choosing Trigger content or

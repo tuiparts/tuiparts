@@ -115,6 +115,7 @@
   ],
   "scripts": {
     "build": "tsdown",
+    "demo:collapsible": "bun run examples/collapsible.tsx",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"

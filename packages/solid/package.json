@@ -115,6 +115,7 @@
   ],
   "scripts": {
     "build": "tsdown",
+    "demo:collapsible": "bun run --preload @opentui/solid/preload examples/collapsible.tsx",
     "test": "bun test --preload @opentui/solid/preload",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"

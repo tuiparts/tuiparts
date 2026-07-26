@@ -15,6 +15,7 @@ Each catalog recipe is available as `core/<name>`, `react/<name>`, and
 | Recipe | Packaged behavior | Installed vocabulary |
 | --- | --- | --- |
 | Checkbox | Checkbox Root and Indicator | `Checkbox` |
+| Collapsible | Open state, activation, focus, and Panel lifecycle | `Collapsible`, `CollapsibleTrigger`, `CollapsibleContent` |
 | Switch | Switch Root and Thumb | `Switch` |
 | Button | Button activation primitive | `Button` |
 | RadioGroup/Radio | Radio collection and selectable parts | `RadioGroup`, `RadioGroupItem` |

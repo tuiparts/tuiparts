@@ -56,6 +56,9 @@ parent.add(root);
 Consumer-owned recipes assemble these parts with native OpenTUI Renderables and
 choose their presentation. Installable examples live under `registry/`.
 
+From a repository checkout, run the focused Collapsible tracer with
+`pnpm --filter @tuiparts/core demo:collapsible`.
+
 ## Input
 
 `InputRenderable` preserves OpenTUI's mutable `value` and event model instead

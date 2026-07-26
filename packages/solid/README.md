@@ -60,6 +60,9 @@ export function Settings() {
 Solid props are spread reactively onto the existing Renderable. Signal changes
 update controlled primitive state without remounting.
 
+From a repository checkout, run the focused Collapsible tracer with
+`pnpm --filter @tuiparts/solid demo:collapsible`.
+
 ## Imports
 
 ```ts

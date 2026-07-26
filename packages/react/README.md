@@ -57,6 +57,9 @@ export function Settings() {
 }
 ```
 
+From a repository checkout, run the focused Collapsible tracer with
+`pnpm --filter @tuiparts/react demo:collapsible`.
+
 ## Imports
 
 All Primitives are exported from `@tuiparts/react`. Focused imports are also

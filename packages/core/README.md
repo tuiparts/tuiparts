@@ -24,6 +24,7 @@ colors, spacing, glyphs, labels, or fixed visual trees.
 | --- | --- | --- |
 | Button | `ButtonStore` | `ButtonRenderable` |
 | Checkbox | `CheckboxStore` | `CheckboxRootRenderable`, `CheckboxIndicatorRenderable` |
+| Collapsible | `CollapsibleStore` | `CollapsibleRootRenderable`, `CollapsibleTriggerRenderable`, `CollapsiblePanelRenderable` |
 | Dialog | `DialogStore` | Root, Trigger, Portal, Backdrop, Popup, Title, Description, Close Renderables |
 | Input | OpenTUI-native state | `InputRenderable` |
 | Textarea | OpenTUI-native `EditBuffer` | `TextareaRenderable` |
@@ -54,6 +55,9 @@ parent.add(root);
 
 Consumer-owned recipes assemble these parts with native OpenTUI Renderables and
 choose their presentation. Installable examples live under `registry/`.
+
+From a repository checkout, run the focused Collapsible tracer with
+`pnpm --filter @tuiparts/core demo:collapsible`.
 
 ## Input
 

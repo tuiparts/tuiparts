@@ -19,7 +19,7 @@ Peer requirements are `@opentui/core` and `@opentui/react` `^0.4.3`, React
 ## Primitive example
 
 ```tsx
-import { Button, Checkbox, Input, Radio, RadioGroup, Switch, Textarea, Toggle, ToggleGroup } from "@tuiparts/react";
+import { Button, Checkbox, Collapsible, Input, Radio, RadioGroup, Switch, Textarea, Toggle, ToggleGroup } from "@tuiparts/react";
 import { useState } from "react";
 
 export function Settings() {
@@ -57,6 +57,9 @@ export function Settings() {
 }
 ```
 
+From a repository checkout, run the focused Collapsible tracer with
+`pnpm --filter @tuiparts/react demo:collapsible`.
+
 ## Imports
 
 All Primitives are exported from `@tuiparts/react`. Focused imports are also
@@ -65,6 +68,7 @@ supported:
 ```ts
 import { Button } from "@tuiparts/react/button";
 import { Checkbox } from "@tuiparts/react/checkbox";
+import { Collapsible } from "@tuiparts/react/collapsible";
 import { Input } from "@tuiparts/react/input";
 import { Radio } from "@tuiparts/react/radio";
 import { RadioGroup } from "@tuiparts/react/radio-group";

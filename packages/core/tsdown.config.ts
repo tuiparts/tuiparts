@@ -5,6 +5,7 @@ export default defineConfig({
     "src/index.ts",
     "src/button/index.ts",
     "src/checkbox/index.ts",
+    "src/collapsible/index.ts",
     "src/dialog/index.ts",
     "src/input/index.ts",
     "src/radio/index.ts",

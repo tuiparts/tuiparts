@@ -19,7 +19,7 @@ Peer requirements are `@opentui/core` and `@opentui/solid` `^0.4.3`, with
 ## Primitive example
 
 ```tsx
-import { Button, Checkbox, Input, Radio, RadioGroup, Switch, Textarea, Toggle, ToggleGroup } from "@tuiparts/solid";
+import { Button, Checkbox, Collapsible, Input, Radio, RadioGroup, Switch, Textarea, Toggle, ToggleGroup } from "@tuiparts/solid";
 import { createSignal } from "solid-js";
 
 export function Settings() {
@@ -60,11 +60,15 @@ export function Settings() {
 Solid props are spread reactively onto the existing Renderable. Signal changes
 update controlled primitive state without remounting.
 
+From a repository checkout, run the focused Collapsible tracer with
+`pnpm --filter @tuiparts/solid demo:collapsible`.
+
 ## Imports
 
 ```ts
 import { Button } from "@tuiparts/solid/button";
 import { Checkbox } from "@tuiparts/solid/checkbox";
+import { Collapsible } from "@tuiparts/solid/collapsible";
 import { Input } from "@tuiparts/solid/input";
 import { Radio } from "@tuiparts/solid/radio";
 import { RadioGroup } from "@tuiparts/solid/radio-group";

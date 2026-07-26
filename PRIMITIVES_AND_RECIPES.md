@@ -121,6 +121,31 @@ Reference implementations:
 recipes reserve one terminal cell for `mark`; applications that need a wide
 mark own the corresponding recipe layout change.
 
+## Collapsible Primitive
+
+Collapsible packages disclosure behavior without choosing Trigger content or
+Panel presentation:
+
+- `Collapsible.Root` and `CollapsibleStore` own controlled or uncontrolled
+  open state and Root disablement.
+- `Collapsible.Trigger` is a focusable Pressable that requests the inverse open
+  state and exposes open, disabled, and actual focused state.
+- `Collapsible.Panel` reflects open state through native visibility. React and
+  Solid unmount it while closed by default and support `keepMounted`; a
+  constructed Core Panel remains retained.
+- Editable Core, React, and Solid Recipes own labels, open/closed markers,
+  layout, indentation, colors, and Panel content.
+
+Reference implementations:
+
+- `packages/core/src/collapsible/primitive.ts`
+- `packages/react/src/collapsible/primitive.ts`
+- `packages/solid/src/collapsible/primitive.tsx`
+- `registry/collapsible/`
+
+The focused public contract and conformance disposition are recorded in
+`docs/primitive-contracts/collapsible.md`.
+
 ## Switch primitive
 
 Switch follows the same frozen ownership and activation rules without treating

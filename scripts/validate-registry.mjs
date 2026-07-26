@@ -75,6 +75,7 @@ const frameworks = {
 };
 const recipes = [
   "checkbox",
+  "collapsible",
   "switch",
   "button",
   "badge",
@@ -89,6 +90,7 @@ const recipes = [
 ];
 const catalogRecipes = [
   "checkbox",
+  "collapsible",
   "switch",
   "button",
   "badge",

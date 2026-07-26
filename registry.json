@@ -640,6 +640,69 @@
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
+      "name": "core/collapsible",
+      "type": "registry:item",
+      "title": "Collapsible (Core)",
+      "description": "Editable imperative Collapsible Recipe built on the tuiparts.sh packaged Primitive.",
+      "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/collapsible/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/collapsible.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
+    },
+    {
+      "name": "react/collapsible",
+      "type": "registry:item",
+      "title": "Collapsible (React)",
+      "description": "Editable React Collapsible Recipe built on the tuiparts.sh packaged Primitive.",
+      "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/collapsible/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/collapsible.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
+    },
+    {
+      "name": "solid/collapsible",
+      "type": "registry:item",
+      "title": "Collapsible (Solid)",
+      "description": "Editable Solid Collapsible Recipe built on the tuiparts.sh packaged Primitive.",
+      "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/collapsible/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/collapsible.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
+    },
+    {
       "name": "core/tabs",
       "type": "registry:item",
       "title": "Tabs (Core)",

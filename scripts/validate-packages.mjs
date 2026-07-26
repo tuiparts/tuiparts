@@ -96,6 +96,7 @@ try {
     "@tuiparts/core",
     "@tuiparts/core/button",
     "@tuiparts/core/checkbox",
+    "@tuiparts/core/collapsible",
     "@tuiparts/core/dialog",
     "@tuiparts/core/input",
     "@tuiparts/core/radio",
@@ -108,6 +109,7 @@ try {
     "@tuiparts/react",
     "@tuiparts/react/button",
     "@tuiparts/react/checkbox",
+    "@tuiparts/react/collapsible",
     "@tuiparts/react/dialog",
     "@tuiparts/react/input",
     "@tuiparts/react/radio",
@@ -120,6 +122,7 @@ try {
     "@tuiparts/solid",
     "@tuiparts/solid/button",
     "@tuiparts/solid/checkbox",
+    "@tuiparts/solid/collapsible",
     "@tuiparts/solid/dialog",
     "@tuiparts/solid/input",
     "@tuiparts/solid/radio",
@@ -158,6 +161,11 @@ try {
     `import { createTestRenderer } from "@opentui/core/testing";
 import { CheckboxRootRenderable } from "@tuiparts/core/checkbox";
 import {
+  CollapsiblePanelRenderable,
+  CollapsibleRootRenderable,
+  CollapsibleTriggerRenderable,
+} from "@tuiparts/core/collapsible";
+import {
   TabsListRenderable,
   TabsPanelRenderable,
   TabsRootRenderable,
@@ -170,6 +178,20 @@ try {
   setup.renderer.root.add(checkbox);
   checkbox.press();
   if (!checkbox.checked) throw new Error("Compiled Checkbox did not activate");
+
+  const collapsible = new CollapsibleRootRenderable(setup.renderer);
+  const trigger = new CollapsibleTriggerRenderable(setup.renderer, {
+    store: collapsible.store,
+  });
+  const panel = new CollapsiblePanelRenderable(setup.renderer, {
+    store: collapsible.store,
+  });
+  collapsible.add(trigger);
+  collapsible.add(panel);
+  setup.renderer.root.add(collapsible);
+  trigger.press();
+  if (!collapsible.open || !panel.visible)
+    throw new Error("Compiled Collapsible did not open its Panel");
 
   const root = new TabsRootRenderable(setup.renderer);
   const list = new TabsListRenderable(setup.renderer, { store: root.store });

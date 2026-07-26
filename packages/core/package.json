@@ -15,6 +15,7 @@
     ".": "./src/index.ts",
     "./button": "./src/button/index.ts",
     "./checkbox": "./src/checkbox/index.ts",
+    "./collapsible": "./src/collapsible/index.ts",
     "./dialog": "./src/dialog/index.ts",
     "./input": "./src/input/index.ts",
     "./radio": "./src/radio/index.ts",
@@ -40,6 +41,10 @@
       "./checkbox": {
         "types": "./dist/checkbox/index.d.mts",
         "import": "./dist/checkbox/index.mjs"
+      },
+      "./collapsible": {
+        "types": "./dist/collapsible/index.d.mts",
+        "import": "./dist/collapsible/index.mjs"
       },
       "./dialog": {
         "types": "./dist/dialog/index.d.mts",
@@ -97,6 +102,7 @@
   ],
   "scripts": {
     "build": "tsdown",
+    "demo:collapsible": "bun run examples/collapsible.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"

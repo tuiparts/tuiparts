@@ -24,6 +24,7 @@ colors, spacing, glyphs, labels, or fixed visual trees.
 | --- | --- | --- |
 | Button | `ButtonStore` | `ButtonRenderable` |
 | Checkbox | `CheckboxStore` | `CheckboxRootRenderable`, `CheckboxIndicatorRenderable` |
+| Collapsible | `CollapsibleStore` | `CollapsibleRootRenderable`, `CollapsibleTriggerRenderable`, `CollapsiblePanelRenderable` |
 | Dialog | `DialogStore` | Root, Trigger, Portal, Backdrop, Popup, Title, Description, Close Renderables |
 | Input | OpenTUI-native state | `InputRenderable` |
 | Textarea | OpenTUI-native `EditBuffer` | `TextareaRenderable` |

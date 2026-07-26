@@ -4,8 +4,8 @@ status: accepted
 
 # Concentrate activation behavior in one internal Pressable base class
 
-Every press-activated Root — Checkbox, Switch, Button, Toggle, Radio, and the
-Dialog Trigger and Close parts — subclasses the internal
+Every press-activated control or Part — Checkbox, Switch, Button, Toggle,
+Radio, Collapsible Trigger, and the Dialog Trigger and Close parts — subclasses the internal
 `PressableRenderable` (`core/src/internal/pressable.ts`). The base owns the
 gesture contract; subclasses own what one semantic press means.
 

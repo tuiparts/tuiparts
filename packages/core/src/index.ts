@@ -16,6 +16,21 @@ export {
   type CheckboxStoreOptions,
 } from "./checkbox";
 export {
+  type CollapsibleOpenChangeDetails,
+  type CollapsibleOpenChangeHandler,
+  type CollapsiblePanelOptions,
+  CollapsiblePanelRenderable,
+  type CollapsiblePanelState,
+  type CollapsibleRootOptions,
+  CollapsibleRootRenderable,
+  type CollapsibleState,
+  CollapsibleStore,
+  type CollapsibleStoreOptions,
+  type CollapsibleTriggerOptions,
+  CollapsibleTriggerRenderable,
+  type CollapsibleTriggerState,
+} from "./collapsible";
+export {
   type DialogBackdropOptions,
   DialogBackdropRenderable,
   type DialogCloseOptions,

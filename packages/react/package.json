@@ -7,6 +7,7 @@
   "sideEffects": [
     "./dist/button/**",
     "./dist/checkbox/**",
+    "./dist/collapsible/**",
     "./dist/dialog/**",
     "./dist/input/**",
     "./dist/radio/**",
@@ -27,6 +28,7 @@
     ".": "./src/index.ts",
     "./button": "./src/button/index.tsx",
     "./checkbox": "./src/checkbox/index.tsx",
+    "./collapsible": "./src/collapsible/index.ts",
     "./dialog": "./src/dialog/index.ts",
     "./input": "./src/input/index.tsx",
     "./radio": "./src/radio/index.tsx",
@@ -52,6 +54,10 @@
       "./checkbox": {
         "types": "./dist/checkbox/index.d.mts",
         "import": "./dist/checkbox/index.mjs"
+      },
+      "./collapsible": {
+        "types": "./dist/collapsible/index.d.mts",
+        "import": "./dist/collapsible/index.mjs"
       },
       "./dialog": {
         "types": "./dist/dialog/index.d.mts",

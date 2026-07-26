@@ -263,6 +263,9 @@ public base class.
   selection, dynamic Toggle identity, rendered order, and roving focus. A
   standalone Toggle owns pressed state; a grouped Toggle reads selection from
   its group through the same Toggle Store before Renderable construction.
+- Collapsible retains a public Store for controlled or uncontrolled open state,
+  Root disablement, Trigger activation, and Panel visibility. Root owns the
+  Store while Trigger and Panel consume it directly.
 - Tabs retains a public Store for controlled or uncontrolled selection,
   dynamic Tab/Panel association, automatic or manual activation, rendered
   order, roving focus, repair, and Panel visibility. Root owns the Store, List
@@ -417,6 +420,9 @@ The shipped primitives establish these precedents:
   adopt explicit ToggleGroup selection without changing its public component
   identity. ToggleGroup proves array-valued single/multiple selection and
   roving focus that does not imply selection.
+- Collapsible proves a Root/Trigger/Panel disclosure composition with
+  controlled or uncontrolled open state, Trigger-owned focus, and conditional
+  or retained Panel lifecycle.
 - Tabs proves a genuine Root/List/Tab/Panel composition with value-based
   association, automatic or manual keyboard activation, uncontrolled
   selection repair, and conditionally or retained mounted Panels without

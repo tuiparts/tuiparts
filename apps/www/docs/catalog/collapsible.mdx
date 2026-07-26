@@ -1,0 +1,104 @@
+---
+title: Collapsible
+description: Reveal optional terminal content with an editable labeled Trigger.
+---
+
+Collapsible reveals content beneath a labeled Trigger. The packaged Primitive
+owns open state, activation, focus, disabled behavior, and content lifecycle.
+The Recipe adds disclosure markers, themed text, indentation, and starter
+layout.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/collapsible
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/collapsible
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/collapsible
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "./components/ui/collapsible";
+
+<Collapsible defaultOpen>
+  <CollapsibleTrigger label="Connection details" />
+  <CollapsibleContent>
+    <text content="Region: eu-west" />
+  </CollapsibleContent>
+</Collapsible>;
+```
+
+### Core
+
+```ts
+import { TextRenderable } from "@opentui/core";
+import {
+  createCollapsible,
+  createCollapsibleContent,
+  createCollapsibleTrigger,
+} from "./components/ui/collapsible";
+
+const collapsible = createCollapsible(ctx, { defaultOpen: true });
+const trigger = createCollapsibleTrigger(ctx, collapsible, {
+  label: "Connection details",
+});
+const content = createCollapsibleContent(ctx, collapsible);
+content.add(new TextRenderable(ctx, { content: "Region: eu-west" }));
+
+collapsible.add(trigger);
+collapsible.add(content);
+parent.add(collapsible);
+```
+
+The Core factories receive the created Root so Trigger and Content use its
+Store.
+
+## Customize the Recipe
+
+`CollapsibleTrigger` uses `›` while closed and `⌄` while open. Override them
+with `closedMark` and `openMark`, or edit the copied source to change the
+Trigger composition. The Recipe owns its vertical gap, marker and label
+colors, and content indentation. Native OpenTUI properties can override those
+starter choices.
+
+Shared colors and density come from the [Theme Recipe](/theming). Panel content
+always belongs to your application.
+
+## Behavior
+
+Enter, Return, Space, and a primary-pointer press toggle the content. The
+Trigger retains focus while opening or closing. A disabled Root makes the
+Trigger inert and non-focusable. React and Solid Content unmounts while closed
+unless `keepMounted` is set; Core Content remains mounted and synchronizes its
+native visibility. Controlled ownership and lifecycle details belong to the
+[Collapsible Primitive](/primitives/collapsible).
+
+## Recipe API
+
+`Collapsible` forwards Root props and supplies a vertical layout with a
+one-cell gap. `CollapsibleTrigger` requires `label`, accepts `closedMark` and
+`openMark`, and forwards remaining Trigger props. Its children are owned by the
+Recipe presentation. `CollapsibleContent` forwards Panel props and preserves
+caller-owned children while adding starter indentation.
+
+Core exposes `createCollapsible`, `createCollapsibleTrigger`, and
+`createCollapsibleContent`. Compose the packaged
+[Collapsible Primitive](/primitives/collapsible) directly when these names or
+presentation boundaries do not fit.

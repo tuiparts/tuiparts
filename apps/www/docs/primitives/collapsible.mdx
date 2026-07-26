@@ -1,0 +1,141 @@
+---
+title: Collapsible
+description: Compose controlled or uncontrolled disclosure behavior from three genuine Parts.
+---
+
+Collapsible owns open state, Trigger activation and focus, disabled behavior,
+and Panel lifecycle without choosing labels, markers, layout, or styling.
+
+## Install
+
+Install the [package for your runtime](/primitives#install), then import the
+`collapsible` subpath:
+
+```ts
+import { Collapsible } from "@tuiparts/react/collapsible";
+```
+
+Replace `react` with `solid`. Core exports `CollapsibleStore` and the three
+matching Renderables from `@tuiparts/core/collapsible`.
+
+## Anatomy
+
+| Part | Responsibility |
+| --- | --- |
+| `Collapsible.Root` | Owns controlled or uncontrolled open and disabled state. |
+| `Collapsible.Trigger` | Focusable press target that requests the inverse open state. |
+| `Collapsible.Panel` | Content region whose lifecycle and visibility reflect open state. |
+
+Framework Trigger and Panel Parts must be composed inside `Collapsible.Root`.
+Core callers pass the matching Store explicitly.
+
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { Collapsible } from "@tuiparts/react/collapsible";
+
+<Collapsible.Root defaultOpen>
+  <Collapsible.Trigger>
+    {(state) => (
+      <text content={`${state.open ? "-" : "+"} Connection details`} />
+    )}
+  </Collapsible.Trigger>
+  <Collapsible.Panel>
+    <text content="Region: eu-west" />
+  </Collapsible.Panel>
+</Collapsible.Root>;
+```
+
+```tsx Solid
+import { Collapsible } from "@tuiparts/solid/collapsible";
+
+<Collapsible.Root defaultOpen>
+  <Collapsible.Trigger>
+    {(state) => (
+      <text content={`${state.open ? "-" : "+"} Connection details`} />
+    )}
+  </Collapsible.Trigger>
+  <Collapsible.Panel>
+    <text content="Region: eu-west" />
+  </Collapsible.Panel>
+</Collapsible.Root>;
+```
+
+```ts Core
+import { TextRenderable } from "@opentui/core";
+import {
+  CollapsiblePanelRenderable,
+  CollapsibleRootRenderable,
+  CollapsibleTriggerRenderable,
+} from "@tuiparts/core/collapsible";
+
+const root = new CollapsibleRootRenderable(ctx, { defaultOpen: true });
+const trigger = new CollapsibleTriggerRenderable(ctx, { store: root.store });
+const panel = new CollapsiblePanelRenderable(ctx, { store: root.store });
+
+trigger.add(new TextRenderable(ctx, { content: "Connection details" }));
+panel.add(new TextRenderable(ctx, { content: "Region: eu-west" }));
+root.add(trigger);
+root.add(panel);
+parent.add(root);
+```
+
+</CodeGroup>
+
+Framework adapters provide the Root Store through context. Core callers pass
+`root.store` to Trigger and Panel.
+
+## State ownership
+
+Use `open` with `onOpenChange` for controlled ownership or `defaultOpen` for
+uncontrolled state. A controlled request reports intent without changing open
+state until its owner supplies the next value. Uncontrolled Collapsible commits
+an accepted request before calling `onOpenChange`.
+
+Root state contains `open` and `disabled`. Trigger state adds actual `focused`
+state. Panel state contains `open`. Snapshots are readonly and remain stable
+until observable state changes.
+
+Core `store.setOpen(open)` and `store.toggle()` make imperative semantic
+requests. `store.setControlledOpen(value)` supplies a controlled value or
+releases control with `undefined`; it does not invoke `onOpenChange`.
+
+## Interaction
+
+| Input | Behavior |
+| --- | --- |
+| `Enter`, `Return`, or `Space` | Toggles the open state from the focused Trigger. |
+| Primary-pointer release | Focuses Trigger and toggles when the press starts and ends on it. |
+| `trigger.press()` | Makes the same request with an imperative source. |
+
+Cancelled input, modifier chords, secondary pointer buttons, and disabled
+requests are ignored. Disabling Root blurs Trigger and removes it from focus.
+Opening and closing otherwise preserve Trigger focus.
+
+Inactive React and Solid Panels unmount by default. `keepMounted` retains the
+same Panel Renderable and reflects closed state with `visible=false`. A Core
+Panel remains mounted once constructed and synchronizes its native visibility.
+Removing Root or a Part permanently ends that Renderable's coordination
+lifetime; re-create removed Parts instead of reattaching them.
+
+## API reference
+
+| Surface | API |
+| --- | --- |
+| React and Solid | `Collapsible.Root`, `Collapsible.Trigger`, `Collapsible.Panel`, and scoped types |
+| Core | `CollapsibleStore`, three matching Renderables, and option/state types |
+| Root options | `open`, `defaultOpen`, `onOpenChange`, `disabled` |
+| Trigger actions | `press()` and inherited native focus methods |
+| Panel options | Native Box options; React and Solid additionally accept `keepMounted` |
+| Change details | `source` is `"imperative"`, `"keyboard"`, or `"pointer"`; keyboard details include `key`, pointer details include `button: 0` |
+
+Framework refs target the actual matching Core Renderable. Core may adopt an
+external `CollapsibleStore`; framework adapters create and retain it for Root.
+
+## Start with the Recipe
+
+The editable [Collapsible Recipe](/catalog/collapsible) supplies a labeled
+Trigger, disclosure markers, theme-derived colors, indentation, and starter
+layout.

@@ -2,23 +2,11 @@ import type { BaseRenderable, BoxOptions, RenderContext } from "@opentui/core";
 import { CheckboxRootRenderable } from "../checkbox/primitive";
 import type { PressDetails } from "../internal/pressable";
 import {
-  type CollectionFocusDirection,
   type CollectionItemInput,
   type CollectionItemKey,
-  type CollectionItemRegistration,
-  type CollectionItemRegistrationOptions,
-  type CollectionNavigationTarget,
   RovingCollectionRenderable,
   RovingCollectionStore,
 } from "../internal/roving-collection";
-
-// These public aliases deliberately insulate API vocabulary from the internal
-// roving-collection vocabulary, so internal names never leak into declarations.
-/** Stable identity for a Checkbox registered with a CheckboxGroup. */
-export type CheckboxGroupItemKey = CollectionItemKey;
-
-/** Direction used by CheckboxGroup roving-focus navigation. */
-export type CheckboxGroupFocusDirection = CollectionFocusDirection;
 
 /** Terminal layout direction used by CheckboxGroup keyboard navigation. */
 export type CheckboxGroupOrientation = "horizontal" | "vertical";
@@ -68,16 +56,6 @@ export interface CheckboxGroupStoreOptions {
   /** Controlled checked values. */
   readonly value?: readonly string[];
 }
-
-/** Options used to register one Checkbox with a CheckboxGroup Store. */
-export type CheckboxGroupItemRegistrationOptions =
-  CollectionItemRegistrationOptions;
-
-/** Retained registration for one CheckboxGroup member. */
-export type CheckboxGroupItemRegistration = CollectionItemRegistration;
-
-/** Focus target returned by CheckboxGroup collection navigation. */
-export type CheckboxGroupNavigationTarget = CollectionNavigationTarget;
 
 function normalizeValue(
   value: readonly string[] | undefined,
@@ -139,7 +117,7 @@ export class CheckboxGroupStore extends RovingCollectionStore<
 
   /** Requests that a registered Checkbox change its checked state. */
   requestToggle(
-    key: CheckboxGroupItemKey,
+    key: CollectionItemKey,
     checked: boolean,
     details: PressDetails,
     onAccepted?: () => void,
@@ -204,7 +182,7 @@ export class CheckboxGroupStore extends RovingCollectionStore<
   }
 
   protected createItemState(
-    key: CheckboxGroupItemKey,
+    key: CollectionItemKey,
     item: CollectionItemInput,
   ): CheckboxGroupItemState {
     return Object.freeze({
@@ -387,7 +365,7 @@ export class CheckboxGroupRenderable extends RovingCollectionRenderable<
 
   protected itemKeyFor(
     child: BaseRenderable,
-  ): CheckboxGroupItemKey | null | undefined {
+  ): CollectionItemKey | null | undefined {
     return child instanceof CheckboxRootRenderable &&
       child.group === this._store
       ? (child.groupKey ?? null)

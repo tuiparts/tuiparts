@@ -1,5 +1,14 @@
 # @tuiparts/solid
 
+## 0.0.6
+
+### Patch Changes
+
+- [#61](https://github.com/tuiparts/tuiparts/pull/61) [`74dd704`](https://github.com/tuiparts/tuiparts/commit/74dd704acc982b60ac36aaed35d8d05507e04af5) Thanks [@msmps](https://github.com/msmps)! - Add the Slider Primitive and editable Slider Recipes for Core, React, and Solid with bounded value ownership, keyboard steps, focus, native-backed terminal pointer dragging, and composable Track, Range, and Thumb Parts.
+
+- Updated dependencies [[`74dd704`](https://github.com/tuiparts/tuiparts/commit/74dd704acc982b60ac36aaed35d8d05507e04af5)]:
+  - @tuiparts/core@0.0.6
+
 ## 0.0.5
 
 ### Patch Changes

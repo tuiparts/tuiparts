@@ -1,0 +1,181 @@
+---
+title: Slider
+description: Own bounded values, stepped keyboard actions, focus, and terminal-cell dragging.
+---
+
+Slider packages bounded numeric selection without choosing dimensions, labels,
+glyphs, colors, or value formatting. It owns one scalar value and coordinates a
+focusable Track with optional passive Range and Thumb Parts.
+
+## Install
+
+Install the [package for your runtime](/primitives#install), then import the
+`slider` subpath:
+
+```ts
+import { Slider } from "@tuiparts/react/slider";
+```
+
+Replace `react` with `solid`. Core exports the matching Store and Renderables
+from `@tuiparts/core/slider`.
+
+## Anatomy
+
+| Part | Responsibility |
+| --- | --- |
+| `Root` | Owns value, bounds, steps, orientation, callbacks, and descendant coordination. |
+| `Track` | Owns actual focus, keyboard handling, track presses, and captured dragging. |
+| `Range` | Passive state-reflecting node for filled-range presentation. |
+| `Thumb` | Passive state-reflecting node for current-value presentation. |
+
+Root, Range, and Thumb are not focusable. Track accepts arbitrary visual
+children and is the only focus target. The first contract supports one Track,
+one Range, and one Thumb; multiple Thumbs are not supported.
+
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { Slider } from "@tuiparts/react/slider";
+
+<Slider.Root defaultValue={25} min={0} max={100} step={5}>
+  {(state) => {
+    const offset = Math.round((state.value / 100) * 19);
+    return (
+      <Slider.Track width={20} height={1} position="relative">
+        <text content={"─".repeat(20)} />
+        <Slider.Range width={offset + 1} position="absolute">
+          <text content={"━".repeat(offset + 1)} />
+        </Slider.Range>
+        <Slider.Thumb left={offset} position="absolute">
+          <text content="●" />
+        </Slider.Thumb>
+      </Slider.Track>
+    );
+  }}
+</Slider.Root>;
+```
+
+```tsx Solid
+import { Slider } from "@tuiparts/solid/slider";
+
+function SliderParts(props: { state: Slider.Root.State }) {
+  const offset = () => Math.round((props.state.value / 100) * 19);
+  return (
+    <Slider.Track width={20} height={1} position="relative">
+      <text content={"─".repeat(20)} />
+      <Slider.Range width={offset() + 1} position="absolute">
+        <text content={"━".repeat(offset() + 1)} />
+      </Slider.Range>
+      <Slider.Thumb left={offset()} position="absolute">
+        <text content="●" />
+      </Slider.Thumb>
+    </Slider.Track>
+  );
+}
+
+<Slider.Root defaultValue={25} min={0} max={100} step={5}>
+  {(state: Slider.Root.State) => <SliderParts state={state} />}
+</Slider.Root>;
+```
+
+```ts Core
+import {
+  SliderRangeRenderable,
+  SliderRootRenderable,
+  SliderThumbRenderable,
+  SliderTrackRenderable,
+} from "@tuiparts/core/slider";
+
+const root = new SliderRootRenderable(ctx, {
+  defaultValue: 25,
+  min: 0,
+  max: 100,
+  step: 5,
+});
+const track = new SliderTrackRenderable(ctx, {
+  store: root.store,
+  width: 20,
+  height: 1,
+});
+const range = new SliderRangeRenderable(ctx, { store: root.store });
+const thumb = new SliderThumbRenderable(ctx, { store: root.store });
+track.add(range);
+track.add(thumb);
+root.add(track);
+parent.add(root);
+```
+
+</CodeGroup>
+
+Framework adapters supply the Store through context. Core callers pass
+`root.store` to every Part. Runnable tracers are available for
+[Core](https://github.com/tuiparts/tuiparts/blob/main/packages/core/examples/slider.ts),
+[React](https://github.com/tuiparts/tuiparts/blob/main/packages/react/examples/slider.tsx),
+and [Solid](https://github.com/tuiparts/tuiparts/blob/main/packages/solid/examples/slider.tsx).
+
+## State ownership
+
+Use `value` with `onValueChange` for controlled ownership, or `defaultValue`
+for uncontrolled initial state. Without either, value starts at `min`.
+Controlled requests report intent and wait for the owner to provide the value;
+passing `undefined` releases control at the currently observed value.
+
+`min` and `max` default to `0` and `100`. They are finite, inclusive, and
+`min` cannot exceed `max`. `step` and `largeStep` default to `1` and `10` and
+must be positive and finite. External values are clamped to bounds. Pointer
+requests snap to the step grid anchored at `min`; keyboard steps add from the
+observed value with decimal-safe arithmetic.
+
+Root state contains `value`, `min`, `max`, `step`, `largeStep`, `orientation`,
+`disabled`, `readOnly`, `focused`, and `dragging`. Snapshots and callback
+details are frozen and remain referentially stable until observable state
+changes. `onValueCommit` runs once after an accepted keyboard action, track
+press, or completed moved drag.
+
+## Interaction
+
+| Input | Behavior |
+| --- | --- |
+| Left / Right | Decrease or increase a horizontal Slider by `step`. |
+| Down / Up | Decrease or increase a vertical Slider by `step`. |
+| Page Down / Page Up | Decrease or increase by `largeStep`. |
+| Home / End | Request `min` or `max`. |
+| Primary-pointer Track press | Request the nearest stepped value and focus Track. |
+| Primary-pointer drag | Update stepped values through captured dragging and commit once on release. |
+
+Cancelled keys, modifier chords, prevented pointer events, and non-primary
+buttons are ignored. Starting pointer work clears terminal text selection.
+Vertical pointer values increase toward the top, matching Up-key behavior.
+
+Read-only Track may focus but rejects interaction-driven mutation. Disabled
+Track rejects focus and all interaction. External controlled values continue
+to update either state. Removing Root permanently ends same-Store descendant
+coordination and cancels active pointer work.
+
+Track privately uses OpenTUI's native Slider mechanics for hit testing and
+captured drag offsets. Native painting and continuous values are not public API;
+Core remains the sole behavior owner.
+
+## API reference
+
+| Surface | API |
+| --- | --- |
+| React and Solid | `Slider.Root`, `.Track`, `.Range`, `.Thumb`, and scoped types |
+| Core | `SliderStore` and matching Root, Track, Range, and Thumb Renderables |
+| Value options | `value`, `defaultValue`, `onValueChange`, `onValueCommit` |
+| Numeric options | `min`, `max`, `step`, `largeStep` |
+| Interaction options | `orientation`, `disabled`, `readOnly` |
+| Root state | `value`, bounds, steps, orientation, focus, disabled, read-only, and dragging state |
+| Semantic actions | Track keyboard handling, track press, and captured drag |
+
+Framework refs target the actual matching Core Renderable. Track options omit
+native Slider coordination properties such as native value, viewport size,
+colors, and callback.
+
+## Start with the Recipe
+
+The editable [Slider Recipe](/catalog/slider) adds a label, displayed value,
+Track and Thumb glyphs, dimensions, horizontal and vertical geometry, and theme
+colors.

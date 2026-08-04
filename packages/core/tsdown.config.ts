@@ -13,6 +13,7 @@ export default defineConfig({
     "src/number-field/index.ts",
     "src/radio/index.ts",
     "src/radio-group/index.ts",
+    "src/slider/index.ts",
     "src/switch/index.ts",
     "src/tabs/index.ts",
     "src/textarea/index.ts",

@@ -104,6 +104,7 @@ try {
     "@tuiparts/core/number-field",
     "@tuiparts/core/radio",
     "@tuiparts/core/radio-group",
+    "@tuiparts/core/slider",
     "@tuiparts/core/switch",
     "@tuiparts/core/tabs",
     "@tuiparts/core/textarea",
@@ -120,6 +121,7 @@ try {
     "@tuiparts/react/number-field",
     "@tuiparts/react/radio",
     "@tuiparts/react/radio-group",
+    "@tuiparts/react/slider",
     "@tuiparts/react/switch",
     "@tuiparts/react/tabs",
     "@tuiparts/react/textarea",
@@ -136,6 +138,7 @@ try {
     "@tuiparts/solid/number-field",
     "@tuiparts/solid/radio",
     "@tuiparts/solid/radio-group",
+    "@tuiparts/solid/slider",
     "@tuiparts/solid/switch",
     "@tuiparts/solid/tabs",
     "@tuiparts/solid/textarea",
@@ -186,6 +189,10 @@ import {
   NumberFieldInputRenderable,
   NumberFieldRootRenderable,
 } from "@tuiparts/core/number-field";
+import {
+  SliderRootRenderable,
+  SliderTrackRenderable,
+} from "@tuiparts/core/slider";
 import {
   TabsListRenderable,
   TabsPanelRenderable,
@@ -259,6 +266,22 @@ try {
   increment.press();
   if (numberField.value !== 3 || numberInput.value !== "3")
     throw new Error("Compiled NumberField did not increment its value");
+
+  const slider = new SliderRootRenderable(setup.renderer, {
+    defaultValue: 2,
+    max: 4,
+  });
+  const sliderTrack = new SliderTrackRenderable(setup.renderer, {
+    store: slider.store,
+    width: 10,
+  });
+  slider.add(sliderTrack);
+  setup.renderer.root.add(slider);
+  slider.store.startPointer();
+  slider.store.requestPointerRatio(0.75);
+  slider.store.finishPointer();
+  if (slider.value !== 3)
+    throw new Error("Compiled Slider did not request its pointer value");
 
   const root = new TabsRootRenderable(setup.renderer);
   const list = new TabsListRenderable(setup.renderer, { store: root.store });

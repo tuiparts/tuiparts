@@ -23,6 +23,7 @@
     "./number-field": "./src/number-field/index.ts",
     "./radio": "./src/radio/index.ts",
     "./radio-group": "./src/radio-group/index.ts",
+    "./slider": "./src/slider/index.ts",
     "./switch": "./src/switch/index.ts",
     "./tabs": "./src/tabs/index.ts",
     "./textarea": "./src/textarea/index.ts",
@@ -77,6 +78,10 @@
         "types": "./dist/radio-group/index.d.mts",
         "import": "./dist/radio-group/index.mjs"
       },
+      "./slider": {
+        "types": "./dist/slider/index.d.mts",
+        "import": "./dist/slider/index.mjs"
+      },
       "./switch": {
         "types": "./dist/switch/index.d.mts",
         "import": "./dist/switch/index.mjs"
@@ -121,6 +126,9 @@
     "demo:checkbox-group": "bun run examples/checkbox-group.ts",
     "demo:collapsible": "bun run examples/collapsible.ts",
     "demo:number-field": "bun run examples/number-field.ts",
+    "demo:slider": "bun run examples/slider.ts",
+    "prototype:native-slider": "bun run examples/native-slider-prototype.ts",
+    "prototype:native-slider-adapter": "bun run examples/native-slider-adapter-prototype.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"

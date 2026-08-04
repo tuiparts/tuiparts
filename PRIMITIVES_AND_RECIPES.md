@@ -173,6 +173,32 @@ The focused contract is recorded in
 `docs/primitive-contracts/number-field.md`; ADR-0013 records the native Input
 and terminal-scrubbing boundary.
 
+## Slider Primitive
+
+Slider coordinates bounded scalar value ownership with keyboard and terminal
+pointer interaction:
+
+- `SliderStore` owns controlled or uncontrolled value, finite bounds,
+  decimal-safe normal and large steps, orientation, callbacks, commits, and
+  readonly state.
+- `Slider.Track` owns actual focus, orientation keys, track presses, and
+  captured dragging. It privately adapts OpenTUI's native Slider pointer
+  mechanics over a normalized transparent range.
+- `Slider.Range` and `.Thumb` are passive public Parts that expose the same
+  Store state without choosing visible geometry or glyphs.
+- Recipes own dimensions, labels, displayed values, Track and Thumb glyphs,
+  filled-range geometry, layout, and colors.
+
+Reference implementations:
+
+- `packages/core/src/slider/primitive.ts`
+- `packages/react/src/slider/primitive.ts`
+- `packages/solid/src/slider/primitive.ts`
+- `registry/slider/`
+
+The focused contract is recorded in `docs/primitive-contracts/slider.md`;
+ADR-0014 records the native pointer-mechanics boundary.
+
 ## Collapsible Primitive
 
 Collapsible packages disclosure behavior without choosing Trigger content or

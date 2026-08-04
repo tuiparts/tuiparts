@@ -279,6 +279,10 @@ public base class.
   dynamic Tab/Panel association, automatic or manual activation, rendered
   order, roving focus, repair, and Panel visibility. Root owns the Store, List
   owns collection availability/order, and Tab/Panel Parts consume it directly.
+- Slider retains a public Store for controlled or uncontrolled bounded value,
+  decimal-safe steps, orientation, focus reflection, pointer requests, and
+  commit timing. Root owns the Store, Track privately adapts native OpenTUI
+  pointer mechanics, and Range/Thumb consume the Store passively.
 
 React creates a component-specific Core Store before host construction so state
 callbacks and compound context are authoritative during the first render. The
@@ -425,6 +429,9 @@ The shipped primitives establish these precedents:
 - NumberField proves that a Primitive can coordinate that native editing seam
   with distinct numeric value ownership, intermediate drafts, decimal-safe
   bounded stepping, semantic commits, and terminal-cell pointer scrubbing.
+- Slider proves that a Primitive can retain native OpenTUI pointer capture and
+  drag offsets behind Core-owned bounded value, keyboard, focus, commit, and
+  independently composable Track, Range, and Thumb contracts.
 - Textarea extends that precedent to OpenTUI's multiline `EditBuffer`, native
   cursor/content/submit callbacks, editing methods, paste, and keybindings.
 - Dialog proves renderer-scoped portals, topmost layer arbitration, cancellable

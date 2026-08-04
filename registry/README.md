@@ -23,6 +23,7 @@ Each catalog recipe is available as `core/<name>`, `react/<name>`, and
 | RadioGroup/Radio | Radio collection and selectable parts | `RadioGroup`, `RadioGroupItem` |
 | Input | Native OpenTUI input behavior | `Input` |
 | NumberField | Numeric drafts, bounded stepping, commits, and terminal-cell scrubbing | `NumberField` |
+| Slider | Bounded value ownership, keyboard steps, focus, pointer capture, and commits | `Slider` |
 | Textarea | Native OpenTUI multiline editing | `Textarea` |
 | Dialog | Overlay layers, focus containment, and dismissal | `Dialog`, `DialogTrigger`, `DialogContent`, `DialogTitle`, `DialogDescription`, `DialogClose` |
 | Badge | None; presentation-only recipe | `Badge` |

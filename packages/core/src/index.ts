@@ -133,6 +133,25 @@ export {
   type RadioGroupValueChangeHandler,
 } from "./radio-group";
 export {
+  type SliderChangeDetails,
+  type SliderChangeReason,
+  type SliderKey,
+  type SliderOrientation,
+  type SliderRangeOptions,
+  SliderRangeRenderable,
+  type SliderRootOptions,
+  SliderRootRenderable,
+  type SliderState,
+  SliderStore,
+  type SliderStoreOptions,
+  type SliderThumbOptions,
+  SliderThumbRenderable,
+  type SliderTrackOptions,
+  SliderTrackRenderable,
+  type SliderValueChangeHandler,
+  type SliderValueCommitHandler,
+} from "./slider";
+export {
   type SwitchRootOptions,
   SwitchRootRenderable,
   type SwitchState,

@@ -28,6 +28,7 @@ import {
   NumberField,
   Radio,
   RadioGroup,
+  Slider,
   Switch,
   Textarea,
   Toggle,
@@ -65,6 +66,9 @@ export function Settings() {
         <NumberField.Increment><text content="+" /></NumberField.Increment>
       </NumberField.Root>
       <Textarea initialValue="Release notes" onSubmit={console.log} />
+      <Slider.Root defaultValue={25} max={100}>
+        <Slider.Track width={20}><text content="────────────────────" /></Slider.Track>
+      </Slider.Root>
       <Switch.Root checked={checked()} onCheckedChange={setChecked}>
         {(state) => <text content={state.checked ? "On" : "Off"} />}
       </Switch.Root>
@@ -90,6 +94,7 @@ update controlled primitive state without remounting.
 
 From a repository checkout, run a focused tracer with
 `pnpm --filter @tuiparts/solid demo:number-field`,
+`pnpm --filter @tuiparts/solid demo:slider`,
 `pnpm --filter @tuiparts/solid demo:checkbox-group`,
 `pnpm --filter @tuiparts/solid demo:accordion`, or
 `pnpm --filter @tuiparts/solid demo:collapsible`.
@@ -106,6 +111,7 @@ import { Input } from "@tuiparts/solid/input";
 import { NumberField } from "@tuiparts/solid/number-field";
 import { Radio } from "@tuiparts/solid/radio";
 import { RadioGroup } from "@tuiparts/solid/radio-group";
+import { Slider } from "@tuiparts/solid/slider";
 import { Switch } from "@tuiparts/solid/switch";
 import { Textarea } from "@tuiparts/solid/textarea";
 import { Dialog } from "@tuiparts/solid/dialog";

@@ -1,0 +1,97 @@
+---
+title: Slider
+description: Choose a bounded value by keyboard, track press, or terminal-cell dragging.
+---
+
+Slider provides a ready-to-edit bounded value control. The packaged Primitive
+owns value state, steps, focus, pointer capture, and commit timing. The Recipe
+adds the label, displayed value, terminal dimensions, Track and Thumb glyphs,
+layout, and theme colors.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/slider
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/slider
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/slider
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import { Slider } from "./components/ui/slider";
+
+<Slider
+  label="Volume"
+  defaultValue={25}
+  min={0}
+  max={100}
+  step={5}
+  onValueCommit={(value) => saveVolume(value)}
+/>;
+```
+
+Use `value` with `onValueChange` when the application owns the current value.
+Set `orientation="vertical"` when the surrounding layout calls for a vertical
+Track.
+
+### Core
+
+```ts
+import { createSlider } from "./components/ui/slider";
+
+const volume = createSlider(ctx, {
+  label: "Volume",
+  defaultValue: 25,
+  min: 0,
+  max: 100,
+  step: 5,
+  onValueCommit: (value) => saveVolume(value),
+});
+
+parent.add(volume);
+```
+
+The returned Root Renderable exposes the packaged Store and current value.
+
+## Customize the Recipe
+
+The copied source owns the label, value formatting, Track length, horizontal or
+vertical layout, Track and Thumb glyphs, and theme colors. Edit it to add units,
+hide the displayed value, change the filled Range treatment, or place labels at
+both bounds. Shared defaults come from the [Theme Recipe](/theming).
+
+Track, Range, and Thumb remain independently composable packaged Parts beneath
+that presentation. Keep each glyph to one terminal cell unless you also adapt
+the Recipe's geometry.
+
+## Behavior
+
+Press or drag Track with the primary pointer button to request the nearest
+step. Horizontal Slider uses Left and Right; vertical Slider uses Down and Up.
+Page Up and Page Down use the large step, while Home and End jump to the bounds.
+Each value-changing keyboard action, Track press, or moved drag commits once.
+
+Read-only Slider remains focusable but rejects interaction-driven value
+changes. Disabled Slider rejects focus and every interaction. External
+controlled values continue to update either state. Detailed ownership, pointer translation,
+and lifecycle rules belong to the [Slider Primitive](/primitives/slider).
+
+## Recipe API
+
+`Slider` requires `label`. `trackSize` defaults to `20`; `trackMark` and
+`thumbMark` default to Theme glyphs. `formatValue` defaults to `String`. The
+Recipe forwards packaged Root props. Core exposes equivalent `createSlider()`
+options.

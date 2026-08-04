@@ -30,6 +30,7 @@ colors, spacing, glyphs, labels, or fixed visual trees.
 | Dialog | `DialogStore` | Root, Trigger, Portal, Backdrop, Popup, Title, Description, Close Renderables |
 | Input | OpenTUI-native state | `InputRenderable` |
 | NumberField | `NumberFieldStore` | Root, Input, Increment, Decrement, and ScrubArea Renderables |
+| Slider | `SliderStore` | Root, Track, Range, and Thumb Renderables |
 | Textarea | OpenTUI-native `EditBuffer` | `TextareaRenderable` |
 | Radio / RadioGroup | `RadioGroupStore` | `RadioGroupRenderable`, `RadioRootRenderable`, `RadioIndicatorRenderable` |
 | Switch | `SwitchStore` | `SwitchRootRenderable`, `SwitchThumbRenderable` |
@@ -61,6 +62,7 @@ choose their presentation. Installable examples live under `registry/`.
 
 From a repository checkout, run a focused tracer with
 `pnpm --filter @tuiparts/core demo:number-field`,
+`pnpm --filter @tuiparts/core demo:slider`,
 `pnpm --filter @tuiparts/core demo:checkbox-group`,
 `pnpm --filter @tuiparts/core demo:accordion`, or
 `pnpm --filter @tuiparts/core demo:collapsible`.

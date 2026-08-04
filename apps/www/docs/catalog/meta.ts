@@ -8,6 +8,7 @@ export default defineMeta({
     "button",
     "input",
     "number-field",
+    "slider",
     "textarea",
     "checkbox",
     "checkbox-group",

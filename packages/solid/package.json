@@ -15,6 +15,7 @@
     "./dist/number-field/**",
     "./dist/radio-group/**",
     "./dist/radio/**",
+    "./dist/slider/**",
     "./dist/switch/**",
     "./dist/tabs/**",
     "./dist/textarea/**",
@@ -39,6 +40,7 @@
     "./number-field": "./src/number-field/index.ts",
     "./radio": "./src/radio/index.tsx",
     "./radio-group": "./src/radio-group/index.tsx",
+    "./slider": "./src/slider/index.ts",
     "./switch": "./src/switch/index.tsx",
     "./tabs": "./src/tabs/index.ts",
     "./textarea": "./src/textarea/index.tsx",
@@ -93,6 +95,10 @@
         "types": "./dist/radio-group/index.d.mts",
         "import": "./dist/radio-group/index.mjs"
       },
+      "./slider": {
+        "types": "./dist/slider/index.d.mts",
+        "import": "./dist/slider/index.mjs"
+      },
       "./switch": {
         "types": "./dist/switch/index.d.mts",
         "import": "./dist/switch/index.mjs"
@@ -137,6 +143,7 @@
     "demo:checkbox-group": "bun run --preload @opentui/solid/preload examples/checkbox-group.tsx",
     "demo:collapsible": "bun run --preload @opentui/solid/preload examples/collapsible.tsx",
     "demo:number-field": "bun run --preload @opentui/solid/preload examples/number-field.tsx",
+    "demo:slider": "bun run --preload @opentui/solid/preload examples/slider.tsx",
     "test": "bun test --preload @opentui/solid/preload",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"

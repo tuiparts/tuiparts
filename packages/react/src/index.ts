@@ -9,6 +9,7 @@ export * from "./input";
 export * from "./number-field";
 export * from "./radio";
 export * from "./radio-group";
+export * from "./slider";
 export * from "./switch";
 export * from "./tabs";
 export * from "./textarea";

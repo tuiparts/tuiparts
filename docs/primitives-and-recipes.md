@@ -93,10 +93,11 @@ root.add(indicator);
 | RadioGroup/Radio | `RadioGroup`, `Radio.Root`, `Radio.Indicator` | group value/disabled; radio checked/focused/availability | Radio `press()`; arrows, Home/End, Enter/Return/Space | matching Group, Radio, or Indicator Renderable |
 | Input | `Input` | OpenTUI-owned mutable buffer | native editing; `onInput`, `onChange`, `onSubmit` | `InputRenderable` |
 | NumberField | `NumberField.Root`, `.Input`, `.Increment`, `.Decrement`, `.ScrubArea` | value, inputValue, disabled, readOnly, focused, scrubbing | numeric editing; bounded key and press steps; terminal-cell drag | matching Part Renderable |
+| Slider | `Slider.Root`, `.Track`, `.Range`, `.Thumb` | value, bounds, steps, orientation, disabled, readOnly, focused, dragging | orientation keys; bounds; track press and captured drag | matching Part Renderable |
 | Textarea | `Textarea` | OpenTUI-owned `EditBuffer` | native multiline editing; content, cursor, submit callbacks | `TextareaRenderable` |
 | Dialog | `Dialog.Root`, Trigger, Portal, Backdrop, Popup, Title, Description, Close | open | Trigger/Close `press()`; Enter/Return/Space, Escape, Tab containment | matching Dialog part Renderable |
 
-Accordion, Checkbox, CheckboxGroup, Collapsible, NumberField, Switch, Toggle,
+Accordion, Checkbox, CheckboxGroup, Collapsible, NumberField, Slider, Switch, Toggle,
 ToggleGroup, Tabs, RadioGroup, and Dialog support controlled and uncontrolled
 ownership. RadioGroup owns one collection value and every Radio must belong to
 a group.
@@ -132,6 +133,7 @@ The starter catalog provides `core/*`, `react/*`, and `solid/*` items for:
 - RadioGroup/Radio
 - Input
 - NumberField
+- Slider
 - Textarea
 - Dialog
 - Badge

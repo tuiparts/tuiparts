@@ -13,6 +13,7 @@
       "input",
       "number-field",
       "radio-group",
+      "slider",
       "switch",
       "tabs",
       "textarea",

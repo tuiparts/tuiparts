@@ -30,6 +30,7 @@ specification. ADR-0009 defines how to deliver that contract completely.
 | [0011](0011-serve-recipes-as-universal-registry-items.md) | Recipes are universal shadcn Registry items that install without framework detection or `components.json`. |
 | [0012](0012-checkbox-optionally-adopts-checkbox-group.md) | Checkbox optionally adopts CheckboxGroup array ownership and roving focus without introducing an Item Part. |
 | [0013](0013-number-field-coordinates-native-input-and-terminal-scrubbing.md) | NumberField coordinates OpenTUI Input editing with numeric ownership and terminal-cell scrubbing. |
+| [0014](0014-slider-uses-native-pointer-mechanics-under-core-owned-state.md) | Slider keeps Core-owned state and Parts while reusing native pointer mechanics privately in Track. |
 
 ADR numbering is intentionally append-only and may contain gaps. ADR-0003 was
 a temporary RC decision superseded by ADR-0004 before the first stable

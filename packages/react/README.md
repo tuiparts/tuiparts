@@ -28,6 +28,7 @@ import {
   NumberField,
   Radio,
   RadioGroup,
+  Slider,
   Switch,
   Textarea,
   Toggle,
@@ -65,6 +66,9 @@ export function Settings() {
         <NumberField.Increment><text content="+" /></NumberField.Increment>
       </NumberField.Root>
       <Textarea initialValue="Release notes" onSubmit={console.log} />
+      <Slider.Root defaultValue={25} max={100}>
+        <Slider.Track width={20}><text content="────────────────────" /></Slider.Track>
+      </Slider.Root>
       <Switch.Root checked={checked} onCheckedChange={setChecked}>
         {(state) => <text content={state.checked ? "On" : "Off"} />}
       </Switch.Root>
@@ -87,6 +91,7 @@ export function Settings() {
 
 From a repository checkout, run a focused tracer with
 `pnpm --filter @tuiparts/react demo:number-field`,
+`pnpm --filter @tuiparts/react demo:slider`,
 `pnpm --filter @tuiparts/react demo:checkbox-group`,
 `pnpm --filter @tuiparts/react demo:accordion`, or
 `pnpm --filter @tuiparts/react demo:collapsible`.
@@ -106,6 +111,7 @@ import { Input } from "@tuiparts/react/input";
 import { NumberField } from "@tuiparts/react/number-field";
 import { Radio } from "@tuiparts/react/radio";
 import { RadioGroup } from "@tuiparts/react/radio-group";
+import { Slider } from "@tuiparts/react/slider";
 import { Switch } from "@tuiparts/react/switch";
 import { Textarea } from "@tuiparts/react/textarea";
 import { Dialog } from "@tuiparts/react/dialog";

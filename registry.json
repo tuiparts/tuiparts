@@ -508,6 +508,69 @@
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
+      "name": "core/slider",
+      "type": "registry:item",
+      "title": "Slider (Core)",
+      "description": "Editable imperative Slider Recipe built on the tuiparts.sh packaged Primitive.",
+      "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/slider/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/slider.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
+    },
+    {
+      "name": "react/slider",
+      "type": "registry:item",
+      "title": "Slider (React)",
+      "description": "Editable React Slider Recipe built on the tuiparts.sh packaged Primitive.",
+      "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/slider/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/slider.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
+    },
+    {
+      "name": "solid/slider",
+      "type": "registry:item",
+      "title": "Slider (Solid)",
+      "description": "Editable Solid Slider Recipe built on the tuiparts.sh packaged Primitive.",
+      "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/slider/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/slider.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
+    },
+    {
       "name": "core/input",
       "type": "registry:item",
       "title": "Input (Core)",

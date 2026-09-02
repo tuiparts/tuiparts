@@ -1,73 +1,92 @@
-# tuiparts.sh
+# tuiparts.sh — OpenTUI Primitives and Recipes
 
-The primitive and recipe ecosystem for
-[OpenTUI](https://github.com/anomalyco/opentui).
+Build terminal user interfaces with packaged interaction behavior and editable
+source for OpenTUI Core, React, and Solid. Install Recipes with the official
+shadcn CLI, then own every presentation decision in your application.
 
-```
-BEHAVIOR: packaged.
-STYLE:    yours.
-```
+![tuiparts.sh, the OpenTUI Primitive and Recipe ecosystem](./docs/brand/tuiparts-opentui-primitives-recipes.webp)
 
-Parts for terminal interfaces. Some assembly encouraged.
+[Browse Recipes](https://tuiparts.sh/docs/catalog/) ·
+[Quick start](https://tuiparts.sh/docs/quickstart/) ·
+[Explore Primitives](https://tuiparts.sh/docs/primitives/) ·
+[Read the documentation](https://tuiparts.sh/docs/)
 
-```
-        2 ─╌╌╌ ✓
+## Start with a Recipe
 
-        1 ─╌╌ ┌─┐
-              └─┘
+Recipes are styled Core, React, or Solid source that you copy into an existing
+[OpenTUI](https://github.com/anomalyco/opentui) application. Choose a runtime
+and install a Checkbox Recipe:
 
-  FIG. 1 — CHECKBOX, EXPLODED VIEW
-  1. Root   2. Indicator
-```
+| Runtime | Command |
+| --- | --- |
+| Core | `pnpm dlx shadcn@4.13.0 add @tuiparts/core/checkbox` |
+| React | `pnpm dlx shadcn@4.13.0 add @tuiparts/react/checkbox` |
+| Solid | `pnpm dlx shadcn@4.13.0 add @tuiparts/solid/checkbox` |
 
-tuiparts.sh ships in two halves:
+The CLI copies the Recipe and its consumer-owned theme into `components/ui`
+and installs its package dependencies. There is no shadcn project setup or
+hidden styling runtime. Change the installed source when you need a different
+layout, glyph, token mapping, or public API.
 
-- **Primitives** — npm packages that own the difficult, unstyled behavior:
-  state, focus, keyboard and pointer handling, overlays, collections. Every
-  Primitive exposes independently composable public **Parts** (Root,
-  Indicator, and so on) — the diagram above is not a metaphor.
-- **Recipes** — styled component source you copy into your repo and own
-  outright. Recipes compose Parts and own every glyph, color, and layout
-  decision.
+[See the Checkbox Recipe in use](https://tuiparts.sh/docs/catalog/checkbox/) or
+[browse the complete Catalog](https://tuiparts.sh/docs/catalog/).
 
-> Package the difficult behavior. Copy the opinionated layer.
+## Package the difficult behavior. Copy the opinionated layer.
 
-Architecture references: [`PRIMITIVES_AND_RECIPES.md`](./PRIMITIVES_AND_RECIPES.md)
-for the product architecture, [`PRIMITIVE_CONTRACT.md`](./PRIMITIVE_CONTRACT.md)
-for the primitive contract, and the [primitive and recipe guide](./docs/primitives-and-recipes.md)
-to choose packaged Primitives or editable Recipes.
+tuiparts.sh separates terminal UI work by ownership:
 
-(Pronounced "too-ee parts." That is the only time we will bring it up.)
+- **Primitives** package the behavior that is difficult to implement and
+  expensive to maintain: state, focus, keyboard and pointer interaction,
+  collections, overlays, and lifecycle. They expose independently composable
+  public **Parts** such as Root, Indicator, Thumb, Trigger, and Panel.
+- **Recipes** assemble those Parts into working controls with editable layout,
+  colors, glyphs, labels, variants, and convenience props. The copied source
+  belongs to your application.
 
-## Foundation
+Most users should start with a Recipe and reshape it into their house style.
+Use a Primitive directly when you need its tested behavior without adopting a
+Recipe's composition or public API.
 
-The Foundation is the linked-version release line: core, react, and solid
-version together.
+> Behavior is packaged. Presentation is yours.
+
+Read [Primitives and Recipes](./docs/primitives-and-recipes.md) for the layer
+choice, [the product architecture](./PRIMITIVES_AND_RECIPES.md) for the deeper
+model, and [the Primitive contract](./PRIMITIVE_CONTRACT.md) for the public
+behavior standard.
+
+## Catalog
+
+The Catalog includes editable Recipes for Accordion, Badge, Button, Checkbox,
+Checkbox Group, Collapsible, Dialog, Input, Number Field, Radio Group, Slider,
+Switch, Tabs, Textarea, Toggle, and Toggle Group. Every Recipe is available for
+Core, React, and Solid.
+
+Interactive Recipes build on packaged Primitives. Badge is Recipe-only because
+it has no reusable interaction behavior. Shared colors, glyphs, borders, and
+density live in the consumer-owned Theme Recipe.
+
+The [Registry guide](https://tuiparts.sh/docs/registry/) covers installation,
+source ownership, and reviewing upstream changes with the standard shadcn
+`view`, `diff`, and `add` lifecycle.
+
+## Foundation packages
+
+Core owns the framework-neutral behavior. React and Solid adapt the same Stores
+and Renderables to compound-part APIs. The three Foundation packages version
+together.
 
 | Package | Purpose |
 | --- | --- |
-| [`@tuiparts/core`](./packages/core) | Framework-neutral Primitive state and Renderables |
+| [`@tuiparts/core`](./packages/core) | Framework-neutral Primitive Stores and Renderables |
 | [`@tuiparts/react`](./packages/react) | React compound-part Adapter |
 | [`@tuiparts/solid`](./packages/solid) | Solid compound-part Adapter |
 
-Accordion, Button, Checkbox, CheckboxGroup, Collapsible, Dialog, Input,
-NumberField, RadioGroup, Slider, Switch, Tabs, Textarea, Toggle, and ToggleGroup expose Primitive
-behavior. Badge is distributed only as editable Recipe source because it has
-no reusable interaction behavior.
+To compose Primitives directly, add the Foundation package for your runtime to
+an existing OpenTUI application:
 
-The [Catalog](./registry) distributes consumer-owned Core, React, and Solid
-Recipes with their install and update lifecycle.
-
-[`@tuiparts/dialog`](./packages/dialog) and
-[`@tuiparts/toast`](./packages/toast) are Companion packages: independently
-versioned convenience products with higher-level APIs outside the Foundation
-release line.
-
-## Install an Adapter
-
-Add one Adapter to an existing OpenTUI application. The React and Solid
-Adapters install `@tuiparts/core`; your application already owns its OpenTUI
-runtime and framework peers.
+```bash
+pnpm add @tuiparts/core
+```
 
 ```bash
 pnpm add @tuiparts/react
@@ -77,29 +96,13 @@ pnpm add @tuiparts/react
 pnpm add @tuiparts/solid
 ```
 
-See the package READMEs for exact peer ranges and usage.
+React and Solid install `@tuiparts/core`; the host application owns its OpenTUI
+runtime and framework peers. See each package README for exact peer ranges and
+usage.
 
-## Install a Recipe
-
-Recipes are installed with the official shadcn CLI and become
-application-owned source. The Catalog contains Accordion, Checkbox,
-CheckboxGroup, Collapsible, Switch, Button, NumberField, Slider,
-RadioGroup/Radio, Tabs, Toggle, ToggleGroup, Input, Textarea, Dialog, and Badge
-Recipes; every Recipe targets exactly one Adapter, so choose the `core/*`,
-`react/*`, or `solid/*` item for your runtime:
-
-```bash
-pnpm dlx shadcn@4.13.0 add <item-address>
-```
-
-Recipes are universal Registry items with explicit targets. The shadcn
-Registry Directory resolves `@tuiparts`, so installation needs no
-`components.json`, Tailwind configuration, or framework initialization.
-
-Editing the copied source is not a workaround — it is the intended
-maintenance model. See the [primitive and recipe guide](./docs/primitives-and-recipes.md) for the
-starter Catalog and the [Catalog lifecycle](./registry/README.md) for safe
-update commands.
+[`@opentui-ui/dialog`](./packages/dialog) and
+[`@opentui-ui/toast`](./packages/toast) are independently versioned Companion
+products with higher-level APIs outside the Foundation release line.
 
 ## Development
 
@@ -118,7 +121,7 @@ pnpm validate:packages
 publint and Are the Types Wrong, installs the tarballs in a clean consumer,
 typechecks every exported subpath, and executes representative runtime imports.
 
-## Release Workflow
+## Release workflow
 
 1. Add changesets for publishable changes.
 2. Merge the generated version PR after CI passes.
@@ -128,7 +131,9 @@ typechecks every exported subpath, and executes representative runtime imports.
 ## Attribution
 
 tuiparts.sh is an independent project built for OpenTUI. It is not affiliated
-with, or endorsed by, the OpenTUI project.
+with or endorsed by the OpenTUI or shadcn projects.
+
+(Pronounced "too-ee parts.")
 
 ## License
 

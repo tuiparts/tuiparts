@@ -3,6 +3,7 @@ import data from "blume:data";
 import CodeBlock from "blume/components/content/CodeBlock.astro";
 import CodeGroup from "blume/components/content/CodeGroup.astro";
 import PageLayout from "blume/components/layout/PageLayout.astro";
+import LandingHeaderStar from "../components/LandingHeaderStar.astro";
 
 const { config } = data;
 
@@ -124,6 +125,7 @@ const pillars = [
     description: config.description,
   }}
 >
+  <LandingHeaderStar />
   <script is:inline>document.documentElement.classList.add("js");</script>
 
   {/* ── Hero — title left, live terminal render right ── */}

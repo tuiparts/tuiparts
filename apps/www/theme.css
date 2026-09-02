@@ -152,6 +152,13 @@ body {
   }
 }
 
+/* The Search slot adds the explicit star action. Hide Blume's duplicate
+   icon-only repository link while preserving its source/edit-page links. */
+[data-blume-header]:has(.github-star--header)
+  a[aria-label][href="https://github.com/tuiparts/tuiparts"] {
+  display: none;
+}
+
 ::selection {
   background: var(--tp-selection);
 }

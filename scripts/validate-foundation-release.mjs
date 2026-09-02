@@ -17,12 +17,24 @@ const foundationPackages = [
   "@tuiparts/react",
   "@tuiparts/solid",
 ];
-const companionPackages = ["@tuiparts/dialog", "@tuiparts/toast"];
+const companionPackages = ["@opentui-ui/dialog", "@opentui-ui/toast"];
 const versionedRelease = process.argv.includes("--versioned");
 const since = process.argv.find((argument) => argument.startsWith("--since="));
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
+}
+
+function packageVersion(packageName, reference) {
+  const packagePath = packageName.split("/").at(-1);
+  const packageJson = reference
+    ? execFileSync(
+        "git",
+        ["show", `${reference}:packages/${packagePath}/package.json`],
+        { cwd: root, encoding: "utf8" },
+      )
+    : readFileSync(join(root, `packages/${packagePath}/package.json`), "utf8");
+  return JSON.parse(packageJson).version;
 }
 
 try {
@@ -60,25 +72,25 @@ try {
     plan.releases.map((release) => [release.name, release]),
   );
 
-  const plannedFoundation = foundationPackages.filter((packageName) =>
-    releases.has(packageName),
-  );
+  const isPlanned = versionedRelease
+    ? (packageName) =>
+        packageVersion(packageName) !== packageVersion(packageName, "origin/main")
+    : (packageName) => releases.has(packageName);
+  const plannedFoundation = foundationPackages.filter(isPlanned);
+  const plannedCompanions = companionPackages.filter(isPlanned);
   assert(
     plannedFoundation.length === 0 ||
       plannedFoundation.length === foundationPackages.length,
     "Linked foundation packages must enter the release plan together",
   );
+  assert(
+    plannedFoundation.length === 0 || plannedCompanions.length === 0,
+    "Foundation and companion packages must use separate release plans",
+  );
   const foundationVersions = new Set();
   for (const packageName of foundationPackages) {
     const release = releases.get(packageName);
-    const version = release
-      ? release.newVersion
-      : JSON.parse(
-          readFileSync(
-            join(root, `packages/${packageName.split("/").at(-1)}/package.json`),
-            "utf8",
-          ),
-        ).version;
+    const version = release ? release.newVersion : packageVersion(packageName);
     assert(
       /^\d+\.\d+\.\d+$/.test(version),
       `${packageName} must use a stable semantic version`,
@@ -90,29 +102,6 @@ try {
     "Linked foundation packages must release at the same version",
   );
 
-  for (const packageName of companionPackages) {
-    assert(
-      !releases.has(packageName),
-      `${packageName} is an independent companion and must not join a foundation release`,
-    );
-    if (versionedRelease) {
-      const packagePath = packageName.split("/").at(-1);
-      const version = JSON.parse(
-        readFileSync(join(root, `packages/${packagePath}/package.json`), "utf8"),
-      ).version;
-      const baseVersion = JSON.parse(
-        execFileSync(
-          "git",
-          ["show", `origin/main:packages/${packagePath}/package.json`],
-          { cwd: root, encoding: "utf8" },
-        ),
-      ).version;
-      assert(
-        version === baseVersion,
-        `${packageName} must remain unchanged in the foundation version PR`,
-      );
-    }
-  }
   assert(
     !releases.has("@tuiparts/styles"),
     "The removed styles package must not appear in the release plan",

@@ -61,7 +61,7 @@ export class BackdropRenderable extends BoxRenderable {
     const opacity = normalizeOpacity(
       dialog?.backdropOpacity ?? containerOptions.backdropOpacity,
       DEFAULT_BACKDROP_OPACITY,
-      "@tuiparts/dialog",
+      "@opentui-ui/dialog",
     );
     const rgba = parseColor(color);
     rgba.a = opacity / 255;

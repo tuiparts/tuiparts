@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# link-dev.sh - Development linking script for @tuiparts/dialog
+# link-dev.sh - Development linking script for @opentui-ui/dialog
 #
-# This script creates a symbolic link (or copy) of the @tuiparts/dialog package
+# This script creates a symbolic link (or copy) of the @opentui-ui/dialog package
 # into another project's node_modules directory for local development and testing.
 #
 # Usage:
@@ -88,7 +88,7 @@ if [ ! -d "$NODE_MODULES_DIR" ]; then
 	exit 1
 fi
 
-echo "Linking @tuiparts/dialog from: $REPO_ROOT"
+echo "Linking @opentui-ui/dialog from: $REPO_ROOT"
 echo "To node_modules in: $NODE_MODULES_DIR"
 echo
 
@@ -127,11 +127,11 @@ else
 	echo "Creating symbolic link..."
 fi
 
-# Link @tuiparts/dialog
-remove_if_exists "$NODE_MODULES_DIR/@tuiparts/dialog"
+# Link @opentui-ui/dialog
+remove_if_exists "$NODE_MODULES_DIR/@opentui-ui/dialog"
 PACKAGE_PATH="$REPO_ROOT$SUFFIX"
 if [ -d "$PACKAGE_PATH" ]; then
-	link_or_copy "$PACKAGE_PATH" "$NODE_MODULES_DIR/@tuiparts/dialog" "@tuiparts/dialog"
+	link_or_copy "$PACKAGE_PATH" "$NODE_MODULES_DIR/@opentui-ui/dialog" "@opentui-ui/dialog"
 else
 	echo "Warning: $PACKAGE_PATH not found"
 fi

@@ -180,7 +180,7 @@ function validateContentAccessor(
 ): asserts content is ContentAccessor {
   if (typeof content !== "function") {
     throw new Error(
-      `[@tuiparts/dialog/solid] Invalid content type: expected a function returning JSX, but received ${typeof content}.\n\n` +
+      `[@opentui-ui/dialog/solid] Invalid content type: expected a function returning JSX, but received ${typeof content}.\n\n` +
         `Solid.js JSX is eagerly evaluated, so you must wrap content in a function:\n\n` +
         `  // CORRECT\n` +
         `  dialog.show({ content: () => <text>Hello</text> })\n\n` +
@@ -198,7 +198,7 @@ function useDialogContext(): DialogContextValue {
     throw new Error(
       "useDialog/useDialogState must be used within a DialogProvider.\n\n" +
         "Wrap your app with <DialogProvider>:\n\n" +
-        "  import { DialogProvider } from '@tuiparts/dialog/solid';\n\n" +
+        "  import { DialogProvider } from '@opentui-ui/dialog/solid';\n\n" +
         "  function App() {\n" +
         "    return (\n" +
         "      <DialogProvider>\n" +
@@ -416,7 +416,6 @@ export function DialogProvider(props: ParentProps<DialogProviderProps>) {
     disposed = true;
     unsubscribe();
     portalItemCache.clear();
-    renderer.root.remove(container);
     container.destroyRecursively();
     manager.destroy();
   });

@@ -8,19 +8,29 @@ catalogs:
   default:
     '@opentui/core':
       specifier: ^0.4.3
-      version: 0.4.3
+      version: 0.4.5
     '@opentui/react':
       specifier: ^0.4.3
-      version: 0.4.3
+      version: 0.4.5
     '@opentui/solid':
       specifier: ^0.4.3
-      version: 0.4.3
+      version: 0.4.5
     '@types/node':
       specifier: ^24.13.3
       version: 24.13.3
     ws:
       specifier: ^8.21.0
       version: 8.21.0
+  dialog-dev:
+    '@opentui/core':
+      specifier: ^0.5.10
+      version: 0.5.10
+    '@opentui/react':
+      specifier: ^0.5.10
+      version: 0.5.10
+    '@opentui/solid':
+      specifier: ^0.5.10
+      version: 0.5.10
 
 overrides:
   path-to-regexp@6.1.0: 6.3.0
@@ -83,7 +93,7 @@ importers:
     dependencies:
       '@opentui/core':
         specifier: 'catalog:'
-        version: 0.4.3(typescript@5.9.3)(web-tree-sitter@0.25.10)
+        version: 0.4.5(typescript@5.9.3)(web-tree-sitter@0.25.10)
       '@tuiparts/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -102,10 +112,10 @@ importers:
     dependencies:
       '@opentui/core':
         specifier: 'catalog:'
-        version: 0.4.3(typescript@5.9.3)(web-tree-sitter@0.25.10)
+        version: 0.4.5(typescript@5.9.3)(web-tree-sitter@0.25.10)
       '@opentui/react':
         specifier: 'catalog:'
-        version: 0.4.3(react-devtools-core@7.0.1)(react@19.2.7)(typescript@5.9.3)(web-tree-sitter@0.25.10)(ws@8.21.0)
+        version: 0.4.5(react-devtools-core@7.0.1)(react@19.2.7)(typescript@5.9.3)(web-tree-sitter@0.25.10)(ws@8.21.0)
       '@tuiparts/react':
         specifier: workspace:*
         version: link:../../packages/react
@@ -133,10 +143,10 @@ importers:
     dependencies:
       '@opentui/core':
         specifier: 'catalog:'
-        version: 0.4.3(typescript@5.9.3)(web-tree-sitter@0.25.10)
+        version: 0.4.5(typescript@5.9.3)(web-tree-sitter@0.25.10)
       '@opentui/solid':
         specifier: 'catalog:'
-        version: 0.4.3(solid-js@1.9.12)(typescript@5.9.3)(web-tree-sitter@0.25.10)
+        version: 0.4.5(solid-js@1.9.12)(typescript@5.9.3)(web-tree-sitter@0.25.10)
       '@tuiparts/solid':
         specifier: workspace:*
         version: link:../../packages/solid
@@ -167,7 +177,7 @@ importers:
     devDependencies:
       '@opentui/core':
         specifier: 'catalog:'
-        version: 0.4.3(typescript@5.9.3)(web-tree-sitter@0.25.10)
+        version: 0.4.5(typescript@5.9.3)(web-tree-sitter@0.25.10)
       '@types/bun':
         specifier: ^1.3.14
         version: 1.3.14
@@ -190,14 +200,14 @@ importers:
         specifier: ^7.29.7
         version: 7.29.7(@babel/core@7.29.7)
       '@opentui/core':
-        specifier: 'catalog:'
-        version: 0.4.3(typescript@5.9.3)(web-tree-sitter@0.25.10)
+        specifier: catalog:dialog-dev
+        version: 0.5.10(typescript@5.9.3)(web-tree-sitter@0.25.10)
       '@opentui/react':
-        specifier: 'catalog:'
-        version: 0.4.3(react-devtools-core@7.0.1)(react@19.2.7)(typescript@5.9.3)(web-tree-sitter@0.25.10)(ws@8.21.0)
+        specifier: catalog:dialog-dev
+        version: 0.5.10(react-devtools-core@7.0.1)(react@19.2.7)(typescript@5.9.3)(web-tree-sitter@0.25.10)(ws@8.21.0)
       '@opentui/solid':
-        specifier: 'catalog:'
-        version: 0.4.3(solid-js@1.9.12)(typescript@5.9.3)(web-tree-sitter@0.25.10)
+        specifier: catalog:dialog-dev
+        version: 0.5.10(solid-js@1.9.12)(typescript@5.9.3)(web-tree-sitter@0.25.10)
       '@tuiparts/utils':
         specifier: workspace:^
         version: link:../utils
@@ -237,10 +247,10 @@ importers:
     devDependencies:
       '@opentui/core':
         specifier: 'catalog:'
-        version: 0.4.3(typescript@5.9.3)(web-tree-sitter@0.25.10)
+        version: 0.4.5(typescript@5.9.3)(web-tree-sitter@0.25.10)
       '@opentui/react':
         specifier: 'catalog:'
-        version: 0.4.3(react-devtools-core@7.0.1)(react@19.2.7)(typescript@5.9.3)(web-tree-sitter@0.25.10)(ws@8.21.0)
+        version: 0.4.5(react-devtools-core@7.0.1)(react@19.2.7)(typescript@5.9.3)(web-tree-sitter@0.25.10)(ws@8.21.0)
       '@types/bun':
         specifier: ^1.3.14
         version: 1.3.14
@@ -274,10 +284,10 @@ importers:
         version: 7.29.7(@babel/core@7.29.7)
       '@opentui/core':
         specifier: 'catalog:'
-        version: 0.4.3(typescript@5.9.3)(web-tree-sitter@0.25.10)
+        version: 0.4.5(typescript@5.9.3)(web-tree-sitter@0.25.10)
       '@opentui/solid':
         specifier: 'catalog:'
-        version: 0.4.3(solid-js@1.9.12)(typescript@5.9.3)(web-tree-sitter@0.25.10)
+        version: 0.4.5(solid-js@1.9.12)(typescript@5.9.3)(web-tree-sitter@0.25.10)
       '@types/bun':
         specifier: ^1.3.14
         version: 1.3.14
@@ -301,13 +311,13 @@ importers:
     devDependencies:
       '@opentui/core':
         specifier: 'catalog:'
-        version: 0.4.3(typescript@5.9.3)(web-tree-sitter@0.25.10)
+        version: 0.4.5(typescript@5.9.3)(web-tree-sitter@0.25.10)
       '@opentui/react':
         specifier: 'catalog:'
-        version: 0.4.3(react-devtools-core@7.0.1)(react@19.2.7)(typescript@5.9.3)(web-tree-sitter@0.25.10)(ws@8.21.0)
+        version: 0.4.5(react-devtools-core@7.0.1)(react@19.2.7)(typescript@5.9.3)(web-tree-sitter@0.25.10)(ws@8.21.0)
       '@opentui/solid':
         specifier: 'catalog:'
-        version: 0.4.3(solid-js@1.9.12)(typescript@5.9.3)(web-tree-sitter@0.25.10)
+        version: 0.4.5(solid-js@1.9.12)(typescript@5.9.3)(web-tree-sitter@0.25.10)
       '@tuiparts/utils':
         specifier: workspace:^
         version: link:../utils
@@ -340,7 +350,7 @@ importers:
     devDependencies:
       '@opentui/core':
         specifier: 'catalog:'
-        version: 0.4.3(typescript@5.9.3)(web-tree-sitter@0.25.10)
+        version: 0.4.5(typescript@5.9.3)(web-tree-sitter@0.25.10)
       '@types/bun':
         specifier: ^1.3.14
         version: 1.3.14
@@ -358,13 +368,13 @@ importers:
     devDependencies:
       '@opentui/core':
         specifier: 'catalog:'
-        version: 0.4.3(typescript@5.9.3)(web-tree-sitter@0.25.10)
+        version: 0.4.5(typescript@5.9.3)(web-tree-sitter@0.25.10)
       '@opentui/react':
         specifier: 'catalog:'
-        version: 0.4.3(react-devtools-core@7.0.1)(react@19.2.7)(typescript@5.9.3)(web-tree-sitter@0.25.10)(ws@8.21.0)
+        version: 0.4.5(react-devtools-core@7.0.1)(react@19.2.7)(typescript@5.9.3)(web-tree-sitter@0.25.10)(ws@8.21.0)
       '@opentui/solid':
         specifier: 'catalog:'
-        version: 0.4.3(solid-js@1.9.12)(typescript@5.9.3)(web-tree-sitter@0.25.10)
+        version: 0.4.5(solid-js@1.9.12)(typescript@5.9.3)(web-tree-sitter@0.25.10)
       '@tuiparts/core':
         specifier: workspace:*
         version: link:../packages/core
@@ -1566,62 +1576,121 @@ packages:
     resolution: {integrity: sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==}
     engines: {node: '>=8.0.0'}
 
-  '@opentui/core-darwin-arm64@0.4.3':
-    resolution: {integrity: sha512-p5+7AAxpxGuDGagyQfewKtmTFnN7THvTVY4FyKqUtJomNaHdQXPHztapNNzMx0DGWbwOUbVKzpL+yc3CZY3chQ==}
+  '@opentui/core-darwin-arm64@0.4.5':
+    resolution: {integrity: sha512-8KUG0oRidnR+oW1RSZJ72/PhZLl+qRRMk5U/mieF4c0SJ5V3tYACpBZAKzQfHNd1f7QzD8FHZct1lPpQgtmkWg==}
     cpu: [arm64]
     os: [darwin]
 
-  '@opentui/core-darwin-x64@0.4.3':
-    resolution: {integrity: sha512-+fh0vEUE0lwVC7RW5ijYLRlTLp5NfvCRj8SzxDVd7IL2j2ssB6YXcfIbXq2EW7UGnrejwPRXf1tgUrIXW9KmOw==}
+  '@opentui/core-darwin-arm64@0.5.10':
+    resolution: {integrity: sha512-Vyb+nTbhab8ZcRy5gg1loEEGwRcIbjAeVRIBfHBcbFDqmITBOg7x2gqJ+x/TnoOy4uwMhCmICUN2wiyREw3r1Q==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@opentui/core-darwin-x64@0.4.5':
+    resolution: {integrity: sha512-R2bocsg55gwjOqCp/MWFgFYzRmsduKegB6nzgFAPCvAD/L5Jf30xpWJWFlSg3x8vxe1L9WJ84dfqa4M7mZZ3wA==}
     cpu: [x64]
     os: [darwin]
 
-  '@opentui/core-linux-arm64-musl@0.4.3':
-    resolution: {integrity: sha512-8p8g8/AEq/xFGpQ7XcIFKcAqjc0QwsZcv+Ll9RbCDpUA56FGH6jfLDir0KYTNTgYXJTIrBIENI9K46VuxMUMQA==}
+  '@opentui/core-darwin-x64@0.5.10':
+    resolution: {integrity: sha512-tTFLcM7Oj1gTyhm/bUdAt3C6grZdCxPk6+/g2azcZBUlI3/62LwbeRS6HbQKFFmm+1fUmX8cq6kWrtul885mVg==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@opentui/core-linux-arm64-musl@0.4.5':
+    resolution: {integrity: sha512-ieqdyKI6EIYPalYAETB2wsdP83hr5Ifi+dFnBFUmdEEFHsoKwBmn2S7bsTOYlX7Bg03F4/YPIg+IvRpeC+cUJw==}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
 
-  '@opentui/core-linux-arm64@0.4.3':
-    resolution: {integrity: sha512-gl6qA5QJy6u8Cbt7gOtHbhhfMZ4qQDb0kEwFXHcMGmbnKzz4OHoq74D6tNjyvSQB9saoC7C6C0tvn2DcJOuNog==}
+  '@opentui/core-linux-arm64-musl@0.5.10':
+    resolution: {integrity: sha512-dGMphDKexSdeYqwl0wgoFBP88Ta/cdi1Zc1mk29/ENkSCGz+74zlCHgqTHRNGLmI8W5TfuUtCyktQH11/Z+TBQ==}
+    cpu: [arm64]
+    os: [linux]
+    libc: [musl]
+
+  '@opentui/core-linux-arm64@0.4.5':
+    resolution: {integrity: sha512-R4MZ25a4CzOAGVjW9aj1hUfzQGVfCJwrwBDbNs2SXaIvzcZqkxCVtU4FoQ5LsaD0j/BdNQVg2CIfFkFsm1fDuQ==}
     cpu: [arm64]
     os: [linux]
 
-  '@opentui/core-linux-x64-musl@0.4.3':
-    resolution: {integrity: sha512-/QiFpCrpU2O7vy8QYmLIQYbvAtKDgmqcVjR7dGtqSzkiQk3ktNJoo5RozG7ueXnjung1Wp0nKldKxo2Csg/OrA==}
+  '@opentui/core-linux-arm64@0.5.10':
+    resolution: {integrity: sha512-ncJXcgudhBf2GdJyF3xVQN/Ec+1F7GOL+pRrURmgBYSj2v1w6EyoDQFAACtPTK2c3R38W6fvZwL4JSLlm4EFXQ==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@opentui/core-linux-x64-musl@0.4.5':
+    resolution: {integrity: sha512-mKVKcIcPiSVVZZsdPSBoWwoa2/TCeQAaMDeHF7PFw2kt5bTXZPP7xxWfRQLCNIcA1eaGl59UuwUWHDR2Ve548Q==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
 
-  '@opentui/core-linux-x64@0.4.3':
-    resolution: {integrity: sha512-dXpJitiZdYE3hq2Pvx6e9I0uPQSOcnaLLp1pDgWAHv+3kvKSHEX//9Yr/pV/Ua6qqT7p+2D/K4vXNap/NKVo2w==}
+  '@opentui/core-linux-x64-musl@0.5.10':
+    resolution: {integrity: sha512-Oj4H9hApuvuTKPWxh4SoZAgGJorR7vbvnrZA/cAkSMAk2VGSoHRRcqeXQbcH8IcdjVZ0KFpv8Zkl/D5Ye+2mew==}
+    cpu: [x64]
+    os: [linux]
+    libc: [musl]
+
+  '@opentui/core-linux-x64@0.4.5':
+    resolution: {integrity: sha512-SNyuQoxMKI1vuJhgxSSW96adWM6LqFl2SoS3GM4tGeneGOanVVG2Y06PvlytXvF4cKik97t0rqkVMRetmOs93w==}
     cpu: [x64]
     os: [linux]
 
-  '@opentui/core-win32-arm64@0.4.3':
-    resolution: {integrity: sha512-Mx2zuOjrhm/z2SDS6RExIyjP/SnN/8QhhagxURUw0jQi/NssGSeAllu1cBAFFnhobJL5QLTE4FU4CRhUK9svgg==}
+  '@opentui/core-linux-x64@0.5.10':
+    resolution: {integrity: sha512-5qtYaOgwVycZD1GaGshTRsi0rXPAmVExO03N1JQaHu+NYxK/vXSOc7Bu4QW0sPXx3Sp0SpzpP+FHjXABfoK66g==}
+    cpu: [x64]
+    os: [linux]
+
+  '@opentui/core-win32-arm64@0.4.5':
+    resolution: {integrity: sha512-GHTTsqeR45q2Iek9Rb7ty+x/hAKn2jZ1ujlCgPR8LBKyF7h0E1dNFryoZ7ehMc3kJndP1sKn836IemKFqxuDdQ==}
     cpu: [arm64]
     os: [win32]
 
-  '@opentui/core-win32-x64@0.4.3':
-    resolution: {integrity: sha512-NuoqvWKGXaYnmlqvu7Gg2lLI6yVMnS9OfWBvxp+7Q+McSgHFSTQmYBXaPpvQ8HikpQXE1nCeMPtuSG4PdZHe2w==}
+  '@opentui/core-win32-arm64@0.5.10':
+    resolution: {integrity: sha512-A9VhgvTxQoUdZ+8LmUumEng1sQNbj9QQQT3NYG9mSxI54qTANi7vOWNSphMiY6RMVsr22pgm6nUvSSvJXv7Jog==}
+    cpu: [arm64]
+    os: [win32]
+
+  '@opentui/core-win32-x64@0.4.5':
+    resolution: {integrity: sha512-Y8T/yXCDGagRGiQrtmuB6AhRcPucKFs/Dre3v8kJwNYqDccI4FzUPKclZ7djfmRZNjl7JUqPhZZP/PwDpQocMg==}
     cpu: [x64]
     os: [win32]
 
-  '@opentui/core@0.4.3':
-    resolution: {integrity: sha512-rrJfAk13tALDqldYjhc78eWQ+aKq1iknJgffIOg3OwyZoqQo+p6gtuqyhmWvXIfQzlNUbpgpCPcxbXlhMnlaHQ==}
+  '@opentui/core-win32-x64@0.5.10':
+    resolution: {integrity: sha512-u3KHa7kEeWrmKVDRJYpxSGO+g5E9cMGlrmTsPN3GVPHUmQMiREUawLXUvsU8+IHaQnqG3Q5nuE1yf4fPBzS+Qw==}
+    cpu: [x64]
+    os: [win32]
+
+  '@opentui/core@0.4.5':
+    resolution: {integrity: sha512-JsgRTPkA6e+Vxmumxai6SElOSlRQkbzNKHlCfemlArRiLhfC1IZ9RXJo2QH4xSu+uBOWAM90uss73/pPlkdEig==}
     peerDependencies:
       web-tree-sitter: 0.25.10
 
-  '@opentui/react@0.4.3':
-    resolution: {integrity: sha512-HtC/+lMURaZlifiJNVsn84YqKMywXQmkeSNbUTlbbeS6YM6reahaacnZEYZdnEUgklO6+r/J1tG8UBhqO26X7Q==}
+  '@opentui/core@0.5.10':
+    resolution: {integrity: sha512-C3a2UbmefeAjIxAgm4BqjuSxKT4oqutfvYFwVvUgMxmGRHkNbBc/s7sukV0JgwcxFcV3uMFrXxo+E+BQtvuOiw==}
+    peerDependencies:
+      web-tree-sitter: 0.25.10
+
+  '@opentui/react@0.4.5':
+    resolution: {integrity: sha512-n88Vx0cMmAu++/S14WscjvdcT46IDcxve02jMtcfHQ9j6cySRHfILfGEpOB7xxc8RpCwQceEyOjkKkfzPzm6Jg==}
     peerDependencies:
       react: '>=19.2.0'
       react-devtools-core: ^7.0.1
       ws: ^8.18.0
 
-  '@opentui/solid@0.4.3':
-    resolution: {integrity: sha512-RcV0+S8HMdXOASyr7HmJUBuTUIaFPzAxMDa44VftS5C2JUgrmAuWo0Njv1q3TWRB1owjHnyKhEfWGKq7A82wxw==}
+  '@opentui/react@0.5.10':
+    resolution: {integrity: sha512-76UFqe/ML121Skjche2+mGX56GKTlwG3ftrOi3b7WGLvjGucPqgEDJ0+CmaC/Yk85O8ui/ZTZJ2tay/8foR4FQ==}
+    peerDependencies:
+      react: '>=19.2.0'
+      react-devtools-core: ^7.0.1
+      ws: ^8.18.0
+
+  '@opentui/solid@0.4.5':
+    resolution: {integrity: sha512-B0RSkXnrtPVfEJOX+Hj+axjLJ3lzbG1BZw5I7Pvb9OPp48Vzg2cW2a3cSa86/q48ndLt647i/XwFPIw/jqnI5g==}
+    peerDependencies:
+      solid-js: 1.9.12
+
+  '@opentui/solid@0.5.10':
+    resolution: {integrity: sha512-KrmMIsHiKBHOABTC0brOwqWm+sGq1ZX2sGCAx6WgtBbE3STMup9n8TAy/6gUYhwcjC9zugT53ytfSVwCwVWZUg==}
     peerDependencies:
       solid-js: 1.9.12
 
@@ -2883,6 +2952,11 @@ packages:
 
   bun-ffi-structs@0.2.4:
     resolution: {integrity: sha512-AJzsqoVFs1KBbJbWHIYrVZLDC3NhTqqh25awRXqzoLzmBAKr5oqk6+CwuYHAekKx+VBCYVohBoKuRq40dV+TYg==}
+    peerDependencies:
+      typescript: ^5
+
+  bun-ffi-structs@0.3.1:
+    resolution: {integrity: sha512-3gM7PpVWLyrwxWjcilSiGuhWanhZivvo6l0u573NziPH6f/gwk6McbaYgn7oJWov6pKGRTDbrg94W5DcJsKTtQ==}
     peerDependencies:
       typescript: ^5
 
@@ -7520,31 +7594,55 @@ snapshots:
 
   '@opentelemetry/api@1.9.0': {}
 
-  '@opentui/core-darwin-arm64@0.4.3':
+  '@opentui/core-darwin-arm64@0.4.5':
     optional: true
 
-  '@opentui/core-darwin-x64@0.4.3':
+  '@opentui/core-darwin-arm64@0.5.10':
     optional: true
 
-  '@opentui/core-linux-arm64-musl@0.4.3':
+  '@opentui/core-darwin-x64@0.4.5':
     optional: true
 
-  '@opentui/core-linux-arm64@0.4.3':
+  '@opentui/core-darwin-x64@0.5.10':
     optional: true
 
-  '@opentui/core-linux-x64-musl@0.4.3':
+  '@opentui/core-linux-arm64-musl@0.4.5':
     optional: true
 
-  '@opentui/core-linux-x64@0.4.3':
+  '@opentui/core-linux-arm64-musl@0.5.10':
     optional: true
 
-  '@opentui/core-win32-arm64@0.4.3':
+  '@opentui/core-linux-arm64@0.4.5':
     optional: true
 
-  '@opentui/core-win32-x64@0.4.3':
+  '@opentui/core-linux-arm64@0.5.10':
     optional: true
 
-  '@opentui/core@0.4.3(typescript@5.9.3)(web-tree-sitter@0.25.10)':
+  '@opentui/core-linux-x64-musl@0.4.5':
+    optional: true
+
+  '@opentui/core-linux-x64-musl@0.5.10':
+    optional: true
+
+  '@opentui/core-linux-x64@0.4.5':
+    optional: true
+
+  '@opentui/core-linux-x64@0.5.10':
+    optional: true
+
+  '@opentui/core-win32-arm64@0.4.5':
+    optional: true
+
+  '@opentui/core-win32-arm64@0.5.10':
+    optional: true
+
+  '@opentui/core-win32-x64@0.4.5':
+    optional: true
+
+  '@opentui/core-win32-x64@0.5.10':
+    optional: true
+
+  '@opentui/core@0.4.5(typescript@5.9.3)(web-tree-sitter@0.25.10)':
     dependencies:
       bun-ffi-structs: 0.2.4(typescript@5.9.3)
       diff: 9.0.0
@@ -7553,20 +7651,40 @@ snapshots:
       strip-ansi: 7.1.2
       web-tree-sitter: 0.25.10
     optionalDependencies:
-      '@opentui/core-darwin-arm64': 0.4.3
-      '@opentui/core-darwin-x64': 0.4.3
-      '@opentui/core-linux-arm64': 0.4.3
-      '@opentui/core-linux-arm64-musl': 0.4.3
-      '@opentui/core-linux-x64': 0.4.3
-      '@opentui/core-linux-x64-musl': 0.4.3
-      '@opentui/core-win32-arm64': 0.4.3
-      '@opentui/core-win32-x64': 0.4.3
+      '@opentui/core-darwin-arm64': 0.4.5
+      '@opentui/core-darwin-x64': 0.4.5
+      '@opentui/core-linux-arm64': 0.4.5
+      '@opentui/core-linux-arm64-musl': 0.4.5
+      '@opentui/core-linux-x64': 0.4.5
+      '@opentui/core-linux-x64-musl': 0.4.5
+      '@opentui/core-win32-arm64': 0.4.5
+      '@opentui/core-win32-x64': 0.4.5
     transitivePeerDependencies:
       - typescript
 
-  '@opentui/react@0.4.3(react-devtools-core@7.0.1)(react@19.2.7)(typescript@5.9.3)(web-tree-sitter@0.25.10)(ws@8.21.0)':
+  '@opentui/core@0.5.10(typescript@5.9.3)(web-tree-sitter@0.25.10)':
     dependencies:
-      '@opentui/core': 0.4.3(typescript@5.9.3)(web-tree-sitter@0.25.10)
+      bun-ffi-structs: 0.3.1(typescript@5.9.3)
+      diff: 9.0.0
+      marked: 17.0.1
+      string-width: 7.2.0
+      strip-ansi: 7.1.2
+      web-tree-sitter: 0.25.10
+    optionalDependencies:
+      '@opentui/core-darwin-arm64': 0.5.10
+      '@opentui/core-darwin-x64': 0.5.10
+      '@opentui/core-linux-arm64': 0.5.10
+      '@opentui/core-linux-arm64-musl': 0.5.10
+      '@opentui/core-linux-x64': 0.5.10
+      '@opentui/core-linux-x64-musl': 0.5.10
+      '@opentui/core-win32-arm64': 0.5.10
+      '@opentui/core-win32-x64': 0.5.10
+    transitivePeerDependencies:
+      - typescript
+
+  '@opentui/react@0.4.5(react-devtools-core@7.0.1)(react@19.2.7)(typescript@5.9.3)(web-tree-sitter@0.25.10)(ws@8.21.0)':
+    dependencies:
+      '@opentui/core': 0.4.5(typescript@5.9.3)(web-tree-sitter@0.25.10)
       react: 19.2.7
       react-devtools-core: 7.0.1
       react-reconciler: 0.33.0(react@19.2.7)
@@ -7575,11 +7693,37 @@ snapshots:
       - typescript
       - web-tree-sitter
 
-  '@opentui/solid@0.4.3(solid-js@1.9.12)(typescript@5.9.3)(web-tree-sitter@0.25.10)':
+  '@opentui/react@0.5.10(react-devtools-core@7.0.1)(react@19.2.7)(typescript@5.9.3)(web-tree-sitter@0.25.10)(ws@8.21.0)':
+    dependencies:
+      '@opentui/core': 0.5.10(typescript@5.9.3)(web-tree-sitter@0.25.10)
+      react: 19.2.7
+      react-devtools-core: 7.0.1
+      react-reconciler: 0.33.0(react@19.2.7)
+      ws: 8.21.0
+    transitivePeerDependencies:
+      - typescript
+      - web-tree-sitter
+
+  '@opentui/solid@0.4.5(solid-js@1.9.12)(typescript@5.9.3)(web-tree-sitter@0.25.10)':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/preset-typescript': 7.27.1(@babel/core@7.28.0)
-      '@opentui/core': 0.4.3(typescript@5.9.3)(web-tree-sitter@0.25.10)
+      '@opentui/core': 0.4.5(typescript@5.9.3)(web-tree-sitter@0.25.10)
+      babel-plugin-module-resolver: 5.0.2
+      babel-preset-solid: 1.9.12(@babel/core@7.28.0)(solid-js@1.9.12)
+      entities: 7.0.1
+      s-js: 0.4.9
+      solid-js: 1.9.12
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+      - web-tree-sitter
+
+  '@opentui/solid@0.5.10(solid-js@1.9.12)(typescript@5.9.3)(web-tree-sitter@0.25.10)':
+    dependencies:
+      '@babel/core': 7.28.0
+      '@babel/preset-typescript': 7.27.1(@babel/core@7.28.0)
+      '@opentui/core': 0.5.10(typescript@5.9.3)(web-tree-sitter@0.25.10)
       babel-plugin-module-resolver: 5.0.2
       babel-preset-solid: 1.9.12(@babel/core@7.28.0)(solid-js@1.9.12)
       entities: 7.0.1
@@ -8827,6 +8971,10 @@ snapshots:
       update-browserslist-db: 1.2.3(browserslist@4.28.6)
 
   bun-ffi-structs@0.2.4(typescript@5.9.3):
+    dependencies:
+      typescript: 5.9.3
+
+  bun-ffi-structs@0.3.1(typescript@5.9.3):
     dependencies:
       typescript: 5.9.3
 

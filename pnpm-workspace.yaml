@@ -11,6 +11,16 @@ catalog:
   "@types/node": "^24.13.3"
   "ws": "^8.21.0"
 
+catalogs:
+  dialog-dev:
+    "@opentui/core": "^0.5.10"
+    "@opentui/react": "^0.5.10"
+    "@opentui/solid": "^0.5.10"
+  dialog-peer:
+    "@opentui/core": ">=0.4.3 <0.6.0"
+    "@opentui/react": ">=0.4.3 <0.6.0"
+    "@opentui/solid": ">=0.4.3 <0.6.0"
+
 overrides:
   "@babel/core@<=7.29.0": "7.29.7"
 

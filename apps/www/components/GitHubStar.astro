@@ -1,0 +1,207 @@
+---
+interface Props {
+  placement: "catalog" | "header" | "quickstart";
+}
+
+const { placement } = Astro.props;
+const isHeader = placement === "header";
+const eventName = {
+  catalog: "github_catalog_click",
+  header: "github_header_click",
+  quickstart: "github_quickstart_cta_click",
+}[placement];
+const repositoryUrl = "https://github.com/tuiparts/tuiparts";
+---
+
+{
+  isHeader ? (
+    <a
+      class="github-star github-star--header"
+      data-analytics-event={eventName}
+      href={repositoryUrl}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <svg
+        aria-hidden="true"
+        fill="none"
+        height="18"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.8"
+        viewBox="0 0 24 24"
+        width="18"
+      >
+        <path d="m12 2.8 2.75 5.58 6.16.9-4.46 4.34 1.05 6.13L12 16.86l-5.5 2.89 1.05-6.13-4.46-4.34 6.16-.9L12 2.8Z" />
+      </svg>
+      <span class="github-star__header-label">Star</span>
+      <span class="sr-only">tuiparts on GitHub (opens in a new tab)</span>
+    </a>
+  ) : (
+    <aside class="github-star github-star--panel" aria-labelledby={`github-star-${placement}`}>
+      <div>
+        <p class="github-star__eyebrow">Follow the project</p>
+        <h2 class="github-star__title" id={`github-star-${placement}`}>
+          Building with tuiparts?
+        </h2>
+        <p class="github-star__copy">
+          Star the repository to follow new Primitives, Recipes, and release updates.
+        </p>
+      </div>
+      <a
+        class="github-star__action"
+        data-analytics-event={eventName}
+        href={repositoryUrl}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <svg
+          aria-hidden="true"
+          fill="none"
+          height="18"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.8"
+          viewBox="0 0 24 24"
+          width="18"
+        >
+          <path d="m12 2.8 2.75 5.58 6.16.9-4.46 4.34 1.05 6.13L12 16.86l-5.5 2.89 1.05-6.13-4.46-4.34 6.16-.9L12 2.8Z" />
+        </svg>
+        Star on GitHub
+        <span class="sr-only">(opens in a new tab)</span>
+      </a>
+    </aside>
+  )
+}
+
+<style>
+  .github-star {
+    font-family: var(--blume-font-body);
+  }
+
+  .github-star--header {
+    display: inline-flex;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    border: 1px solid var(--blume-border);
+    border-radius: 999px;
+    color: var(--blume-foreground);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+      border-color 150ms ease,
+      background-color 150ms ease,
+      transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .github-star--header:hover {
+    border-color: var(--blume-accent);
+    background: var(--blume-muted);
+  }
+
+  .github-star--header:active,
+  .github-star__action:active {
+    transform: scale(0.96);
+  }
+
+  .github-star__header-label {
+    display: none;
+  }
+
+  .github-star--panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-block: 3rem 0;
+    padding-block: 1.5rem;
+    border-block: 1px solid var(--blume-border);
+  }
+
+  .github-star__eyebrow {
+    margin: 0;
+    color: var(--blume-accent);
+    font-family: var(--blume-font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .github-star__title {
+    margin: 0.4rem 0 0;
+    color: var(--blume-foreground);
+    font-family: var(--blume-font-display);
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .github-star__copy {
+    max-width: 34rem;
+    margin: 0.35rem 0 0;
+    color: var(--blume-muted-foreground);
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .github-star__action {
+    display: inline-flex;
+    min-height: 2.75rem;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding-inline: 1rem;
+    border-radius: var(--blume-radius);
+    background: var(--blume-accent);
+    color: var(--blume-accent-foreground);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+      background-color 150ms ease,
+      transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .github-star__action:hover {
+    background: var(--tp-action-hover);
+  }
+
+  :where(.github-star--header, .github-star__action):focus-visible {
+    outline: 2px solid var(--blume-accent);
+    outline-offset: 3px;
+  }
+
+  @media (min-width: 64rem) {
+    .github-star--header {
+      min-width: auto;
+      padding-inline: 0.8rem;
+    }
+
+    .github-star__header-label {
+      display: inline;
+    }
+
+    .github-star--panel {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .github-star--header,
+    .github-star__action {
+      transition-duration: 0.01ms;
+    }
+  }
+</style>

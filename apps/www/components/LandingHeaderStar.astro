@@ -1,0 +1,33 @@
+---
+import GitHubStar from "./GitHubStar.astro";
+---
+
+<tuiparts-header-star>
+  <GitHubStar placement="header" />
+</tuiparts-header-star>
+
+<script>
+  class TuipartsHeaderStar extends HTMLElement {
+    connectedCallback() {
+      const header = document.querySelector("[data-blume-header]");
+      const star = this.querySelector(".github-star--header");
+      const actionCluster = header?.lastElementChild;
+
+      if (header && star && actionCluster) {
+        header.insertBefore(star, actionCluster);
+      }
+
+      this.remove();
+    }
+  }
+
+  if (!customElements.get("tuiparts-header-star")) {
+    customElements.define("tuiparts-header-star", TuipartsHeaderStar);
+  }
+</script>
+
+<style>
+  tuiparts-header-star {
+    display: none;
+  }
+</style>

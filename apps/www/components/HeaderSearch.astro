@@ -1,0 +1,9 @@
+---
+import Search from "blume/components/layout/Search.astro";
+import GitHubStar from "./GitHubStar.astro";
+
+const searchProps = Astro.props;
+---
+
+<Search {...searchProps} />
+<GitHubStar placement="header" />

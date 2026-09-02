@@ -1,5 +1,12 @@
 # @opentui-ui/dialog
 
+## 0.1.3
+
+### Patch Changes
+
+- [#65](https://github.com/tuiparts/tuiparts/pull/65) [`ad1b2e6`](https://github.com/tuiparts/tuiparts/commit/ad1b2e6c4d500be503b34973b7ad859d41780598) Thanks [@msmps](https://github.com/msmps)! - Support OpenTUI 0.4.3 through 0.5.x, including correct dialog removal and
+  warning-free React and Solid provider teardown.
+
 ## 0.1.2
 
 ### Patch Changes

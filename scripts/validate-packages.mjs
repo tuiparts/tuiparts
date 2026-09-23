@@ -8,8 +8,8 @@ const packages = [
   ["core", "@tuiparts/core"],
   ["react", "@tuiparts/react"],
   ["solid", "@tuiparts/solid"],
-  ["dialog", "@tuiparts/dialog"],
-  ["toast", "@tuiparts/toast"],
+  ["dialog", "@opentui-ui/dialog"],
+  ["toast", "@opentui-ui/toast"],
 ];
 const workDir = mkdtempSync(join(tmpdir(), "tuiparts-packages-"));
 const tarballDir = join(workDir, "tarballs");
@@ -144,15 +144,15 @@ try {
     "@tuiparts/solid/textarea",
     "@tuiparts/solid/toggle",
     "@tuiparts/solid/toggle-group",
-    "@tuiparts/dialog",
-    "@tuiparts/dialog/themes",
-    "@tuiparts/dialog/react",
-    "@tuiparts/dialog/solid",
-    "@tuiparts/toast",
-    "@tuiparts/toast/themes",
-    "@tuiparts/toast/icons",
-    "@tuiparts/toast/react",
-    "@tuiparts/toast/solid",
+    "@opentui-ui/dialog",
+    "@opentui-ui/dialog/themes",
+    "@opentui-ui/dialog/react",
+    "@opentui-ui/dialog/solid",
+    "@opentui-ui/toast",
+    "@opentui-ui/toast/themes",
+    "@opentui-ui/toast/icons",
+    "@opentui-ui/toast/react",
+    "@opentui-ui/toast/solid",
   ];
   const imports = entrypoints
     .map((entrypoint) => `import * as module${entrypoints.indexOf(entrypoint)} from "${entrypoint}";`)
@@ -169,8 +169,54 @@ try {
     `await Promise.all(${JSON.stringify(entrypoints)}.map((entrypoint) => import(entrypoint)));\n`,
   );
   writeFileSync(
+    join(consumerDir, "dialog-react.ts"),
+    `import { testRender } from "@opentui/react/test-utils";
+import { DialogProvider } from "@opentui-ui/dialog/react";
+import { act, createElement } from "react";
+
+const setup = await testRender(
+  createElement(
+    DialogProvider,
+    null,
+    createElement("text", { content: "Application" }),
+  ),
+  { width: 20, height: 3 },
+);
+const container = setup.renderer.root.findDescendantById("dialog-container");
+await act(async () => setup.renderer.destroy());
+if (!container?.isDestroyed || container.parent !== null)
+  throw new Error("Packed React DialogProvider did not tear down its container");
+`,
+  );
+  writeFileSync(
+    join(consumerDir, "dialog-solid.tsx"),
+    `/** @jsxImportSource @opentui/solid */
+
+import { testRender } from "@opentui/solid";
+import { DialogProvider } from "@opentui-ui/dialog/solid";
+
+const setup = await testRender(
+  () => (
+    <DialogProvider>
+      <text content="Application" />
+    </DialogProvider>
+  ),
+  { width: 20, height: 3 },
+);
+const container = setup.renderer.root.findDescendantById("dialog-container");
+setup.renderer.destroy();
+if (!container?.isDestroyed || container.parent !== null)
+  throw new Error("Packed Solid DialogProvider did not tear down its container");
+`,
+  );
+  writeFileSync(
     join(consumerDir, "executable.ts"),
-    `import { createTestRenderer } from "@opentui/core/testing";
+    `import { BoxRenderable } from "@opentui/core";
+import { createTestRenderer } from "@opentui/core/testing";
+import {
+  DialogContainerRenderable,
+  DialogManager,
+} from "@opentui-ui/dialog";
 import {
   AccordionItemRenderable,
   AccordionPanelRenderable,
@@ -202,6 +248,20 @@ import {
 
 const setup = await createTestRenderer({ width: 20, height: 3 });
 try {
+  const dialogManager = new DialogManager(setup.renderer);
+  const dialogContainer = new DialogContainerRenderable(setup.renderer, {
+    manager: dialogManager,
+  });
+  setup.renderer.root.add(dialogContainer);
+  const dialogId = dialogManager.show({
+    content: (ctx) => new BoxRenderable(ctx, { id: "dialog-content" }),
+  });
+  dialogManager.close(dialogId);
+  if (dialogContainer.getDialogRenderables().size !== 0)
+    throw new Error("Compiled Dialog did not remove its dismissed Renderable");
+  dialogContainer.destroyRecursively();
+  dialogManager.destroy();
+
   const accordion = new AccordionRootRenderable(setup.renderer);
   const accordionItem = new AccordionItemRenderable(setup.renderer, {
     store: accordion.store,
@@ -326,6 +386,12 @@ try {
   );
   run("pnpm", ["exec", "tsc", "-p", "tsconfig.json"], consumerDir);
   run("bun", ["runtime.mjs"], consumerDir);
+  run("bun", ["dialog-react.ts"], consumerDir);
+  run(
+    "bun",
+    ["--preload", "@opentui/solid/preload", "dialog-solid.tsx"],
+    consumerDir,
+  );
   run(
     "bun",
     ["build", "--compile", "executable.ts", "--outfile", "executable"],

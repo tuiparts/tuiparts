@@ -131,7 +131,7 @@ Backdrop, Popup, Title, Description, and Close parts, or install the editable
 portal lifecycle preserve coordinator-owned visibility/z-index, focus
 containment, detached restoration, and reverse Tab behavior.
 
-The existing `@tuiparts/dialog/solid` provider, hooks, and async APIs remain
+The existing `@opentui-ui/dialog/solid` provider, hooks, and async APIs remain
 the companion convenience surface; they are not re-exported by the Solid
 adapter.
 

@@ -513,7 +513,7 @@ compound adapters in `@tuiparts/react` and `@tuiparts/solid`. Dialog is the
 overlay evidence for that boundary: its store and coordinator live at the
 Dialog primitive subpaths.
 
-The already-adopted `@tuiparts/dialog` and `@tuiparts/toast` packages are
+The already-adopted `@opentui-ui/dialog` and `@opentui-ui/toast` packages are
 independently versioned companion products. Their existing manager, provider,
 async, theme, and notification APIs remain supported on their current import
 paths. Reconciling their internals with primitive behavior is separate work

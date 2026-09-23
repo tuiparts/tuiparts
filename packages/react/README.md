@@ -129,7 +129,7 @@ Backdrop, Popup, Title, Description, and Close parts, or install the editable
 preserves coordinator-owned visibility and z-index plus portal, focus, and
 controlled-state lifecycle behavior.
 
-The existing `@tuiparts/dialog/react` provider, hooks, and async APIs remain
+The existing `@opentui-ui/dialog/react` provider, hooks, and async APIs remain
 the companion convenience surface; they are not re-exported by the React
 adapter.
 

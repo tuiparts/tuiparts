@@ -37,10 +37,10 @@
       "@tuiparts/solid/*": ["packages/solid/src/*"],
       "@tuiparts/utils": ["packages/utils/src"],
       "@tuiparts/utils/*": ["packages/utils/src/*"],
-      "@tuiparts/dialog": ["packages/dialog/src"],
-      "@tuiparts/dialog/*": ["packages/dialog/src/*"],
-      "@tuiparts/toast": ["packages/toast/src"],
-      "@tuiparts/toast/*": ["packages/toast/src/*"]
+      "@opentui-ui/dialog": ["packages/dialog/src"],
+      "@opentui-ui/dialog/*": ["packages/dialog/src/*"],
+      "@opentui-ui/toast": ["packages/toast/src"],
+      "@opentui-ui/toast/*": ["packages/toast/src/*"]
     }
   }
 }

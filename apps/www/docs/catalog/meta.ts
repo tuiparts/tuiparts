@@ -18,6 +18,7 @@ export default defineMeta({
     "collapsible",
     "accordion",
     "tabs",
+    "table",
     "radio-group",
     "dialog",
     "badge",

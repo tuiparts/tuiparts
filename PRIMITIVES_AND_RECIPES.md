@@ -466,6 +466,32 @@ Reference implementations:
 - `registry/badge/react.tsx`
 - `registry/badge/solid.tsx`
 
+## Table Recipe
+
+Table has no complex state machine, roving focus, or pointer drag behavior; it
+is a purely structural layout container for structured tabular data. It is therefore
+delivered as a Recipe-only component without packaged primitives.
+
+Editable Core, React, and Solid Table recipes compose native OpenTUI box flexbox
+layouts with theme-driven borders, muted header foregrounds, and customizable row
+dividers.
+
+Parts:
+- `Table`: Outer container `<box>` with theme borders.
+- `TableHeader`: Header container with divider line.
+- `TableBody`: Data rows container.
+- `TableFooter`: Summary/totals container with top border.
+- `TableRow`: Row `<box flexDirection="row">` with optional bottom border.
+- `TableHead`: Column header `<box>` with bold text.
+- `TableCell`: Data cell `<box>` with regular text.
+- `TableCaption`: Optional caption description.
+
+Reference implementations:
+
+- `registry/table/core.ts`
+- `registry/table/react.tsx`
+- `registry/table/solid.tsx`
+
 ## Radio And RadioGroup
 
 Radio behavior has one primitive model:

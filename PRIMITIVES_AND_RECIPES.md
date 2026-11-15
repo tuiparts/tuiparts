@@ -466,6 +466,22 @@ Reference implementations:
 - `registry/badge/react.tsx`
 - `registry/badge/solid.tsx`
 
+## Empty Recipe
+
+Empty has no reusable interaction, state, focus, keyboard, pointer, collection,
+overlay, or lifecycle behavior. It is therefore not a primitive and has no
+`@tuiparts/core`, React, or Solid package export.
+
+Editable Core, React, and Solid Empty recipes are built directly from ordinary
+OpenTUI Box and Text nodes. They provide dashed-bordered callout framing with
+header, media/icon, title, description, and action content slots.
+
+Reference implementations:
+
+- `registry/empty/core.ts`
+- `registry/empty/react.tsx`
+- `registry/empty/solid.tsx`
+
 ## Radio And RadioGroup
 
 Radio behavior has one primitive model:

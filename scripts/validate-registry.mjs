@@ -87,6 +87,7 @@ const recipes = [
   "slider",
   "textarea",
   "dialog",
+  "empty",
   "toggle",
   "toggle-group",
   "tabs",
@@ -106,12 +107,13 @@ const catalogRecipes = [
   "slider",
   "textarea",
   "dialog",
+  "empty",
   "toggle",
   "toggle-group",
   "tabs",
   "theme",
 ];
-const primitivelessRecipes = ["badge", "theme"];
+const primitivelessRecipes = ["badge", "empty", "theme"];
 const themePresets = [
   {
     item: "theme-cobalt-deep",

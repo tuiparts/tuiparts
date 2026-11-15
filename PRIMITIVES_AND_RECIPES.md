@@ -466,6 +466,24 @@ Reference implementations:
 - `registry/badge/react.tsx`
 - `registry/badge/solid.tsx`
 
+## Card Recipe
+
+Card has no reusable interaction, state, focus, keyboard, pointer, collection,
+overlay, or lifecycle behavior. It is therefore not a primitive and has no
+`@tuiparts/core`, React, or Solid package export.
+
+Editable Core, React, and Solid Card recipes are built directly from ordinary
+OpenTUI Box and Text nodes. They provide header, title, description, content,
+and footer regions with sensible theme defaults for borders, background, and
+padding, while allowing consumer applications to customize properties or
+structure freely.
+
+Reference implementations:
+
+- `registry/card/core.ts`
+- `registry/card/react.tsx`
+- `registry/card/solid.tsx`
+
 ## Radio And RadioGroup
 
 Radio behavior has one primitive model:

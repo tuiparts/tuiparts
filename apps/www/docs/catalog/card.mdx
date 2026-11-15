@@ -1,0 +1,102 @@
+---
+title: Card
+description: A presentation-only content container with header, title, description, and footer regions composed directly from OpenTUI elements.
+---
+
+<Badge>Recipe only</Badge>
+
+Card groups related information and actions into an outlined container. It is
+composed directly from OpenTUI Box and Text nodes and distributed only as
+editable Registry source. There is no Card Primitive or Card subpath in the
+`@tuiparts/core`, `@tuiparts/react`, or `@tuiparts/solid` packages.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/card
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/card
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/card
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "./components/ui/card";
+import { Button } from "./components/ui/button";
+
+<Card width={40}>
+  <CardHeader>
+    <CardTitle content="Diagnostic Report" />
+    <CardDescription content="Node status and telemetry" />
+  </CardHeader>
+  <CardContent>
+    <text content="All systems nominal." />
+  </CardContent>
+  <CardFooter>
+    <Button label="Refresh" intent="neutral" />
+  </CardFooter>
+</Card>
+```
+
+Native Box properties apply to `Card`, `CardHeader`, `CardContent`, and `CardFooter`.
+Native Text properties apply to `CardTitle` and `CardDescription`.
+
+### Core
+
+```ts
+import {
+  createCard,
+  createCardHeader,
+  createCardTitle,
+  createCardDescription,
+  createCardContent,
+  createCardFooter,
+} from "./components/ui/card";
+
+const card = createCard(ctx, { width: 40 });
+const header = createCardHeader(ctx);
+const title = createCardTitle(ctx, { content: "Diagnostic Report" });
+const desc = createCardDescription(ctx, { content: "Node status and telemetry" });
+
+header.add(title);
+header.add(desc);
+card.add(header);
+
+const content = createCardContent(ctx);
+card.add(content);
+
+parent.add(card);
+```
+
+## Customize the Recipe
+
+The copied source owns border style, background color, padding, and layout
+spacing. Edit it to add custom sections, alternate dividers, or fixed dimensions.
+Instance Box and Text properties override starter values; shared colors and
+borders come from the [Theme Recipe](/theming).
+
+## Behavior
+
+Card is non-interactive structural framing. It has no internal state, focus,
+keyboard, pointer, collection, or overlay behavior and therefore no packaged
+Primitive. Interactive children placed inside Card (such as Buttons or Inputs)
+maintain their own focus and activation models.

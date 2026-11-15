@@ -1,0 +1,81 @@
+---
+title: Separator
+description: A presentation-only visual or semantic divider composed directly from OpenTUI elements.
+---
+
+<Badge>Recipe only</Badge>
+
+Separator visually or semantically separates content in a list or layout. It
+is composed directly from an OpenTUI Box node and distributed only as editable
+Registry source. There is no Separator Primitive or Separator subpath in the
+`@tuiparts/core`, `@tuiparts/react`, or `@tuiparts/solid` packages.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/separator
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/separator
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/separator
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import { Separator } from "./components/ui/separator";
+
+// Horizontal separator (default)
+<Separator />
+
+// Vertical separator
+<box flexDirection="row" height={3}>
+  <text content="Left" />
+  <Separator orientation="vertical" />
+  <text content="Right" />
+</box>
+```
+
+Native Box properties apply to the root.
+
+### Core
+
+```ts
+import { createSeparator } from "./components/ui/separator";
+
+// Horizontal separator
+const hSep = createSeparator(ctx, { width: 40 });
+parent.add(hSep);
+
+// Vertical separator
+const vSep = createSeparator(ctx, {
+  height: 5,
+  orientation: "vertical",
+});
+parent.add(vSep);
+```
+
+The factory returns a `BoxRenderable` configured with a single-sided border (`["top"]` or `["left"]`).
+
+## Customize the Recipe
+
+The copied source maps `orientation` to a 1-row height box with a top border
+or a 1-column width box with a left border, applying `tokens.colors.border`
+and `tokens.borders.style`. Edit the source to add custom border characters,
+dash styles, or margins.
+
+## Behavior
+
+Separator is non-interactive visual presentation. It has no state, focus,
+keyboard, pointer, collection, or overlay behavior and therefore no packaged
+Primitive.

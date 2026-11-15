@@ -466,6 +466,22 @@ Reference implementations:
 - `registry/badge/react.tsx`
 - `registry/badge/solid.tsx`
 
+## Separator Recipe
+
+Separator has no reusable interaction, state, focus, keyboard, pointer, collection,
+overlay, or lifecycle behavior. It is therefore not a primitive and has no
+`@tuiparts/core`, React, or Solid package export.
+
+Editable Core, React, and Solid Separator recipes are built directly from an
+OpenTUI Box node configured with single-sided borders (`["top"]` for horizontal,
+`["left"]` for vertical).
+
+Reference implementations:
+
+- `registry/separator/core.ts`
+- `registry/separator/react.tsx`
+- `registry/separator/solid.tsx`
+
 ## Radio And RadioGroup
 
 Radio behavior has one primitive model:

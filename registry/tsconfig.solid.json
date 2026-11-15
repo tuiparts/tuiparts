@@ -15,6 +15,7 @@
       "input",
       "number-field",
       "radio-group",
+      "separator",
       "slider",
       "switch",
       "tabs",

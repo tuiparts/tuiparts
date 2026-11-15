@@ -4,6 +4,7 @@
     "noEmit": true,
     "rootDirs": [
       "accordion",
+      "avatar",
       "badge",
       "button",
       "checkbox",

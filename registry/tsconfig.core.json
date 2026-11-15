@@ -11,6 +11,7 @@
       "collapsible",
       "dialog",
       "input",
+      "input-otp",
       "number-field",
       "radio-group",
       "slider",

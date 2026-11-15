@@ -1,0 +1,61 @@
+---
+title: Skeleton
+description: A presentation-only placeholder box composed directly from OpenTUI elements.
+---
+
+<Badge>Recipe only</Badge>
+
+Skeleton displays placeholder boxes while content is loading. It is composed
+directly from OpenTUI Box nodes and distributed only as editable Registry source.
+There is no Skeleton Primitive or Skeleton subpath in the `@tuiparts/core`,
+`@tuiparts/react`, or `@tuiparts/solid` packages.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/skeleton
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/skeleton
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/skeleton
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import { Skeleton } from "./components/ui/skeleton";
+
+// Pulses opacity between 1.0 and 0.4 automatically (matching shadcn animate-pulse)
+<Skeleton width={20} height={1} />
+<Skeleton width="100%" height={3} />
+
+// Disable pulse animation when static loading state is desired
+<Skeleton width={20} height={1} animate={false} />
+```
+
+Native Box properties apply directly to the placeholder box.
+
+### Core
+
+```ts
+import { createSkeleton } from "./components/ui/skeleton";
+
+const skeleton = createSkeleton(ctx, {
+  width: 20,
+  height: 1,
+});
+
+parent.add(skeleton);
+```
+
+The factory returns a `BoxRenderable` configured with surface background, fill enabled, and automatic opacity pulsing timeline.

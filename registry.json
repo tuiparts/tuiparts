@@ -571,6 +571,69 @@
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
+      "name": "core/spinner",
+      "type": "registry:item",
+      "title": "Spinner (Core)",
+      "description": "Editable imperative Spinner Recipe built on the tuiparts.sh packaged Primitive.",
+      "dependencies": ["@tuiparts/core@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/spinner/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/spinner.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
+    },
+    {
+      "name": "react/spinner",
+      "type": "registry:item",
+      "title": "Spinner (React)",
+      "description": "Editable React Spinner Recipe built on the tuiparts.sh packaged Primitive.",
+      "dependencies": ["@tuiparts/react@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/spinner/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/spinner.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
+    },
+    {
+      "name": "solid/spinner",
+      "type": "registry:item",
+      "title": "Spinner (Solid)",
+      "description": "Editable Solid Spinner Recipe built on the tuiparts.sh packaged Primitive.",
+      "dependencies": ["@tuiparts/solid@>=0.0.1 <0.1.0"],
+      "files": [
+        {
+          "path": "registry/spinner/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/spinner.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "primitive",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
+    },
+    {
       "name": "core/input",
       "type": "registry:item",
       "title": "Input (Core)",

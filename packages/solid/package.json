@@ -16,6 +16,7 @@
     "./dist/radio-group/**",
     "./dist/radio/**",
     "./dist/slider/**",
+    "./dist/spinner/**",
     "./dist/switch/**",
     "./dist/tabs/**",
     "./dist/textarea/**",
@@ -41,6 +42,7 @@
     "./radio": "./src/radio/index.tsx",
     "./radio-group": "./src/radio-group/index.tsx",
     "./slider": "./src/slider/index.ts",
+    "./spinner": "./src/spinner/index.ts",
     "./switch": "./src/switch/index.tsx",
     "./tabs": "./src/tabs/index.ts",
     "./textarea": "./src/textarea/index.tsx",
@@ -98,6 +100,10 @@
       "./slider": {
         "types": "./dist/slider/index.d.mts",
         "import": "./dist/slider/index.mjs"
+      },
+      "./spinner": {
+        "types": "./dist/spinner/index.d.mts",
+        "import": "./dist/spinner/index.mjs"
       },
       "./switch": {
         "types": "./dist/switch/index.d.mts",

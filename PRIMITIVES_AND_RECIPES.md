@@ -199,6 +199,23 @@ Reference implementations:
 The focused contract is recorded in `docs/primitive-contracts/slider.md`;
 ADR-0014 records the native pointer-mechanics boundary.
 
+## Spinner Primitive
+
+Spinner coordinates animated terminal frame progression without imposing hardcoded colors or layout:
+
+- `SpinnerStore` coordinates frame glyphs, interval timers, running lifecycle, and subscriber updates.
+- `Spinner.Root` manages store ownership and clean timer destruction.
+- `Spinner.Indicator` reactively renders the active frame glyph.
+- `Spinner.Label` optionally renders status or progress text.
+- Recipes own glyph presets (`braille`, `dots`, `line`, `arc`, `pulse`, `arrow`), intent colors, layout, and gaps.
+
+Reference implementations:
+
+- `packages/core/src/spinner/primitive.ts`
+- `packages/react/src/spinner/primitive.ts`
+- `packages/solid/src/spinner/primitive.tsx`
+- `registry/spinner/`
+
 ## Collapsible Primitive
 
 Collapsible packages disclosure behavior without choosing Trigger content or

@@ -1,0 +1,47 @@
+---
+title: Spinner
+description: An animated terminal activity indicator with preset glyphs, semantic intents, and optional label text.
+---
+
+Spinner displays progress or loading activity. Built on the packaged Spinner Primitive, the Recipe provides preset glyph animations (`braille`, `dots`, `line`, `arc`, `pulse`, `arrow`), theme colors, and label integration.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/spinner
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/spinner
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/spinner
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import { Spinner } from "./components/ui/spinner";
+
+<Spinner label="Loading items…" preset="dots" intent="primary" />;
+```
+
+### Core
+
+```ts
+import { createSpinner } from "./components/ui/spinner";
+
+const spinner = createSpinner(renderer, {
+  label: "Connecting…",
+  preset: "braille",
+  intent: "primary",
+});
+renderer.root.add(spinner);
+```

@@ -14,6 +14,7 @@ export default defineConfig({
     "src/radio/index.tsx",
     "src/radio-group/index.tsx",
     "src/slider/index.ts",
+    "src/spinner/index.ts",
     "src/switch/index.tsx",
     "src/tabs/index.ts",
     "src/textarea/index.tsx",

@@ -152,6 +152,21 @@ export {
   type SliderValueCommitHandler,
 } from "./slider";
 export {
+  SPINNER_FRAMES,
+  type SpinnerFrameChangeDetails,
+  type SpinnerFrameChangeHandler,
+  type SpinnerIndicatorOptions,
+  SpinnerIndicatorRenderable,
+  type SpinnerLabelOptions,
+  SpinnerLabelRenderable,
+  type SpinnerPreset,
+  type SpinnerRootOptions,
+  SpinnerRootRenderable,
+  type SpinnerState,
+  SpinnerStore,
+  type SpinnerStoreOptions,
+} from "./spinner";
+export {
   type SwitchRootOptions,
   SwitchRootRenderable,
   type SwitchState,

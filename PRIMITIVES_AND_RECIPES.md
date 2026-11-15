@@ -496,6 +496,18 @@ Reference implementations:
 - `registry/radio-group/react.tsx`
 - `registry/radio-group/solid.tsx`
 
+## MarkdownViewer Recipe
+
+MarkdownViewer is a consumer-owned, TUI-native recipe that wraps OpenTUI's
+`MarkdownRenderable`. It packages theme border framing, header file metadata,
+and rich markdown formatting (headings, code blocks, tables, lists).
+
+Reference implementations:
+
+- `registry/markdown-viewer/core.ts`
+- `registry/markdown-viewer/react.tsx`
+- `registry/markdown-viewer/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies

@@ -11,6 +11,7 @@
       "collapsible",
       "dialog",
       "input",
+      "markdown-viewer",
       "number-field",
       "radio-group",
       "slider",

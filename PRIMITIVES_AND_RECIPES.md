@@ -496,6 +496,19 @@ Reference implementations:
 - `registry/radio-group/react.tsx`
 - `registry/radio-group/solid.tsx`
 
+## Field Recipe
+
+Field is a consumer-owned, presentational and grouping recipe for form elements
+inspired by shadcn-ui. It provides layout, labels, required indicators, muted
+descriptions, and destructive error messages without requiring a dedicated
+headless state machine package.
+
+Reference implementations:
+
+- `registry/field/core.ts`
+- `registry/field/react.tsx`
+- `registry/field/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies

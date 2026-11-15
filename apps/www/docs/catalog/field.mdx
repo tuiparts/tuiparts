@@ -1,0 +1,89 @@
+---
+title: Field
+description: Form field grouping with labels, descriptions, and error states.
+---
+
+Field provides structured layouts for form inputs. It combines associated labels,
+optional required indicators, muted descriptions, and destructive error messages
+into accessible, theme-reactive terminal compositions.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/field
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/field
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/field
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from "./components/ui/field";
+import { Input } from "./components/ui/input";
+
+<FieldSet>
+  <FieldGroup>
+    <Field>
+      <FieldLabel required>Email</FieldLabel>
+      <Input placeholder="name@example.com" />
+      <FieldDescription>We will never share your email.</FieldDescription>
+      <FieldError content="Email is required" />
+    </Field>
+  </FieldGroup>
+</FieldSet>;
+```
+
+### Core
+
+```ts
+import {
+  createField,
+  createFieldDescription,
+  createFieldError,
+  createFieldGroup,
+  createFieldLabel,
+  createFieldSet,
+} from "./components/ui/field";
+
+const set = createFieldSet(ctx);
+const group = createFieldGroup(ctx);
+const field = createField(ctx);
+
+field.add(createFieldLabel(ctx, { content: "Email", required: true }));
+field.add(createFieldDescription(ctx, { content: "We will never share your email." }));
+field.add(createFieldError(ctx, { content: "Email is required" }));
+
+group.add(field);
+set.add(group);
+```
+
+## Recipe API
+
+- `FieldSet`: Form section container.
+- `FieldGroup`: Container for multiple grouped fields.
+- `Field`: Container for one field (`orientation?: "vertical" | "horizontal"`).
+- `FieldLabel`: Label for the field (`content?: string`, `required?: boolean`).
+- `FieldDescription`: Muted helper text.
+- `FieldError`: Destructive error message (`content?: string`, `errors?: Array<{ message?: string } | string>`).
+- `FieldSeparator`: Section divider with optional label.
+- `FieldLegend`: Section header.
+- `FieldContent`: Flexible content wrapper for horizontal layouts.

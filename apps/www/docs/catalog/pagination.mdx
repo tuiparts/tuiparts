@@ -1,0 +1,95 @@
+---
+title: Pagination
+description: Pagination navigation bar with page links, next/previous buttons, and ellipses.
+---
+
+Pagination provides navigable page controls for tabular data or multi-step views.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/pagination
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/pagination
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/pagination
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "./components/ui/pagination";
+
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink isActive>1</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink>2</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationEllipsis />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>;
+```
+
+### Core
+
+```ts
+import {
+  createPagination,
+  createPaginationContent,
+  createPaginationEllipsis,
+  createPaginationItem,
+  createPaginationLink,
+  createPaginationNext,
+  createPaginationPrevious,
+} from "./components/ui/pagination";
+
+const pagination = createPagination(ctx);
+const content = createPaginationContent(ctx);
+
+content.add(createPaginationPrevious(ctx));
+content.add(createPaginationLink(ctx, { label: "1", isActive: true }));
+content.add(createPaginationLink(ctx, { label: "2" }));
+content.add(createPaginationEllipsis(ctx));
+content.add(createPaginationNext(ctx));
+
+pagination.add(content);
+```
+
+## Recipe API
+
+- `Pagination`: Centered outer container.
+- `PaginationContent`: Row container.
+- `PaginationItem`: Individual slot wrapper.
+- `PaginationLink`: Page button (`isActive?: boolean`, `label?: string`).
+- `PaginationPrevious`: Previous button (`label?: string`).
+- `PaginationNext`: Next button (`label?: string`).
+- `PaginationEllipsis`: Ellipsis placeholder (`label?: string`).

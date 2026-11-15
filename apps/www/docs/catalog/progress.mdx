@@ -1,0 +1,48 @@
+---
+title: Progress
+description: An editable progress bar recipe built on the tuiparts.sh packaged Primitive.
+---
+
+Progress displays task completion or value percentage using semantic surface and primary colors.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/progress
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/progress
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/progress
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import { Progress } from "./components/ui/progress";
+
+<Progress value={60} width={30} />
+<Progress defaultValue={25} width={40} />
+```
+
+### Core
+
+```ts
+import { createProgress } from "./components/ui/progress";
+
+const progress = createProgress(ctx, {
+  defaultValue: 50,
+  width: 30,
+});
+
+parent.add(progress);
+```

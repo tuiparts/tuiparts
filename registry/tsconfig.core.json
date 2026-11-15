@@ -12,6 +12,7 @@
       "dialog",
       "input",
       "number-field",
+      "progress",
       "radio-group",
       "slider",
       "switch",

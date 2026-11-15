@@ -38,6 +38,7 @@
     "./dialog": "./src/dialog/index.ts",
     "./input": "./src/input/index.tsx",
     "./number-field": "./src/number-field/index.ts",
+    "./progress": "./src/progress/index.ts",
     "./radio": "./src/radio/index.tsx",
     "./radio-group": "./src/radio-group/index.tsx",
     "./slider": "./src/slider/index.ts",
@@ -86,6 +87,10 @@
       "./number-field": {
         "types": "./dist/number-field/index.d.mts",
         "import": "./dist/number-field/index.mjs"
+      },
+      "./progress": {
+        "types": "./dist/progress/index.d.mts",
+        "import": "./dist/progress/index.mjs"
       },
       "./radio": {
         "types": "./dist/radio/index.d.mts",

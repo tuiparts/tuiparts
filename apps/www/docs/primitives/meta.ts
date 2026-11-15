@@ -20,5 +20,6 @@ export default defineMeta({
     "tabs",
     "radio-group",
     "dialog",
+    "progress",
   ],
 });

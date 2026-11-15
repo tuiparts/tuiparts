@@ -11,6 +11,7 @@ export default defineConfig({
     "src/dialog/index.ts",
     "src/input/index.ts",
     "src/number-field/index.ts",
+    "src/progress/index.ts",
     "src/radio/index.ts",
     "src/radio-group/index.ts",
     "src/slider/index.ts",

@@ -4,6 +4,7 @@
     "noEmit": true,
     "rootDirs": [
       "accordion",
+      "ascii-banner",
       "badge",
       "button",
       "checkbox",

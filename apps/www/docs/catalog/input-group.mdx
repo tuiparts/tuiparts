@@ -1,0 +1,64 @@
+---
+title: InputGroup
+description: Attach addons, text, and buttons to input fields.
+---
+
+<Badge>Recipe only</Badge>
+
+InputGroup provides composite framing to merge prefix/suffix labels, badges, or
+action buttons with terminal inputs. It is composed directly from OpenTUI Box and
+Text nodes and distributed only as editable Registry source. There is no
+InputGroup Primitive in the `@tuiparts/core`, `@tuiparts/react`, or
+`@tuiparts/solid` packages.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/input-group
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/input-group
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/input-group
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+} from "./components/ui/input-group";
+
+<InputGroup>
+  <InputGroupAddon>
+    <InputGroupText content="https://" />
+  </InputGroupAddon>
+</InputGroup>
+```
+
+### Core
+
+```ts
+import {
+  createInputGroup,
+  createInputGroupAddon,
+  createInputGroupText,
+} from "./components/ui/input-group";
+
+const group = createInputGroup(renderer);
+const addon = createInputGroupAddon(renderer);
+addon.add(createInputGroupText(renderer, { content: "https://" }));
+group.add(addon);
+renderer.root.add(group);
+```

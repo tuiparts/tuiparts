@@ -5,6 +5,7 @@
     "rootDirs": [
       "accordion",
       "badge",
+      "breadcrumb",
       "button",
       "checkbox",
       "checkbox-group",

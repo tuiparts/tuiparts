@@ -1,0 +1,63 @@
+---
+title: Kbd
+description: A presentation-only keyboard key or shortcut tag composed directly from OpenTUI elements.
+---
+
+<Badge>Recipe only</Badge>
+
+Kbd displays keyboard shortcuts, hotkeys, or individual key presses. It is composed
+directly from OpenTUI Box and Text nodes and distributed only as editable Registry
+source. There is no Kbd Primitive or Kbd subpath in the `@tuiparts/core`,
+`@tuiparts/react`, or `@tuiparts/solid` packages.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/kbd
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/kbd
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/kbd
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import { Kbd, KbdGroup } from "./components/ui/kbd";
+
+<Kbd label="Ctrl+K" />
+<Kbd keys={["Ctrl", "K"]} />
+
+<KbdGroup>
+  <Kbd label="Ctrl" />
+  <Kbd label="Shift" />
+  <Kbd label="P" />
+</KbdGroup>
+```
+
+Native Box properties apply to the root. `labelOptions` applies native Text
+properties to the label.
+
+### Core
+
+```ts
+import { createKbd, createKbdGroup } from "./components/ui/kbd";
+
+const kbd = createKbd(ctx, {
+  keys: ["Ctrl", "K"],
+});
+
+parent.add(kbd);
+```
+
+The factory returns a `BoxRenderable` containing the Text label.

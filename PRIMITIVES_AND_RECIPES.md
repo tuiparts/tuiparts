@@ -466,6 +466,23 @@ Reference implementations:
 - `registry/badge/react.tsx`
 - `registry/badge/solid.tsx`
 
+## Kbd Recipe
+
+Kbd has no reusable interaction, state, focus, keyboard, pointer, collection,
+overlay, or lifecycle behavior. It is therefore not a primitive and has no
+`@tuiparts/core`, React, or Solid package export.
+
+Editable Core, React, and Solid Kbd recipes are built directly from ordinary
+OpenTUI Box and Text nodes. They provide keyboard key and shortcut presentations
+with semantic surface background, muted foreground text, and standard horizontal
+padding.
+
+Reference implementations:
+
+- `registry/kbd/core.ts`
+- `registry/kbd/react.tsx`
+- `registry/kbd/solid.tsx`
+
 ## Radio And RadioGroup
 
 Radio behavior has one primitive model:

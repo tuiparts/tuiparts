@@ -1018,6 +1018,66 @@
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
+      "name": "core/aspect-ratio",
+      "type": "registry:item",
+      "title": "AspectRatio (Core)",
+      "description": "Editable imperative AspectRatio recipe constraining child dimensions.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/aspect-ratio/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/aspect-ratio.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      }
+    },
+    {
+      "name": "react/aspect-ratio",
+      "type": "registry:item",
+      "title": "AspectRatio (React)",
+      "description": "Editable React AspectRatio recipe constraining child dimensions.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/aspect-ratio/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/aspect-ratio.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      }
+    },
+    {
+      "name": "solid/aspect-ratio",
+      "type": "registry:item",
+      "title": "AspectRatio (Solid)",
+      "description": "Editable Solid AspectRatio recipe constraining child dimensions.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/aspect-ratio/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/aspect-ratio.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      }
+    },
+    {
       "name": "core/theme",
       "type": "registry:item",
       "title": "Theme (Core)",

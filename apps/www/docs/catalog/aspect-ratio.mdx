@@ -1,0 +1,50 @@
+---
+title: AspectRatio
+description: Displays content within a desired ratio in the terminal.
+---
+
+<Badge>Recipe only</Badge>
+
+AspectRatio constrains its container dimensions using Yoga's native aspect ratio
+calculation. It is composed directly from an OpenTUI Box node and distributed
+only as editable Registry source. There is no AspectRatio Primitive in the
+`@tuiparts/core`, `@tuiparts/react`, or `@tuiparts/solid` packages.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/aspect-ratio
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/aspect-ratio
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/aspect-ratio
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import { AspectRatio } from "./components/ui/aspect-ratio";
+
+<AspectRatio ratio={16 / 9}>
+  <box backgroundColor="#222222" />
+</AspectRatio>
+```
+
+### Core
+
+```ts
+import { createAspectRatio } from "./components/ui/aspect-ratio";
+
+const ratio = createAspectRatio(renderer, { ratio: 16 / 9 });
+renderer.root.add(ratio);
+```

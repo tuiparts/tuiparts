@@ -1,0 +1,59 @@
+---
+title: TerminalView
+description: Styled terminal emulator window frame with controls, prompt, and output lines.
+---
+
+TerminalView renders an embedded terminal window mockup complete with macOS traffic light controls, window title, interactive prompt, and line buffer output.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/terminal-view
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/terminal-view
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/terminal-view
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import { TerminalView } from "./components/ui/terminal-view";
+
+<TerminalView
+  title="zsh"
+  lines={["Connecting to remote...", "Connected."]}
+  prompt="user@host:~$ "
+/>;
+```
+
+### Core
+
+```ts
+import { createTerminalView } from "./components/ui/terminal-view";
+
+const terminal = createTerminalView(ctx, {
+  title: "zsh",
+  lines: ["Connecting to remote...", "Connected."],
+  prompt: "user@host:~$ ",
+});
+
+parent.add(terminal);
+```
+
+## Recipe API
+
+- `title?: string`: Window header title (default: `"terminal"`).
+- `lines?: string[]`: Array of output text lines.
+- `prompt?: string`: Interactive prompt string with block cursor indicator.
+- `showControls?: boolean`: Whether to display the `● ● ●` window controls.

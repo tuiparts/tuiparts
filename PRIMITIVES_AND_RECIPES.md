@@ -496,6 +496,18 @@ Reference implementations:
 - `registry/radio-group/react.tsx`
 - `registry/radio-group/solid.tsx`
 
+## TerminalView Recipe
+
+TerminalView is a consumer-owned, TUI-native recipe that renders interactive
+or log-streaming terminal sessions. It packages scrollable command output,
+monospace text formatting, prompt display, and optional execution status.
+
+Reference implementations:
+
+- `registry/terminal-view/core.ts`
+- `registry/terminal-view/react.tsx`
+- `registry/terminal-view/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies

@@ -1,0 +1,80 @@
+---
+title: Table
+description: A responsive, composable terminal Table recipe providing compound layout parts for structured tabular data.
+---
+
+Table arranges data in rows and columns. Designed as a consumer-owned Recipe, Table provides compound parts (`Table`, `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, `TableCaption`) built upon native OpenTUI box layout and theme styling.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/table
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/table
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/table
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+} from "./components/ui/table";
+
+<Table width={50}>
+  <TableHeader>
+    <TableRow>
+      <TableHead content="Invoice" width={15} />
+      <TableHead content="Status" width={15} />
+      <TableHead content="Amount" width={20} />
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell content="INV-001" width={15} />
+      <TableCell content="Paid" width={15} />
+      <TableCell content="$250.00" width={20} />
+    </TableRow>
+  </TableBody>
+  <TableCaption content="A list of recent invoices." />
+</Table>;
+```
+
+### Core
+
+```ts
+import {
+  createTable,
+  createTableHeader,
+  createTableBody,
+  createTableRow,
+  createTableHead,
+  createTableCell,
+} from "./components/ui/table";
+
+const table = createTable(renderer, { width: 50 });
+const header = createTableHeader(renderer);
+const row = createTableRow(renderer);
+row.add(createTableHead(renderer, { content: "Name", width: 25 }));
+row.add(createTableHead(renderer, { content: "Status", width: 25 }));
+header.add(row);
+table.add(header);
+renderer.root.add(table);
+```

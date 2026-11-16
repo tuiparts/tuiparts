@@ -90,6 +90,7 @@ const recipes = [
   "toggle",
   "toggle-group",
   "tabs",
+  "table",
   "theme",
 ];
 const catalogRecipes = [
@@ -109,9 +110,10 @@ const catalogRecipes = [
   "toggle",
   "toggle-group",
   "tabs",
+  "table",
   "theme",
 ];
-const primitivelessRecipes = ["badge", "theme"];
+const primitivelessRecipes = ["badge", "theme", "table"];
 const themePresets = [
   {
     item: "theme-cobalt-deep",

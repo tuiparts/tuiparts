@@ -1018,6 +1018,69 @@
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
+      "name": "core/table",
+      "type": "registry:item",
+      "title": "Table (Core)",
+      "description": "Editable imperative Table recipe providing compound tabular layout.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/table/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/table.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
+    },
+    {
+      "name": "react/table",
+      "type": "registry:item",
+      "title": "Table (React)",
+      "description": "Editable React Table recipe providing compound tabular layout.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/table/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/table.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
+    },
+    {
+      "name": "solid/table",
+      "type": "registry:item",
+      "title": "Table (Solid)",
+      "description": "Editable Solid Table recipe providing compound tabular layout.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/table/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/table.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
+    },
+    {
       "name": "core/theme",
       "type": "registry:item",
       "title": "Theme (Core)",

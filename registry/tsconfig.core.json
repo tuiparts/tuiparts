@@ -12,6 +12,7 @@
       "dialog",
       "input",
       "number-field",
+      "pagination",
       "radio-group",
       "slider",
       "switch",

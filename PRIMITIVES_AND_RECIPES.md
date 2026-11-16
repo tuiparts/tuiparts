@@ -496,6 +496,19 @@ Reference implementations:
 - `registry/radio-group/react.tsx`
 - `registry/radio-group/solid.tsx`
 
+## HoverCard Recipe
+
+HoverCard allows users to preview rich content behind a trigger link or target
+with configurable open and close hover delays. Built directly from OpenTUI Box
+elements and theme tokens, it encapsulates hover timing and portal/popover framing
+without imposing rigid child requirements.
+
+Reference implementations:
+
+- `registry/hover-card/core.ts`
+- `registry/hover-card/react.tsx`
+- `registry/hover-card/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies

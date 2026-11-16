@@ -466,6 +466,22 @@ Reference implementations:
 - `registry/badge/react.tsx`
 - `registry/badge/solid.tsx`
 
+## Avatar Recipe
+
+Avatar has no reusable interaction, state, focus, keyboard, pointer, collection,
+overlay, or lifecycle behavior. It is therefore not a primitive and has no
+`@tuiparts/core`, React, or Solid package export.
+
+Editable Core, React, and Solid Avatar recipes are built directly from ordinary
+OpenTUI Box and Text nodes. They provide framed avatar boxes with size variants
+(`sm`, `default`, `lg`), surface backgrounds, and bold initials fallback presentation.
+
+Reference implementations:
+
+- `registry/avatar/core.ts`
+- `registry/avatar/react.tsx`
+- `registry/avatar/solid.tsx`
+
 ## Radio And RadioGroup
 
 Radio behavior has one primitive model:

@@ -1,0 +1,51 @@
+---
+title: Avatar
+description: An image or fallback initials element for representing the user.
+---
+
+<Badge>Recipe only</Badge>
+
+Avatar displays user profile images or fallback initials in terminal applications.
+It is composed directly from OpenTUI Box and Text nodes and distributed only as
+editable Registry source. There is no Avatar Primitive in the `@tuiparts/core`,
+`@tuiparts/react`, or `@tuiparts/solid` packages.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/avatar
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/avatar
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/avatar
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import { Avatar, AvatarFallback } from "./components/ui/avatar";
+
+<Avatar size="default">
+  <AvatarFallback content="MS" />
+</Avatar>
+```
+
+### Core
+
+```ts
+import { createAvatar, createAvatarFallback } from "./components/ui/avatar";
+
+const avatar = createAvatar(renderer, { size: "default" });
+avatar.add(createAvatarFallback(renderer, { content: "MS" }));
+renderer.root.add(avatar);
+```

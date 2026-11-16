@@ -11,6 +11,7 @@
       "checkbox",
       "checkbox-group",
       "collapsible",
+      "command",
       "dialog",
       "input",
       "number-field",

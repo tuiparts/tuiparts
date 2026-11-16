@@ -496,6 +496,19 @@ Reference implementations:
 - `registry/radio-group/react.tsx`
 - `registry/radio-group/solid.tsx`
 
+## Command Recipe
+
+Command provides a fast fuzzy-filtering command palette with search input,
+grouped lists, empty states, and shortcut indicators. Built directly from
+OpenTUI Box and Text elements and theme tokens, it encapsulates search matching
+and keyboard event handling for terminal action menus.
+
+Reference implementations:
+
+- `registry/command/core.ts`
+- `registry/command/react.tsx`
+- `registry/command/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies

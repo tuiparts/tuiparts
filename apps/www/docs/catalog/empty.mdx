@@ -1,0 +1,73 @@
+---
+title: Empty
+description: Display empty state callouts when no data is available.
+---
+
+<Badge>Recipe only</Badge>
+
+Empty provides dashed-bordered framing and structured headers, media, titles, and
+descriptions for empty terminal states. It is composed directly from OpenTUI Box
+and Text nodes and distributed only as editable Registry source. There is no
+Empty Primitive in the `@tuiparts/core`, `@tuiparts/react`, or `@tuiparts/solid`
+packages.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/empty
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/empty
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/empty
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from "./components/ui/empty";
+
+<Empty>
+  <EmptyHeader>
+    <EmptyTitle content="No files selected" />
+    <EmptyDescription content="Choose a file from the explorer to preview." />
+  </EmptyHeader>
+</Empty>
+```
+
+### Core
+
+```ts
+import {
+  createEmpty,
+  createEmptyDescription,
+  createEmptyHeader,
+  createEmptyTitle,
+} from "./components/ui/empty";
+
+const empty = createEmpty(renderer);
+const header = createEmptyHeader(renderer);
+header.add(createEmptyTitle(renderer, { content: "No files selected" }));
+header.add(
+  createEmptyDescription(renderer, {
+    content: "Choose a file from the explorer to preview.",
+  }),
+);
+empty.add(header);
+renderer.root.add(empty);
+```

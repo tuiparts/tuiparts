@@ -496,6 +496,18 @@ Reference implementations:
 - `registry/radio-group/react.tsx`
 - `registry/radio-group/solid.tsx`
 
+## Resizable Recipe
+
+Resizable provides flexible split-pane layouts in horizontal or vertical directions.
+Built directly on OpenTUI Box flexbox distribution and theme divider styling, it supports
+weighted panel sizing (`defaultSize`) and visual divider handles (`withHandle`).
+
+Reference implementations:
+
+- `registry/resizable/core.ts`
+- `registry/resizable/react.tsx`
+- `registry/resizable/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies

@@ -1,0 +1,20 @@
+---
+title: Resizable
+description: Split-pane layouts with flex-distributed panels and dividing handles.
+---
+
+# Resizable
+
+Resizable provides split-pane layouts with configurable panel sizes and dividing handles.
+
+## Installation
+
+```bash
+npx shadcn@latest add @tuiparts/resizable
+```
+
+## Structure
+
+- `ResizablePanelGroup`: Layout container (`direction="horizontal" | "vertical"`).
+- `ResizablePanel`: Child panel allocating space via `defaultSize` / `flexGrow`.
+- `ResizableHandle`: Visual divider line with optional grab glyph (`withHandle`).

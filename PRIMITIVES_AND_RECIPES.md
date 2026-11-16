@@ -496,6 +496,18 @@ Reference implementations:
 - `registry/radio-group/react.tsx`
 - `registry/radio-group/solid.tsx`
 
+## ASCIIBanner Recipe
+
+ASCIIBanner is a consumer-owned, TUI-native recipe that wraps OpenTUI's
+`ASCIIFontRenderable`. It packages centered figlet font rendering, primary
+theme coloring, and optional subtitles for high-impact title displays.
+
+Reference implementations:
+
+- `registry/ascii-banner/core.ts`
+- `registry/ascii-banner/react.tsx`
+- `registry/ascii-banner/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies

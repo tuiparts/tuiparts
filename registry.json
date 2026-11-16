@@ -382,6 +382,69 @@
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
+      "name": "core/ascii-banner",
+      "type": "registry:item",
+      "title": "ASCIIBanner (Core)",
+      "description": "Editable imperative ASCIIBanner recipe built directly from OpenTUI Renderables.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/ascii-banner/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/ascii-banner.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
+    },
+    {
+      "name": "react/ascii-banner",
+      "type": "registry:item",
+      "title": "ASCIIBanner (React)",
+      "description": "Editable React ASCIIBanner recipe built directly from OpenTUI elements.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/ascii-banner/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/ascii-banner.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
+    },
+    {
+      "name": "solid/ascii-banner",
+      "type": "registry:item",
+      "title": "ASCIIBanner (Solid)",
+      "description": "Editable Solid ASCIIBanner recipe built directly from OpenTUI elements.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/ascii-banner/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/ascii-banner.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
+    },
+    {
       "name": "core/radio-group",
       "type": "registry:item",
       "title": "Radio Group (Core)",

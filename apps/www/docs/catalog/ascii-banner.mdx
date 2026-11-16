@@ -1,0 +1,59 @@
+---
+title: ASCIIBanner
+description: Terminal title banner wrapping OpenTUI's native ASCIIFontRenderable.
+---
+
+ASCIIBanner renders large figlet-style ASCII fonts to create eye-catching headers, titles, and splash banners in terminal applications.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/ascii-banner
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/ascii-banner
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/ascii-banner
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import { ASCIIBanner } from "./components/ui/ascii-banner";
+
+<ASCIIBanner
+  text="OPENTUI"
+  font="block"
+  subtitle="The composable TUI component system"
+/>;
+```
+
+### Core
+
+```ts
+import { createASCIIBanner } from "./components/ui/ascii-banner";
+
+const banner = createASCIIBanner(ctx, {
+  text: "OPENTUI",
+  font: "block",
+  subtitle: "The composable TUI component system",
+});
+
+parent.add(banner);
+```
+
+## Recipe API
+
+- `text?: string`: ASCII title text to render.
+- `font?: "block" | "tiny" | "shade" | "slick" | "huge" | "grid" | "pallet"`: Figlet font (default: `"block"`).
+- `subtitle?: string`: Secondary subtitle rendered below the banner.
+- `color?: ColorInput | ColorInput[]`: Optional custom color override (defaults to `tokens.colors.primary`).

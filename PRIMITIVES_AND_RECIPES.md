@@ -496,6 +496,18 @@ Reference implementations:
 - `registry/radio-group/react.tsx`
 - `registry/radio-group/solid.tsx`
 
+## DropdownMenu Recipe
+
+DropdownMenu provides actionable popup menus triggered by button elements.
+Built directly from OpenTUI Box and Text elements and theme tokens, it encapsulates
+open/close state, item selection, checkbox and radio items, and keyboard navigation.
+
+Reference implementations:
+
+- `registry/dropdown-menu/core.ts`
+- `registry/dropdown-menu/react.tsx`
+- `registry/dropdown-menu/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies

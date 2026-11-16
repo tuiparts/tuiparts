@@ -57,12 +57,12 @@ behavior standard.
 ## Catalog
 
 The Catalog includes editable Recipes for Accordion, Badge, Button, Checkbox,
-Checkbox Group, Collapsible, Dialog, Input, Number Field, Radio Group, Slider,
+Checkbox Group, Collapsible, ContextMenu, Dialog, Input, Number Field, Radio Group, Slider,
 Switch, Tabs, Textarea, Toggle, and Toggle Group. Every Recipe is available for
 Core, React, and Solid.
 
-Interactive Recipes build on packaged Primitives. Badge is Recipe-only because
-it has no reusable interaction behavior. Shared colors, glyphs, borders, and
+Interactive Recipes build on packaged Primitives. Badge and ContextMenu are Recipe-only because
+they have no reusable interaction behavior. Shared colors, glyphs, borders, and
 density live in the consumer-owned Theme Recipe.
 
 The [Registry guide](https://tuiparts.sh/docs/registry/) covers installation,

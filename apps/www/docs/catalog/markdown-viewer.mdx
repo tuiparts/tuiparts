@@ -1,0 +1,58 @@
+---
+title: MarkdownViewer
+description: Rich markdown viewer wrapping OpenTUI's native MarkdownRenderable.
+---
+
+MarkdownViewer renders formatted Markdown documents—including headings, inline formatting, code blocks, lists, and tables—inside terminal applications.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/markdown-viewer
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/markdown-viewer
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/markdown-viewer
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import { MarkdownViewer } from "./components/ui/markdown-viewer";
+
+const doc = `
+# Release Notes
+- Added **DiffViewer** and **MarkdownViewer**
+- Full theme reactive styling
+`;
+
+<MarkdownViewer content={doc} title="NOTES.md" />;
+```
+
+### Core
+
+```ts
+import { createMarkdownViewer } from "./components/ui/markdown-viewer";
+
+const viewer = createMarkdownViewer(ctx, {
+  content: doc,
+  title: "NOTES.md",
+});
+
+parent.add(viewer);
+```
+
+## Recipe API
+
+- `content?: string`: Markdown string to render.
+- `title?: string`: Optional document title displayed in the header bar.

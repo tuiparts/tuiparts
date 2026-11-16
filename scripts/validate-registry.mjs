@@ -81,6 +81,7 @@ const recipes = [
   "switch",
   "button",
   "badge",
+  "markdown-viewer",
   "radio-group",
   "input",
   "number-field",
@@ -100,6 +101,7 @@ const catalogRecipes = [
   "switch",
   "button",
   "badge",
+  "markdown-viewer",
   "radio-group",
   "input",
   "number-field",
@@ -111,7 +113,7 @@ const catalogRecipes = [
   "tabs",
   "theme",
 ];
-const primitivelessRecipes = ["badge", "theme"];
+const primitivelessRecipes = ["badge", "markdown-viewer", "theme"];
 const themePresets = [
   {
     item: "theme-cobalt-deep",

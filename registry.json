@@ -382,6 +382,69 @@
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
+      "name": "core/markdown-viewer",
+      "type": "registry:item",
+      "title": "MarkdownViewer (Core)",
+      "description": "Editable imperative MarkdownViewer recipe built directly from OpenTUI Renderables.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/markdown-viewer/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/markdown-viewer.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
+    },
+    {
+      "name": "react/markdown-viewer",
+      "type": "registry:item",
+      "title": "MarkdownViewer (React)",
+      "description": "Editable React MarkdownViewer recipe built directly from OpenTUI elements.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/markdown-viewer/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/markdown-viewer.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
+    },
+    {
+      "name": "solid/markdown-viewer",
+      "type": "registry:item",
+      "title": "MarkdownViewer (Solid)",
+      "description": "Editable Solid MarkdownViewer recipe built directly from OpenTUI elements.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/markdown-viewer/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/markdown-viewer.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
+    },
+    {
       "name": "core/radio-group",
       "type": "registry:item",
       "title": "Radio Group (Core)",

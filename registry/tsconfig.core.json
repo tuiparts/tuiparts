@@ -11,6 +11,7 @@
       "collapsible",
       "dialog",
       "input",
+      "menubar",
       "number-field",
       "radio-group",
       "slider",

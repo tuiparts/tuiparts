@@ -1,0 +1,29 @@
+---
+title: Menubar
+description: Horizontal application menu bar with dropdown menus, checkbox items, and shortcuts.
+---
+
+# Menubar
+
+Menubar provides a top-level desktop-style menu bar with expandable cascading dropdown menus and keyboard navigation.
+
+## Installation
+
+```bash
+npx shadcn@latest add @tuiparts/menubar
+```
+
+## Structure
+
+- `Menubar`: Root horizontal container for top-level menu triggers.
+- `MenubarMenu`: Logical menu wrapper providing open/close state.
+- `MenubarTrigger`: Menu header button in the top bar.
+- `MenubarContent`: Dropdown popup container for menu items.
+- `MenubarItem`: Action item with selection callback.
+- `MenubarCheckboxItem`: Menu item with checkmark indicator.
+- `MenubarRadioGroup`: Group for mutually exclusive radio items.
+- `MenubarRadioItem`: Menu item with radio bullet indicator.
+- `MenubarSeparator`: Divider line between menu items.
+- `MenubarShortcut`: Keyboard shortcut hint label.
+- `MenubarGroup`: Grouping wrapper for menu sections.
+- `MenubarSub`, `MenubarSubTrigger`, `MenubarSubContent`: Submenu hierarchy components.

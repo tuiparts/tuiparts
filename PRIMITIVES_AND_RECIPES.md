@@ -466,6 +466,21 @@ Reference implementations:
 - `registry/badge/react.tsx`
 - `registry/badge/solid.tsx`
 
+## AspectRatio Recipe
+
+AspectRatio has no reusable interaction, state, focus, keyboard, pointer, collection,
+overlay, or lifecycle behavior. It is therefore not a primitive and has no
+`@tuiparts/core`, React, or Solid package export.
+
+Editable Core, React, and Solid AspectRatio recipes are built directly from ordinary
+OpenTUI Box nodes using native Yoga aspect ratio constraints (`ratio`).
+
+Reference implementations:
+
+- `registry/aspect-ratio/core.ts`
+- `registry/aspect-ratio/react.tsx`
+- `registry/aspect-ratio/solid.tsx`
+
 ## Radio And RadioGroup
 
 Radio behavior has one primitive model:

@@ -75,6 +75,7 @@ const frameworks = {
 };
 const recipes = [
   "accordion",
+  "aspect-ratio",
   "checkbox-group",
   "checkbox",
   "collapsible",
@@ -94,6 +95,7 @@ const recipes = [
 ];
 const catalogRecipes = [
   "accordion",
+  "aspect-ratio",
   "checkbox-group",
   "checkbox",
   "collapsible",
@@ -111,7 +113,7 @@ const catalogRecipes = [
   "tabs",
   "theme",
 ];
-const primitivelessRecipes = ["badge", "theme"];
+const primitivelessRecipes = ["aspect-ratio", "badge", "theme"];
 const themePresets = [
   {
     item: "theme-cobalt-deep",

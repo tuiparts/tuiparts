@@ -4,6 +4,7 @@
     "noEmit": true,
     "rootDirs": [
       "accordion",
+      "aspect-ratio",
       "badge",
       "button",
       "checkbox",

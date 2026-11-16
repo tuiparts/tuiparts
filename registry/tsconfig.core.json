@@ -19,7 +19,8 @@
       "textarea",
       "theme",
       "toggle",
-      "toggle-group"
+      "toggle-group",
+      "tooltip"
     ]
   },
   "include": ["*/core.ts", "theme/theme.ts", "theme/themes/*.ts"]

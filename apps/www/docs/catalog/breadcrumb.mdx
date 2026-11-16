@@ -1,0 +1,89 @@
+---
+title: Breadcrumb
+description: A navigation hierarchy trail composed directly from OpenTUI elements.
+---
+
+<Badge>Recipe only</Badge>
+
+Breadcrumb displays hierarchical navigation links and current page context. It is
+composed directly from OpenTUI Box and Text nodes and distributed only as
+editable Registry source. There is no Breadcrumb Primitive in the `@tuiparts/core`,
+`@tuiparts/react`, or `@tuiparts/solid` packages.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/breadcrumb
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/breadcrumb
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/breadcrumb
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "./components/ui/breadcrumb";
+
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem>
+      <BreadcrumbLink content="Home" />
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbLink content="Components" />
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbPage content="Breadcrumb" />
+    </BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
+```
+
+### Core
+
+```ts
+import {
+  createBreadcrumb,
+  createBreadcrumbItem,
+  createBreadcrumbLink,
+  createBreadcrumbList,
+  createBreadcrumbPage,
+  createBreadcrumbSeparator,
+} from "./components/ui/breadcrumb";
+
+const breadcrumb = createBreadcrumb(renderer);
+const list = createBreadcrumbList(renderer);
+
+const item1 = createBreadcrumbItem(renderer);
+item1.add(createBreadcrumbLink(renderer, { content: "Home" }));
+
+const sep = createBreadcrumbSeparator(renderer);
+
+const item2 = createBreadcrumbItem(renderer);
+item2.add(createBreadcrumbPage(renderer, { content: "Docs" }));
+
+list.add(item1);
+list.add(sep);
+list.add(item2);
+breadcrumb.add(list);
+```

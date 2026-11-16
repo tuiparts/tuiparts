@@ -1,0 +1,48 @@
+---
+title: Spinner
+description: Headless terminal activity indicator primitive with timer coordination and customizable glyph frames.
+---
+
+Spinner packages animated frame progression, interval timing, and start/stop lifecycle without hardcoding visual colors or layout.
+
+## Install
+
+Install the package for your runtime, then import the `spinner` subpath:
+
+```ts
+import { Spinner } from "@tuiparts/react/spinner";
+```
+
+Replace `react` with `solid`, or import `SpinnerRootRenderable`, `SpinnerIndicatorRenderable`, and `SpinnerStore` from `@tuiparts/core/spinner`.
+
+## Anatomy
+
+| Part | Responsibility |
+| --- | --- |
+| `Spinner.Root` | Coordinates timer state, active frames, interval speed, and frame advancement. |
+| `Spinner.Indicator` | Displays the current frame glyph reactively. |
+| `Spinner.Label` | Displays optional status or progress text. |
+
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { Spinner } from "@tuiparts/react/spinner";
+
+<Spinner.Root interval={80}>
+  <Spinner.Indicator fg="#38bdf8" />
+  <Spinner.Label content="Loading…" />
+</Spinner.Root>;
+```
+
+```tsx Solid
+import { Spinner } from "@tuiparts/solid/spinner";
+
+<Spinner.Root interval={80}>
+  <Spinner.Indicator fg="#38bdf8" />
+  <Spinner.Label content="Loading…" />
+</Spinner.Root>;
+```
+
+</CodeGroup>

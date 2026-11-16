@@ -9,6 +9,7 @@ export default defineMeta({
     "input",
     "number-field",
     "slider",
+    "spinner",
     "textarea",
     "checkbox",
     "checkbox-group",

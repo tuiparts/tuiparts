@@ -1,0 +1,97 @@
+---
+title: Select
+description: An accessible dropdown select component with keyboard roving and popup layer.
+---
+
+<Badge>Recipe only</Badge>
+
+Select displays a trigger button with the selected option label, and opens a
+navigable dropdown popup menu when activated.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/select
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/select
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/select
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "./components/ui/select";
+
+<Select value={value} onValueChange={setValue}>
+  <SelectTrigger>
+    <SelectValue placeholder="Select fruit" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="apple">Apple</SelectItem>
+    <SelectItem value="banana">Banana</SelectItem>
+    <SelectItem value="orange">Orange</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+### Core
+
+```ts
+import { createSelect } from "./components/ui/select";
+
+const select = createSelect(ctx, {
+  options: [
+    { value: "apple", label: "Apple" },
+    { value: "banana", label: "Banana" },
+  ],
+  onValueChange: (val) => console.log(val),
+});
+
+parent.add(select);
+```
+
+## Recipe API
+
+<TypeTable
+  type={{
+    value: {
+      type: "string",
+      description: "Controlled selected value.",
+    },
+    defaultValue: {
+      type: "string",
+      description: "Initial uncontrolled selected value.",
+    },
+    placeholder: {
+      type: "string",
+      default: '"Select..."',
+      description: "Placeholder text when no item is selected.",
+    },
+    disabled: {
+      type: "boolean",
+      default: "false",
+      description: "Whether the select is disabled.",
+    },
+    onValueChange: {
+      type: "(value: string) => void",
+      description: "Callback invoked when selected value changes.",
+    },
+  }}
+/>

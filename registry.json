@@ -382,6 +382,69 @@
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
+      "name": "core/select",
+      "type": "registry:item",
+      "title": "Select (Core)",
+      "description": "Editable imperative Select recipe built directly from OpenTUI Renderables.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/select/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/select.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
+    },
+    {
+      "name": "react/select",
+      "type": "registry:item",
+      "title": "Select (React)",
+      "description": "Editable React Select recipe built directly from OpenTUI elements.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/select/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/select.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
+    },
+    {
+      "name": "solid/select",
+      "type": "registry:item",
+      "title": "Select (Solid)",
+      "description": "Editable Solid Select recipe built directly from OpenTUI elements.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/select/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/select.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
+    },
+    {
       "name": "core/radio-group",
       "type": "registry:item",
       "title": "Radio Group (Core)",

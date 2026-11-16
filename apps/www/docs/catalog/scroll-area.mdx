@@ -1,0 +1,59 @@
+---
+title: ScrollArea
+description: Augments native terminal overflow with custom styled scrollbars.
+---
+
+<Badge>Recipe only</Badge>
+
+ScrollArea provides bounded viewport scrolling with styled vertical and
+horizontal scrollbars. It is composed directly from OpenTUI's native
+`ScrollBoxRenderable` / `<scrollbox>` and distributed only as editable Registry
+source. There is no ScrollArea Primitive in the `@tuiparts/core`,
+`@tuiparts/react`, or `@tuiparts/solid` packages.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/scroll-area
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/scroll-area
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/scroll-area
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import { ScrollArea } from "./components/ui/scroll-area";
+
+<ScrollArea height={10} width={40}>
+  <box flexDirection="column">
+    <text content="Long content item 1" />
+    <text content="Long content item 2" />
+    <text content="Long content item 3" />
+  </box>
+</ScrollArea>
+```
+
+### Core
+
+```ts
+import { BoxRenderable, TextRenderable } from "@opentui/core";
+import { createScrollArea } from "./components/ui/scroll-area";
+
+const scroll = createScrollArea(renderer, { height: 10, width: 40 });
+const content = new BoxRenderable(renderer, { flexDirection: "column" });
+content.add(new TextRenderable(renderer, { content: "Item 1" }));
+scroll.add(content);
+renderer.root.add(scroll);
+```

@@ -466,6 +466,19 @@ Reference implementations:
 - `registry/badge/react.tsx`
 - `registry/badge/solid.tsx`
 
+## ScrollArea Recipe
+
+ScrollArea wraps OpenTUI's native high-performance `ScrollBoxRenderable` / `<scrollbox>`.
+Because OpenTUI already owns scrolling calculations, clipping, keyboard navigation,
+and mouse wheel support, tuiparts delivers ScrollArea directly as an editable Recipe
+with theme styling and borders, without an unnecessary pass-through wrapper package.
+
+Reference implementations:
+
+- `registry/scroll-area/core.ts`
+- `registry/scroll-area/react.tsx`
+- `registry/scroll-area/solid.tsx`
+
 ## Radio And RadioGroup
 
 Radio behavior has one primitive model:

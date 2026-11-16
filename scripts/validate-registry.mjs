@@ -82,6 +82,7 @@ const recipes = [
   "button",
   "badge",
   "radio-group",
+  "scroll-area",
   "input",
   "number-field",
   "slider",
@@ -101,6 +102,7 @@ const catalogRecipes = [
   "button",
   "badge",
   "radio-group",
+  "scroll-area",
   "input",
   "number-field",
   "slider",
@@ -111,7 +113,7 @@ const catalogRecipes = [
   "tabs",
   "theme",
 ];
-const primitivelessRecipes = ["badge", "theme"];
+const primitivelessRecipes = ["badge", "scroll-area", "theme"];
 const themePresets = [
   {
     item: "theme-cobalt-deep",

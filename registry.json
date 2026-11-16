@@ -382,6 +382,69 @@
       "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
     },
     {
+      "name": "core/separator",
+      "type": "registry:item",
+      "title": "Separator (Core)",
+      "description": "Editable imperative Separator recipe built directly from OpenTUI Renderables.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/separator/core.ts",
+          "type": "registry:file",
+          "target": "components/ui/separator.ts"
+        }
+      ],
+      "meta": {
+        "framework": "core",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/core/theme.json"]
+    },
+    {
+      "name": "react/separator",
+      "type": "registry:item",
+      "title": "Separator (React)",
+      "description": "Editable React Separator recipe built directly from OpenTUI elements.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/separator/react.tsx",
+          "type": "registry:file",
+          "target": "components/ui/separator.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "react",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/react/theme.json"]
+    },
+    {
+      "name": "solid/separator",
+      "type": "registry:item",
+      "title": "Separator (Solid)",
+      "description": "Editable Solid Separator recipe built directly from OpenTUI elements.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/separator/solid.tsx",
+          "type": "registry:file",
+          "target": "components/ui/separator.tsx"
+        }
+      ],
+      "meta": {
+        "framework": "solid",
+        "primitiveStatus": "recipe",
+        "sourceOwnership": "consumer",
+        "updateStrategy": "shadcn-add"
+      },
+      "registryDependencies": ["https://tuiparts.sh/r/solid/theme.json"]
+    },
+    {
       "name": "core/radio-group",
       "type": "registry:item",
       "title": "Radio Group (Core)",

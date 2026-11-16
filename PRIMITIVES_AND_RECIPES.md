@@ -496,6 +496,18 @@ Reference implementations:
 - `registry/radio-group/react.tsx`
 - `registry/radio-group/solid.tsx`
 
+## InputOTP Recipe
+
+InputOTP is a consumer-owned, TUI-native recipe that provides a segmented
+one-time password / PIN code input. It packages multi-cell slot rendering,
+auto-advance, backspace retreat, arrow key navigation, and optional character masking.
+
+Reference implementations:
+
+- `registry/input-otp/core.ts`
+- `registry/input-otp/react.tsx`
+- `registry/input-otp/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies

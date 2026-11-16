@@ -1,0 +1,100 @@
+---
+title: Input OTP
+description: A segmented one-time password and PIN code input recipe.
+---
+
+<Badge>Recipe only</Badge>
+
+Input OTP renders segmented multi-cell code input boxes with active borders,
+automatic advance, backspace retreat, and arrow key navigation.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/input-otp
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/input-otp
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/input-otp
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  InputOTPSeparator,
+} from "./components/ui/input-otp";
+
+<InputOTP maxLength={6} onComplete={(val) => console.log(val)}>
+  <InputOTPGroup>
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+    <InputOTPSlot index={2} />
+  </InputOTPGroup>
+  <InputOTPSeparator />
+  <InputOTPGroup>
+    <InputOTPSlot index={3} />
+    <InputOTPSlot index={4} />
+    <InputOTPSlot index={5} />
+  </InputOTPGroup>
+</InputOTP>
+```
+
+### Core
+
+```ts
+import { createInputOTP } from "./components/ui/input-otp";
+
+const otp = createInputOTP(ctx, {
+  maxLength: 6,
+  onComplete: (val) => console.log(val),
+});
+
+parent.add(otp);
+```
+
+## Recipe API
+
+<TypeTable
+  type={{
+    maxLength: {
+      type: "number",
+      default: "6",
+      description: "Total number of code slots.",
+    },
+    value: {
+      type: "string",
+      description: "Controlled code value.",
+    },
+    defaultValue: {
+      type: "string",
+      description: "Initial uncontrolled code value.",
+    },
+    disabled: {
+      type: "boolean",
+      default: "false",
+      description: "Whether editing is disabled.",
+    },
+    onChange: {
+      type: "(value: string) => void",
+      description: "Callback invoked on code change.",
+    },
+    onComplete: {
+      type: "(value: string) => void",
+      description: "Callback invoked when all slots are filled.",
+    },
+  }}
+/>

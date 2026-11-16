@@ -102,6 +102,7 @@ try {
     "@tuiparts/core/dialog",
     "@tuiparts/core/input",
     "@tuiparts/core/number-field",
+    "@tuiparts/core/progress",
     "@tuiparts/core/radio",
     "@tuiparts/core/radio-group",
     "@tuiparts/core/slider",
@@ -119,6 +120,7 @@ try {
     "@tuiparts/react/dialog",
     "@tuiparts/react/input",
     "@tuiparts/react/number-field",
+    "@tuiparts/react/progress",
     "@tuiparts/react/radio",
     "@tuiparts/react/radio-group",
     "@tuiparts/react/slider",
@@ -136,6 +138,7 @@ try {
     "@tuiparts/solid/dialog",
     "@tuiparts/solid/input",
     "@tuiparts/solid/number-field",
+    "@tuiparts/solid/progress",
     "@tuiparts/solid/radio",
     "@tuiparts/solid/radio-group",
     "@tuiparts/solid/slider",
@@ -235,6 +238,10 @@ import {
   NumberFieldInputRenderable,
   NumberFieldRootRenderable,
 } from "@tuiparts/core/number-field";
+import {
+  ProgressIndicatorRenderable,
+  ProgressRootRenderable,
+} from "@tuiparts/core/progress";
 import {
   SliderRootRenderable,
   SliderTrackRenderable,
@@ -342,6 +349,17 @@ try {
   slider.store.finishPointer();
   if (slider.value !== 3)
     throw new Error("Compiled Slider did not request its pointer value");
+
+  const progress = new ProgressRootRenderable(setup.renderer, {
+    defaultValue: 50,
+  });
+  const progressIndicator = new ProgressIndicatorRenderable(setup.renderer, {
+    store: progress.store,
+  });
+  progress.add(progressIndicator);
+  setup.renderer.root.add(progress);
+  if (progress.value !== 50 || progressIndicator.percentage !== 50)
+    throw new Error("Compiled Progress did not initialize its value");
 
   const root = new TabsRootRenderable(setup.renderer);
   const list = new TabsListRenderable(setup.renderer, { store: root.store });

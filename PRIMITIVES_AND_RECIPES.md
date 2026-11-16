@@ -466,6 +466,27 @@ Reference implementations:
 - `registry/badge/react.tsx`
 - `registry/badge/solid.tsx`
 
+## Progress Primitive And Recipe
+
+Progress packages bounded value normalization, maximum clamping, and percentage
+computation without imposing presentation:
+
+- `Progress.Root` owns the Store, controlled/uncontrolled value, maximum, and
+  descendant coordination.
+- `Progress.Indicator` reflects the computed percentage by updating its width.
+
+The editable Core, React, and Solid recipes apply semantic surface background and
+primary indicator styling to the headless primitive.
+
+Reference implementations:
+
+- `packages/core/src/progress/primitive.ts`
+- `packages/react/src/progress/primitive.ts`
+- `packages/solid/src/progress/primitive.tsx`
+- `registry/progress/core.ts`
+- `registry/progress/react.tsx`
+- `registry/progress/solid.tsx`
+
 ## Radio And RadioGroup
 
 Radio behavior has one primitive model:

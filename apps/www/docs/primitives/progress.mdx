@@ -1,0 +1,61 @@
+---
+title: Progress
+description: Display progress status and percentage without choosing presentation.
+---
+
+Progress packages value normalization, clamping, percentage computation, and state
+coordination for progress indicators. It delegates colors, runes, borders, and
+layouts to consumer recipes.
+
+## Install
+
+Install the [package for your runtime](/primitives#install), then import the
+`progress` subpath:
+
+```ts
+import { Progress } from "@tuiparts/react/progress";
+```
+
+Replace `react` with `solid`. Core exports the matching Store and Renderables
+from `@tuiparts/core/progress`.
+
+## Anatomy
+
+| Part | Responsibility |
+| --- | --- |
+| `Root` | Owns progress value, maximum, percentage computation, and descendant coordination. |
+| `Indicator` | Passive state-reflecting bar that updates its width according to progress percentage. |
+
+## Compose the Primitive
+
+<CodeGroup>
+
+```tsx React
+import { Progress } from "@tuiparts/react/progress";
+
+<Progress.Root defaultValue={50} width={30}>
+  <Progress.Indicator height={1} />
+</Progress.Root>;
+```
+
+```tsx Solid
+import { Progress } from "@tuiparts/solid/progress";
+
+<Progress.Root defaultValue={50} width={30}>
+  <Progress.Indicator height={1} />
+</Progress.Root>;
+```
+
+```ts Core
+import {
+  ProgressIndicatorRenderable,
+  ProgressRootRenderable,
+} from "@tuiparts/core/progress";
+
+const root = new ProgressRootRenderable(ctx, { defaultValue: 50, width: 30 });
+const indicator = new ProgressIndicatorRenderable(ctx, { store: root.store, height: 1 });
+root.add(indicator);
+parent.add(root);
+```
+
+</CodeGroup>

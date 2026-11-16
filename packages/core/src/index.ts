@@ -111,6 +111,16 @@ export {
   type NumberFieldValueCommitHandler,
 } from "./number-field";
 export {
+  type ProgressIndicatorOptions,
+  ProgressIndicatorRenderable,
+  type ProgressRootOptions,
+  ProgressRootRenderable,
+  type ProgressState,
+  ProgressStore,
+  type ProgressStoreOptions,
+  type ProgressValueChangeHandler,
+} from "./progress";
+export {
   type RadioIndicatorOptions,
   RadioIndicatorRenderable,
   type RadioRootOptions,

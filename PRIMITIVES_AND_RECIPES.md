@@ -496,6 +496,18 @@ Reference implementations:
 - `registry/radio-group/react.tsx`
 - `registry/radio-group/solid.tsx`
 
+## Select Recipe
+
+Select is a consumer-owned, TUI-native recipe providing an accessible
+dropdown select with trigger button, popup menu layer, item roving,
+and selection indicator.
+
+Reference implementations:
+
+- `registry/select/core.ts`
+- `registry/select/react.tsx`
+- `registry/select/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies

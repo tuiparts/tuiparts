@@ -1,0 +1,25 @@
+---
+title: Command
+description: Fast fuzzy search command palette and roving list.
+---
+
+# Command
+
+Command palette providing fast search filtering and grouped command items.
+
+## Installation
+
+```bash
+npx shadcn@latest add @tuiparts/command
+```
+
+## Structure
+
+- `Command`: Root container box managing search state.
+- `CommandInput`: Filter text input with search glyph `⌕`.
+- `CommandList`: Container for command items.
+- `CommandEmpty`: Displayed when no matching items exist.
+- `CommandGroup`: Logical grouping with optional heading.
+- `CommandItem`: Filtered selectable row with action callback.
+- `CommandShortcut`: Right-aligned keyboard shortcut hint.
+- `CommandSeparator`: Dividing line between sections.

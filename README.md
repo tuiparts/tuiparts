@@ -57,7 +57,7 @@ behavior standard.
 ## Catalog
 
 The Catalog includes editable Recipes for Accordion, Badge, Button, Checkbox,
-Checkbox Group, Collapsible, Dialog, Input, Number Field, Radio Group, Slider,
+Checkbox Group, Collapsible, Dialog, Input, Menubar, Number Field, Radio Group, Slider,
 Switch, Tabs, Textarea, Toggle, and Toggle Group. Every Recipe is available for
 Core, React, and Solid.
 

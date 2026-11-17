@@ -496,6 +496,17 @@ Reference implementations:
 - `registry/radio-group/react.tsx`
 - `registry/radio-group/solid.tsx`
 
+## Menubar Recipe
+
+Menubar provides an editable consumer recipe for top-level horizontal application menu
+bars with expandable cascade dropdown menus and keyboard navigation.
+
+Reference implementations:
+
+- `registry/menubar/core.ts`
+- `registry/menubar/react.tsx`
+- `registry/menubar/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies

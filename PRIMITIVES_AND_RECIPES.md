@@ -496,6 +496,18 @@ Reference implementations:
 - `registry/radio-group/react.tsx`
 - `registry/radio-group/solid.tsx`
 
+## ContextMenu Recipe
+
+ContextMenu provides target area context menus triggered by secondary pointer
+actions or shortcut keys. Built directly from OpenTUI Box and Text elements and theme
+tokens, it supports contextual action lists, checkbox and radio items, and keyboard roving.
+
+Reference implementations:
+
+- `registry/context-menu/core.ts`
+- `registry/context-menu/react.tsx`
+- `registry/context-menu/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies

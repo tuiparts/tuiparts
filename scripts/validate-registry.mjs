@@ -91,6 +91,7 @@ const recipes = [
   "toggle-group",
   "tabs",
   "theme",
+  "context-menu",
 ];
 const catalogRecipes = [
   "accordion",
@@ -110,8 +111,9 @@ const catalogRecipes = [
   "toggle-group",
   "tabs",
   "theme",
+  "context-menu",
 ];
-const primitivelessRecipes = ["badge", "theme"];
+const primitivelessRecipes = ["badge", "context-menu", "theme"];
 const themePresets = [
   {
     item: "theme-cobalt-deep",

@@ -496,6 +496,19 @@ Reference implementations:
 - `registry/radio-group/react.tsx`
 - `registry/radio-group/solid.tsx`
 
+## Sheet Recipe
+
+Sheet is an edge-anchored overlay that docks to any screen border (`top`, `bottom`,
+`left`, or `right`) with a full-window dimmed backdrop and single-border content panel.
+Built directly from OpenTUI Box elements and theme tokens, it accommodates side navigation,
+toolbars, and inspector panels.
+
+Reference implementations:
+
+- `registry/sheet/core.ts`
+- `registry/sheet/react.tsx`
+- `registry/sheet/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies

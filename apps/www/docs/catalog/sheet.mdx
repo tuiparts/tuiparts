@@ -1,0 +1,23 @@
+---
+title: Sheet
+description: Edge-anchored overlay sliding in from the top, bottom, left, or right.
+---
+
+# Sheet
+
+Sheet is an edge-anchored overlay that slides in from top, bottom, left, or right.
+
+## Installation
+
+```bash
+npx shadcn@latest add @tuiparts/sheet
+```
+
+## Structure
+
+- `Sheet`: Root context provider managing open state.
+- `SheetTrigger`: Opens the sheet.
+- `SheetContent`: The overlay backdrop and docked content box (`side="top" | "bottom" | "left" | "right"`).
+- `SheetHeader`, `SheetFooter`: Framing layout containers.
+- `SheetTitle`, `SheetDescription`: Semantic typography labels.
+- `SheetClose`: Dismissal trigger.

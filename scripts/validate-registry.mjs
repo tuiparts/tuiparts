@@ -91,6 +91,7 @@ const recipes = [
   "toggle-group",
   "tabs",
   "theme",
+  "hover-card",
 ];
 const catalogRecipes = [
   "accordion",
@@ -110,8 +111,9 @@ const catalogRecipes = [
   "toggle-group",
   "tabs",
   "theme",
+  "hover-card",
 ];
-const primitivelessRecipes = ["badge", "theme"];
+const primitivelessRecipes = ["badge", "hover-card", "theme"];
 const themePresets = [
   {
     item: "theme-cobalt-deep",

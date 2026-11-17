@@ -137,6 +137,7 @@ The starter catalog provides `core/*`, `react/*`, and `solid/*` items for:
 - Textarea
 - Dialog
 - Badge
+- HoverCard
 - Toggle
 - ToggleGroup
 - Tabs

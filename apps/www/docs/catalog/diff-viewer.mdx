@@ -1,0 +1,68 @@
+---
+title: DiffViewer
+description: Visual diff and patch viewer wrapping OpenTUI's native DiffRenderable.
+---
+
+DiffViewer renders git-style patches and file comparisons inside terminal applications with unified or split layouts.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/diff-viewer
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/diff-viewer
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/diff-viewer
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import { DiffViewer } from "./components/ui/diff-viewer";
+
+const patch = `--- a/app.ts
++++ b/app.ts
+@@ -1 +1 @@
+-console.log("hello");
++console.log("world");
+`;
+
+<DiffViewer
+  diff={patch}
+  title="app.ts"
+  view="unified"
+  filetype="typescript"
+/>;
+```
+
+### Core
+
+```ts
+import { createDiffViewer } from "./components/ui/diff-viewer";
+
+const viewer = createDiffViewer(ctx, {
+  diff: patch,
+  title: "app.ts",
+  view: "unified",
+  filetype: "typescript",
+});
+
+parent.add(viewer);
+```
+
+## Recipe API
+
+- `diff?: string`: Unified or git patch text.
+- `title?: string`: Header title displaying the filename or patch summary.
+- `view?: "unified" | "split"`: View mode (default: `"unified"`).
+- `filetype?: string`: Language filetype for syntax highlighting.

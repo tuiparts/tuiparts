@@ -496,6 +496,19 @@ Reference implementations:
 - `registry/radio-group/react.tsx`
 - `registry/radio-group/solid.tsx`
 
+## Tooltip Recipe
+
+Tooltip provides a contextual popup or callout hint attached to a target element.
+In terminal applications where floating absolute coordinates can conflict with layout
+hierarchies, Tooltip is implemented as a clean composable recipe supporting inline or
+stacked hints with theme-aware border styling and toggleable visibility.
+
+Reference implementations:
+
+- `registry/tooltip/core.ts`
+- `registry/tooltip/react.tsx`
+- `registry/tooltip/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies

@@ -21,5 +21,6 @@ export default defineMeta({
     "radio-group",
     "dialog",
     "badge",
+    "tooltip",
   ],
 });

@@ -1,0 +1,84 @@
+---
+title: Tooltip
+description: A popup hint displayed on mouse hover or focus.
+---
+
+<Badge>Recipe only</Badge>
+
+Tooltip displays an informative floating hint box when hovering or focusing an element.
+
+## Install
+
+<CodeGroup>
+
+```bash React
+pnpm dlx shadcn@4.13.0 add @tuiparts/react/tooltip
+```
+
+```bash Solid
+pnpm dlx shadcn@4.13.0 add @tuiparts/solid/tooltip
+```
+
+```bash Core
+pnpm dlx shadcn@4.13.0 add @tuiparts/core/tooltip
+```
+
+</CodeGroup>
+
+## Use the Recipe
+
+### React and Solid
+
+```tsx
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "./components/ui/tooltip";
+
+<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger>
+      <text content="Hover over me" />
+    </TooltipTrigger>
+    <TooltipContent content="Helpful tooltip information" />
+  </Tooltip>
+</TooltipProvider>
+```
+
+### Core
+
+```ts
+import { createTooltip } from "./components/ui/tooltip";
+
+const tooltip = createTooltip(ctx, {
+  content: "Helpful tooltip information",
+});
+
+parent.add(tooltip);
+```
+
+## Recipe API
+
+<TypeTable
+  type={{
+    content: {
+      type: "string",
+      description: "Text content displayed in the tooltip hint box.",
+    },
+    open: {
+      type: "boolean",
+      description: "Controlled open state.",
+    },
+    defaultOpen: {
+      type: "boolean",
+      default: "false",
+      description: "Initial uncontrolled open state.",
+    },
+    onOpenChange: {
+      type: "(open: boolean) => void",
+      description: "Callback invoked when open state changes.",
+    },
+  }}
+/>

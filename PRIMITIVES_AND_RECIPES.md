@@ -496,6 +496,18 @@ Reference implementations:
 - `registry/radio-group/react.tsx`
 - `registry/radio-group/solid.tsx`
 
+## Drawer Recipe
+
+Drawer is a bottom-docked overlay featuring a visible grab handle and framed header,
+content, and footer sections. Built directly from OpenTUI Box elements and theme tokens,
+it provides accessible bottom-sheet interaction for terminal interfaces.
+
+Reference implementations:
+
+- `registry/drawer/core.ts`
+- `registry/drawer/react.tsx`
+- `registry/drawer/solid.tsx`
+
 ## Distribution
 
 A shadcn-like OpenTUI experience requires a registry that copies
